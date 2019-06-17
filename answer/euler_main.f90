@@ -7,7 +7,7 @@ PROGRAM main
   IMPLICIT NONE
   INTEGER, PARAMETER :: DOA = 50 ! Numbers of problems finished
   CHARACTER(len=20), DIMENSION(DOA) :: ans
-  CHARACTER(len=100) :: hyperlink
+  CHARACTER(len=200) :: hyperlink
   REAL, DIMENSION(DOA) :: tspan
   PROCEDURE(euler0001), POINTER :: p
   INTEGER :: i
@@ -23,8 +23,8 @@ PROGRAM main
      CALL associate_procedure_pointer(i, p)
      CALL compute_answer(p, ans(i), tspan(i))
      WRITE (hyperlink, "(a, i4.4, a, i4.4, a)") "[", &
-          i, "](https://gitlab.com/CaptainSolo/project-euler&
-          &/blob/master/problems/euler_prob_", i, ".f90)"
+         i, "](https://github.com/han190/Project-Euler-with-&
+         &Modern-Fortran/blob/master/problems/euler_prob_", i, ".f90)"
      WRITE (47, 1120) " | ", TRIM(hyperlink), " | ", &
           TRIM(ans(i)), " | ", tspan(i), " | "
   END DO
