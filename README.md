@@ -1,4 +1,4 @@
-# Project Euler with modern Fortran
+# Project Euler with Modern Fortran
 
 [Project Euler](https://projecteuler.net/about) is a weekly updated math problem set. I created this project mainly because I wanted to practice my Fortran programming skills, so although not necessary, everything is written by modern Fortran. Some new features in modern Fortran. For example, the structure [submodule](http://fortranwiki.org/fortran/show/Submodules) is used to reduce the source code size of the module proper and avoid the so called compilation cascades. If you are learning Fortran, this might give you an idea of how the new features are implemented. 
 
