@@ -1,4 +1,4 @@
-# Project Euler with modern Fortran
+# Project Euler with Modern Fortran
 
 [Project Euler](https://projecteuler.net/about) is a weekly updated math problem set. I created this project mainly because I wanted to practice my Fortran programming skills, so although not necessary, everything is written by Modern Fortran. If you are learning Fortran, this project might be helpful.
 
