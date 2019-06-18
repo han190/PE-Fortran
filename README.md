@@ -17,8 +17,10 @@ or
 
 # Todo list
 Here is what I plan to do in the future. 
-- [] Use a build tool, for example [Meson](https://mesonbuild.com/), to wrap all the codes.
-- [] Write a wiki page to clearly explain the algorithms, Fortran features, or anything that is interesting for each question. 
+
+- [x] Organize folders, use Shell scripts to compile codes.  
+- [ ] Use a build tool, for example [Meson](https://mesonbuild.com/), to wrap all the codes.
+- [ ] Write a wiki page to clearly explain the algorithms, Fortran features, or anything that is interesting for each question. 
 
 # Results and benchmarks
 
