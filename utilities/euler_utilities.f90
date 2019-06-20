@@ -335,45 +335,45 @@ CONTAINS
     lcm_ll = n1*n2/gcd_ll(n1, n2)
   END FUNCTION lcm_ll
   !
-  INTEGER(li) FUNCTION fibonacci_li(n)
+  RECURSIVE FUNCTION fibonacci_li(n) RESULT(ans)
     IMPLICIT NONE
     INTEGER(li), INTENT(in) :: n
-    INTEGER(li), DIMENSION(2) :: f
-    INTEGER(li) :: i
-    f = [1_li, 2_li]
-    IF (MOD(n, 2_li) /= 0_li) THEN
-       DO i = 1_li, n/2_li
-          f(1) = SUM(f); f(2) = SUM(f)
-       END DO
-       fibonacci_li = f(1)
-       RETURN
+    INTEGER(li) :: k, ans
+    IF (n < 0_li .or. n > 92_li) ERROR STOP "--SUBROUTINE fibonacci_li-- &
+         &The input index n must be a non-negative integer less than 93."
+    IF (n == 0_li) THEN
+       ans = 0_li
+    ELSE IF (n == 1_li) THEN
+       ans = 1_li
+    ELSE IF (n == 2_li) THEN
+       ans = 1_li
+    ELSE IF (MOD(n, 2_li) == 0_li) THEN
+       k = n/2_li
+       ans = fibonacci_li(k)*(2*fibonacci_li(k + 1_li) - fibonacci_li(k))
     ELSE
-       DO i = 1_li, n/2_li - 1_li
-          f(1) = SUM(f); f(2) = SUM(f)
-       END DO
-       fibonacci_li = f(2)
-       RETURN
+       k = (n - 1_li)/2_li
+       ans = fibonacci_li(k + 1_li)**2_li + fibonacci_li(k)**2_li
     END IF
   END FUNCTION fibonacci_li
   !
-  INTEGER(ll) FUNCTION fibonacci_ll(n)
+  RECURSIVE FUNCTION fibonacci_ll(n) RESULT(ans)
     IMPLICIT NONE
     INTEGER(ll), INTENT(in) :: n
-    INTEGER(ll), DIMENSION(2) :: f
-    INTEGER(ll) :: i
-    f = [1_ll, 2_ll]
-    IF (MOD(n, 2_ll) /= 0_ll) THEN
-       DO i = 1_ll, n/2_ll
-          f(1) = SUM(f); f(2) = SUM(f)
-       END DO
-       fibonacci_ll = f(1)
-       RETURN
+    INTEGER(ll) :: k, ans
+    IF (n < 0_ll .or. n > 92_ll) ERROR STOP "--SUBROUTINE fibonacci_ll-- &
+         &The input index n must be a non-negative integer less than 93."
+    IF (n == 0_ll) THEN
+       ans = 0_ll
+    ELSE IF (n == 1_ll) THEN
+       ans = 1_ll
+    ELSE IF (n == 2_ll) THEN
+       ans = 1_ll
+    ELSE IF (MOD(n, 2_ll) == 0_ll) THEN
+       k = n/2_ll
+       ans = fibonacci_ll(k)*(2*fibonacci_ll(k + 1_ll) - fibonacci_ll(k))
     ELSE
-       DO i = 1_ll, n/2_ll - 1_ll
-          f(1) = SUM(f); f(2) = SUM(f)
-       END DO
-       fibonacci_ll = f(2)
-       RETURN
+       k = (n - 1_ll)/2_ll
+       ans = fibonacci_ll(k + 1_ll)**2_ll + fibonacci_ll(k)**2_ll
     END IF
   END FUNCTION fibonacci_ll
   !

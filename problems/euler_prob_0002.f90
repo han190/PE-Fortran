@@ -8,7 +8,7 @@ CONTAINS
     USE euler_utility, ONLY: fibonacci
     IMPLICIT NONE
     INTEGER(li) :: i, sum
-    i = 2_li
+    i = 0_li
     sum = 0_li
     DO WHILE (fibonacci(i) <= 4000000_li)
        sum = sum + fibonacci(i)
