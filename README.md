@@ -24,10 +24,8 @@ Here is what I plan to do in the future.
 
 # Results and benchmarks
 In case you are interested in comparing performances.
-* OS: Fedora 30 Thirty
-* Kernel: x86_64 Linux 5.1.11-300.fc30.x86_64
 * CPU: Intel Core i7-8700K @ 12x 4.7GHz [27.8°C]
 * RAM: 2157MiB / 15889MiB
-* Compiler: GNU Fortran (GCC) 9.1.1 20190503 (Red Hat 9.1.1-1)
+* Compiler: GNU Fortran (Ubuntu 7.4.0-1ubuntu1~18.04.1) 7.4.0
 
 The results are [here](https://github.com/han190/Project-Euler-with-Modern-Fortran/blob/master/answer/README.md). Have fun!
