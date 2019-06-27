@@ -22,16 +22,16 @@ PROGRAM main
   DO i = 1, DOA
      CALL associate_procedure_pointer(i, p)
      CALL compute_answer(p, ans(i), tspan(i))
-     WRITE (hyperlink, "(a, i4.4, a, i4.4, a)") "[", &
-         i, "](https://gitlab.com/CaptainSolo/&
-         &project-euler-with-modern-fortran/&
-         &blob/master/problems/euler_prob_", i, ".f90)"
-     WRITE (47, 1120) " | ", TRIM(hyperlink), " | ", &
+   !   WRITE (hyperlink, "(a, i4.4, a, i4.4, a)") "[", &
+   !       i, "](https://gitlab.com/CaptainSolo/&
+   !       &project-euler-with-modern-fortran/&
+   !       &blob/master/problems/euler_prob_", i, ".f90)"
+     WRITE (47, 1120) " | ", i, " | ", &
           TRIM(ans(i)), " | ", tspan(i), " | "
   END DO
   WRITE (47, *) " | ", " | ", " Total time ", " | ", SUM(tspan), " | "
   CLOSE (47)
-1120 FORMAT(a, a, a, a20, a, f10.6, a)
+1120 FORMAT(a, i4.4, a, a20, a, f10.6, a)
 CONTAINS
   SUBROUTINE compute_answer(proc, answer, time)
     IMPLICIT NONE
