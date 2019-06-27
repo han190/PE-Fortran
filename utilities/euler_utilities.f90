@@ -63,6 +63,10 @@ MODULE euler_utility
      MODULE PROCEDURE reverse_li, reverse_ll
   END INTERFACE reverse
   !
+  INTERFACE swap 
+     MODULE PROCEDURE swap_sp, swap_dp, swap_li, swap_ll 
+  END INTERFACE swap 
+  !
   INTERFACE is_palindromic
      MODULE PROCEDURE is_palindromic_li, is_palindromic_ll
   END INTERFACE is_palindromic
@@ -129,6 +133,7 @@ MODULE euler_utility
   PRIVATE :: append_sp, append_dp, append_li, append_ll
   PRIVATE :: pop_sp, pop_dp, pop_li, pop_ll
   PRIVATE :: sieve_of_Eratosthenes_li, sieve_of_Eratosthenes_ll
+  PRIVATE :: swap_sp, swap_dp, swap_li, swap_ll 
 CONTAINS
   !
   LOGICAL FUNCTION is_integer_sp(n)
@@ -216,6 +221,34 @@ CONTAINS
     END DO
     reverse_ll = reversed
   END FUNCTION reverse_ll
+  !
+  subroutine swap_sp(a, b)
+   implicit none 
+   real(sp), intent(inout) :: a, b 
+   real(sp) :: tmp 
+   tmp = a; a = b; b = tmp 
+  end subroutine swap_sp 
+  !
+  subroutine swap_dp(a, b)
+   implicit none 
+   real(dp), intent(inout) :: a, b 
+   real(dp) :: tmp 
+   tmp = a; a = b; b = tmp 
+  end subroutine swap_dp 
+  !
+  subroutine swap_li(a, b)
+   implicit none 
+   integer(li), intent(inout) :: a, b 
+   integer(li) :: tmp 
+   tmp = a; a = b; b = tmp 
+  end subroutine swap_li 
+  !
+  subroutine swap_ll(a, b)
+   implicit none 
+   integer(ll), intent(inout) :: a, b 
+   integer(ll) :: tmp 
+   tmp = a; a = b; b = tmp 
+  end subroutine swap_ll
   !
   LOGICAL FUNCTION is_palindromic_li(n)
     IMPLICIT NONE

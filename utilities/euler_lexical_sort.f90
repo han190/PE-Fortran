@@ -54,12 +54,6 @@ CONTAINS
     pivot_loc = lastsmall
   END SUBROUTINE partition
   !
-  SUBROUTINE swap(m, n)
-    INTEGER, INTENT(inout) :: m, n
-    INTEGER :: temp
-    temp = m; m = n; n = temp
-  END SUBROUTINE swap
-  !
   FUNCTION string_comp(p, q) RESULT(lexical_less)
     CHARACTER(len=*), INTENT(in) :: p, q
     LOGICAL :: lexical_less

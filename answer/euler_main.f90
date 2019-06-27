@@ -5,7 +5,7 @@ PROGRAM main
   USE iso_fortran_env, ONLY: COMPILER_VERSION
   USE euler_problems
   IMPLICIT NONE
-  INTEGER, PARAMETER :: DOA = 50 ! Numbers of problems finished
+  INTEGER, PARAMETER :: DOA = 52 ! Numbers of problems finished
   CHARACTER(len=20), DIMENSION(DOA) :: ans
   CHARACTER(len=200) :: hyperlink
   REAL, DIMENSION(DOA) :: tspan
@@ -23,8 +23,9 @@ PROGRAM main
      CALL associate_procedure_pointer(i, p)
      CALL compute_answer(p, ans(i), tspan(i))
      WRITE (hyperlink, "(a, i4.4, a, i4.4, a)") "[", &
-         i, "](https://github.com/han190/Project-Euler-with-&
-         &Modern-Fortran/blob/master/problems/euler_prob_", i, ".f90)"
+         i, "](https://gitlab.com/CaptainSolo/&
+         &project-euler-with-modern-fortran/&
+         &blob/master/problems/euler_prob_", i, ".f90)"
      WRITE (47, 1120) " | ", TRIM(hyperlink), " | ", &
           TRIM(ans(i)), " | ", tspan(i), " | "
   END DO
@@ -155,6 +156,10 @@ CONTAINS
        p => euler0049
     CASE (50)
        p => euler0050
+    CASE (51) 
+       p => euler0051 
+    CASE (52)
+       p => euler0052
     CASE DEFAULT
        ERROR STOP "ASSOCIATE_PROCEDURE_POINTER: &
             & There is no corresponding case."

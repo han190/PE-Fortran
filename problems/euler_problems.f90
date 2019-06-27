@@ -338,6 +338,21 @@ MODULE euler_problems
        INTEGER(ll) :: n, i, j, cur_sum
        INTEGER(ll), ALLOCATABLE, DIMENSION(:) :: p_arr
      END FUNCTION euler0050
+     !
+     MODULE CHARACTER(len=20) FUNCTION euler0051()
+       USE euler_utility, ONLY: li, sieve_of_Eratosthenes, unit_digit
+       IMPLICIT NONE
+       INTEGER(li) :: n, i, j, k, test_int
+       INTEGER(li) :: u, u_min, u_max, v
+       LOGICAL, ALLOCATABLE, DIMENSION(:) :: is_prime
+       INTEGER(li), ALLOCATABLE, DIMENSION(:) :: int_arr, index_arr
+     END FUNCTION euler0051
+     !
+     MODULE CHARACTER(len=20) FUNCTION euler0052()
+      IMPLICIT NONE
+      INTEGER(li) :: start = 1, ans = 0, i, j
+      LOGICAL :: found = .FALSE.
+     END FUNCTION euler0052 
   END INTERFACE
 CONTAINS
   SUBROUTINE euler_check()

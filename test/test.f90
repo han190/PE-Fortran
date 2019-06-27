@@ -1,37 +1,77 @@
 PROGRAM main
-  USE euler_utility, ONLY: li, sieve_of_Eratosthenes, pop, int_2_arr, append
+  USE euler_utility, ONLY: li, unit_digit, length_of_int, pop
   IMPLICIT NONE
-  INTEGER(li) :: n, i, j
-  LOGICAL, ALLOCATABLE, DIMENSION(:) :: is_prime
-  INTEGER(li), ALLOCATABLE, DIMENSION(:) :: prime_arr, arr, int_arr, ans_arr
-  INTEGER(li), ALLOCATABLE, DIMENSION(:, :) :: prime_block
 
-  n = 999999_li
-  CALL sieve_of_Eratosthenes(n, is_prime)
-  ALLOCATE (prime_arr(COUNT(is_prime)))
-  j = 1_li
-  DO i = 2_li, n
-     IF (is_prime(i)) THEN
-        prime_arr(j) = i
-        j = j + 1_li
-     END IF
+  INTEGER(li) :: start = 1, RESULT = 0, i, j
+  LOGICAL :: found = .FALSE.
+
+  DO WHILE (.NOT. found)
+     start = start*10
+     i = start
+     DO WHILE (i < start*10/6)
+        found = .TRUE.
+        DO j = 2, 6
+           IF (.NOT. is_permutation(i, j*i)) THEN
+              found = .FALSE.; EXIT
+           END IF
+        END DO
+        IF (found) THEN
+           RESULT = i
+           EXIT
+        END IF
+        i = i + 1
+     END DO
   END DO
-  arr = PACK(prime_arr, prime_arr >= 100000_li .AND. prime_arr <= 999999_li)
-  CALL int_2_arr(arr(1), int_arr)
-  ALLOCATE (prime_block(SIZE(int_arr), SIZE(arr)))
-  DO i = 1, SIZE(arr)
-     CALL int_2_arr(arr(i), int_arr)
-     prime_block(1:SIZE(int_arr), i) = int_arr(:)
-  END DO
-  DO i = 1, SIZE(arr)
-     IF (prime_block(5, i) == prime_block(1, i) .AND. &
-          prime_block(2, i) == 2 .AND. &
-          prime_block(4, i) == 3 .AND. &
-          prime_block(6, i) == 3 .and. &
-          prime_block(1, i) == prime_block(3, i)) THEN
-        CALL append(ans_arr, arr(i))
-     END IF
-  END DO
-  print*, ans_arr
-  print*, size(pack(prime_block(2, :), prime_block(2, :) == 2))
+  WRITE (*, *) RESULT
+
+CONTAINS
+  SUBROUTINE int2arr(n, arr)
+    IMPLICIT NONE
+    INTEGER(li), INTENT(in) :: n
+    INTEGER(li), ALLOCATABLE, DIMENSION(:), INTENT(out) :: arr
+    INTEGER(li) :: i, tmp
+    ALLOCATE (arr(length_of_int(n))); tmp = n
+    DO i = SIZE(arr), 1_li, -1_li
+       arr(i) = unit_digit(tmp); tmp = tmp/10
+    END DO
+  END SUBROUTINE int2arr
+  !
+  SUBROUTINE swap(a, b)
+    IMPLICIT NONE
+    INTEGER(li), INTENT(inout) :: a, b
+    INTEGER(li) :: tmp
+    tmp = a; a = b; b = tmp
+  END SUBROUTINE swap
+  !
+  SUBROUTINE quick_sort(a)
+    INTEGER(li), ALLOCATABLE, DIMENSION(:), INTENT(inout) :: a
+    INTEGER(li) :: temp
+    INTEGER :: i, j
+    LOGICAL :: swapped
+    DO j = SIZE(a) - 1, 1, -1
+       swapped = .FALSE.
+       DO i = 1, j
+          IF (a(i) > a(i + 1)) THEN
+             CALL swap(a(i), a(i + 1))
+             swapped = .TRUE.
+          END IF
+       END DO
+       IF (.NOT. swapped) EXIT
+    END DO
+  END SUBROUTINE quick_sort
+  !
+  LOGICAL FUNCTION is_permutation(n1, n2)
+    IMPLICIT NONE
+    INTEGER(li), INTENT(in) :: n1, n2
+    INTEGER(li), ALLOCATABLE, DIMENSION(:) :: arr1, arr2
+    INTEGER(li) :: i, pos
+    IF (length_of_int(n1) /= length_of_int(n2)) THEN
+       is_permutation = .FALSE.
+       RETURN
+    END IF
+    is_permutation = .FALSE.
+    CALL int2arr(n1, arr1); CALL int2arr(n2, arr2)
+    CALL quick_sort(arr1); CALL quick_sort(arr2)
+    IF (ALL(arr1 == arr2)) is_permutation = .TRUE.
+  END FUNCTION is_permutation
 END PROGRAM main
