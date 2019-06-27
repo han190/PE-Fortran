@@ -1,5 +1,5 @@
 SUBMODULE(euler_problems) euler_problem_0053
-  ! Project Euler: Problem 0052
+  ! Project Euler: Problem 0053
   ! Copyright (c) Captain Solo. All rights reserved.
   !-----------------------------------------------------------------------------
   IMPLICIT NONE
