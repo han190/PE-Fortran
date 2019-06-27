@@ -5,7 +5,7 @@ PROGRAM main
   USE iso_fortran_env, ONLY: COMPILER_VERSION
   USE euler_problems
   IMPLICIT NONE
-  INTEGER, PARAMETER :: DOA = 52 ! Numbers of problems finished
+  INTEGER, PARAMETER :: DOA = 53 ! Numbers of problems finished
   CHARACTER(len=20), DIMENSION(DOA) :: ans
   CHARACTER(len=200) :: hyperlink
   REAL, DIMENSION(DOA) :: tspan
@@ -155,6 +155,8 @@ CONTAINS
        p => euler0051 
     CASE (52)
        p => euler0052
+    CASE (53)
+       p => euler0053
     CASE DEFAULT
        ERROR STOP "ASSOCIATE_PROCEDURE_POINTER: &
             & There is no corresponding case."

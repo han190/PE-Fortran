@@ -69,7 +69,7 @@ CONTAINS
   END FUNCTION euler0051
   !
   LOGICAL FUNCTION next_permutation(input_arr)
-    use euler_utility, only: swap 
+    USE euler_utility, ONLY: swap
     IMPLICIT NONE
     INTEGER(li), DIMENSION(:), INTENT(inout) :: input_arr
     INTEGER(li) :: i, j

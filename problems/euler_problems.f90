@@ -349,10 +349,15 @@ MODULE euler_problems
      END FUNCTION euler0051
      !
      MODULE CHARACTER(len=20) FUNCTION euler0052()
+       IMPLICIT NONE
+       INTEGER(li) :: start = 1, ans = 0, i, j
+       LOGICAL :: found = .FALSE.
+     END FUNCTION euler0052
+     !
+     MODULE CHARACTER(len=20) FUNCTION euler0053()
       IMPLICIT NONE
-      INTEGER(li) :: start = 1, ans = 0, i, j
-      LOGICAL :: found = .FALSE.
-     END FUNCTION euler0052 
+      INTEGER :: i, j, counter = 0
+     END FUNCTION euler0053
   END INTERFACE
 CONTAINS
   SUBROUTINE euler_check()

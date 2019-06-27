@@ -29,8 +29,8 @@ CONTAINS
   END FUNCTION euler0052
   !
   SUBROUTINE quick_sort(arr)
-    USE euler_utility, ONLY: swap 
-    IMPLICIT NONE 
+    USE euler_utility, ONLY: swap
+    IMPLICIT NONE
     INTEGER(li), ALLOCATABLE, DIMENSION(:), INTENT(inout) :: arr
     INTEGER(li) :: temp
     INTEGER :: i, j
