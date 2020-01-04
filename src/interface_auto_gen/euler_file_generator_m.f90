@@ -3,7 +3,7 @@ module file_generator_m
 
     private
     public :: file_generator
-    integer, public, parameter :: nop = 58
+    integer, public, parameter :: nop = 57
     character(len=4), parameter :: tab = '    '
 
 contains
