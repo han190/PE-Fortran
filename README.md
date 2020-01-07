@@ -67,17 +67,17 @@ However, some of the utilities required has been compiled before all the submodu
 
 |Specs of my computer |
 |:---|
-|Compiler: GNU Fortran (Homebrew GCC 9.2.0_2) 9.2.0 |
-|CPU: Intel Core i7-6820HQ @ 2.70GHz |
-|RAM: 5694MiB / 16384MiB |
+|Compiler: GNU Fortran (GCC) 9.2.1 20190827 (Red Hat 9.2.1-1) |
+|CPU: Intel Core i7-8700K @ 12x 4.7GHz [27.8°C] |
+|RAM: 2355MiB / 31968MiB |
 
 |Results||
+|Summary||
 |:---|:---|
 | Problems solved  |   56 |
-| Total time spent on all submodules(problems) |   1.067(s) |
-| Average time spent per submodule(problem) |   0.019(s) |
-| Total time spent on `time ./build.sh` | 9.010(s) |
-| Average time spent per problem | 0.161(s) |
+| Total time spent |   0.576915(s) |
+| Average time spent per problem |   0.010302(s) |
+| `time ./build.sh` | 2.89s user 0.38s system 99% cpu 3.275 total |
 
 ## A todo list
 
