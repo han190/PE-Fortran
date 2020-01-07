@@ -71,8 +71,7 @@ However, some of the utilities required has been compiled before all the submodu
 |CPU: Intel Core i7-8700K @ 12x 4.7GHz [27.8°C] |
 |RAM: 2355MiB / 31968MiB |
 
-|Results||
-|Summary||
+|Results| |
 |:---|:---|
 | Problems solved  |   56 |
 | Total time spent |   0.576915(s) |
