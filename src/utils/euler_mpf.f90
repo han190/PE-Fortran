@@ -15,6 +15,7 @@ module euler_mp_m
         generic :: operator(*) => multiply_func
         procedure, private :: pow_func
         generic :: operator(**) => pow_func
+        procedure :: mod2 => mod2_sub
     end type long_int_t 
 
     type :: mtrx_t
@@ -218,5 +219,50 @@ contains
 
         ans = tmp
     end function pow_func
+
+    subroutine cohere10(arr)
+        integer, allocatable, intent(inout) :: arr(:)
+        integer :: i
+
+        do i = 1, size(arr) - 1
+            if ( arr(i) == 1 ) then 
+                arr(i) = 0 
+                arr(i + 1) = arr(i + 1) + 10
+            end if 
+        end do 
+    end subroutine cohere10
+
+    subroutine mod2_sub(this, ans, res)
+        class(long_int_t) :: this 
+        type(long_int_t), intent(out) :: ans, res
+        integer, allocatable :: tmp_res(:), tmp_ans(:)
+
+        call re_alloc( tmp_ans, size(this%arr) )
+        call re_alloc( tmp_res, size(this%arr) )
+
+        tmp_res = this%arr
+        tmp_ans = 0
+        do
+            call cohere10(tmp_res)
+            tmp_ans = tmp_ans + tmp_res / 2
+            tmp_res = tmp_res - tmp_res / 2 * 2
+            
+            if (                                                               &
+                all(tmp_res == 0) .or.                                         &
+                (                                                              &
+                    all( tmp_res( :size(tmp_res) - 1 ) == 0 ) .and.            &
+                    tmp_res( size(tmp_res) ) == 1                              &
+                )                                                              &
+            ) exit 
+        end do 
+
+        call carry_sub(tmp_res)
+        call cut_leading_zeros(tmp_res)
+        res = tmp_res
+
+        call carry_sub(tmp_ans)
+        call cut_leading_zeros(tmp_ans)
+        ans = tmp_ans
+    end subroutine mod2_sub
 
 end module euler_mp_m
