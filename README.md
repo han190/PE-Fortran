@@ -1,6 +1,6 @@
 # Project Euler with Modern Fortran
 
-[Project Euler](https://projecteuler.net/about) is a weekly updated math problem set. I created this project mainly because I wanted to practice my Fortran programming skills, so although not necessary, everything is written by Modern Fortran. If you are learning Fortran, this project might be helpful.
+[Project Euler](https://projecteuler.net/about) is a weekly updated math problem set. I created this project mainly because I wanted to practice my Fortran programming skills, so although not necessary, everything is written by modern Fortran. If you are learning Fortran, this project might be helpful.
 
 ## Dependencies
 
@@ -20,7 +20,7 @@ To clean it,
 ./clean_build.sh
 ```
 
-(The shell script is written for the GNU Fortran compiler, if you want to use the [Intel Fortran compiler](https://software.intel.com/en-us/fortran-compilers)you might have to write a build file yourself.)
+(The shell script is written for the GNU Fortran compiler, if you want to use the [Intel Fortran compiler](https://software.intel.com/en-us/fortran-compilers) you might have to write a build file yourself.)
 
 ## A very short introduction
 
