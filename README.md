@@ -65,18 +65,18 @@ end do
 
 However, some of the utilities required has been compiled before all the submodules(problems) are compiled and the time spent on that is not counted, so the total time spent by running `time ./build.sh` is also presented in the little table below.
 
-|Specs of my computer |
-|:---|
-|Compiler: GNU Fortran (GCC) 9.2.1 20190827 (Red Hat 9.2.1-1) |
-|CPU: Intel Core i7-8700K @ 12x 4.7GHz [27.8°C] |
-|RAM: 2355MiB / 31968MiB |
+|Specs of my computer                                           |
+|:--------------------------------------------------------------|
+|Compiler: GNU Fortran (GCC) 9.2.1 20190827 (Red Hat 9.2.1-1)   |
+|CPU: Intel Core i7-8700K @ 12x 4.7GHz [27.8°C]                 |
+|RAM: 2355MiB / 31968MiB                                        |
 
-|Results| |
-|:---|:---|
-| Problems solved  |   56 |
-| Total time spent |   0.576915(s) |
-| Average time spent per problem |   0.010302(s) |
-| `time ./build.sh` | 2.89s user 0.38s system 99% cpu 3.275 total |
+|Results                            |                   |
+|:----------------------------------|:------------------|
+| Problems solved                   |   56              |    
+| Total time spent                  |   0.576915(s)     |
+| Average time spent per problem    |   0.010302(s)     |
+| `time ./build.sh`                 |   3.275(s) total  |
 
 ## A todo list
 
