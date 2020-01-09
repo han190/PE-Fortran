@@ -1,5 +1,5 @@
 submodule(euler_interface_m) euler_problem_0056
-    use euler_mp_m
+    use euler_mi_m
     implicit none 
 
 contains
@@ -9,7 +9,7 @@ contains
     end function euler0056
 
     integer function ans()
-        type(long_int_t), pointer :: i1, i2, i3
+        type(very_long_int_t), pointer :: i1, i2, i3
         integer :: i, j, maxx
 
         allocate (i1, i2, i3)

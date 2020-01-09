@@ -1,5 +1,5 @@
 submodule(euler_interface_m) euler_problem_0055
-    use euler_mp_m
+    use euler_mi_m
     implicit none 
     !
     ! OK, I wrote an arbitrary precision library for this problem using the
@@ -17,7 +17,7 @@ contains
 
     integer function ans(upper_bound)
         integer, intent(in) :: upper_bound
-        type(long_int_t) :: num 
+        type(very_long_int_t) :: num 
         integer :: i, k
 
         k = 0 
@@ -34,8 +34,8 @@ contains
     end function ans 
 
     logical function is_lychrel(num)
-        type(long_int_t), intent(in) :: num 
-        type(long_int_t) :: tmp, tmp2 
+        type(very_long_int_t), intent(in) :: num 
+        type(very_long_int_t) :: tmp, tmp2 
         integer :: i 
 
         i = 0 
@@ -56,8 +56,8 @@ contains
     end function is_lychrel
 
     logical function is_palindromic_long(i)
-        type(long_int_t), intent(in) :: i
-        type(long_int_t) :: tmp 
+        type(very_long_int_t), intent(in) :: i
+        type(very_long_int_t) :: tmp 
 
         tmp = reverse_long(i)
         if ( tmp == i ) then 
@@ -68,8 +68,8 @@ contains
     end function is_palindromic_long
 
     function reverse_long(i) result(ans)
-        type(long_int_t), intent(in) :: i
-        type(long_int_t) :: ans 
+        type(very_long_int_t), intent(in) :: i
+        type(very_long_int_t) :: ans 
 
         associate ( x => size(i%arr) )
             allocate ( ans%arr(x) )

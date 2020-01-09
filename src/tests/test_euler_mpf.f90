@@ -1,10 +1,10 @@
 program test_euler_mpf
-    use euler_mp_m
+    use euler_mi_m
     implicit none 
 
     logical :: cond 
     character(:), allocatable :: func_name
-    type(long_int_t), pointer :: i1, i2, i3 
+    type(very_long_int_t), pointer :: i1, i2, i3 
 
     test_assignment: block 
         allocate (i1, i2)
