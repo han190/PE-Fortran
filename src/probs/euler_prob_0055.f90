@@ -67,13 +67,13 @@ contains
         end if 
     end function is_palindromic_long
 
-    function reverse_long(i) result(ans)
+    function reverse_long(i) result(reverse_i)
         type(very_long_int_t), intent(in) :: i
-        type(very_long_int_t) :: ans 
+        type(very_long_int_t) :: reverse_i 
 
         associate ( x => size(i%arr) )
-            allocate ( ans%arr(x) )
-            ans%arr(1:x) = i%arr(x:1:-1)
+            allocate ( reverse_i%arr(x) )
+            reverse_i%arr(1:x) = i%arr(x:1:-1)
         end associate
     end function reverse_long
 
