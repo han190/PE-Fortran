@@ -12,7 +12,7 @@ submodule(euler_interface_m) euler_problem_0055
 contains
 
     module character(len=20) function euler0055()
-        write (euler0055, "(i20)") ans(10000)
+        write (euler0055, "(i20)") 0 !ans(10000)
     end function euler0055
 
     integer function ans(upper_bound)
@@ -67,13 +67,13 @@ contains
         end if 
     end function is_palindromic_long
 
-    function reverse_long(i) result(reverse_i)
+    function reverse_long(i) result(a)
         type(very_long_int_t), intent(in) :: i
-        type(very_long_int_t) :: reverse_i 
+        type(very_long_int_t) :: a 
 
         associate ( x => size(i%arr) )
-            allocate ( reverse_i%arr(x) )
-            reverse_i%arr(1:x) = i%arr(x:1:-1)
+            allocate ( a%arr(x) )
+            a%arr(1:x) = i%arr(x:1:-1)
         end associate
     end function reverse_long
 

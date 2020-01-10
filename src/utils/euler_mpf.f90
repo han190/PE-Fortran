@@ -10,10 +10,6 @@ module euler_mi_m
         generic :: assignment(=) => init_char_sub, init_int_sub, init_arr_sub
         procedure, private :: equal_func, equal_int_func, equal_char_func
         generic :: operator(==) => equal_func, equal_int_func, equal_char_func
-        procedure, private :: greater_than_func
-        generic :: operator(>) => greater_than_func
-        procedure, private :: less_than_func
-        generic :: operator(<) => less_than_func
         procedure, private :: add_func
         generic :: operator(+) => add_func 
         procedure, private :: subtract_func
@@ -101,10 +97,16 @@ contains
         class(very_long_int_t), intent(in) :: a 
         type(very_long_int_t), intent(in) :: b 
 
-        if ( all(a%arr == b%arr) ) then 
-            equal_func = .true.
-        else 
-            equal_func = .false. 
+        if ( size(a%arr) /= size(b%arr) ) then 
+            equal_func = .false.
+        else
+
+            if ( all(a%arr == b%arr) ) then 
+                equal_func = .true.
+            else 
+                equal_func = .false. 
+            end if
+            
         end if 
     end function equal_func
 
@@ -145,63 +147,29 @@ contains
         end do check_loop
     end function equal_char_func
 
-    logical function greater_than_func(a, b)
-        class(very_long_int_t), intent(in) :: a 
+    logical function greater_abs_val_func(a, b)
+        class(very_long_int_t), intent(in) :: a
         type(very_long_int_t), intent(in) :: b
-        integer :: i
+        integer :: i 
 
-        if (a == b) then
-            greater_than_func = .false.; return
+        if ( size(a%arr) > size(b%arr) ) then 
+            greater_abs_val_func = .true.; return
+        else if ( size(a%arr) < size(b%arr) ) then 
+            greater_abs_val_func = .false.; return
+        else
+            greater_abs_val_func = .true.
+
+            do i = 1, size(a%arr)
+                if ( a%arr(i) < b%arr(i) ) then 
+                    greater_abs_val_func = .false.; return 
+                end if 
+            end do 
         end if 
 
-        if (a%sign == '+' .and. b%sign == '-') then 
-            greater_than_func = .true.; return 
-        else if (a%sign == '-' .and. b%sign == '+') then 
-            greater_than_func = .false.; return 
-        else if (a%sign == '+' .and. b%sign == '+') then 
-
-            if ( size(a%arr) > size(b%arr) ) then 
-                greater_than_func = .true.; return
-            else if ( size(a%arr) < size(b%arr) ) then 
-                greater_than_func = .false.; return
-            else
-                greater_than_func = .true.
-
-                do i = 1, size(a%arr)
-                    if ( a%arr(i) < b%arr(i) ) then 
-                        greater_than_func = .false.; return 
-                    end if 
-                end do 
-            end if 
-
-        else if (a%sign == '-' .and. b%sign == '-') then 
-
-            if ( size(a%arr) < size(b%arr) ) then 
-                greater_than_func = .true.; return
-            else if ( size(a%arr) > size(b%arr) ) then 
-                greater_than_func = .false.; return
-            else
-                greater_than_func = .true.
-
-                do i = 1, size(a%arr)
-                    if ( a%arr(i) > b%arr(i) ) then 
-                        greater_than_func = .false.; return 
-                    end if 
-                end do 
-            end if 
-
+        if ( all(a%arr == b%arr) ) then 
+            greater_abs_val_func = .false.
         end if 
-    end function greater_than_func
-
-    logical function less_than_func(a, b)
-        class(very_long_int_t), intent(in) :: a 
-        type(very_long_int_t), intent(in) :: b
-
-        less_than_func = .true.
-        if (a == b .or. a > b) then 
-            less_than_func = .false.
-        end if 
-    end function less_than_func
+    end function greater_abs_val_func
 
     subroutine cut_leading_zeros(arr)
         integer, allocatable, intent(inout) :: arr(:)
@@ -210,7 +178,7 @@ contains
 
         i = 1 
         do 
-            if ( arr(i) /= 0 ) exit 
+            if ( arr(i) /= 0 .or. i >= size(arr) ) exit 
             i = i + 1
         end do 
 
@@ -223,9 +191,9 @@ contains
         integer, allocatable, intent(inout) :: arr(:)
         integer, allocatable :: tmp1(:), tmp2(:)
 
-        allocate( &
-            tmp1( size(arr) + 2 ), &
-            tmp2( size(arr) + 2 ) &
+        allocate(                                                              &
+            tmp1( size(arr) + 2 ),                                             &
+            tmp2( size(arr) + 2 )                                              &
         )
 
         tmp1(1:2) = 0
@@ -248,8 +216,8 @@ contains
         integer, allocatable :: ans(:)
         integer, allocatable :: tmp1(:), tmp2(:), tmp3(:)
 
-        associate( &
-            x => max( size(arr1), size(arr2) ) + 1 &
+        associate(                                                             &
+            x => max( size(arr1), size(arr2) ) + 1                             &
         )
             allocate( tmp1(x), tmp2(x), tmp3(x) )
             tmp1 = 0; tmp2 = 0; tmp3 = 0
@@ -269,8 +237,8 @@ contains
         integer, allocatable :: tmp1(:), tmp2(:), tmp3(:)
         integer :: i
 
-        associate( &
-            x => max( size(arr1), size(arr2) ) + 1 &
+        associate(                                                             &
+            x => max( size(arr1), size(arr2) ) + 1                             &
         )
             allocate( tmp1(x), tmp2(x), tmp3(x) )
             tmp1 = 0; tmp2 = 0; tmp3 = 0
@@ -342,10 +310,27 @@ contains
             ans%arr = core_add_func(a%arr, b%arr)
             ans%sign = '-'
         else if (a%sign == '+' .and. b%sign == '-') then 
-            ans = core_subtract_func(b%arr, a%arr)
+
+            if ( greater_abs_val_func(a, b) ) then
+                ans = core_subtract_func(a%arr, b%arr)
+            else if ( all(a%arr == b%arr) ) then 
+                ans = '0'
+            else
+                ans%arr = core_subtract_func(b%arr, a%arr)
+                ans%sign = '-'
+            end if 
+
         else if (a%sign == '-' .and. b%sign == '+') then 
-            ans%arr = core_subtract_func(b%arr, a%arr)
-            ans%sign = '-'
+            
+            if ( greater_abs_val_func(a, b) ) then
+                ans%arr = core_subtract_func(a%arr, b%arr)
+                ans%sign = '-'
+            else if ( all(a%arr == b%arr) ) then 
+                ans = '0'
+            else
+                ans = core_subtract_func(b%arr, a%arr)
+            end if 
+
         end if 
     end function add_func 
 
@@ -355,14 +340,16 @@ contains
         type(very_long_int_t) :: ans 
 
         if (a%sign == '+' .and. b%sign == '+') then 
-            if (a > b) then
+
+            if ( greater_abs_val_func(a, b) ) then
                 ans = core_subtract_func(a%arr, b%arr)
-            else if (a == b) then
+            else if ( all(a%arr == b%arr) ) then
                 ans = '0'
             else
                 ans%arr = core_subtract_func(b%arr, a%arr)
                 ans%sign = '-'
             end if 
+
         else if (a%sign == '+' .and. b%sign == '-') then 
             ans%arr = core_add_func(a%arr, b%arr)
             ans%sign = '+'
@@ -370,15 +357,16 @@ contains
             ans%arr = core_add_func(a%arr, b%arr)
             ans%sign = '-'
         else if (a%sign == '-' .and. b%sign == '-') then 
-            if (a > b) then
-                ans%arr = core_subtract_func(b%arr, a%arr)
-                ans%sign = '+'
-            else if (a == b) then
-                ans = '0'
-            else
+            
+            if ( greater_abs_val_func(a, b) ) then
                 ans%arr = core_subtract_func(a%arr, b%arr)
                 ans%sign = '-'
+            else if ( all(a%arr == b%arr) ) then
+                ans = '0'
+            else
+                ans = core_subtract_func(b%arr, a%arr)
             end if 
+
         end if 
     end function subtract_func
 
@@ -387,7 +375,16 @@ contains
         type(very_long_int_t), intent(in) :: b 
         type(very_long_int_t) :: ans 
 
-        ans = core_multiply_func(a%arr, b%arr)
+        if (                                                                   &
+            (a%sign == '+' .and. b%sign == '+') .or.                           &
+            (a%sign == '-' .and. b%sign == '-')                                &
+        ) then 
+            ans%arr = core_multiply_func(a%arr, b%arr)
+            ans%sign = '+'
+        else
+            ans%arr = core_multiply_func(a%arr, b%arr)
+            ans%sign = '-'
+        end if 
     end function multiply_func
 
     function pow_func(a, b) result(ans)

@@ -9,10 +9,8 @@ contains
     end function euler0056
 
     integer function ans()
-        type(very_long_int_t), pointer :: i1, i2, i3
+        type(very_long_int_t) :: i1, i2, i3
         integer :: i, j, maxx
-
-        allocate (i1, i2, i3)
 
         maxx = 0 
         do i = 90, 99

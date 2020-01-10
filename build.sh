@@ -19,8 +19,8 @@ OPTIMIZE_FLAG="-O3"
 srccodes=./src/*/*.f90
 
 # Change this to DEBUG_FLAG if you need debug
-# COMPILE_flag="$DEBUG_FLAG"
-COMPILE_FLAG="$OPTIMIZE_FLAG"
+COMPILE_FLAG="$DEBUG_FLAG"
+# COMPILE_FLAG="$OPTIMIZE_FLAG"
 
 if [ ! -d "./src" ]
 then
