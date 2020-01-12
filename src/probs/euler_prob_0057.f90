@@ -22,14 +22,9 @@ contains
             call one_over(a, b)
             call plus_one(a, b, c, d)
 
-            associate(                                                         &
-                x => size(c%arr),                                              &
-                y => size(d%arr)                                               &
-            )
-                if (x > y) then 
-                    k = k + 1 
-                end if 
-            end associate
+            if ( size(c%arr) > size(d%arr) ) then 
+                k = k + 1 
+            end if 
 
             i = i + 1 
         end do 
@@ -56,9 +51,9 @@ contains
         type(very_long_int_t), intent(inout) :: a, b 
         type(very_long_int_t) :: tmp 
 
-        tmp%arr = a%arr
-        a%arr = b%arr 
-        b%arr = tmp%arr
+        call move_alloc(a%arr, tmp%arr)
+        call move_alloc(b%arr, a%arr)
+        call move_alloc(tmp%arr, b%arr)
     end subroutine one_over
 
 end submodule euler_problem_0057
