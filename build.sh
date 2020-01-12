@@ -63,8 +63,8 @@ $FCOMPILER $COMPILE_FLAG -J $MOD -c $SRC/utils/euler_var_arr.f90 \
     -o $OBJ/euler_var_arr.o
 $FCOMPILER $COMPILE_FLAG -J $MOD -c $SRC/utils/euler_lexical_sort.f90 \
     -o $OBJ/euler_lexical_sort.o
-$FCOMPILER $COMPILE_FLAG -J $MOD -c $SRC/utils/euler_mpf.f90 \
-    -o $OBJ/euler_mpf.o
+$FCOMPILER $COMPILE_FLAG -J $MOD -c $SRC/utils/euler_mi.f90 \
+    -o $OBJ/euler_mi.o
 
 echo "Testing euler_utils_m ..."
 cd $build_dir
@@ -75,13 +75,13 @@ $FCOMPILER -o $BIN/euler_tests $OBJ/euler_utils.o $OBJ/test_euler_utils.o
 ./bin/euler_tests 
 rm -f $OBJ/test_euler_utils.o
 
-echo "Testing euler_mp_m ..."
+echo "Testing euler_mi_m ..."
 $FCOMPILER $COMPILE_FLAG -J $MOD -c \
-    $SRC/tests/test_euler_mpf.f90 \
-    -o $OBJ/test_euler_mpf.o
-$FCOMPILER -o $BIN/euler_mp_tests $OBJ/euler_mpf.o $OBJ/test_euler_mpf.o 
+    $SRC/tests/test_euler_mi.f90 \
+    -o $OBJ/test_euler_mi.o
+$FCOMPILER -o $BIN/euler_mp_tests $OBJ/euler_mi.o $OBJ/test_euler_mi.o 
 ./bin/euler_mp_tests
-rm -f $OBJ/test_euler_mpf.o
+rm -f $OBJ/test_euler_mi.o
 
 echo "Compiling interface files ..."
 $FCOMPILER $COMPILE_FLAG -J $MOD -c $SRC/euler/euler_interface.f90 \

@@ -16,8 +16,6 @@ module euler_mi_m
         generic :: operator(-) => subtract_func
         procedure, private :: multiply_func
         generic :: operator(*) => multiply_func
-        procedure, private :: pow_func
-        generic :: operator(**) => pow_func
     end type very_long_int_t
 
     type, private :: mtrx_t
@@ -232,7 +230,7 @@ contains
         call move_alloc(tmp3, ans)
     end subroutine core_add_sub
 
-    subroutine core_subtract_sub(arr1, arr2, ans)
+    subroutine core_subtract_func(arr1, arr2, ans)
         integer, allocatable, intent(in) :: arr1(:), arr2(:)
         integer, allocatable, intent(out) :: ans(:)
         integer, allocatable :: tmp1(:), tmp2(:), tmp3(:)
@@ -257,7 +255,7 @@ contains
 
         call cut_leading_zeros(tmp3)
         call move_alloc(tmp3, ans)
-    end subroutine core_subtract_sub
+    end subroutine core_subtract_func
 
     function add_func(a, b) result(ans)
         class(very_long_int_t), intent(in) :: a
@@ -281,20 +279,20 @@ contains
         else if (a%sign == '+' .and. b%sign == '-') then 
 
             if ( greater_abs_val_func(a%arr, b%arr) ) then
-                call core_subtract_sub(a%arr, b%arr, ans%arr)
+                call core_subtract_func(a%arr, b%arr, ans%arr)
                 ans%sign = '+'
             else
-                call core_subtract_sub(b%arr, a%arr, ans%arr)
+                call core_subtract_func(b%arr, a%arr, ans%arr)
                 ans%sign = '-'
             end if 
 
         else if (a%sign == '-' .and. b%sign == '+') then 
             
             if ( greater_abs_val_func(a%arr, b%arr) ) then
-                call core_subtract_sub(a%arr, b%arr, ans%arr)
+                call core_subtract_func(a%arr, b%arr, ans%arr)
                 ans%sign = '-'
             else
-                call core_subtract_sub(b%arr, a%arr, ans%arr)
+                call core_subtract_func(b%arr, a%arr, ans%arr)
                 ans%sign = '+'
             end if 
 
@@ -314,10 +312,10 @@ contains
         else if (a%sign == '+' .and. b%sign == '+') then 
 
             if ( greater_abs_val_func(a%arr, b%arr) ) then 
-                call core_subtract_sub(a%arr, b%arr, ans%arr)
+                call core_subtract_func(a%arr, b%arr, ans%arr)
                 ans%sign = '+'
             else
-                call core_subtract_sub(b%arr, a%arr, ans%arr)
+                call core_subtract_func(b%arr, a%arr, ans%arr)
                 ans%sign = '-'
             end if 
 
@@ -334,17 +332,17 @@ contains
         else if (a%sign == '-' .and. b%sign == '-') then 
 
             if ( greater_abs_val_func(a%arr, b%arr) ) then 
-                call core_subtract_sub(a%arr, b%arr, ans%arr)
+                call core_subtract_func(a%arr, b%arr, ans%arr)
                 ans%sign = '-'
             else
-                call core_subtract_sub(b%arr, a%arr, ans%arr)
+                call core_subtract_func(b%arr, a%arr, ans%arr)
                 ans%sign = '+'
             end if 
 
         end if 
     end function subtract_func
 
-    subroutine core_multiply_sub(arr1, arr2, ans)
+    subroutine core_multiply_func(arr1, arr2, ans)
         integer, allocatable, intent(in) :: arr1(:), arr2(:)
         integer, allocatable, intent(out) :: ans(:)
         type(mtrx_t), allocatable :: mtrx(:)
@@ -382,7 +380,7 @@ contains
             call cut_leading_zeros(tmp)
             call move_alloc(tmp, ans)
         end associate 
-    end subroutine core_multiply_sub
+    end subroutine core_multiply_func
 
     function multiply_func(a, b) result(ans)
         class(very_long_int_t), intent(in) :: a 
@@ -394,35 +392,15 @@ contains
             (a%sign == '-' .and. b%sign == '-')                                &
         ) then 
 
-            call core_multiply_sub(a%arr, b%arr, ans%arr)
+            call core_multiply_func(a%arr, b%arr, ans%arr)
             ans%sign = '+'
 
         else
 
-            call core_multiply_sub(a%arr, b%arr, ans%arr)
+            call core_multiply_func(a%arr, b%arr, ans%arr)
             ans%sign = '-'
 
         end if 
     end function multiply_func
-
-    function pow_func(a, b) result(ans)
-        class(very_long_int_t), intent(in) :: a 
-        type(very_long_int_t), intent(in) :: b 
-        type(very_long_int_t) :: ans 
-        integer, allocatable :: tmp(:)
-        integer :: i
-
-        allocate( tmp( size(a%arr) ) )
-        tmp(:) = a%arr(:)
-        i = 1
-        
-        do 
-            if (b == i) exit 
-            call core_multiply_sub(tmp, a%arr, tmp)
-            i = i + 1
-        end do 
-
-        ans = tmp
-    end function pow_func
 
 end module euler_mi_m

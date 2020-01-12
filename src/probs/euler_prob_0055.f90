@@ -12,7 +12,7 @@ submodule(euler_interface_m) euler_problem_0055
 contains
 
     module character(len=20) function euler0055()
-        write (euler0055, "(i20)") 0 !ans(10000)
+        write (euler0055, "(i20)") ans(10000)
     end function euler0055
 
     integer function ans(upper_bound)
