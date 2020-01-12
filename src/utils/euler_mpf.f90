@@ -214,7 +214,7 @@ contains
         end if 
     end function greater_abs_val_func
 
-    subroutine core_add_func(arr1, arr2, ans)
+    subroutine core_add_sub(arr1, arr2, ans)
         integer, allocatable, intent(in) :: arr1(:), arr2(:)
         integer, allocatable, intent(out) :: ans(:)
         integer, allocatable :: tmp1(:), tmp2(:), tmp3(:)
@@ -230,9 +230,9 @@ contains
         call carry_sub(tmp3)
         call cut_leading_zeros(tmp3)
         call move_alloc(tmp3, ans)
-    end subroutine core_add_func
+    end subroutine core_add_sub
 
-    subroutine core_subtract_func(arr1, arr2, ans)
+    subroutine core_subtract_sub(arr1, arr2, ans)
         integer, allocatable, intent(in) :: arr1(:), arr2(:)
         integer, allocatable, intent(out) :: ans(:)
         integer, allocatable :: tmp1(:), tmp2(:), tmp3(:)
@@ -257,7 +257,7 @@ contains
 
         call cut_leading_zeros(tmp3)
         call move_alloc(tmp3, ans)
-    end subroutine core_subtract_func
+    end subroutine core_subtract_sub
 
     function add_func(a, b) result(ans)
         class(very_long_int_t), intent(in) :: a
@@ -270,31 +270,31 @@ contains
         
         else if (a%sign == '+' .and. b%sign == '+') then
 
-            call core_add_func(a%arr, b%arr, ans%arr)
+            call core_add_sub(a%arr, b%arr, ans%arr)
             ans%sign = '+'
 
         else if (a%sign == '-' .and. b%sign == '-') then 
 
-            call core_add_func(a%arr, b%arr, ans%arr)
+            call core_add_sub(a%arr, b%arr, ans%arr)
             ans%sign = '-'
 
         else if (a%sign == '+' .and. b%sign == '-') then 
 
             if ( greater_abs_val_func(a%arr, b%arr) ) then
-                call core_subtract_func(a%arr, b%arr, ans%arr)
+                call core_subtract_sub(a%arr, b%arr, ans%arr)
                 ans%sign = '+'
             else
-                call core_subtract_func(b%arr, a%arr, ans%arr)
+                call core_subtract_sub(b%arr, a%arr, ans%arr)
                 ans%sign = '-'
             end if 
 
         else if (a%sign == '-' .and. b%sign == '+') then 
             
             if ( greater_abs_val_func(a%arr, b%arr) ) then
-                call core_subtract_func(a%arr, b%arr, ans%arr)
+                call core_subtract_sub(a%arr, b%arr, ans%arr)
                 ans%sign = '-'
             else
-                call core_subtract_func(b%arr, a%arr, ans%arr)
+                call core_subtract_sub(b%arr, a%arr, ans%arr)
                 ans%sign = '+'
             end if 
 
@@ -314,37 +314,37 @@ contains
         else if (a%sign == '+' .and. b%sign == '+') then 
 
             if ( greater_abs_val_func(a%arr, b%arr) ) then 
-                call core_subtract_func(a%arr, b%arr, ans%arr)
+                call core_subtract_sub(a%arr, b%arr, ans%arr)
                 ans%sign = '+'
             else
-                call core_subtract_func(b%arr, a%arr, ans%arr)
+                call core_subtract_sub(b%arr, a%arr, ans%arr)
                 ans%sign = '-'
             end if 
 
         else if (a%sign == '+' .and. b%sign == '-') then 
 
-                call core_add_func(a%arr, b%arr, ans%arr)
+                call core_add_sub(a%arr, b%arr, ans%arr)
                 ans%sign = '+'
 
         else if (a%sign == '-' .and. b%sign == '+') then 
 
-                call core_add_func(a%arr, b%arr, ans%arr)
+                call core_add_sub(a%arr, b%arr, ans%arr)
                 ans%sign = '-'
 
         else if (a%sign == '-' .and. b%sign == '-') then 
 
             if ( greater_abs_val_func(a%arr, b%arr) ) then 
-                call core_subtract_func(a%arr, b%arr, ans%arr)
+                call core_subtract_sub(a%arr, b%arr, ans%arr)
                 ans%sign = '-'
             else
-                call core_subtract_func(b%arr, a%arr, ans%arr)
+                call core_subtract_sub(b%arr, a%arr, ans%arr)
                 ans%sign = '+'
             end if 
 
         end if 
     end function subtract_func
 
-    subroutine core_multiply_func(arr1, arr2, ans)
+    subroutine core_multiply_sub(arr1, arr2, ans)
         integer, allocatable, intent(in) :: arr1(:), arr2(:)
         integer, allocatable, intent(out) :: ans(:)
         type(mtrx_t), allocatable :: mtrx(:)
@@ -382,7 +382,7 @@ contains
             call cut_leading_zeros(tmp)
             call move_alloc(tmp, ans)
         end associate 
-    end subroutine core_multiply_func
+    end subroutine core_multiply_sub
 
     function multiply_func(a, b) result(ans)
         class(very_long_int_t), intent(in) :: a 
@@ -394,12 +394,12 @@ contains
             (a%sign == '-' .and. b%sign == '-')                                &
         ) then 
 
-            call core_multiply_func(a%arr, b%arr, ans%arr)
+            call core_multiply_sub(a%arr, b%arr, ans%arr)
             ans%sign = '+'
 
         else
 
-            call core_multiply_func(a%arr, b%arr, ans%arr)
+            call core_multiply_sub(a%arr, b%arr, ans%arr)
             ans%sign = '-'
 
         end if 
@@ -418,7 +418,7 @@ contains
         
         do 
             if (b == i) exit 
-            call core_multiply_func(tmp, a%arr, tmp)
+            call core_multiply_sub(tmp, a%arr, tmp)
             i = i + 1
         end do 
 
