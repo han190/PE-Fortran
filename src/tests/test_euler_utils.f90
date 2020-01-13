@@ -5,13 +5,12 @@ program test_euler_utils
 
     ! Conditions
     logical :: cond
-    ! Name of the function being tested
-    character(:), allocatable :: func_name
 
-    func_name = ''
+    !func_name = ''
     test_unit_digit: block
         integer :: i
         integer(int64) :: i_long
+        character(10) :: func_name
 
         func_name = 'unit_digit'
         i = 1120
@@ -29,6 +28,7 @@ program test_euler_utils
         integer(int64) :: i_long, j_long 
         real(sp) :: a_sp, b_sp
         real(dp) :: a_dp, b_dp
+        character(4) :: func_name
 
         func_name = 'swap'
         i = 1120
@@ -62,6 +62,7 @@ program test_euler_utils
     test_digs_of_int: block 
         integer :: i
         integer(int64) :: i_long 
+        character(11) :: func_name
 
         func_name = 'digs_of_int'
         i = 1120
@@ -79,6 +80,7 @@ program test_euler_utils
         integer, allocatable :: fibonacci_arr(:)
         integer(int64) :: i_long 
         integer(int64), allocatable :: fibonacci_arr_long(:)
+        character(9) :: func_name
 
         func_name = "fibonacci"
         fibonacci_arr = [                                                      &
@@ -118,6 +120,7 @@ program test_euler_utils
     test_reverse: block 
         integer :: i
         integer(int64) :: i_long
+        character(7) :: func_name 
 
         func_name = 'reverse'
         i = 1234
@@ -133,6 +136,7 @@ program test_euler_utils
     test_is_palindromic: block
         integer :: i, j
         integer(int64) :: i_long, j_long
+        character(14) :: func_name
 
         func_name = 'is_palindromic'
 
@@ -154,6 +158,7 @@ program test_euler_utils
     test_gcd: block
         integer :: i, j 
         integer(int64) :: i_long, j_long
+        character(3) :: func_name
 
         func_name = 'gcd'
         i = 54
@@ -172,6 +177,7 @@ program test_euler_utils
     test_lcm: block 
         integer :: i, j 
         integer(int64) :: i_long, j_long
+        character(3) :: func_name
 
         func_name = 'lcm'
         i = 21
@@ -191,6 +197,7 @@ program test_euler_utils
         integer :: i
         integer, allocatable :: factorial_arr(:)
         integer(int64), allocatable :: factorial_arr_long(:)
+        character(9) :: func_name
 
         factorial_arr = [                                                      &
             1, 1, 2, 6, 24, 120, 720,                                          &
@@ -223,6 +230,7 @@ program test_euler_utils
     test_is_pandigital: block
         integer :: i
         integer(int64) :: i_long 
+        character(13) :: func_name
 
         ! Pandigital number: from 1 to 9
         i = 15342769
@@ -242,6 +250,7 @@ program test_euler_utils
         integer(int64) :: i_long
         integer, allocatable :: i_arr(:), arr(:)
         integer, allocatable :: i_arr_long(:), arr_long(:)
+        character(9) :: func_name
 
         i = 12345
         i_arr = [1, 2, 3, 4, 5]
@@ -273,6 +282,7 @@ program test_euler_utils
         integer(int64) :: i_long, j_long
         integer, allocatable :: arr(:)
         integer(int64), allocatable :: arr_long(:)
+        character(9) :: func_name
 
         i = 12345
         arr = [1, 2, 3, 4, 5]
@@ -294,6 +304,7 @@ program test_euler_utils
         integer(int64), allocatable :: iarr_long(:)
         real(sp), allocatable :: arr_sp(:)
         real(dp), allocatable :: arr_dp(:)
+        character(6) :: func_name
 
         iarr = [1, 2, 3]
         iarr_long = [1_int64, 2_int64, 3_int64]
@@ -308,9 +319,7 @@ program test_euler_utils
         func_name = 'append'
         cond =                                                                 &
             all(iarr == [1, 2, 3, 4]) .and.                                    &
-            all(iarr_long == [1_int64, 2_int64, 3_int64, 4_int64]) .and.       &
-            all(arr_sp == [1._sp, 2._sp, 3._sp, 4._sp]) .and.                  &
-            all(arr_dp == [1._dp, 2._dp, 3._dp, 4._dp])
+            all(iarr_long == [1_int64, 2_int64, 3_int64, 4_int64])
 
         call if_passed(cond, func_name)
     end block test_append
@@ -330,12 +339,12 @@ contains
         error stop 
     end subroutine error_stop
 
-    subroutine if_passed(cond, func_name)
-        logical, intent(in) :: cond 
+    subroutine if_passed(logical_cond, func_name)
+        logical, intent(in) :: logical_cond 
         character(len=*), intent(in) :: func_name 
 
         call testing(func_name)
-        if (cond) then 
+        if (logical_cond) then 
             print '(a)', "Test passed."
         else 
             call error_stop(func_name)
