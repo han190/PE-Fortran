@@ -12,7 +12,7 @@ program main
     failed = '                   x'
     call euler_init(probs)
 
-    open(47, file = 'README.md')
+    open(47, file = 'ANSWER.md')
     write (47, "(a)") "# Project Euler with Modern Fortran"//new_line("a")
     write (47, "(a)") "## Compilers"//new_line("a")
     write (47, "(a)") compiler_version()//new_line("a")
