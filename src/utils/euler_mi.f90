@@ -16,6 +16,8 @@ module euler_mi_m
         generic :: operator(-) => subtract_func
         procedure, private :: multiply_func
         generic :: operator(*) => multiply_func
+        procedure, private :: pow_func 
+        generic :: operator(**) => pow_func
     end type very_long_int_t
 
     type, private :: mtrx_t
@@ -182,7 +184,7 @@ contains
         call move_alloc(arr, tmp)
 
         find_zeros: do
-            if ( tmp(i) /= 0 ) exit find_zeros
+            if ( tmp(i) /= 0  .or. i >= size(tmp) ) exit find_zeros
             i = i + 1
         end do find_zeros
 
@@ -402,5 +404,31 @@ contains
 
         end if 
     end function multiply_func
+
+    function pow_func(a, b) result(ans)
+        class(very_long_int_t), intent(in) :: a
+        integer, intent(in) :: b
+        type(very_long_int_t) :: ans, tmp 
+        integer :: i
+
+        if (b == 0) then 
+            ans = '1'
+            return 
+        end if 
+        
+        i = 1
+        tmp = a
+
+        do
+            if (i == b) then 
+                exit 
+            else
+                tmp = a * tmp 
+                i = i + 1 
+            end if 
+        end do 
+
+        ans = tmp
+    end function pow_func
 
 end module euler_mi_m
