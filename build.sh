@@ -57,6 +57,8 @@ cd $build_dir
 echo "Compiling utility files ..."
 $FCOMPILER $COMPILE_FLAG -J $MOD -c $SRC/utils/euler_utils.f90 \
     -o $OBJ/euler_utils.o
+$FCOMPILER $COMPILE_FLAG -J $MOD -c $SRC/utils/euler_poker.f90 \
+    -o $OBJ/euler_poker.o
 $FCOMPILER $COMPILE_FLAG -J $MOD -c $SRC/utils/euler_primes.f90 \
     -o $OBJ/euler_primes.o
 $FCOMPILER $COMPILE_FLAG -J $MOD -c $SRC/utils/euler_var_arr.f90 \
