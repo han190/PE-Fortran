@@ -47,6 +47,6 @@ program main
 
     close(47)
 
-1120 format(a, i4, a22, f10.6, a, f6.2, a)
+1120 format(a, i4, a22, f10.6, a, f8.4, a)
 1121 format(a, f10.6, a)
 end program main 
