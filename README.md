@@ -8,7 +8,27 @@ You will need a Fortran compiler to run this project. The [GNU Fortran compiler]
 
 ## Compiling and executing the program
 
-The code is tested with gfortran (version >= 6.0) on Mac and Linux. To compile and execute the code, simply run
+The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature `findloc` is used in problem 54) on Mac, Linux, and the WSL system. To install the GNU fortran compiler, on Mac OS simply use `brew`
+
+```shell
+brew install gfortran
+```
+
+For Linux users, on Fedora and Ubuntu, try
+
+```shell
+sudo dnf install gfortran
+```
+
+and 
+
+```shell
+sudo apt install gfortran
+```
+
+On windows it is a bit complicated. First you will need to enable the WSL system, and then build GNU fortran 9 from scratch. [This article](https://solarianprogrammer.com/2017/05/04/building-gcc-wsl-windows-subsystem-linux/) is recommended.
+
+ To compile and execute the code, simply run
 
 ```shell
 ./build.sh
