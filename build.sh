@@ -2,11 +2,19 @@
 
 ./clean_build.sh
 build_dir="`pwd`"
-# echo "Build directory: $build_dir"
 
 cat logo.txt
 DATA_PATH="`pwd`/dat"
-FCOMPILER="gfortran"
+
+read -p "Is WSL system used? [y/n] " REPLY
+if [ $REPLY = "y" ] 
+then 
+    FCOMPILER="gfortran-9.2"
+elif [ $REPLY = "n" ]
+then 
+    FCOMPILER="gfortran"
+fi
+
 echo "Fortran compiler used: $FCOMPILER."
 
 DEBUG_FLAG="-g -Wall -Wextra \
@@ -17,10 +25,14 @@ DEBUG_FLAG="-g -Wall -Wextra \
 OPTIMIZE_FLAG="-O3"
 
 srccodes=./src/*/*.f90
-
-# Change this to DEBUG_FLAG if you need debug
-# COMPILE_FLAG="$DEBUG_FLAG"
-COMPILE_FLAG="$OPTIMIZE_FLAG"
+read -p "Do you wanna use debug flags? [y/n] " REPLY
+if [ $REPLY = "y" ]
+then 
+    COMPILE_FLAG="$DEBUG_FLAG"
+elif [ $REPLY = "n" ]
+then
+    COMPILE_FLAG="$OPTIMIZE_FLAG" 
+fi
 
 if [ ! -d "./src" ]
 then
