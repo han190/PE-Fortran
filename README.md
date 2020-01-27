@@ -4,11 +4,7 @@
 
 ## Dependencies
 
-You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended.
-
-## Compiling and executing the program
-
-The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature `findloc` is used in problem 54) on Mac, Linux, and the WSL system. To install the GNU fortran compiler, on Mac OS simply use `brew`
+You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended. The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature `findloc` is used in problem 54) on Mac, Linux, and the WSL system. To install the GNU fortran compiler, on Mac OS simply use `brew`
 
 ```shell
 brew install gfortran
@@ -27,6 +23,8 @@ sudo apt install gfortran
 ```
 
 On windows it is a bit complicated. First you will need to enable the WSL system, and then build GNU fortran 9 from scratch. [This article](https://solarianprogrammer.com/2017/05/04/building-gcc-wsl-windows-subsystem-linux/) is recommended.
+
+## Compiling and executing the program
 
  To compile and execute the code, simply run
 
