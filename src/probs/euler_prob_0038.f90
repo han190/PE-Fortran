@@ -12,8 +12,7 @@ contains
         integer(int64) :: i, j, tmp
 
         outer: do i = 2_int64, 10000_int64
-            j      = 1_int64
-            tmp    = 0_int64
+            j = 1_int64; tmp = 0_int64
 
             inner: do
                 if (tmp /= 0) then
@@ -26,8 +25,7 @@ contains
                    call append(common_arr, tmp)
                 end if
 
-                tmp = i * j + tmp *                                            &
-                    10_int64**digs_of_int( i * j )
+                tmp = i * j + tmp * 10_int64**digs_of_int( i * j )
                 j = j + 1_int64
             end do inner
         end do outer

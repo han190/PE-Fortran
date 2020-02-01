@@ -9,21 +9,21 @@ contains
     end function euler0056
 
     integer function ans()
-        type(very_long_int_t) :: i1, i2
-        integer :: i, j, maxx
+        type(very_long_int_t) :: l_int_arr(10), l_mul(10)
+        integer :: sum_arr(10, 10), i, j
 
-        maxx = 0 
-        do i = 90, 99
-            do j = 90, 99
-                i1 = i
-                i2 = i1 ** j
-                if ( maxx < sum(i2%arr) ) then 
-                    maxx = sum(i2%arr)
-                end if 
+        do i = 1, 10
+            l_mul(i) = 89 + i
+            l_int_arr(i) = l_mul(i) ** 89
+        end do 
+        
+        do j = 1, 10
+            do i = 1, 10 
+                l_int_arr(i) = l_mul(i) * l_int_arr(i)
+                sum_arr(i, j) = sum( l_int_arr(i)%arr )
             end do 
         end do 
-
-        ans = maxx
+        ans = maxval(sum_arr)
     end function ans
 
 end submodule euler_problem_0056

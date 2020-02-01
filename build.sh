@@ -1,37 +1,29 @@
 #! /usr/bin/env bash
-
+echo "==================================="
+echo " Project Euler with Modern Fortran"
+echo "==================================="
+echo ""
 ./clean_build.sh
 build_dir="`pwd`"
 
-cat logo.txt
 DATA_PATH="`pwd`/dat"
 
-read -p "Is WSL system used? [y/n] " REPLY
-if [ $REPLY = "y" ] 
-then 
-    FCOMPILER="gfortran-9.2"
-elif [ $REPLY = "n" ]
-then 
-    FCOMPILER="gfortran"
-fi
-
+FCOMPILER="gfortran"
 echo "Fortran compiler used: $FCOMPILER."
 
-DEBUG_FLAG="-g -Wall -Wextra \
-    -Warray-temporaries \
-    -Wconversion -fimplicit-none \
-    -fbacktrace -fcheck=all \
-    -finit-real=nan"
+DEBUG_FLAG="-g -Wall -Wextra -Warray-temporaries -Wconversion \
+    -fimplicit-none -fbacktrace -fcheck=all -finit-real=nan"
 OPTIMIZE_FLAG="-O3"
 
 srccodes=./src/*/*.f90
-read -p "Do you wanna use debug flags? [y/n] " REPLY
-if [ $REPLY = "y" ]
+if [[ $1 = "--debug" ]]
 then 
     COMPILE_FLAG="$DEBUG_FLAG"
-elif [ $REPLY = "n" ]
-then
-    COMPILE_FLAG="$OPTIMIZE_FLAG" 
+elif [[ $1 = "--optimize" ]]
+then 
+    COMPILE_FLAG="$OPTIMIZE_FLAG"
+else 
+    COMPILE_FLAG="$OPTIMIZE_FLAG"
 fi
 
 if [ ! -d "./src" ]
@@ -54,10 +46,10 @@ fi
 echo "Generating interfaces ..."
 cd $build_dir
 $FCOMPILER $COMPILE_FLAG -J $MOD -c \
-	$SRC/interface_auto_gen/euler_file_generator_m.f90 \
+	$SRC/auto_gen/euler_file_generator_m.f90 \
     -o $OBJ/euler_file_generator_m.o
 $FCOMPILER $COMPILE_FLAG -J $MOD -c \
-	$SRC/interface_auto_gen/euler_file_generator.f90 \
+	$SRC/auto_gen/euler_file_generator.f90 \
     -o $OBJ/euler_file_generator.o
 
 $FCOMPILER -o $BIN/euler_file_generator $OBJ/*.o

@@ -16,10 +16,7 @@ contains
 
         call getcwd(cwd); e = len( trim(cwd) )
         filename = cwd(1:e - 3)//"/dat/euler0022.txt"
-        open (                                                                 &
-            unit = 22, file = filename,                                        &
-            status = "old", action = "read"                                    &
-        )
+        open( unit = 22, file = filename, status = "old", action = "read" )
         arr_of_names = "n/a"
         read ( 22, *, iostat = stat ) arr_of_names(1:6000)
 

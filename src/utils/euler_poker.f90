@@ -256,8 +256,3 @@ contains
     end function compare_sub
 
 end module euler_texas_holdem_m
-
-
-
-
-    

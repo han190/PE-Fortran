@@ -11,12 +11,14 @@ contains
         use euler_primes_m, only: sieve_of_eratosthenes 
         implicit none 
         integer(int64), intent(in) :: n 
-        integer(int64) :: i, tmp 
+        integer(int64) :: i, tmp
         logical, allocatable :: is_prime(:)
 
         tmp = 0_int64 
         call sieve_of_eratosthenes(n, is_prime)
-        do i = 2_int64, n 
+
+        ! ans = sum( pack([ (i, i = 0_int64, n) ], is_prime) )
+        do i = 0_int64, n 
             if ( is_prime(i) ) then 
                 tmp = tmp + i  
             end if  

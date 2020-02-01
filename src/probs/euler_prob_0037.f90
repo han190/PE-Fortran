@@ -20,10 +20,7 @@ contains
         icount = 0_int64
 
         do
-            if (                                                               &
-                icount == 11_int64 .or.                                        &
-                i == n                                                 &
-            ) exit
+            if ( icount == 11_int64 .or. i == n ) exit
 
             if (                                                               &
                 is_prime(i) .and.                                              &

@@ -15,10 +15,9 @@ contains
         t = 0 
         f => sum_of_prop_div
         do p = 1, n
-            if (                                                               &
-                f( f(p) ) == p .and.                                           &
-                p /= f(p)                                                      &
-            ) t = t + p
+            if ( f( f(p) ) == p .and. f(p) /= p ) then 
+                 t = t + p
+            end if 
         end do 
         ans = t 
     end function ans 

@@ -12,18 +12,18 @@ contains
         integer :: a, b, p_max 
 
         p_max = 0; a = 100
-        do while ( a <= n )
-            b = 100
-            do while ( b <= n )
-                if ( is_palindromic(a * b)                                     &
-                    .and. a * b > p_max                                        &
-                ) then
-                    p_max = a * b
-                end if
-                b = b + 1
-            end do
-            a = a + 1
-        end do
+
+        do a = 100, n
+            do b = 100, n 
+                if (                                                           &
+                    is_palindromic(a * b) .and.                                &
+                    a * b > p_max                                              &
+                ) then 
+                    p_max = a * b 
+                end if 
+            end do 
+        end do 
+
         ans = p_max 
     end function ans 
 end submodule euler_prob_0004_m 
