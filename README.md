@@ -34,7 +34,19 @@ On **Windows** it is a bit complicated. First you will need to enable the WSL sy
 ./build.sh
 ```
 
-To clean it,
+ You can also enable the `debug` option
+
+ ```shell
+ ./build.sh --debug
+ ```
+
+ or the `optimize` option, which compiles everything with `-O3`
+
+ ```shell 
+ ./build.sh --optimize
+ ```
+
+To clean all generated files,
 
 ```shell
 ./clean_build.sh

@@ -23,7 +23,7 @@ elif [[ $1 = "--optimize" ]]
 then 
     COMPILE_FLAG="$OPTIMIZE_FLAG"
 else 
-    COMPILE_FLAG="$OPTIMIZE_FLAG"
+    COMPILE_FLAG=""
 fi
 
 if [ ! -d "./src" ]
