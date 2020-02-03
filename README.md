@@ -46,6 +46,18 @@ On **Windows** it is a bit complicated. First you will need to enable the WSL sy
  ./build.sh --optimize
  ```
 
+On the WSL system, 
+
+```shell
+./build.sh --WSL $(which gfortran-9)
+```
+
+you can also add debug or optimization flag with it
+
+```shell
+./build.sh --optimize --WSL $(which gfortran-9)
+```
+
 To clean all generated files,
 
 ```shell

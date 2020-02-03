@@ -3,12 +3,25 @@ echo "==================================="
 echo " Project Euler with Modern Fortran"
 echo "==================================="
 echo ""
+
+if [[ $1 = "--WSL" ]]
+then 
+    dos2unix *.sh
+    FCOMPILER=$2
+elif  [[ $2 = "--WSL" ]]
+then
+    dos2unix *.sh
+    FCOMPILER=$3
+else
+    FCOMPILER="gfortran"
+fi
+
 ./clean_build.sh
 build_dir="`pwd`"
 
 DATA_PATH="`pwd`/dat"
 
-FCOMPILER="gfortran"
+# FCOMPILER="gfortran"
 echo "Fortran compiler used: $FCOMPILER."
 
 DEBUG_FLAG="-g -Wall -Wextra -Warray-temporaries -Wconversion \
