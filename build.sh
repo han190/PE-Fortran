@@ -132,5 +132,3 @@ mkdir ans && cd ./ans
 
 echo 
 echo "Compiling and Executing is finished."
-echo "The answers can be found in the folder 'ans'. Enjoy!"
-echo "-- Captain Solo"
