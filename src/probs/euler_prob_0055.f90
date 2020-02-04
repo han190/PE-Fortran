@@ -74,7 +74,7 @@ contains
         associate ( x => size(i%arr) )
             allocate ( a%arr(x) )
             a%arr(1:x) = i%arr(x:1:-1)
-            a%sign_ = '+'
+            a%sgn = '+'
         end associate
     end function reverse_long
 

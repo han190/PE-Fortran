@@ -4,7 +4,7 @@ module euler_mi_m
 
     type, public :: very_long_int_t
         integer, allocatable :: arr(:)
-        character(len=1) :: sign_
+        character(len=1) :: sgn
     contains 
         procedure, private :: init_char_sub, init_int_sub, init_arr_sub
         generic :: assignment(=) => init_char_sub, init_int_sub, init_arr_sub
@@ -44,7 +44,7 @@ contains
         select case ( chars(1:1) )
         case('+')
 
-            this%sign_ = '+'
+            this%sgn = '+'
             call re_alloc( this%arr, len(chars) - 1 )
             do i = 2, len(chars) 
                 read ( chars(i:i), * ) this%arr(i - 1)
@@ -52,7 +52,7 @@ contains
 
         case('-')
 
-            this%sign_ = '-'
+            this%sgn = '-'
             call re_alloc( this%arr, len(chars) - 1 )
             do i = 2, len(chars) 
                 read ( chars(i:i), * ) this%arr(i - 1)
@@ -60,7 +60,7 @@ contains
 
         case default 
 
-            this%sign_ = '+'
+            this%sgn = '+'
             call re_alloc( this%arr, len(chars) )
             do i = 1, len(chars) 
                 read ( chars(i:i), * ) this%arr(i)
@@ -75,7 +75,7 @@ contains
         
         call re_alloc( this%arr, size(arr) )
         this%arr(:) = arr(:)
-        this%sign_ = '+'
+        this%sgn = '+'
     end subroutine init_arr_sub
 
     subroutine init_int_sub(this, int)
@@ -84,9 +84,9 @@ contains
         integer :: tmp, i, l 
 
         if (int >= 0) then 
-            this%sign_ = '+'
+            this%sgn = '+'
         else if (int < 0) then 
-            this%sign_ = '-'
+            this%sgn = '-'
         end if 
 
         tmp = abs(int)
@@ -119,7 +119,7 @@ contains
         class(very_long_int_t), intent(in) :: a 
         type(very_long_int_t), intent(in) :: b
 
-        if ( equal_abs_val_func(a%arr, b%arr) .and. a%sign_ == b%sign_ ) then 
+        if ( equal_abs_val_func(a%arr, b%arr) .and. a%sgn == b%sgn ) then 
             equal_func = .true. 
         else 
             equal_func = .false.
@@ -264,38 +264,38 @@ contains
         type(very_long_int_t), intent(in) :: b
         type(very_long_int_t) :: ans
 
-        if ( equal_abs_val_func(a%arr, b%arr) .and. a%sign_ /= b%sign_ ) then 
+        if ( equal_abs_val_func(a%arr, b%arr) .and. a%sgn /= b%sgn ) then 
 
             ans = '0'
         
-        else if (a%sign_ == '+' .and. b%sign_ == '+') then
+        else if (a%sgn == '+' .and. b%sgn == '+') then
 
             call core_add_sub(a%arr, b%arr, ans%arr)
-            ans%sign_ = '+'
+            ans%sgn = '+'
 
-        else if (a%sign_ == '-' .and. b%sign_ == '-') then 
+        else if (a%sgn == '-' .and. b%sgn == '-') then 
 
             call core_add_sub(a%arr, b%arr, ans%arr)
-            ans%sign_ = '-'
+            ans%sgn = '-'
 
-        else if (a%sign_ == '+' .and. b%sign_ == '-') then 
+        else if (a%sgn == '+' .and. b%sgn == '-') then 
 
             if ( greater_abs_val_func(a%arr, b%arr) ) then
                 call core_subtract_func(a%arr, b%arr, ans%arr)
-                ans%sign_ = '+'
+                ans%sgn = '+'
             else
                 call core_subtract_func(b%arr, a%arr, ans%arr)
-                ans%sign_ = '-'
+                ans%sgn = '-'
             end if 
 
-        else if (a%sign_ == '-' .and. b%sign_ == '+') then 
+        else if (a%sgn == '-' .and. b%sgn == '+') then 
             
             if ( greater_abs_val_func(a%arr, b%arr) ) then
                 call core_subtract_func(a%arr, b%arr, ans%arr)
-                ans%sign_ = '-'
+                ans%sgn = '-'
             else
                 call core_subtract_func(b%arr, a%arr, ans%arr)
-                ans%sign_ = '+'
+                ans%sgn = '+'
             end if 
 
         end if 
@@ -307,38 +307,38 @@ contains
         type(very_long_int_t), intent(in) :: b
         type(very_long_int_t) :: ans
 
-        if ( equal_abs_val_func(a%arr, b%arr) .and. a%sign_ == b%sign_) then 
+        if ( equal_abs_val_func(a%arr, b%arr) .and. a%sgn == b%sgn) then 
 
             ans = '0'
 
-        else if (a%sign_ == '+' .and. b%sign_ == '+') then 
+        else if (a%sgn == '+' .and. b%sgn == '+') then 
 
             if ( greater_abs_val_func(a%arr, b%arr) ) then 
                 call core_subtract_func(a%arr, b%arr, ans%arr)
-                ans%sign_ = '+'
+                ans%sgn = '+'
             else
                 call core_subtract_func(b%arr, a%arr, ans%arr)
-                ans%sign_ = '-'
+                ans%sgn = '-'
             end if 
 
-        else if (a%sign_ == '+' .and. b%sign_ == '-') then 
+        else if (a%sgn == '+' .and. b%sgn == '-') then 
 
                 call core_add_sub(a%arr, b%arr, ans%arr)
-                ans%sign_ = '+'
+                ans%sgn = '+'
 
-        else if (a%sign_ == '-' .and. b%sign_ == '+') then 
+        else if (a%sgn == '-' .and. b%sgn == '+') then 
 
                 call core_add_sub(a%arr, b%arr, ans%arr)
-                ans%sign_ = '-'
+                ans%sgn = '-'
 
-        else if (a%sign_ == '-' .and. b%sign_ == '-') then 
+        else if (a%sgn == '-' .and. b%sgn == '-') then 
 
             if ( greater_abs_val_func(a%arr, b%arr) ) then 
                 call core_subtract_func(a%arr, b%arr, ans%arr)
-                ans%sign_ = '-'
+                ans%sgn = '-'
             else
                 call core_subtract_func(b%arr, a%arr, ans%arr)
-                ans%sign_ = '+'
+                ans%sgn = '+'
             end if 
 
         end if 
@@ -390,17 +390,17 @@ contains
         type(very_long_int_t) :: ans 
 
         if (                                                                   &
-            (a%sign_ == '+' .and. b%sign_ == '+') .or.                           &
-            (a%sign_ == '-' .and. b%sign_ == '-')                                &
+            (a%sgn == '+' .and. b%sgn == '+') .or.                           &
+            (a%sgn == '-' .and. b%sgn == '-')                                &
         ) then 
 
             call core_multiply_func(a%arr, b%arr, ans%arr)
-            ans%sign_ = '+'
+            ans%sgn = '+'
 
         else
 
             call core_multiply_func(a%arr, b%arr, ans%arr)
-            ans%sign_ = '-'
+            ans%sgn = '-'
 
         end if 
     end function multiply_func
