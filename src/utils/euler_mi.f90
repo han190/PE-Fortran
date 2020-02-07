@@ -119,7 +119,10 @@ contains
         class(very_long_int_t), intent(in) :: a 
         type(very_long_int_t), intent(in) :: b
 
-        if ( equal_abs_val_func(a%arr, b%arr) .and. a%sgn == b%sgn ) then 
+        if (                                                                   &
+            a%sgn == b%sgn .and.                                               &
+            equal_abs_val_func(a%arr, b%arr)                                   &
+        ) then 
             equal_func = .true. 
         else 
             equal_func = .false.
@@ -390,8 +393,8 @@ contains
         type(very_long_int_t) :: ans 
 
         if (                                                                   &
-            (a%sgn == '+' .and. b%sgn == '+') .or.                           &
-            (a%sgn == '-' .and. b%sgn == '-')                                &
+            (a%sgn == '+' .and. b%sgn == '+') .or.                             &
+            (a%sgn == '-' .and. b%sgn == '-')                                  &
         ) then 
 
             call core_multiply_func(a%arr, b%arr, ans%arr)
