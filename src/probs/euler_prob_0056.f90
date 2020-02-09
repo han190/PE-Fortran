@@ -9,20 +9,21 @@ contains
     end function euler0056
 
     integer function ans()
-        type(very_long_int_t) :: l_int_arr(10), l_mul(10)
+        type(very_long_int_t) :: int_arr(10), mul(10)
         integer :: sum_arr(10, 10), i, j
 
         do i = 1, 10
-            l_mul(i) = 89 + i
-            l_int_arr(i) = l_mul(i) ** 89
+            mul(i) = 89 + i
+            int_arr(i) = mul(i) ** 89
         end do 
         
         do j = 1, 10
             do i = 1, 10 
-                l_int_arr(i) = l_mul(i) * l_int_arr(i)
-                sum_arr(i, j) = sum( l_int_arr(i)%arr )
+                int_arr(i) = mul(i) * int_arr(i)
+                sum_arr(i, j) = sum( int_arr(i)%arr )
             end do 
         end do 
+
         ans = maxval(sum_arr)
     end function ans
 
