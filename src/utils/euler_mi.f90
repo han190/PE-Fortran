@@ -3,7 +3,7 @@ module euler_mi_m
     private
 
     type, public :: very_long_int_t
-        integer, allocatable :: arr(:)
+        integer, allocatable, dimension(:) :: arr
         character(len=1) :: sgn
     contains 
         procedure, private :: init_char_sub, init_int_sub, init_arr_sub
@@ -21,13 +21,13 @@ module euler_mi_m
     end type very_long_int_t
 
     type, private :: mtrx_t
-        integer, allocatable :: iarr(:)
+        integer, allocatable, dimension(:) :: iarr
     end type mtrx_t
 
 contains
 
     subroutine re_alloc(arr, n)
-        integer, allocatable, intent(inout) :: arr(:)
+        integer, allocatable, dimension(:), intent(inout) :: arr
         integer, intent(in) :: n
 
         if ( allocated(arr) ) then 
@@ -71,7 +71,7 @@ contains
 
     subroutine init_arr_sub(this, arr)
         class(very_long_int_t), intent(inout) :: this
-        integer, allocatable, intent(in) :: arr(:)
+        integer, allocatable, dimension(:), intent(in) :: arr
         
         call re_alloc( this%arr, size(arr) )
         this%arr(:) = arr(:)
@@ -100,7 +100,7 @@ contains
     end subroutine init_int_sub
 
     logical function equal_abs_val_func(arr1, arr2)
-        integer, allocatable, intent(in) :: arr1(:), arr2(:)
+        integer, allocatable, dimension(:), intent(in) :: arr1, arr2
 
         equal_abs_val_func = .true. 
 
@@ -156,8 +156,8 @@ contains
     end function equal_char_func
 
     subroutine carry_sub(arr)
-        integer, allocatable, intent(inout) :: arr(:)
-        integer, allocatable :: tmp1(:), tmp2(:), tmp_arr(:)
+        integer, allocatable, dimension(:), intent(inout) :: arr
+        integer, allocatable, dimension(:) :: tmp1, tmp2, tmp_arr
 
         allocate(                                                              &
             tmp1( size(arr) + 2 ),                                             &
@@ -179,8 +179,8 @@ contains
     end subroutine carry_sub
 
     subroutine cut_leading_zeros(arr)
-        integer, allocatable, intent(inout) :: arr(:)
-        integer, allocatable :: tmp(:)
+        integer, allocatable, dimension(:), intent(inout) :: arr
+        integer, allocatable, dimension(:) :: tmp
         integer :: i
 
         i = 1
@@ -196,7 +196,7 @@ contains
     end subroutine cut_leading_zeros
 
     logical function greater_abs_val_func(arr1, arr2)
-        integer, allocatable, intent(in) :: arr1(:), arr2(:)
+        integer, allocatable, dimension(:), intent(in) :: arr1, arr2
         integer :: i 
 
         greater_abs_val_func = .false.
@@ -218,9 +218,9 @@ contains
     end function greater_abs_val_func
 
     subroutine core_add_sub(arr1, arr2, ans)
-        integer, allocatable, intent(in) :: arr1(:), arr2(:)
-        integer, allocatable, intent(out) :: ans(:)
-        integer, allocatable :: tmp1(:), tmp2(:), tmp3(:)
+        integer, allocatable, dimension(:), intent(in) :: arr1, arr2
+        integer, allocatable, dimension(:), intent(out) :: ans
+        integer, allocatable, dimension(:) :: tmp1, tmp2, tmp3
 
         associate( x => max( size(arr1), size(arr2) ) + 1 )
             allocate ( tmp1(x), tmp2(x), tmp3(x) )
@@ -236,9 +236,9 @@ contains
     end subroutine core_add_sub
 
     subroutine core_subtract_func(arr1, arr2, ans)
-        integer, allocatable, intent(in) :: arr1(:), arr2(:)
-        integer, allocatable, intent(out) :: ans(:)
-        integer, allocatable :: tmp1(:), tmp2(:), tmp3(:)
+        integer, allocatable, dimension(:), intent(in) :: arr1, arr2
+        integer, allocatable, dimension(:), intent(out) :: ans
+        integer, allocatable, dimension(:) :: tmp1, tmp2, tmp3
         integer :: i
 
         associate( x => max( size(arr1), size(arr2) ) + 1 )
@@ -348,10 +348,10 @@ contains
     end function subtract_func
 
     subroutine core_multiply_func(arr1, arr2, ans)
-        integer, allocatable, intent(in) :: arr1(:), arr2(:)
-        integer, allocatable, intent(out) :: ans(:)
-        type(mtrx_t), allocatable :: mtrx(:)
-        integer, allocatable :: tmp(:)
+        integer, allocatable, dimension(:), intent(in) :: arr1, arr2
+        integer, allocatable, dimension(:), intent(out) :: ans
+        type(mtrx_t), allocatable, dimension(:) :: mtrx
+        integer, allocatable, dimension(:) :: tmp
         integer :: i
 
         associate(                                                             &
