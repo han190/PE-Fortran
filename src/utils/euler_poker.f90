@@ -25,19 +25,20 @@ module euler_poker_m
 
 contains
 
-    subroutine initialize_sub(this, char)
+    subroutine initialize_sub(this, chr)
         class(poker_t), intent(inout) :: this 
-        character(len=2), intent(in) :: char(5)
+        character(len=2), dimension(5), intent(in) :: chr
         integer :: i
 
         do i = 1, 5
-            this%hands(i)(1:2) = char(i)(1:2)
+            this%hands(i)(1:2) = chr(i)(1:2)
         end do 
     end subroutine initialize_sub
 
     subroutine to_arrs_sub(this, vals, suits)
         class(poker_t) :: this 
-        integer, intent(out) :: vals(1:14), suits(1:4)
+        integer, dimension(1:14), intent(out) :: vals
+        integer, dimension(1:4), intent(out) :: suits
         integer :: i, v, s
 
         vals = 0; suits = 0
@@ -64,8 +65,10 @@ contains
 
     subroutine rank_sub(this, s_arr)
         class(poker_t) :: this 
-        integer, intent(out) :: s_arr(6)
-        integer :: vals(1:14), suits(1:4), i, x, y
+        integer, dimension(6), intent(out) :: s_arr
+        integer, dimension(1:14) :: vals
+        integer, dimension(1:4) :: suits
+        integer :: i, x, y
 
         call to_arrs_sub(this, vals, suits)
 
@@ -217,7 +220,7 @@ module euler_texas_holdem_m
     private
 
     type, public :: texas_holdem_t
-        type(poker_t) :: decks(2)
+        type(poker_t), dimension(2) :: decks
     contains
         procedure, private :: initialize_sub
         generic :: assignment(=) => initialize_sub
@@ -226,18 +229,19 @@ module euler_texas_holdem_m
 
 contains 
 
-    subroutine initialize_sub(this, char)
+    subroutine initialize_sub(this, chr)
         class(texas_holdem_t), intent(inout) :: this 
-        character(len=2), intent(in) :: char(10)
+        character(len=2), dimension(10), intent(in) :: chr
 
-        this%decks(1) = char(1:5)
-        this%decks(2) = char(6:10)
+        this%decks(1) = chr(1:5)
+        this%decks(2) = chr(6:10)
     end subroutine initialize_sub
 
     function compare_sub(this) result(ans)
         class(texas_holdem_t), intent(in) :: this
+        integer, dimension(6) :: arr1, arr2
         logical :: ans 
-        integer :: i, arr1(6), arr2(6)
+        integer :: i
 
         call this%decks(1)%rank(arr1)
         call this%decks(2)%rank(arr2)
