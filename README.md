@@ -1,6 +1,6 @@
 # Project Euler with Modern Fortran
 
-[Project Euler](https://projecteuler.net/about) is a weekly updated math problem set. I created this project mainly because I wanted to practice my Fortran programming skills, so although not necessary, everything is written by modern Fortran. If you are learning Fortran, this project might be helpful.
+[Project Euler](https://projecteuler.net/about) is a weekly updated math problem set. I created this project mainly because I want to practice my Fortran programming skills, so although not necessary, everything is written by modern Fortran. If you are learning Fortran, this project might be helpful.
 
 ## Dependencies
 
@@ -128,7 +128,6 @@ However, some of the utilities required has been compiled before all the submodu
 Here is what I plan to do in the future.
 
 - [x] Organize folders, use Shell scripts to compile codes.
-- [ ] Test code with Intel Fortran compiler. Write a wrapper for it.
 - [ ] Use a build tool, for example [Meson](https://mesonbuild.com/) to wrap
     all the codes.
 - [ ] Write a wiki page to clearly explain the algorithms, Fortran features, or
