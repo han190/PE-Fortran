@@ -3,7 +3,7 @@ module euler_poker_m
     private 
 
     type, public :: poker_t
-        character(len=2) :: hands(5)
+        character(len=2), dimension(5) :: hands
     contains 
         procedure, private :: initialize_sub
         generic :: assignment(=) => initialize_sub
