@@ -65,38 +65,38 @@ contains
         end if
     end function is_prime_int64 
 
-    subroutine sieve_of_Eratosthenes_int32(n, is_prime)
+    subroutine sieve_of_Eratosthenes_int32(n, prime_arr)
         integer, intent(in) :: n 
-        logical, allocatable :: is_prime(:)
+        logical, allocatable, dimension(:) :: prime_arr
         integer :: i, j 
 
-        allocate( is_prime(0:n) )
-        is_prime = .true. 
-        is_prime(0:1) = .false. 
+        allocate( prime_arr(0:n) )
+        prime_arr = .true. 
+        prime_arr(0:1) = .false. 
         do i = 2, floor( sqrt( real(n, dp) ) )
-            if ( is_prime(i) ) then
+            if ( prime_arr(i) ) then
                 j = i * i
                 do while ( j <= n )
-                    is_prime(j) = .false.
+                    prime_arr(j) = .false.
                     j = j + i
                 end do
             end if
         end do
     end subroutine sieve_of_Eratosthenes_int32
 
-    subroutine sieve_of_Eratosthenes_int64(n, is_prime)
+    subroutine sieve_of_Eratosthenes_int64(n, prime_arr)
         integer(int64), intent(in) :: n 
-        logical, allocatable :: is_prime(:)
+        logical, allocatable, dimension(:) :: prime_arr
         integer(int64) :: i, j 
 
-        allocate( is_prime(0:n) )
-        is_prime = .true. 
-        is_prime(0:1) = .false. 
+        allocate( prime_arr(0:n) )
+        prime_arr = .true. 
+        prime_arr(0:1) = .false. 
         do i = 2_int64, floor( sqrt( real(n, dp) ), int64 )
-            if ( is_prime(i) ) then
+            if ( prime_arr(i) ) then
                 j = i * i
                 do while ( j <= n )
-                    is_prime(j) = .false.
+                    prime_arr(j) = .false.
                     j = j + i
                 end do
             end if
