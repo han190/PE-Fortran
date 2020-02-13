@@ -49,13 +49,13 @@ On **Windows** it is a bit complicated. First you will need to enable the WSL sy
 On the WSL system, 
 
 ```shell
-./build.sh --WSL $(which gfortran-9)
+./build.sh --WSL /path/to/gfortran9/bin
 ```
 
 you can also add debug or optimization flag with it
 
 ```shell
-./build.sh --optimize --WSL $(which gfortran-9)
+./build.sh --optimize --WSL /path/to/gfortran9/bin
 ```
 
 To clean all generated files,
