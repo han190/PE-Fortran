@@ -11,18 +11,6 @@ module euler_poker_m
         procedure :: rank => rank_sub
     end type poker_t
 
-    character(len=1), dimension(1:14), parameter ::                            &
-        value_arr = [                                                          &
-            'A', '2', '3', '4', '5',                                           &
-            '6', '7', '8', '9',                                                &
-            'T', 'J', 'Q', 'K', 'A'                                            &
-        ]
-
-    character(len=1), dimension(1:4), parameter ::                             &
-        suit_arr = [                                                           &
-            'S', 'H', 'C', 'D'                                                 &
-        ]
-
 contains
 
     subroutine initialize_sub(this, chr)
@@ -39,19 +27,26 @@ contains
         class(poker_t) :: this 
         integer, dimension(1:14), intent(out) :: vals
         integer, dimension(1:4), intent(out) :: suits
+        character(len=1), dimension(1:14) :: value_arr
+        character(len=1), dimension(1:4) :: suit_arr
         integer :: i, v, s
 
+        value_arr = [ &
+            'A', '2', '3', '4', '5', '6', '7', &
+            '8', '9', 'T', 'J', 'Q', 'K', 'A' &
+        ]
+        suit_arr = ['S', 'H', 'C', 'D']
         vals = 0; suits = 0
 
         do i = 1, 5
-            v = findloc(                                                       &
-                value_arr(:), this%hands(i)(1:1),                              &
-                dim = 1, back = .true.                                         &
+            v = findloc( &
+                value_arr(:), this%hands(i)(1:1), &
+                dim = 1, back = .true. &
             )
 
-            s = findloc(                                                       &
-                suit_arr(:), this%hands(i)(2:2),                               &
-                dim = 1                                                        &
+            s = findloc( &
+                suit_arr(:), this%hands(i)(2:2), &
+                dim = 1 &
             )
 
             vals(v) = vals(v) + 1
@@ -73,10 +68,7 @@ contains
         call to_arrs_sub(this, vals, suits)
 
         ! Royal Flush
-        if (                                                                   &
-            all( vals(10:14) == 1 ) .and.                                      &
-            any( suits(:) == 5 )                                               &
-        ) then 
+        if ( all( vals(10:14) == 1 ) .and. any( suits(:) == 5 ) ) then 
             s_arr(1) = 10
             s_arr(2:) = 0
             return 
@@ -107,10 +99,7 @@ contains
         end if 
 
         ! Full house
-        if (                                                                   &
-            any( vals(:) == 3 ) .and.                                          &
-            any( vals(:) == 2 )                                                &
-        ) then 
+        if ( any( vals(:) == 3 ) .and. any( vals(:) == 2 ) ) then 
             x = findloc( vals(:), 3, dim = 1, back = .true. )
             y = findloc( vals(:), 2, dim = 1, back = .true. )
 
