@@ -10,18 +10,13 @@ contains
     integer function ans(i, j, tmp)
         integer, intent(in) :: i, j, tmp 
 
-        ans =                                                                  &
-            sum_divisibly_by(i, tmp - 1) +                                     &
-            sum_divisibly_by(j, tmp - 1) -                                     &
-            sum_divisibly_by(i * j, tmp - 1)
+        ans = sdb(i, tmp - 1) + sdb(j, tmp - 1) - sdb(i * j, tmp - 1)
     end function ans 
 
-    integer function sum_divisibly_by(i, j)
+    integer function sdb(i, j) ! sum divisibly by
         integer, intent(in) :: i, j 
-        integer :: tmp 
 
-        tmp = j / i  
-        sum_divisibly_by = i * ( tmp * ( tmp + 1 ) ) / 2 
-    end function sum_divisibly_by
+        sdb = i * ( j / i * ( j / i + 1 ) ) / 2 
+    end function sdb
 
 end submodule euler_prob_0001_m
