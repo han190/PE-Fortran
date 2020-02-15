@@ -119,10 +119,7 @@ contains
         class(very_long_int_t), intent(in) :: a 
         type(very_long_int_t), intent(in) :: b
 
-        if (                                                                   &
-            a%sgn == b%sgn .and.                                               &
-            equal_abs_val_func(a%arr, b%arr)                                   &
-        ) then 
+        if ( a%sgn == b%sgn .and. equal_abs_val_func(a%arr, b%arr) ) then 
             equal_func = .true. 
         else 
             equal_func = .false.
@@ -159,10 +156,9 @@ contains
         integer, allocatable, dimension(:), intent(inout) :: arr
         integer, allocatable, dimension(:) :: tmp1, tmp2, tmp_arr
 
-        allocate(                                                              &
-            tmp1( size(arr) + 2 ),                                             &
-            tmp2( size(arr) + 2 ),                                             &
-            tmp_arr( size(arr) + 2 )                                           &
+        allocate( &
+            tmp1( size(arr) + 2 ), tmp2( size(arr) + 2 ), &
+            tmp_arr( size(arr) + 2 ) &
         )
 
         tmp1(:) = 0; tmp2(:) = 0; tmp_arr(:) = 0
@@ -354,10 +350,7 @@ contains
         integer, allocatable, dimension(:) :: tmp
         integer :: i
 
-        associate(                                                             &
-            x => size(arr1) + size(arr2) ,                                     &
-            y => size(arr2)                                                    &
-        )
+        associate( x => size(arr1) + size(arr2), y => size(arr2) )
             allocate( mtrx(y) )
             
             do i = 1, y
@@ -368,9 +361,9 @@ contains
                 call cut_leading_zeros(tmp)
                 associate( row => mtrx(i)%iarr(:) )
                     row = 0
-                    row(                                                       &
-                        size(row) - size(tmp) - i + 2:                         &
-                        size(row) - i + 1                                      &
+                    row( &
+                        size(row) - size(tmp) - i + 2: &
+                        size(row) - i + 1 &
                     ) = tmp(:)
                 end associate
             end do 
@@ -392,9 +385,9 @@ contains
         type(very_long_int_t), intent(in) :: b 
         type(very_long_int_t) :: ans 
 
-        if (                                                                   &
-            (a%sgn == '+' .and. b%sgn == '+') .or.                             &
-            (a%sgn == '-' .and. b%sgn == '-')                                  &
+        if ( &
+            (a%sgn == '+' .and. b%sgn == '+') .or. &
+            (a%sgn == '-' .and. b%sgn == '-') &
         ) then 
 
             call core_multiply_func(a%arr, b%arr, ans%arr)
