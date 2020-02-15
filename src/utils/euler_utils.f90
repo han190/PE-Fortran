@@ -1,8 +1,8 @@
 module euler_utils_m
     use iso_fortran_env, only: int64, real32, real64 
     implicit none 
-
     private 
+    
     integer, parameter, public :: sp = real32, dp = real64
     real(sp), parameter, public :: tiny_sp = tiny(0._sp)
     real(dp), parameter, public :: tiny_dp = tiny(0._dp)
@@ -27,8 +27,7 @@ module euler_utils_m
     
     public :: fibonacci 
     interface fibonacci 
-        module procedure fibonacci_int32
-        module procedure fibonacci_int64 
+        module procedure fib32, fib64
     end interface fibonacci
     
     public :: reverse 
@@ -125,25 +124,21 @@ contains
     integer function digs_of_int_int32(n)
         integer, intent(in) :: n 
 
-        digs_of_int_int32 = floor(                                             &
-            log10( real(n, sp) )                                               &
-        ) + 1
+        digs_of_int_int32 = floor( log10( real(n, sp) ) ) + 1
     end function digs_of_int_int32
 
     integer(int64) function digs_of_int_int64(n)
         integer(int64), intent(in) :: n 
 
-        digs_of_int_int64 = floor(                                             &
-            log10( real(n, sp) )                                               &
-        ) + 1_int64
+        digs_of_int_int64 = floor( log10( real(n, sp) ) ) + 1_int64
     end function digs_of_int_int64
 
-    recursive function fibonacci_int32(n) result(ans)
+    recursive function fib32(n) result(ans)
         integer, intent(in) :: n 
         integer :: k, ans 
 
         if ( n < 0 .or. n > 92 ) then 
-            error stop "FIBONACCI_INT32: Invalid input number."
+            error stop "fib32: Invalid input number."
         end if  
 
         if ( n == 0 ) then 
@@ -152,24 +147,19 @@ contains
             ans = 1 
         else if ( mod(n, 2) == 0 ) then 
             k = n / 2 
-            ans = fibonacci_int32(k) *                                         &
-            (                                                                  &
-                fibonacci_int32(k + 1) * 2 -                                   &
-                fibonacci_int32(k)                                             &
-            )
+            ans = fib32(k) * ( fib32(k + 1) * 2 - fib32(k) )
         else 
-            k = ( n - 1 ) / 2
-            ans = fibonacci_int32(k + 1)**2 +                                  &
-                fibonacci_int32(k)**2
-        end if  
-    end function fibonacci_int32
+            k = (n - 1) / 2
+            ans = fib32(k + 1)**2 + fib32(k)**2
+        end if
+    end function fib32
 
-    recursive function fibonacci_int64(n) result(ans)
+    recursive function fib64(n) result(ans)
         integer(int64), intent(in) :: n 
         integer(int64) :: k, ans 
 
         if ( n < 0_int64 .or. n > 92_int64 ) then 
-            error stop "FIBONACCI_INT64: Invalid input number."
+            error stop "fib64: Invalid input number."
         end if  
 
         if ( n == 0_int64 ) then 
@@ -178,17 +168,12 @@ contains
             ans = 1_int64 
         else if ( mod(n, 2_int64) == 0_int64 ) then 
             k = n / 2_int64 
-            ans = fibonacci_int64(k) *                                         &
-            (                                                                  &
-                fibonacci_int64(k + 1_int64) * 2_int64 -                       &
-                fibonacci_int64(k)                                             &
-            )
+            ans = fib64(k) * ( fib64(k + 1_int64) * 2_int64 - fib64(k) )
         else 
             k = ( n - 1_int64 ) / 2_int64
-            ans = fibonacci_int64(k + 1_int64)**2_int64 +                      &
-                fibonacci_int64(k)**2_int64
+            ans = fib64(k + 1_int64)**2_int64 + fib64(k)**2_int64
         end if  
-    end function fibonacci_int64
+    end function fib64
 
     integer function reverse_int32(n)
         integer, intent(in) :: n
@@ -196,8 +181,7 @@ contains
 
         reversed = 0; tmp = n
         do while (tmp > 0)
-            reversed = reversed * 10 +                                         &
-                mod(tmp, 10)
+            reversed = reversed * 10 + mod(tmp, 10)
             tmp = tmp / 10
         end do
         reverse_int32 = reversed
@@ -208,8 +192,7 @@ contains
         integer(int64) :: reversed, tmp
         reversed = 0_int64; tmp = n
         do while (tmp > 0_int64)
-            reversed = reversed * 10_int64 +                                   &
-                mod(tmp, 10_int64)
+            reversed = reversed * 10_int64 + mod(tmp, 10_int64)
             tmp = tmp / 10_int64
         end do
         reverse_int64 = reversed
@@ -305,7 +288,7 @@ contains
         integer, intent(in) :: n
         integer, intent(in), optional :: digs
         integer :: tmp, j, l
-        logical, allocatable :: logic_arr(:)
+        logical, allocatable, dimension(:) :: logic_arr
 
         if ( present(digs) ) then
             allocate ( logic_arr(digs) )
@@ -337,7 +320,7 @@ contains
         integer(int64), intent(in) :: n
         integer(int64), intent(in), optional :: digs
         integer(int64) :: tmp, j, l
-        logical, allocatable :: logic_arr(:)
+        logical, allocatable, dimension(:) :: logic_arr
 
         if ( present(digs) ) then
             allocate ( logic_arr(digs) )
@@ -367,7 +350,7 @@ contains
 
     subroutine int_2_arr_int32(n, arr)
         integer, intent(in) :: n
-        integer, allocatable, intent(out) :: arr(:)
+        integer, allocatable, dimension(:), intent(out) :: arr
         integer :: tmp, i, l
 
         tmp = n
@@ -388,7 +371,7 @@ contains
 
     subroutine int_2_arr_int64(n, arr)
         integer(int64), intent(in) :: n
-        integer, allocatable, intent(out) :: arr(:)
+        integer, allocatable, dimension(:), intent(out) :: arr
         integer(int64) :: tmp
         integer :: i, l
 
@@ -409,7 +392,7 @@ contains
     end subroutine int_2_arr_int64
 
     subroutine arr_2_int_int32(arr, n)
-        integer, intent(in) :: arr(:)
+        integer, dimension(:), intent(in) :: arr
         integer, intent(out) :: n
         integer :: i, tmp, l
 
@@ -424,7 +407,7 @@ contains
     end subroutine arr_2_int_int32
 
     subroutine arr_2_int_int64(arr, n)
-        integer(int64), intent(in) :: arr(:)
+        integer(int64), dimension(:), intent(in) :: arr
         integer(int64), intent(out) :: n
         integer(int64) :: i, tmp, l
 
@@ -439,9 +422,9 @@ contains
     end subroutine arr_2_int_int64
 
     subroutine append_sp(arr, e)
-        real(sp), allocatable, intent(inout) :: arr(:)
+        real(sp), allocatable, dimension(:), intent(inout) :: arr
         real(sp), intent(in) :: e
-        real(sp), allocatable :: tmp(:)
+        real(sp), allocatable, dimension(:) :: tmp
 
         if ( allocated(arr) ) then
             call move_alloc( arr, tmp )
@@ -455,9 +438,9 @@ contains
     end subroutine append_sp
 
     subroutine append_dp(arr, e)
-        real(dp), allocatable, intent(inout) :: arr(:)
+        real(dp), allocatable, dimension(:), intent(inout) :: arr
         real(dp), intent(in) :: e
-        real(dp), allocatable :: tmp(:)
+        real(dp), allocatable, dimension(:) :: tmp
 
         if ( allocated(arr) ) then
             call move_alloc( arr, tmp )
@@ -471,9 +454,9 @@ contains
     end subroutine append_dp
 
     subroutine append_int32(arr, e)
-        integer, allocatable, intent(inout) :: arr(:)
+        integer, allocatable, dimension(:), intent(inout) :: arr
         integer, intent(in) :: e
-        integer, allocatable :: tmp(:)
+        integer, allocatable, dimension(:) :: tmp
 
         if ( allocated(arr) ) then
             call move_alloc( arr, tmp )
@@ -487,9 +470,9 @@ contains
     end subroutine append_int32
 
     subroutine append_int64(arr, e)
-        integer(int64), allocatable, intent(inout) :: arr(:)
+        integer(int64), allocatable, dimension(:), intent(inout) :: arr
         integer(int64), intent(in) :: e
-        integer(int64), allocatable :: tmp(:)
+        integer(int64), allocatable, dimension(:) :: tmp
 
         if ( allocated(arr) ) then
             call move_alloc( arr, tmp )
