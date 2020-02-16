@@ -126,7 +126,7 @@ However, some of the utilities required has been compiled before all the submodu
 
 ## A todo list
 
-Here is what I plan to do in the future.
+Here is what I plan to do in the future. (Not likely to be done recently cuz I am kinda busy...)
 
 - [x] Organize folders, use Shell scripts to compile codes.
 - [ ] Use a build tool, for example [Meson](https://mesonbuild.com/) to wrap
