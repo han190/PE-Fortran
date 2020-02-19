@@ -24,6 +24,8 @@ module euler_mi_m
         integer, allocatable, dimension(:) :: iarr
     end type mtrx_t
 
+    public :: to_long
+
 contains
 
     subroutine re_alloc(arr, n)
@@ -98,6 +100,13 @@ contains
             tmp = tmp / 10
         end do 
     end subroutine init_int_sub
+
+    function to_long(chars) result(ans)
+        character(len=*), intent(in) :: chars
+        type(very_long_int_t) :: ans 
+
+        call init_char_sub(ans, chars)
+    end function to_long
 
     logical function equal_abs_val_func(arr1, arr2)
         integer, allocatable, dimension(:), intent(in) :: arr1, arr2

@@ -7,6 +7,9 @@ contains
         write (euler0058, "(i20)") 0!ans()
     end function euler0058 
 
+    ! The problem is solved but it is really slow
+    ! I am writing a Miller-Rabin test
+
     ! integer function ans()
     !     use euler_primes_m, only: sieve_of_Eratosthenes
     !     implicit none 
