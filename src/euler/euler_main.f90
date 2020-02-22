@@ -22,7 +22,7 @@ program main
 
     do i = 1, nop
         call cpu_time(t_i)
-        ans(i) = probs(i)%euler_prob_p()
+        ans(i) = probs(i)%ans()
         if ( ans(i) == '                   0') then
             ans(i) = failed
         end if

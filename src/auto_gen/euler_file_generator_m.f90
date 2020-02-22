@@ -14,9 +14,9 @@ contains
         integer :: i
 
         filename = 'euler_interface.f90'
-        open (                                                                 &
-            unit = 1120, file = filename,                                      &
-            status = 'replace', action = 'write'                               &
+        open ( &
+            unit = 1120, file = filename, &
+            status = 'replace', action = 'write' &
         )
 
         write (1120, '(a)') 'module euler_interface_m'
@@ -28,9 +28,9 @@ contains
         write (1120, '(a)') tab//'interface'//new_line('a')
 
         do i = 1, n
-            write (1120, '(a, i4.4, a)')                                       &
+            write (1120, '(a, i4.4, a)') &
                 tab//tab//'module character(len=20) function euler', i, '()'
-            write (1120, '(a, i4.4, a)')                                       &
+            write (1120, '(a, i4.4, a)') &
                 tab//tab//'end function euler', i, new_line('a')
         end do
 
@@ -45,9 +45,9 @@ contains
         integer :: i
 
         filename = 'euler_prob_api.f90'
-        open (                                                                 &
-            unit = 1121, file = filename,                                      &
-            status = 'replace', action = 'write'                               &
+        open ( &
+            unit = 1121, file = filename, &
+            status = 'replace', action = 'write' &
         )
 
         write (1121, '(a)') 'module euler_prob_api_m'
@@ -56,25 +56,25 @@ contains
         write (1121, '(a)') tab//'use euler_interface_m'
         write (1121, '(a)') tab//'implicit none'//new_line('a')
         write (1121, '(a)') tab//'type :: euler_probs_t'
-        write (1121, '(a)')                                                    &
-            tab//tab//'procedure(euler_prob_x), nopass, pointer :: euler_prob_p'
-        write (1121, '(a)')                                                    &
+        write (1121, '(a)') &
+            tab//tab//'procedure(euler_prob_x), nopass, pointer :: ans'
+        write (1121, '(a)') &
             tab//tab//'type(euler_probs_t), pointer :: next => null()'
         write (1121, '(a)') tab//'end type euler_probs_t'//new_line('a')
         write (1121, '(a)') tab//'abstract interface'
-        write (1121, '(a)')                                                    &
+        write (1121, '(a)') &
             tab//tab//'character(len=20) function euler_prob_x()'
         write (1121, '(a)') tab//tab//'end function euler_prob_x'
         write (1121, '(a)') tab//'end interface'//new_line('a')
         write (1121, '(a)') 'contains'//new_line('a')
 
         write (1121, '(a)') tab//'subroutine euler_init(probs)'
-        write (1121, '(a)')                                                    &
-            tab//tab//'type(euler_probs_t), intent(out) :: probs(:)'//         &
+        write (1121, '(a)') &
+            tab//tab//'type(euler_probs_t), intent(out) :: probs(:)'// &
             new_line('a')
         do i = 1, n
-            write (1121, '(a, i4, a, i4.4)')                                   &
-                tab//tab//'probs(', i, ')%euler_prob_p => euler', i
+            write (1121, '(a, i4, a, i4.4)') &
+                tab//tab//'probs(', i, ')%ans => euler', i
         end do
         write (1121, '(a)') tab//'end subroutine euler_init'//new_line('a')
 
