@@ -1,37 +1,40 @@
 \documentclass[10pt]{article}
 
 \usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows}
 \usepackage[landscape, margin = .1in]{geometry}
 \pagestyle{empty}
+\newcommand{\useaugie}[0]{ \fontfamily{augie}\selectfont }
+\newcommand{\smallaugie}[0]{ \footnotesize \useaugie }
 
 
 \begin{document}
 
 % Define block styles
 
-\tikzstyle{blue_block} = [rectangle, draw, ultra thick, fill=blue!20, 
-    text centered, rounded corners, minimum height=3em]
-\tikzstyle{red_block} = [rectangle, draw, ultra thick, fill=red!20, 
-    text centered, rounded corners, minimum height=3em]
-\tikzstyle{green_block} = [rectangle, draw, ultra thick, fill=green!20, 
-    text centered, rounded corners, minimum height=3em]
-\tikzstyle{orange_block} = [rectangle, draw, ultra thick, fill=orange!20, 
-    text centered, rounded corners, minimum height=3em]
-\tikzstyle{violet_block} = [rectangle, draw, ultra thick, fill=violet!20, 
-    text centered, rounded corners, minimum height=3em]
+\tikzstyle{blue_block} = [rectangle, draw, ultra thick, fill=blue!40, 
+    text centered, rounded corners, minimum height=1cm]
+\tikzstyle{red_block} = [rectangle, draw, ultra thick, fill=red!40, 
+    text centered, rounded corners, minimum height=1cm]
+\tikzstyle{green_block} = [rectangle, draw, ultra thick, fill=green!40, 
+    text centered, rounded corners, minimum height=1cm]
+\tikzstyle{orange_block} = [rectangle, draw, ultra thick, fill=orange!40, 
+    text centered, rounded corners, minimum height=1cm]
+\tikzstyle{violet_block} = [rectangle, draw, ultra thick, fill=violet!40, 
+    text centered, rounded corners, minimum height=1cm]
 
 \tikzstyle{big_blue_block} = [rectangle, draw, ultra thick, dashed, 
-    fill=blue!5, rounded corners, minimum height=18em, minimum width=15em]
+    fill=blue!15, rounded corners, minimum height=6cm, minimum width=6cm]
 \tikzstyle{big_green_block} = [rectangle, draw, ultra thick, dashed, 
-    fill=green!5, rounded corners, minimum height=23em, minimum width=15em]
+    fill=green!15, rounded corners, minimum height=8cm, minimum width=6cm]
 \tikzstyle{big_red_block} = [rectangle, draw, ultra thick, dashed, 
-    fill=red!5, rounded corners, minimum height=23em, minimum width=15em]
+    fill=red!15, rounded corners, minimum height=8cm, minimum width=6cm]
 \tikzstyle{big_orange_block} = [rectangle, draw, ultra thick, dashed, 
-    fill=orange!5, rounded corners, minimum height=11em, minimum width=19em]
+    fill=orange!15, rounded corners, minimum height=4cm, minimum width=7cm]
 \tikzstyle{big_violet_block} = [rectangle, draw, ultra thick, dashed, 
-    fill=violet!5, rounded corners, minimum height=12em, minimum width=15em]
+    fill=violet!15, rounded corners, minimum height=5cm, minimum width=6cm]
 
 \tikzstyle{line} = [ultra thick, -latex]
 \tikzstyle{line2} = [ultra thick, rounded corners=5pt,-latex]
@@ -39,76 +42,80 @@
 \vspace*{\fill}
 
 \begin{center}
-    \Huge \textbf{Project Euler with Modern Fortran}
-\end{center}
-
-\begin{center}
     \begin{tikzpicture}[]
 
-        \node [big_blue_block] (bbb) at (0,-2) {};
-        \node [above of=bbb, node distance=3.4cm] (src) {\texttt{src/}};
-        \node [blue_block, text width=8em, node distance=.1cm] (main) 
+        \node [big_blue_block] (bbb) at (0,0) {};
+        \node [above of=bbb, node distance=3.25cm] (src) 
+            {\texttt{src/}};
+        \node [blue_block, text width=3cm, above of=bbb,
+            node distance=2cm] (main) 
             {\texttt{euler}\_\texttt{main.f90}};
-        \node [blue_block, text width=10em, below of=main, 
+        \node [blue_block, text width=3.6cm, below of=main, 
             node distance=2cm] (probapi)
             {\texttt{euler}\_\texttt{prob}\_\texttt{api.f90}};
-        \node [blue_block, text width=11em, below of=probapi, 
+        \node [blue_block, text width=4cm, below of=probapi, 
             node distance=2cm] (interface)
             {\texttt{euler}\_\texttt{interface.f90}};
 
-        \node [big_red_block] (brb) at (4,-11) {};
-        \node [below of=brb, node distance=4.3cm] (probs) {\texttt{probs/}};
-        \node [red_block, text width=10em, above of=brb,
-            node distance=2.7cm] (p1)
+        \node [big_red_block] (brb) at (4,-9) {};
+        \node [below of=brb, node distance=4.25cm] (probs) 
+            {\texttt{probs/}};
+        \node [red_block, text width=4cm, above of=brb,
+            node distance=3cm] (p1)
             {\texttt{euler}\_\texttt{prob}\_\texttt{0001.f90}};
-        \node [red_block, text width=10em, below of=p1,
+        \node [red_block, text width=4cm, below of=p1,
             node distance=1.5cm] (p2)
             {\texttt{euler}\_\texttt{prob}\_\texttt{0002.f90}};
-        \node [red_block, text width=10em, below of=p2,
+        \node [red_block, text width=4cm, below of=p2,
             node distance=1.5cm] (p3)
             {\texttt{euler}\_\texttt{prob}\_\texttt{0003.f90}};
-        \node [below of=p3, node distance=1.25cm] (dots) {\huge $\cdots$};
-        \node [red_block, text width=10em, below of=dots,
-            node distance=1.25cm] (px)
+        \node [below of=p3, node distance=1.5cm] (dots) 
+            {\huge $\cdots\cdots$};
+        \node [red_block, text width=4cm, below of=dots,
+            node distance=1.5cm] (px)
             {\texttt{euler}\_\texttt{prob}\_\texttt{xxxx.f90}};
 
-        \node [big_green_block] (bgb) at (-8,-2.6) {};
-        \node [above of=bgb, node distance=4.3cm] (utilsf) {\texttt{utils/}};
-        \node [green_block, text width=10em, left of=main, 
-            node distance=8cm] (utils)
+        \node [big_green_block] (bgb) at (-8,-1.5) {};
+        \node [above of=bgb, node distance=4.25cm] (utilsf) 
+            {\texttt{utils/}};
+        \node [green_block, text width=4cm, above of=bgb, 
+            node distance=3cm] (utils)
             {\texttt{euler}\_\texttt{utils.f90}};
-        \node [green_block, text width=10em, below of=utils,
+        \node [green_block, text width=4cm, below of=utils,
             node distance=1.5cm] (mi)
             {\texttt{euler}\_\texttt{mi.f90}};
-        \node [green_block, text width=10em, below of=mi,
+        \node [green_block, text width=4cm, below of=mi,
             node distance=1.5cm] (poker)
             {\texttt{euler}\_\texttt{poker.f90}};
-        \node [green_block, text width=10em, below of=poker,
+        \node [green_block, text width=4cm, below of=poker,
             node distance=1.5cm] (primes)
             {\texttt{euler}\_\texttt{primes.f90}};
-        \node [below of=primes, node distance=1.25cm] (dots2)
-            {\huge $\cdots$};
+        \node [below of=primes, node distance=1.5cm] (dots2)
+            {\huge $\cdots\cdots$};
 
-        \node [big_orange_block] (bob) at (8,-2.85) {};
-        \node [above of=bob, node distance=2.2cm] (autogenf) 
+        \node [big_orange_block] (bob) at (8,-1) {};
+        \node [above of=bob, node distance=2.25cm] (autogenf) 
             {\texttt{auto\_gen/}};
         \node [orange_block, text width=13em,
-            right of=probapi, node distance=8cm] (autogen)
+            above of=bob, node distance=1cm] (autogen)
             {\texttt{euler\_file\_generator.f90}};
         \node [orange_block, text width=15em,
-            below of=autogen, node distance=1.7cm] (autogenm)
+            below of=autogen, node distance=2cm] (autogenm)
             {\texttt{euler\_file\_generator\_m.f90}};
+        \node [text width=7.cm] at (8,2.5) {\useaugie The two files euler\_prob\_api.f90 and euler\_interface.f90 are generated by the program euler\_file\_generator.f90};
 
-        \node [big_violet_block] (bvb) at (-4,-11) {};
-        \node [below of=bvb, node distance=2.4cm] (tests) 
+        \node [big_violet_block] (bvb) at (-4,-10) {};
+        \node [below of=bvb, node distance=2.75cm] (tests) 
             {\texttt{tests/}};
         \node [violet_block, above of=bvb, 
-            node distance=1.2cm, minimum width=12em] (test1)
+            node distance=1.5cm, minimum width=4.5cm] (test1)
             {\texttt{test\_euler\_utils.f90}};
         \node [violet_block, below of=test1, 
-            node distance=1.5cm, minimum width=12em] (test2)
+            node distance=1.5cm, minimum width=3.5cm] (test2)
             {\texttt{test\_euler\_mi.f90}};
-        \node [below of=test2, node distance=1.25cm] (dots) {\huge $\cdots$};
+        \node [below of=test2, node distance=1.5cm] (dots) 
+            {\huge $\cdots\cdots$};
+        \node [text width=4.cm] at (-1,-5) {\useaugie All the problems are submodules of the module euler\_interface.f90};
 
         \draw[line2] (probapi) -- (main);
         \draw[line2] (interface) -- (probapi);
