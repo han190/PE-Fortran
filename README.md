@@ -70,29 +70,7 @@ To clean all generated files,
 
 The structure of the program is presented here:
 
-```bash
-src
-├── euler
-│   └── euler_main.f90
-├── interface_auto_gen
-│   ├── euler_file_generator.f90
-│   └── euler_file_generator_m.f90
-├── probs
-│   ├── euler_prob_0001.f90
-│   ├── euler_prob_0002.f90
-│   ├── euler_prob_0003.f90
-│   └── ... ...
-├── tests
-│   ├── test_euler_utils.f90
-│   ├── test_euler_mi.f90
-│   └── ... ...
-└── utils
-    ├── euler_lexical_sort.f90
-    ├── euler_mpf.f90
-    ├── euler_primes.f90
-    ├── euler_utils.f90
-    └── euler_var_arr.f90
-```
+![Drag Racing](pic/flow_chart.png)
 
 The folder `utils` provides all the utilities required for this project and they are tested by the code `test_euler_utils.f90` in the folder `tests`. Each problem in the folder `probs` is a submodule of the module `euler_interface_m` that will be automatically generated and put into the folder `src/euler`.
 
