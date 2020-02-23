@@ -68,11 +68,7 @@ To clean all generated files,
 
 ## A very short introduction
 
-The structure of the program is presented here:
-
 ![Drag Racing](pic/flow_chart.png)
-
-The folder `utils` provides all the utilities required for this project and they are tested by the code `test_euler_utils.f90` in the folder `tests`. Each problem in the folder `probs` is a submodule of the module `euler_interface_m` that will be automatically generated and put into the folder `src/euler`.
 
 ## A summary of results
 
