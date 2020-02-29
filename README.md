@@ -68,7 +68,7 @@ To clean all generated files,
 
 ## A very short introduction
 
-![Drag Racing](pic/flow_chart.png)
+![Drag Racing](images/flow_chart.png)
 
 ## A summary of results
 
