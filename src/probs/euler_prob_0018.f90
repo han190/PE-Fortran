@@ -16,7 +16,7 @@ contains
         integer :: i, j, e
 
         call getcwd(cwd); e = len( trim(cwd) )
-        filename = cwd(1:e - 3)//"/dat/euler0018.txt"
+        filename = cwd(1:e - 3)//"/data/euler0018.txt"
 
         allocate ( var_arr(n) )
         do i = 1, n 

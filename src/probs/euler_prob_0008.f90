@@ -16,7 +16,7 @@ contains
         ! When the binary is being executed, 
         ! the directory is at ../ans, we can 
         ! change it /dat.
-        filename = cwd(1:e - 3)//"/dat/euler0008.txt"
+        filename = cwd(1:e - 3)//"/data/euler0008.txt"
         open(unit = 8, file = filename, status = "old", action = "read")
         do i = 1_int64, 20_int64 
             s = ( i - 1_int64 ) * 50_int64 + 1_int64 

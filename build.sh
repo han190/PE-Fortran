@@ -19,7 +19,7 @@ fi
 ./clean_build.sh
 build_dir="`pwd`"
 
-DATA_PATH="`pwd`/dat"
+DATA_PATH="`pwd`/data"
 
 # FCOMPILER="gfortran"
 echo "Fortran compiler used: $FCOMPILER."

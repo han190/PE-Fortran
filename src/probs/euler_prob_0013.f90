@@ -14,7 +14,7 @@ contains
         integer :: e 
 
         call getcwd(cwd); e = len( trim(cwd) )
-        filename = cwd(1:e - 3)//"/dat/euler0013.txt"
+        filename = cwd(1:e - 3)//"/data/euler0013.txt"
         open(unit = 13, file = filename, status = "old", action = "read")
         do i = 1, 100
             read (13, "(50(i1))") long_int(1_int64:50_int64, i)

@@ -18,7 +18,7 @@ contains
         integer :: e 
 
         call getcwd(cwd); e = len( trim(cwd) )
-        filename = cwd(1:e - 3)//"/dat/euler0054.txt"
+        filename = cwd(1:e - 3)//"/data/euler0054.txt"
         open(unit = 54, file = filename, status = "old", action = "read")
 
         i = 0 
