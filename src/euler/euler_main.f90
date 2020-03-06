@@ -32,17 +32,17 @@ program main
     tsum = sum(tspan, dim = 1)
 
     do i = 1, nop
-        write (47, 1120) "|", i, "|"//ans(i)//"|", tspan(i),                   &
+        write (47, 1120) "|", i, "|"//ans(i)//"|", tspan(i), &
             "|", tspan(i) / tsum * 100., "%|"
     end do
 
     write (47, "(a)") new_line("a")//"## Summary"//new_line("a")
     write (47, "(a)") "|Summary||"
     write (47, "(a)") "|:---|:---|"
-    write (47, "(a, i4, a)") "| Problems solved  | ",                          &
+    write (47, "(a, i4, a)") "| Problems solved  | ", &
         count(ans /= failed), " |"
     write (47, 1121) "| Total time spent | ", tsum, "(s) |"
-    write (47, 1121) "| Average time spent per problem | ",                    &
+    write (47, 1121) "| Average time spent per problem | ", &
         tsum/count(ans /= failed, dim = 1), "(s) |"
 
     close(47)

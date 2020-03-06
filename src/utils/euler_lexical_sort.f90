@@ -58,30 +58,30 @@ contains
         integer, intent(out) :: pivot_loc
         integer :: k, lastsmall
 
-        call swap(                                                             &
-            index_arr(low),                                                    &
-            index_arr( (low + high) / 2 )                                      &
+        call swap( &
+            index_arr(low), &
+            index_arr( (low + high) / 2 ) &
         )
         lastsmall = low
 
         do k = low + 1, high
-            if (                                                               &
-                string_comp(                                                   &
-                    str_arr( index_arr(k) ),                                   &
-                    str_arr( index_arr(low) )                                  &
-                )                                                              &
+            if ( &
+                string_comp( &
+                    str_arr( index_arr(k) ), &
+                    str_arr( index_arr(low) ) &
+                ) &
             ) then
                 lastsmall = lastsmall + 1
-                call swap(                                                     &
-                    index_arr(lastsmall),                                      &
-                    index_arr(k)                                               &
+                call swap( &
+                    index_arr(lastsmall), &
+                    index_arr(k) &
                 )
             end if
         end do
         
-        call swap(                                                             &
-            index_arr(low),                                                    &
-            index_arr(lastsmall)                                               &
+        call swap( &
+            index_arr(low), &
+            index_arr(lastsmall) &
         )
         pivot_loc = lastsmall
     end subroutine partition
@@ -110,8 +110,8 @@ contains
     function upper_case(letter) result(L)
         character(len=*), intent(in) :: letter
         character(len=1) :: L
-        character(len=26), parameter ::                                        &
-            Lower = "abcdefghijklmnopqrstuvwxyz",                              &
+        character(len=26), parameter :: &
+            Lower = "abcdefghijklmnopqrstuvwxyz", &
             Upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         integer :: k
 

@@ -16,8 +16,8 @@ program test_euler_utils
         i = 1120
         i_long = 1120_int64
 
-        cond =                                                                 &
-            unit_digit(i) == 0 .and.                                           &
+        cond = &
+            unit_digit(i) == 0 .and. &
             unit_digit(i_long) == 0_int64
         
         call if_passed(cond, func_name)
@@ -48,12 +48,12 @@ program test_euler_utils
         call swap(a_sp, b_sp)
         call swap(a_dp, b_dp)
 
-        cond =                                                                 &
-            i == 47 .and. j == 1120 .and.                                      &
-            i_long == 47_int64 .and. j_long == 1120_int64 .and.                &
-            abs(a_sp - 4.7_sp) < tiny_sp .and.                                 &
-            abs(b_sp - 11.20_sp) < tiny_sp .and.                               &
-            abs(a_dp - 4.7_dp) < tiny_dp .and.                                 &
+        cond = &
+            i == 47 .and. j == 1120 .and. &
+            i_long == 47_int64 .and. j_long == 1120_int64 .and. &
+            abs(a_sp - 4.7_sp) < tiny_sp .and. &
+            abs(b_sp - 11.20_sp) < tiny_sp .and. &
+            abs(a_dp - 4.7_dp) < tiny_dp .and. &
             abs(b_dp - 11.20_dp) < tiny_dp
 
         call if_passed(cond, func_name)
@@ -68,8 +68,8 @@ program test_euler_utils
         i = 1120
         i_long = 1120_int64
 
-        cond =                                                                 &
-            digs_of_int(i) == 4 .and.                                          &
+        cond = &
+            digs_of_int(i) == 4 .and. &
             digs_of_int(i_long) == 4_int64
         
         call if_passed(cond, func_name)
@@ -83,34 +83,34 @@ program test_euler_utils
         character(9) :: func_name
 
         func_name = "fibonacci"
-        fibonacci_arr = [                                                      &
-            0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55,                               &
-            89, 144, 233, 377, 610, 987, 1597,                                 &
-            2584, 4181, 6765, 10946, 17711, 28657,                             &
-            46368, 75025, 121393, 196418, 317811                               &
+        fibonacci_arr = [ &
+            0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, &
+            89, 144, 233, 377, 610, 987, 1597, &
+            2584, 4181, 6765, 10946, 17711, 28657, &
+            46368, 75025, 121393, 196418, 317811 &
         ]
 
         cond = .true.
         do i = 1, size(fibonacci_arr) - 1
-            cond = cond .and.                                                  &
+            cond = cond .and. &
                 fibonacci(i) == fibonacci_arr(i + 1)
         end do 
 
-        fibonacci_arr_long = [                                                 &
-            0_int64, 1_int64, 1_int64, 2_int64,                                &
-            3_int64, 5_int64, 8_int64, 13_int64,                               &
-            21_int64, 34_int64, 55_int64,                                      &
-            89_int64, 144_int64, 233_int64,                                    &
-            377_int64, 610_int64, 987_int64,                                   &
-            1597_int64, 2584_int64, 4181_int64,                                &
-            6765_int64, 10946_int64, 17711_int64,                              &
-            28657_int64, 46368_int64, 75025_int64,                             &
-            121393_int64, 196418_int64, 317811_int64                           &
+        fibonacci_arr_long = [ &
+            0_int64, 1_int64, 1_int64, 2_int64, &
+            3_int64, 5_int64, 8_int64, 13_int64, &
+            21_int64, 34_int64, 55_int64, &
+            89_int64, 144_int64, 233_int64, &
+            377_int64, 610_int64, 987_int64, &
+            1597_int64, 2584_int64, 4181_int64, &
+            6765_int64, 10946_int64, 17711_int64, &
+            28657_int64, 46368_int64, 75025_int64, &
+            121393_int64, 196418_int64, 317811_int64 &
         ]
 
         do i_long = 1_int64, size(fibonacci_arr_long) - 1_int64
-            cond = cond .and.                                                  &
-                fibonacci(i_long) ==                                           &
+            cond = cond .and. &
+                fibonacci(i_long) == &
                 fibonacci_arr(i_long + 1_int64)
         end do 
 
@@ -126,8 +126,8 @@ program test_euler_utils
         i = 1234
         i_long = 1234567_int64 
 
-        cond =                                                                 &
-            reverse(i) == 4321 .and.                                           &
+        cond = &
+            reverse(i) == 4321 .and. &
             reverse(i_long) == 7654321_int64
 
         call if_passed(cond, func_name)
@@ -146,10 +146,10 @@ program test_euler_utils
         i_long = 123454321_int64
         j_long = 123456789_int64
 
-        cond =                                                                 &
-            is_palindromic(i) .and.                                            &
-            ( .not. is_palindromic(j) ) .and.                                  &
-            is_palindromic(i_long) .and.                                       &
+        cond = &
+            is_palindromic(i) .and. &
+            ( .not. is_palindromic(j) ) .and. &
+            is_palindromic(i_long) .and. &
             ( .not. is_palindromic(j_long) )
         
         call if_passed(cond, func_name)
@@ -167,8 +167,8 @@ program test_euler_utils
         i_long = 54_int64
         j_long = 24_int64
 
-        cond =                                                                 &
-            gcd(i, j) == 6 .and.                                               &
+        cond = &
+            gcd(i, j) == 6 .and. &
             gcd(i_long, j_long) == 6_int64 
         
         call if_passed(cond, func_name)
@@ -186,8 +186,8 @@ program test_euler_utils
         i_long = 21_int64 
         j_long = 6_int64
 
-        cond =                                                                 &
-            lcm(i, j) == 42 .and.                                              &
+        cond = &
+            lcm(i, j) == 42 .and. &
             lcm(i_long, j_long) == 42_int64
 
         call if_passed(cond, func_name)
@@ -199,28 +199,28 @@ program test_euler_utils
         integer(int64), allocatable :: factorial_arr_long(:)
         character(9) :: func_name
 
-        factorial_arr = [                                                      &
-            1, 1, 2, 6, 24, 120, 720,                                          &
-            5040, 40320, 362880,                                               &
-            3628800, 39916800                                                  &
+        factorial_arr = [ &
+            1, 1, 2, 6, 24, 120, 720, &
+            5040, 40320, 362880, &
+            3628800, 39916800 &
         ]
 
         func_name = 'factorial'
         cond = .true.
         do i = 1, size(factorial_arr) - 1
-            cond = cond .and.                                                  &
+            cond = cond .and. &
                 factorial(i) == factorial_arr(i + 1)
         end do 
 
-        factorial_arr_long = [                                                 &
-            1_int64, 1_int64, 2_int64, 6_int64,                                &
-            24_int64, 120_int64, 720_int64,                                    &
-            5040_int64, 40320_int64, 362880_int64,                             &
-            3628800_int64, 39916800_int64                                      &
+        factorial_arr_long = [ &
+            1_int64, 1_int64, 2_int64, 6_int64, &
+            24_int64, 120_int64, 720_int64, &
+            5040_int64, 40320_int64, 362880_int64, &
+            3628800_int64, 39916800_int64 &
         ]
 
         do i = 1, size(factorial_arr_long) - 1
-            cond = cond .and.                                                  &
+            cond = cond .and. &
                 factorial(i) == factorial_arr_long(i + 1)
         end do 
 
@@ -237,8 +237,8 @@ program test_euler_utils
         i_long = 153427698_int64
 
         func_name = 'is_pandigital'
-        cond =                                                                 &
-            ( .not. is_pandigital(i) ) .and.                                   &
+        cond = &
+            ( .not. is_pandigital(i) ) .and. &
             is_pandigital(i_long)
         
 
@@ -265,12 +265,12 @@ program test_euler_utils
         
         cond = .true. 
         do i = 1, size(i_arr)
-            cond = cond .and.                                                  &
+            cond = cond .and. &
                 arr(i) == i_arr(i)
         end do 
 
         do i = 1, size(i_arr_long)
-            cond = cond .and.                                                  &
+            cond = cond .and. &
                 arr_long(i) == i_arr_long(i)
         end do 
 
@@ -317,8 +317,8 @@ program test_euler_utils
         call append(arr_dp, 4._dp)
 
         func_name = 'append'
-        cond =                                                                 &
-            all(iarr == [1, 2, 3, 4]) .and.                                    &
+        cond = &
+            all(iarr == [1, 2, 3, 4]) .and. &
             all(iarr_long == [1_int64, 2_int64, 3_int64, 4_int64])
 
         call if_passed(cond, func_name)
