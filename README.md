@@ -4,71 +4,16 @@
 
 ## Dependencies
 
-You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended. The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature [findloc](https://gcc.gnu.org/onlinedocs/gfortran/FINDLOC.html) is used in problem 54) on Mac, Linux, and the WSL system. To install the GNU fortran compiler, 
-
-on **Mac OS** simply use [brew](https://brew.sh/),
-
-```shell
-brew install gfortran
-```
-
-For **Fedora** users,
-
-```shell
-sudo dnf install gfortran
-```
-
-For **Ubuntu** users,
-
-```shell
-sudo apt install gfortran
-```
-
-On **Windows** it is a bit complicated. First you will need to enable the WSL system, and then build GNU fortran (version >= 9.0) from scratch because the default gfortran version on WSL is 7.4.0. [This article](https://solarianprogrammer.com/2017/05/04/building-gcc-wsl-windows-subsystem-linux/) might be helpful.
+You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended. The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature [findloc](https://gcc.gnu.org/onlinedocs/gfortran/FINDLOC.html) is used in problem 54) on Mac and Linux (Fedora).
 
 ## Compiling and executing the program
 
- To compile and execute the code, simply run
-
+The [Meson](https://mesonbuild.com/index.html) Build system is used in this project. To compile the project, 
 ```shell
-./build.sh
+meson build
+cd build
+ninja
 ```
-
- You can also enable the `debug` option
-
- ```shell
- ./build.sh --debug
- ```
-
- or the `optimize` option, which compiles everything with `-O3`
-
- ```shell 
- ./build.sh --optimize
- ```
-
-On the WSL system, 
-
-```shell
-./build.sh --WSL /path/to/gfortran9/bin
-```
-
-you can also add debug or optimization flag with it
-
-```shell
-./build.sh --optimize --WSL /path/to/gfortran9/bin
-```
-
-To clean all generated files,
-
-```shell
-./clean_build.sh
-```
-
-(The shell script is written for the GNU Fortran compiler, if you want to use the [Intel Fortran compiler](https://software.intel.com/en-us/fortran-compilers) you might have to write a build file yourself.)
-
-## A very short introduction
-
-![Drag Racing](images/flow_chart.png)
 
 ## A summary of results
 
