@@ -9,18 +9,15 @@ contains
 
     integer function ans(n)
         integer, intent(in) :: n
-        character(len=500) :: cwd, filename, names(n)
-        integer :: stat, i, j, e
-        ! max_score is the score for name zzzzzzzzzzzzzzzzzzzzz
+        character(len=500) :: names(n)
+        integer :: stat, i, j
         integer, parameter :: max_score = 26 * 20
         logical :: is_tri_num(max_score)
 
         call tri_num(max_score, is_tri_num)
 
         names = 'n/a'
-        call getcwd(cwd); e = len( trim(cwd) )
-        filename = cwd(1:e - 3)//"/data/euler0042.txt"
-        open(unit = 42, file = filename, status = "old", action = "read")
+        open(unit = 42, file = "euler0042.txt", status = "old", action = "read")
         read (42, *, iostat=stat) names(1:n)
 
         i = 1

@@ -10,13 +10,13 @@ contains
     integer(int64) function ans()
         use euler_lexical_sort_m, only: lexical_sort 
         implicit none 
-        character(len=500) :: cwd, filename 
-        integer(int64) :: e, i, j, stat, tmp 
+        integer(int64) :: i, j, stat, tmp 
         character(len=20) :: arr_of_names(6000)
 
-        call getcwd(cwd); e = len( trim(cwd) )
-        filename = cwd(1:e - 3)//"/data/euler0022.txt"
-        open( unit = 22, file = filename, status = "old", action = "read" )
+        open( &
+            unit = 22, file = "euler0022.txt", &
+            status = "old", action = "read" &
+        )
         arr_of_names = "n/a"
         read ( 22, *, iostat = stat ) arr_of_names(1:6000)
 

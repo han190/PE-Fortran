@@ -11,21 +11,17 @@ contains
         use euler_var_arr_m, only: var_arr_t
         implicit none 
         integer, intent(in) :: n 
-        character(len=500) :: cwd, filename 
         type(var_arr_t), allocatable :: var_arr(:)
-        integer :: i, j, e
-
-        call getcwd(cwd); e = len( trim(cwd) )
-        filename = cwd(1:e - 3)//"/data/euler0018.txt"
+        integer :: i, j
 
         allocate ( var_arr(n) )
         do i = 1, n 
             allocate ( var_arr(i)%arr(i) )
         end do 
         
-        open(                                                                  &
-            unit = 18, file = filename,                                        &
-            status = "old", action = "read"                                    &
+        open( &
+            unit = 18, file = "euler0018.txt", &
+            status = "old", action = "read" &
         )
 
         do i = 1, n 
@@ -35,9 +31,9 @@ contains
 
         do j = n - 1, 1, -1 
             do i = 1, j 
-                var_arr(j)%arr(i) = max(                                       &
-                    var_arr(j + 1)%arr(i),                                     &
-                    var_arr(j + 1)%arr(i + 1)                                  &
+                var_arr(j)%arr(i) = max( &
+                    var_arr(j + 1)%arr(i), &
+                    var_arr(j + 1)%arr(i + 1) &
                 ) + var_arr(j)%arr(i)
             end do 
         end do 

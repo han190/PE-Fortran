@@ -13,13 +13,9 @@ contains
 
         type(texas_holdem_t) :: cards
         character(2) :: char_arr(10)
-        character(len=500) :: cwd, filename
         integer :: istat, i
-        integer :: e 
 
-        call getcwd(cwd); e = len( trim(cwd) )
-        filename = cwd(1:e - 3)//"/data/euler0054.txt"
-        open(unit = 54, file = filename, status = "old", action = "read")
+        open(unit = 54, file = "euler0054.txt", status = "old", action = "read")
 
         i = 0 
 

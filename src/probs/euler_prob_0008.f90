@@ -9,15 +9,8 @@ contains
 
     integer(int64) function ans()
         integer(int64) :: long_int(1000), i, s, tmp 
-        character(len=500) :: cwd, filename
-        integer :: e 
 
-        call getcwd(cwd); e = len( trim(cwd) )
-        ! When the binary is being executed, 
-        ! the directory is at ../ans, we can 
-        ! change it /dat.
-        filename = cwd(1:e - 3)//"/data/euler0008.txt"
-        open(unit = 8, file = filename, status = "old", action = "read")
+        open(unit = 8, file = "euler0008.txt", status = "old", action = "read")
         do i = 1_int64, 20_int64 
             s = ( i - 1_int64 ) * 50_int64 + 1_int64 
             read (8, "(50(i1))") long_int(s:s + 49_int64)

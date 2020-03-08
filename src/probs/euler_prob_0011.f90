@@ -10,12 +10,11 @@ contains
     integer function ans()
         integer :: int_arr(20, 20), the_box(4, 4)
         integer :: i, j, prod_max 
-        character(len=500) :: filename, cwd
-        integer :: e 
 
-        call getcwd(cwd); e = len( trim(cwd) )
-        filename = cwd(1:e - 3)//"/data/euler0011.txt"
-        open (unit = 11, file = filename, status = "old", action = "read")
+        open ( &
+            unit = 11, file = "euler0011.txt", &
+            status = "old", action = "read" &
+        )
         read (11, *) int_arr
         close (11)
 

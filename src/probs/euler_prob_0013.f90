@@ -10,12 +10,8 @@ contains
     integer(int64) function ans()
         integer(int64) :: long_int(50, 100)
         integer(int64) :: tmp(50), i, j, k, t 
-        character(len=500) :: cwd, filename 
-        integer :: e 
 
-        call getcwd(cwd); e = len( trim(cwd) )
-        filename = cwd(1:e - 3)//"/data/euler0013.txt"
-        open(unit = 13, file = filename, status = "old", action = "read")
+        open(unit = 13, file = "euler0013.txt", status = "old", action = "read")
         do i = 1, 100
             read (13, "(50(i1))") long_int(1_int64:50_int64, i)
         end do
@@ -31,7 +27,7 @@ contains
         do j = 50_int64, 2_int64, -1_int64
             t = tmp(j)
             tmp(j) = tmp(j) - ( tmp(j) / 10_int64 ) * 10_int64
-            tmp(j - 1_int64) = tmp(j - 1_int64) +                              &
+            tmp(j - 1_int64) = tmp(j - 1_int64) + &
                 ( t - tmp(j) ) / 10_int64
         end do
 

@@ -21,7 +21,7 @@ then
     rm -f -r ans 
 fi 
 
-rm -f src/euler/euler_interface.f90
-rm -f src/euler/euler_prob_api.f90
+# rm -f src/euler/euler_interface.f90
+# rm -f src/euler/euler_prob_api.f90
 
 echo "Build files cleaned."

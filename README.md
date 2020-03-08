@@ -103,7 +103,7 @@ However, some of the utilities required has been compiled before all the submodu
 Here is what I plan to do in the future. (Not likely to be done recently cuz I am kinda busy...)
 
 - [x] Organize folders, use Shell scripts to compile codes.
-- [ ] Use a build tool, for example [Meson](https://mesonbuild.com/) to wrap
-    all the codes.
+- [x] Use a build tool, for example [Meson](https://mesonbuild.com/) to wrap
+    all the codes. (Crappy but I did it...)
 - [ ] Write a wiki page to clearly explain the algorithms, Fortran features, or
     anything that is interesting for each question.
