@@ -1,4 +1,4 @@
-submodule(euler_interface_m) euler_prob_0053
+submodule(euler_interface_m) euler_prob_0053_m
     implicit none 
 
 contains
@@ -30,4 +30,4 @@ contains
         
         ans = count
     end function ans
-end submodule euler_prob_0053
+end submodule euler_prob_0053_m
