@@ -1,7 +1,7 @@
 project('Project Euler with Modern Fortran', 
     'fortran', 
     version: '0.0.1',
-    meson_version: '>=0.51',
+    meson_version: '>=0.53',
     license: 'MIT'
 )
 
@@ -96,16 +96,9 @@ data = [
 ]
 
 # until version 0.53
-# foreach i : data
-#     configure_file(copy: true, input: i, output: fs.name(i))
-# endforeach
-
-configure_file(copy: true, input: 'data/euler0008.txt', output: 'euler0008.txt')
-configure_file(copy: true, input: 'data/euler0011.txt', output: 'euler0011.txt')
-configure_file(copy: true, input: 'data/euler0013.txt', output: 'euler0013.txt')
-configure_file(copy: true, input: 'data/euler0018.txt', output: 'euler0018.txt')
-configure_file(copy: true, input: 'data/euler0022.txt', output: 'euler0022.txt')
-configure_file(copy: true, input: 'data/euler0042.txt', output: 'euler0042.txt')
-configure_file(copy: true, input: 'data/euler0054.txt', output: 'euler0054.txt')
+fs = import('fs')
+foreach i : data
+    configure_file(copy: true, input: i, output: fs.name(i))
+endforeach
 
 executable('euler', autogen, utils, euler, probs)
