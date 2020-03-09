@@ -47,7 +47,6 @@ However, some of the utilities required has been compiled before all the submodu
 | Problems solved                   |   56              |    
 | Total time spent                  |   0.876871(s)     |
 | Average time spent per problem    |   0.015658(s)     |
-| `time ./build.sh`                 |   5.198(s) total  |
 
 ## A todo list
 
