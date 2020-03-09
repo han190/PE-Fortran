@@ -11,9 +11,7 @@ fc = meson.get_compiler('fortran')
 
 if build_type == 'debug'
     supported_arguments = fc.get_supported_arguments([
-        '-g',
-        '-Wall',
-        '-Wextra',
+        '-g', '-Wall', '-Wextra',
         '-Warray-temporaries',
         '-Wconversion',
         '-fimplicit-none',
@@ -30,8 +28,6 @@ elif build_type == 'release'
 endif
 
 add_project_arguments(supported_arguments, language: 'fortran')
-
-# autogen = ['src/auto_gen/euler_file_generator_m.f90']
 
 utils = [
     'utils/euler_utils.f90',
