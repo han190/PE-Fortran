@@ -1,9 +1,10 @@
 program main 
     use iso_fortran_env, only: compiler_version
-    use file_generator_m, only: nop
+    ! use file_generator_m, only: nop
     use euler_prob_api_m
     implicit none 
 
+    integer, parameter :: nop = 58
     character(len=20) :: ans(nop), failed
     real :: t_f, t_i, tspan(nop), tsum = 0.
     type(euler_probs_t) :: probs(nop)

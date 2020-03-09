@@ -34,8 +34,6 @@ do i = 1, nop
 end do
 ```
 
-However, some of the utilities required has been compiled before all the submodules(problems) are compiled and the time spent on that is not counted, so the total time spent by running `time ./build.sh` is also presented in the little table below.
-
 |Specs of my computer                                           |
 |:--------------------------------------------------------------|
 |Compiler: GNU Fortran (GCC) 9.2.1 20190827 (Red Hat 9.2.1-1)   |
