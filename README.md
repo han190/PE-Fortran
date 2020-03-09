@@ -8,7 +8,8 @@ You will need a Fortran compiler to run this project. The [GNU Fortran compiler]
 
 ## Compiling and executing the program
 
- To build the project, 
+To build the project,
+
 ```shell
 meson build
 cd build
