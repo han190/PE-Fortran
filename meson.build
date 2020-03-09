@@ -1,11 +1,35 @@
 project('Project Euler with Modern Fortran', 
     'fortran', 
-    version: '0.0.1',
+    default_options: 'buildtype=release',
+    license: 'MIT',
     meson_version: '>=0.53',
-    license: 'MIT'
+    version: '0.0.1'
 )
 
+build_type = get_option('buildtype')
 fc = meson.get_compiler('fortran')
+
+if build_type == 'debug'
+    supported_arguments = fc.get_supported_arguments([
+        '-g',
+        '-Wall',
+        '-Wextra',
+        '-Warray-temporaries',
+        '-Wconversion',
+        '-fimplicit-none',
+        '-fbacktrace',
+        '-ffree-line-length-0',
+        '-fcheck=all',
+        '-ffpe-trap=zero,overflow,underflow',
+        '-finit-real=nan'
+    ])
+elif build_type == 'release'
+    supported_arguments = fc.get_supported_arguments([
+        '-pthread', '-w'
+    ])
+endif
+
+add_project_arguments(supported_arguments, language: 'fortran')
 
 autogen = ['src/auto_gen/euler_file_generator_m.f90']
 

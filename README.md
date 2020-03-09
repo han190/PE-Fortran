@@ -2,22 +2,28 @@
 
 [Project Euler](https://projecteuler.net/about) is a weekly updated math problem set. I created this project mainly because I want to practice my Fortran programming skills, so although not necessary, everything is written by modern Fortran. If you are learning Fortran, this project might be helpful.
 
-## Dependencies
+## Requirements
 
-You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended. The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature [findloc](https://gcc.gnu.org/onlinedocs/gfortran/FINDLOC.html) is used in problem 54) on Mac and Linux (Fedora).
+You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended. The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature [findloc](https://gcc.gnu.org/onlinedocs/gfortran/FINDLOC.html) is used in problem 54) on Mac and Linux (Fedora). Also, the [Meson](https://mesonbuild.com/index.html) Build system (>= 0.53) is used to compile this project.
 
 ## Compiling and executing the program
 
-The [Meson](https://mesonbuild.com/index.html) Build system is used in this project. To compile the project, 
+ To build the project, 
 ```shell
 meson build
 cd build
 ninja
 ```
 
+and then run the binary file
+
+```shell
+./euler
+```
+
 ## A summary of results
 
-Since it is aimed as a Fortran practice project, the performance of the code is NOT a priority.The `Tspan` for each problem in the output file `ans/README.md` is the time it takes to call the corresponding problem function:
+Since it is aimed as a Fortran practice project, the performance of the code is NOT a priority.The `Tspan` for each problem in the output file `README.md` is the time it takes to call the corresponding problem function:
 
 ```fortran
 do i = 1, nop
