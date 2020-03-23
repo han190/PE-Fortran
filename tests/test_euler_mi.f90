@@ -2,11 +2,13 @@ program test_euler_mpf
     use euler_mi_m
     implicit none 
 
-    test_assignment: block 
-        integer, allocatable :: arr(:)
-        logical :: cond 
-        character(len=50) :: func_name
-        type(very_long_int_t) :: i, j
+    ! Global Variables
+    logical :: cond
+    character(len=50) :: func_name
+    type(very_long_int_t) :: i, j, ans
+
+    test_assignment: block
+        integer, allocatable, dimension(:) :: arr
 
         i = '+20349587294385203457829345728349502934875239485720349587'
         arr = [ &
@@ -25,10 +27,6 @@ program test_euler_mpf
     end block test_assignment
 
     test_addition: block
-        type(very_long_int_t) :: i, j, ans
-        logical :: cond
-        character(len=50) :: func_name
-
         i = '20349587294385203457829345728349502934875239485720349587'
         j = '98347529845792834750293847523450923845729834502345723459'
         ans = '118697117140178038208123193251800426780605073988066073046'
@@ -40,10 +38,6 @@ program test_euler_mpf
     end block test_addition
 
     test_subtraction: block
-        type(very_long_int_t) :: i, j, ans
-        logical :: cond
-        character(len=50) :: func_name
-
         i = '20349587294385203457829345728349502934875239485720349587'
         j = '98347529845792834750293847523450923845729834502345723459'
         ans = '-77997942551407631292464501795101420910854595016625373872'
@@ -55,10 +49,6 @@ program test_euler_mpf
     end block test_subtraction
 
     test_multiplication: block
-        type(very_long_int_t) :: i, j, ans
-        logical :: cond
-        character(len=50) :: func_name
-
         i = '20349587294385203457829345728349502934875239485720349587'
         j = '98347529845792834750293847523450923845729834502345723459'
         ans = '2001331643784115457956395522952566745347490594714'//&
