@@ -5,7 +5,7 @@ program test_euler_mpf
     test_assignment: block 
         integer, allocatable :: arr(:)
         logical :: cond 
-        character(len=10) :: func_name
+        character(len=50) :: func_name
         type(very_long_int_t) :: i, j
 
         i = '+20349587294385203457829345728349502934875239485720349587'
@@ -23,19 +23,65 @@ program test_euler_mpf
         
         call if_passed(cond, func_name)
     end block test_assignment
-            
-contains 
+
+    test_addition: block
+        type(very_long_int_t) :: i, j, ans
+        logical :: cond
+        character(len=50) :: func_name
+
+        i = '20349587294385203457829345728349502934875239485720349587'
+        j = '98347529845792834750293847523450923845729834502345723459'
+        ans = '118697117140178038208123193251800426780605073988066073046'
+
+        func_name = 'addition'
+        cond = i + j == ans
+
+        call if_passed(cond, func_name)
+    end block test_addition
+
+    test_subtraction: block
+        type(very_long_int_t) :: i, j, ans
+        logical :: cond
+        character(len=50) :: func_name
+
+        i = '20349587294385203457829345728349502934875239485720349587'
+        j = '98347529845792834750293847523450923845729834502345723459'
+        ans = '-77997942551407631292464501795101420910854595016625373872'
+
+        func_name = 'subtraction'
+        cond = i - j == ans
+
+        call if_passed(cond, func_name)
+    end block test_subtraction
+
+    test_multiplication: block
+        type(very_long_int_t) :: i, j, ans
+        logical :: cond
+        character(len=50) :: func_name
+
+        i = '20349587294385203457829345728349502934875239485720349587'
+        j = '98347529845792834750293847523450923845729834502345723459'
+        ans = '2001331643784115457956395522952566745347490594714'//&
+            '636927425974011112360503224364938989281368995550671039906861433'
+
+        func_name = 'multiplication'
+        cond = i * j == ans
+
+        call if_passed(cond, func_name)
+    end block test_multiplication
+
+contains
 
     subroutine testing(test_msg)
         character(len=*), intent(in) :: test_msg 
 
-        print '(a)', "Testing '"//test_msg//"' ..."
+        print '(a)', "Testing '"//trim(test_msg)//"' ..."
     end subroutine testing 
 
     subroutine error_stop(err_msg)
         character(len=*), intent(in) :: err_msg
 
-        print '(a)', "Testing '"//err_msg//"' failed."
+        print '(a)', "Testing '"//trim(err_msg)//"' failed."
         error stop 
     end subroutine error_stop
 
