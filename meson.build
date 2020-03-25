@@ -2,7 +2,7 @@ project('Project Euler with Modern Fortran',
     'fortran', 
     default_options: 'buildtype=release',
     license: 'MIT',
-    meson_version: '>=0.53',
+    meson_version: '>=0.52',
     version: '0.0.1'
 )
 
@@ -105,20 +105,20 @@ probs = [
     'probs/euler_prob_0058.f90'
 ]
 
+
+data_dir = 'data/'
 data = [
-    'data/euler0008.txt',
-    'data/euler0011.txt',
-    'data/euler0013.txt',
-    'data/euler0018.txt',
-    'data/euler0022.txt',
-    'data/euler0042.txt',
-    'data/euler0054.txt'
+    'euler0008.txt',
+    'euler0011.txt',
+    'euler0013.txt',
+    'euler0018.txt',
+    'euler0022.txt',
+    'euler0042.txt',
+    'euler0054.txt'
 ]
 
-# until version 0.53
-fs = import('fs')
 foreach i : data
-    configure_file(copy: true, input: i, output: fs.name(i))
+    configure_file(copy: true, input: data_dir + i, output: i)
 endforeach
 
 executable('euler_test_mi', 'tests/test_euler_mi.f90', utils)
