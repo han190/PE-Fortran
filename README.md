@@ -42,14 +42,14 @@ end do
 |Specs of my computer                                           |
 |:--------------------------------------------------------------|
 |Compiler: GNU Fortran (GCC) 9.2.1 20190827 (Red Hat 9.2.1-1)   |
-|CPU: Intel Core i5-8250U @ 8x 3.4GHz                           |
-|RAM: 2350MiB / 7718MiB                                         |
+|CPU: Intel Core i7-8700K @ 12x 4.7GHz                          |
+|RAM: 2526MiB / 31962MiB                                        |
 
 |Results                            |                   |
 |:----------------------------------|:------------------|
 | Problems solved                   |   56              |
-| Total time spent                  |   0.876871(s)     |
-| Average time spent per problem    |   0.015658(s)     |
+| Total time spent                  |   0.590762(s)     |
+| Average time spent per problem    |   0.010549(s)     |
 
 ## A todo list
 
