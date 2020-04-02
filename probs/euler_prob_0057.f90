@@ -42,5 +42,3 @@ contains
     end subroutine swap_long
 
 end submodule euler_problem_0057
-        
-

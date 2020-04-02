@@ -15,7 +15,7 @@ contains
     !     implicit none 
     !     logical, allocatable :: is_prime(:)
     !     integer(int64) :: n, k, arr(4)
-    !     integer(int64), parameter :: rng = 1000000000_int64
+    !     integer(int64), parameter :: rng = 700000000_int64
 
     !     call sieve_of_Eratosthenes(rng, is_prime)
     !     k = 0_int64; n = 2_int64
@@ -26,13 +26,12 @@ contains
     !         if ( arr(4) >= rng ) then 
     !             error stop "Max range reached."
     !         end if 
-    !         k = k + count( is_prime(arr) )
+    !         ! since lower right corner is always (n-1)**2
+    !         k = k + count( is_prime(arr(1:3)) )
 
-    !         associate(                                                         &
-    !             p_nums => real(k),                                             &
-    !             tot_nums => real(                                              &
-    !                 (n - 1_int64) * 4_int64 + 1_int64                          &
-    !             )                                                              &
+    !         associate( &
+    !             p_nums => real(k), &
+    !             tot_nums => real( (n - 1_int64) * 4_int64 + 1_int64 ) &
     !         )
     !             if (p_nums / tot_nums < 0.1_sp) then
     !                 exit main_loop
