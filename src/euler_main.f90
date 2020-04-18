@@ -5,12 +5,12 @@ program main
     implicit none 
 
     integer, parameter :: nop = 58
-    character(len=20) :: ans(nop), failed
+    character(len=20) :: ans(nop)
+    character(len=20), parameter :: failed = '                   x'
     real :: t_f, t_i, tspan(nop), tsum = 0.
     type(euler_probs_t) :: probs(nop)
     integer :: i
 
-    failed = '                   x'
     call euler_init(probs)
 
     open(47, file = 'ANSWER.md')
@@ -18,15 +18,12 @@ program main
     write (47, "(a)") "## Compilers"//new_line("a")
     write (47, "(a)") compiler_version()//new_line("a")
     write (47, "(a)") "## Answers and Benchmarks"//new_line("a")
-    write (47, "(a)") "|Prob  |Answer             |Tspan(s)    |Tspan/Ttot(%) |"
-    write (47, "(a)") "|:----:|:-----------------:|:----------:|:------------:|"
+    write (47, "(a)") "|Prob  |Answer              |Tspan(s)  |T/Ttot(%) |"
+    write (47, "(a)") "|:----:|:------------------:|:--------:|:--------:|"
 
     do i = 1, nop
         call cpu_time(t_i)
         ans(i) = probs(i)%ans()
-        if ( ans(i) == '                   0') then
-            ans(i) = failed
-        end if
         call cpu_time(t_f)
         tspan(i) = t_f - t_i
     end do
@@ -38,16 +35,17 @@ program main
     end do
 
     write (47, "(a)") new_line("a")//"## Summary"//new_line("a")
-    write (47, "(a)") "|Summary||"
-    write (47, "(a)") "|:---|:---|"
-    write (47, "(a, i4, a)") "| Problems solved  | ", &
-        count(ans /= failed), " |"
-    write (47, 1121) "| Total time spent | ", tsum, "(s) |"
+    write (47, "(a)") "|                                |               |"
+    write (47, "(a)") "|:------------------------------:|:-------------:|"
+    write (47, "(a, i4, a)") "| Problems solved                | ", &
+        count(ans /= failed), "          |"
+    write (47, 1121) "| Total time spent               | ", &
+        tsum, "(s) |"
     write (47, 1121) "| Average time spent per problem | ", &
         tsum/count(ans /= failed, dim = 1), "(s) |"
 
     close(47)
 
-1120 format(a, i4, a22, f10.6, a, f8.4, a)
+1120 format(a, i6, a22, f10.6, a, f9.4, a)
 1121 format(a, f10.6, a)
 end program main 

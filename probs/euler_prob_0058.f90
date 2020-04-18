@@ -4,7 +4,8 @@ submodule(euler_interface_m) euler_problem_0058
 contains 
 
     module character(len=20) function euler0058()
-        write (euler0058, "(i20)") 0!ans()
+        euler0058 = '                   x'
+        ! write (euler0058, "(i20)") ans()
     end function euler0058 
 
     ! The problem is solved but it is really slow

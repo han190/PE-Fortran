@@ -17,7 +17,8 @@ submodule(euler_interface_m) euler_prob_0051_m
 contains
 
     module character(len=20) function euler0051()
-        write (euler0051, "(i20)") 0 !ans()
+        euler0051 = '                   x'
+        !write (euler0051, "(i20)") ans()
     end function euler0051
 
     ! integer function ans()
