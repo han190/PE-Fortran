@@ -2,33 +2,31 @@
 
 [Project Euler](https://projecteuler.net/about) is a weekly updated math problem set. I created this project mainly because I want to practice my Fortran programming skills, so although not necessary, everything is written by modern Fortran. If you are learning Fortran, this project might be helpful.
 
-## Requirements
+## Dependencies
 
-You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended. The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature [findloc](https://gcc.gnu.org/onlinedocs/gfortran/FINDLOC.html) is used in problem 54) on Mac and Linux (Fedora). Also, the [Meson](https://mesonbuild.com/index.html) Build system (>= 0.53) is used to compile this project.
+You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended. The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature [findloc](https://gcc.gnu.org/onlinedocs/gfortran/FINDLOC.html) is used in problem 54) on Mac and Linux (Fedora). Also, the [Meson](https://mesonbuild.com/index.html) Build system (>= 0.53) is used to compile this project. For Fedora users
 
 ```shell
 sudo dnf install gfortran meson ninja
 ```
 
-## Compiling and executing the program
-
-To build the project,
+and for Mac users, install [brew](https://brew.sh/) first and then
 
 ```shell
-meson build
-cd build
-ninja
+sudo brew install gfortran meson ninja
 ```
 
-and then run the binary file
+## Compiling and executing the program
+
+To build, compile and run the project,
 
 ```shell
-./euler
+meson build && cd build && ninja && ./euler
 ```
 
 ## A summary of results
 
-Since it is aimed as a Fortran practice project, the performance of the code is NOT a priority.The `Tspan` for each problem in the output file `ANSWER.md` is the time it takes to call the corresponding problem function:
+Since it is aimed as a language learning project, the performance of the code is NOT a priority. The `Tspan` for each problem in the output file `ANSWER.md` indicate the time it takes to call the corresponding problem function and `probs` is a procedure pointer array.
 
 ```fortran
 do i = 1, nop
