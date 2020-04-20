@@ -15,7 +15,10 @@ contains
         character(2) :: char_arr(10)
         integer :: istat, i
 
-        open(unit = 54, file = "euler0054.txt", status = "old", action = "read")
+        open( &
+            unit = 54, file = "euler0054.txt", &
+            status = "old", action = "read" &
+        )
 
         i = 0 
 
@@ -24,7 +27,7 @@ contains
             if (istat /= 0) exit 
 
             cards = char_arr(:)
-            if ( cards%compare() ) i = i + 1
+            if ( .playerOneWin. cards ) i = i + 1
         end do 
 
         close(54)

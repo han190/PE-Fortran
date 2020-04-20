@@ -3,7 +3,7 @@ module euler_poker_m
     private 
 
     type, public :: poker_t
-        character(len=2), dimension(5) :: hands
+        character(len=2) :: hands(5)
     contains 
         procedure, private :: initialize_sub
         generic :: assignment(=) => initialize_sub
@@ -15,7 +15,7 @@ contains
 
     subroutine initialize_sub(this, chr)
         class(poker_t), intent(inout) :: this 
-        character(len=2), dimension(5), intent(in) :: chr
+        character(len=2), intent(in) :: chr(5)
         integer :: i
 
         do i = 1, 5
@@ -25,10 +25,8 @@ contains
 
     subroutine to_arrs_sub(this, vals, suits)
         class(poker_t) :: this 
-        integer, dimension(1:14), intent(out) :: vals
-        integer, dimension(1:4), intent(out) :: suits
-        character(len=1), dimension(1:14) :: value_arr
-        character(len=1), dimension(1:4) :: suit_arr
+        integer, intent(out) :: vals(1:14), suits(1:4)
+        character(len=1) :: value_arr(1:14), suit_arr(1:4)
         integer :: i, v, s
 
         value_arr = [ &
@@ -60,10 +58,8 @@ contains
 
     subroutine rank_sub(this, s_arr)
         class(poker_t) :: this 
-        integer, dimension(6), intent(out) :: s_arr
-        integer, dimension(1:14) :: vals
-        integer, dimension(1:4) :: suits
-        integer :: i, x, y
+        integer, intent(out) :: s_arr(6)
+        integer :: vals(1:14), suits(1:4), i, x, y
 
         call to_arrs_sub(this, vals, suits)
 
@@ -209,18 +205,19 @@ module euler_texas_holdem_m
     private
 
     type, public :: texas_holdem_t
-        type(poker_t), dimension(2) :: decks
+        type(poker_t) :: decks(2)
     contains
         procedure, private :: initialize_sub
         generic :: assignment(=) => initialize_sub
-        procedure :: compare => compare_sub
+        procedure, private :: compare_sub
+        generic :: operator(.playerOneWin.) => compare_sub
     end type texas_holdem_t
 
 contains 
 
     subroutine initialize_sub(this, chr)
         class(texas_holdem_t), intent(inout) :: this 
-        character(len=2), dimension(10), intent(in) :: chr
+        character(len=2), intent(in) :: chr(10)
 
         this%decks(1) = chr(1:5)
         this%decks(2) = chr(6:10)
@@ -228,9 +225,8 @@ contains
 
     function compare_sub(this) result(ans)
         class(texas_holdem_t), intent(in) :: this
-        integer, dimension(6) :: arr1, arr2
+        integer :: arr1(6), arr2(6), i
         logical :: ans 
-        integer :: i
 
         call this%decks(1)%rank(arr1)
         call this%decks(2)%rank(arr2)
