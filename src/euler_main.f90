@@ -37,8 +37,8 @@ contains
     subroutine get_help()
         print "(a)", "Project Euler with Modern Fortran"
         print "(a)", "Syntax:"
-        print "(a)", "./Euler -h/--help"
-        print "(a)", "./Euler -c/--compute-all-problems"
+        print "(a)", "./project_euler_with_modern_fortran -h/--help"
+        print "(a)", "./project_euler_with_modern_fortran -c/--compute-all-problems"
     end subroutine get_help
 
     subroutine compute_all_problems()
