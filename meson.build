@@ -123,4 +123,4 @@ endforeach
 
 executable('euler_test_mi', 'tests/test_euler_mi.f90', utils)
 executable('euler_test_utils', 'tests/test_euler_utils.f90', utils)
-executable('euler', utils, euler, probs)
+executable('project_euler_with_modern_fortran', utils, euler, probs)
