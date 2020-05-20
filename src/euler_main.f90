@@ -1,32 +1,32 @@
 program main 
     use iso_fortran_env, only: compiler_version
-    ! use file_generator_m, only: nop
     use euler_prob_api_m
     implicit none 
 
-    integer :: arg_num, arg_len, arg_stat
-    character(len=50) :: arg_val(0:2)
+    integer :: index_
+    character(len=100) :: arg_val(0:1)
 
-    if (command_argument_count() > 4) then
+    if (command_argument_count() > 2) then
         print "(a)", "SYNTAX ERROR: -h or --help for further information."
         stop
     end if
 
-    arg_num = 0
+    index_ = 0
     read_argument_loop: do
-        call get_command_argument(arg_num, arg_val(arg_num), arg_len, arg_stat)
-        if (len_trim(arg_val(arg_num)) == 0 .or. arg_num >= 3) then
+        if (len_trim(arg_val(index_)) == 0 .or. index_ >= 2) then
             exit read_argument_loop
         end if
-        arg_num = arg_num + 1
+
+        call get_command_argument(index_, arg_val(index_))
+        index_ = index_ + 1
     end do read_argument_loop
 
-    select case(arg_val(1))
+    select case( trim(arg_val(1)) )
     case("-h", "--help")
         call get_help()
         stop
-    case("-c", "--compute-all-problems")
-        call compute_all_problems()
+    case("-ca", "--compute-all")
+        call compute_all("ANSWER.md")
     case default
         print "(a)", "SYNTAX ERROR: -h or --help for further information."
         stop
@@ -35,13 +35,19 @@ program main
 contains
 
     subroutine get_help()
-        print "(a)", "Project Euler with Modern Fortran"
-        print "(a)", "Syntax:"
-        print "(a)", "./project_euler_with_modern_fortran -h/--help"
-        print "(a)", "./project_euler_with_modern_fortran -c/--compute-all-problems"
+        character(len=3) :: a
+
+        a = "(a)"
+        print a, "Project Euler with Modern Fortran"
+        print a, "Syntax:"
+        print a, "./project_euler_with_modern_fortran -h/--help"
+        print a, "./project_euler_with_modern_fortran -ca/--compute-all"
     end subroutine get_help
 
-    subroutine compute_all_problems()
+    subroutine compute_all(filename)
+        ! use file_generator_m, only: nop
+        ! implicit none
+        character(len=*), intent(in) :: filename
         integer, parameter :: nop = 58
         character(len=20) :: ans(nop)
         character(len=1), parameter :: space = " ", dash = "-"
@@ -54,7 +60,7 @@ contains
 
         call euler_init(probs)
 
-        open(1, file = "ANSWER.md")
+        open(1, file = filename)
         write (1, "(a)") "# Project Euler with Modern Fortran"//new_line("a")
         write (1, "(a)") "## Compilers"//new_line("a")
         write (1, "(a)") compiler_version()//new_line("a")
@@ -87,6 +93,5 @@ contains
         1122 format(a, f10.6, a)
 
         close(1)
-    end subroutine compute_all_problems
-
+    end subroutine compute_all
 end program main 
