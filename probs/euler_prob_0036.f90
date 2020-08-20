@@ -16,19 +16,19 @@ contains
         p = gen_single_palindormic_10(i)
 
         do while (p <= n)
-            if ( is_palindromic_2(p) ) then
+            if (is_palindromic_2(p)) then
                 isum = isum + p
             end if
 
-            p = p + ( i - i / 10_int64 ) * next_ten_pow
-            if (                                                               &
-                p <= n .and.                                                   &
-                is_palindromic_2(p)                                            &
-            ) isum = isum + p
+            p = p + (i - i/10_int64)*next_ten_pow
+            if ( &
+                p <= n .and. &
+                is_palindromic_2(p) &
+                ) isum = isum + p
 
             i = i + 1_int64
-            if ( i == next_ten_pow ) then
-                next_ten_pow = next_ten_pow * 10_int64
+            if (i == next_ten_pow) then
+                next_ten_pow = next_ten_pow*10_int64
             end if
             p = gen_single_palindormic_10(i)
         end do
@@ -43,7 +43,7 @@ contains
         i = n/10_int64
 
         do while (i > 0_int64)
-            tmp = tmp * 10_int64 + mod(i, 10_int64)
+            tmp = tmp*10_int64 + mod(i, 10_int64)
             i = i/10_int64
         end do
 
@@ -58,8 +58,8 @@ contains
         b = 0_int64
         do while (a > 0_int64)
             digit = mod(a, 2_int64)
-            b = b * 2_int64 + digit
-            a = a / 2_int64
+            b = b*2_int64 + digit
+            a = a/2_int64
         end do
 
         if (n == b) then

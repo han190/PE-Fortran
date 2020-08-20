@@ -1,14 +1,14 @@
-submodule(euler_interface_m) euler_prob_0017_m 
-    implicit none 
+submodule(euler_interface_m) euler_prob_0017_m
+    implicit none
 
-contains 
+contains
 
     module character(len=20) function euler0017()
         write (euler0017, "(i20)") ans()
-    end function euler0017 
+    end function euler0017
 
     integer function ans()
-        integer :: tot_c, i  
+        integer :: tot_c, i
 
         tot_c = 0
         do i = 1, 9
@@ -27,12 +27,12 @@ contains
             tot_c = tot_c + count_letters100(i)
         end do
         ans = tot_c + 11
-    end function ans 
+    end function ans
 
     integer function count_letters(n)
         integer, intent(in) :: n
         integer :: temp
-    
+
         select case (n)
         case (0)
             temp = 0
@@ -63,16 +63,16 @@ contains
         integer :: d1, d2
 
         d1 = 0; d2 = 0
-        if ( count_letters(n) /= 1000 ) then
+        if (count_letters(n) /= 1000) then
             count_letters10 = count_letters(n)
         else
-            d1 = ( n / 10 ) * 10
+            d1 = (n/10)*10
             d2 = n - d1
-            count_letters10 =                                                  &
+            count_letters10 = &
                 count_letters(d1) + count_letters(d2)
         end if
 
-        if ( n == 0 ) then
+        if (n == 0) then
             count_letters10 = 0
         end if
     end function count_letters10
@@ -82,14 +82,14 @@ contains
         integer :: d1, d2, hun, and
 
         hun = 7; and = 3
-        if ( mod(n, 100) == 0 ) then
-            d1 = n / 100
+        if (mod(n, 100) == 0) then
+            d1 = n/100
             count_letters100 = count_letters(d1) + hun
         else
-            d1 = n / 100
-            d2 = n - ( n / 100 ) * 100
-            count_letters100 = count_letters(d1) +                             &
-                hun + and + count_letters10(d2)
+            d1 = n/100
+            d2 = n - (n/100)*100
+            count_letters100 = count_letters(d1) + &
+                               hun + and + count_letters10(d2)
         end if
     end function count_letters100
 

@@ -10,7 +10,7 @@ submodule(euler_interface_m) euler_prob_0051_m
     !
     ! Some further optimizations could be done for this problem. One could
     ! construct a logical function called next_logic_permute and output the next
-    ! permute by boolean variables, which should save a lot of memory. I have 
+    ! permute by boolean variables, which should save a lot of memory. I have
     ! not figure out how to best implement that yet.
     !---------------------------------------------------------------------------
 
@@ -40,9 +40,9 @@ contains
     !     outermost: do v = 6, 1, -1
     !         index_arr(v:) = 1
 
-    !         if ( allocated(int_arr) ) then 
+    !         if ( allocated(int_arr) ) then
     !             deallocate (int_arr)
-    !         end if 
+    !         end if
 
     !         allocate ( int_arr(size(index_arr) ) )
 
@@ -56,13 +56,13 @@ contains
     !                 if (                                                       &
     !                     any( not_prime == unit_digit(u) ) .and.                &
     !                     index_arr( size(index_arr) ) == 0                      &
-    !                 ) then 
+    !                 ) then
     !                     cycle inner
-    !                 end if 
+    !                 end if
 
     !                 int_arr = 0
     !                 k = u
-                    
+
     !                 do i = size(index_arr), 1, -1
     !                     if (index_arr(i) == 0) then
     !                         int_arr(i) = unit_digit(k)
@@ -78,9 +78,9 @@ contains
     !                         test_int                                           &
     !                     )
 
-    !                     if ( .not. is_prime(test_int) ) then 
+    !                     if ( .not. is_prime(test_int) ) then
     !                         j = j + 1
-    !                     end if 
+    !                     end if
 
     !                     if (j == 3) then
     !                         exit innermost
@@ -123,13 +123,13 @@ contains
     !     end if
 
     !     j = size(input_arr)
-        
+
     !     do while (                                                             &
     !         input_arr(j) <= input_arr(i - 1)                                   &
     !     )
     !         j = j - 1
     !     end do
-        
+
     !     call swap(                                                             &
     !         input_arr(i - 1),                                                  &
     !         input_arr(j)                                                       &

@@ -20,12 +20,12 @@ contains
         icount = 0_int64
 
         do
-            if ( icount == 11_int64 .or. i == n ) exit
+            if (icount == 11_int64 .or. i == n) exit
 
-            if (                                                               &
-                is_prime(i) .and.                                              &
-                is_truncatable(i, is_prime)                                    &
-            ) then
+            if ( &
+                is_prime(i) .and. &
+                is_truncatable(i, is_prime) &
+                ) then
                 isum = isum + i
                 icount = icount + 1_int64
             end if
@@ -40,10 +40,10 @@ contains
         logical, allocatable, intent(in) :: is_prime(:)
 
         is_truncatable = .false.
-        if (                                                                   &
-            is_left_truncatable(n, is_prime) .and.                             &
-            is_right_truncatable(n, is_prime)                                  &
-        ) is_truncatable = .true.
+        if ( &
+            is_left_truncatable(n, is_prime) .and. &
+            is_right_truncatable(n, is_prime) &
+            ) is_truncatable = .true.
     end function is_truncatable
 
     logical function is_left_truncatable(n, is_prime)
@@ -52,12 +52,12 @@ contains
         integer(int64) :: tmp
 
         tmp = 10_int64
-        do while ( tmp < n )
-            if ( .not. is_prime( mod(n, tmp) ) ) then
+        do while (tmp < n)
+            if (.not. is_prime(mod(n, tmp))) then
                 is_left_truncatable = .false.
                 return
             end if
-            tmp = tmp * 10_int64
+            tmp = tmp*10_int64
         end do
         is_left_truncatable = .true.
     end function is_left_truncatable
@@ -68,9 +68,9 @@ contains
         integer(int64) :: tmp
 
         tmp = n
-        do while ( tmp > 0_int64 )
-            if ( is_prime(tmp) ) then
-                tmp = tmp / 10_int64
+        do while (tmp > 0_int64)
+            if (is_prime(tmp)) then
+                tmp = tmp/10_int64
             else
                 is_right_truncatable = .false.
                 return

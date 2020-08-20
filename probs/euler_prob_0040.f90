@@ -12,17 +12,17 @@ contains
         integer :: dig_arr(6), d(6), i, s
 
         dig_arr = [0, 9, 189, 2889, 38889, 488889]
-        d = [ (1, i = 1, 6) ]
+        d = [(1, i=1, 6)]
 
         do i = 2, 6
-            associate (                                                        &
-                x => floor( real( ( 10**i - dig_arr(i) ) / i ), sp )           &
-            )
+            associate ( &
+                x => floor(real((10**i - dig_arr(i))/i), sp) &
+                )
                 d(i) = x + 10**(i - 1) - 1
             end associate
 
-            call int_2_arr( d(i), arr )
-            s = mod( 10**i - dig_arr(i), i )
+            call int_2_arr(d(i), arr)
+            s = mod(10**i - dig_arr(i), i)
             d(i) = arr(s)
             deallocate (arr)
         end do

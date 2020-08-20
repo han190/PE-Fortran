@@ -17,19 +17,19 @@ contains
 
         do
             n = n + 1_int64
-            if ( sum( p_arr(1:n) ) > upper_lim ) exit
+            if (sum(p_arr(1:n)) > upper_lim) exit
         end do
 
         n = n - 1_int64
         j = 1_int64
-        cur_sum = sum( p_arr(1:n) )
+        cur_sum = sum(p_arr(1:n))
 
         outer: do i = n, 1, -1
             j = 1_int64
-            cur_sum = sum( p_arr(1:i) )
+            cur_sum = sum(p_arr(1:i))
 
             inner: do
-                if ( any(cur_sum == p_arr) ) exit outer
+                if (any(cur_sum == p_arr)) exit outer
                 cur_sum = cur_sum - p_arr(j)
                 j = j + 1_int64
             end do inner
@@ -47,11 +47,11 @@ contains
         logical, allocatable :: is_prime(:)
 
         call sieve_of_Eratosthenes(n, is_prime)
-        allocate ( primes( count(is_prime) ) )
+        allocate (primes(count(is_prime)))
 
         j = 1
         do i = 2, n
-            if ( is_prime(i) ) then
+            if (is_prime(i)) then
                 primes(j) = i
                 j = j + 1
             end if

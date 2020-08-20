@@ -1,19 +1,19 @@
 submodule(euler_interface_m) euler_problem_0058
-    implicit none 
+    implicit none
 
-contains 
+contains
 
     module character(len=20) function euler0058()
         euler0058 = '                   x'
         ! write (euler0058, "(i20)") ans()
-    end function euler0058 
+    end function euler0058
 
     ! The problem is solved but it is really slow
     ! I am writing a Miller-Rabin test
 
     ! integer function ans()
     !     use euler_primes_m, only: sieve_of_Eratosthenes
-    !     implicit none 
+    !     implicit none
     !     logical, allocatable :: is_prime(:)
     !     integer(int64) :: n, k, arr(4)
     !     integer(int64), parameter :: rng = 700000000_int64
@@ -24,9 +24,9 @@ contains
     !     main_loop: do
     !         call diagonal_nums(n, arr)
 
-    !         if ( arr(4) >= rng ) then 
+    !         if ( arr(4) >= rng ) then
     !             error stop "Max range reached."
-    !         end if 
+    !         end if
     !         ! since lower right corner is always (n-1)**2
     !         k = k + count( is_prime(arr(1:3)) )
 
@@ -36,7 +36,7 @@ contains
     !         )
     !             if (p_nums / tot_nums < 0.1_sp) then
     !                 exit main_loop
-    !             end if 
+    !             end if
     !         end associate
 
     !        n = n + 1_int64
@@ -47,14 +47,14 @@ contains
     ! end function ans
 
     ! subroutine diagonal_nums(n, arr)
-    !     integer(int64), intent(in) :: n 
+    !     integer(int64), intent(in) :: n
     !     integer(int64) :: a, b, c, d
     !     integer(int64), intent(out) :: arr(4)
 
-    !     d = ( n * 2_int64 - 1_int64 ) ** 2_int64 
+    !     d = ( n * 2_int64 - 1_int64 ) ** 2_int64
     !     associate( x => (n - 1_int64) * 2_int64 )
-    !         c = d - x 
-    !         b = c - x 
+    !         c = d - x
+    !         b = c - x
     !         a = b - x
     !     end associate
 
@@ -62,7 +62,7 @@ contains
     ! end subroutine diagonal_nums
 
     ! integer function side_len(n)
-    !     integer(int64), intent(in) :: n 
+    !     integer(int64), intent(in) :: n
 
     !     side_len = n * 2_int64 - 1_int64
     ! end function side_len

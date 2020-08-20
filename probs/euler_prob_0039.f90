@@ -15,7 +15,7 @@ contains
             count_arr(i) = rhgt_tri_w_p(i)
         end do
 
-        ans = maxloc(count_arr, dim = 1)
+        ans = maxloc(count_arr, dim=1)
     end function ans
 
     integer function rhgt_tri_w_p(p)
@@ -23,12 +23,12 @@ contains
         integer :: i, j, k, tmp
 
         tmp = 0
-        do i = 1, p / 2 + 1
+        do i = 1, p/2 + 1
             do j = 1, p - i - 1
                 k = p - i - j
-                if (                                                           &
-                    is_rght_tri(i, j, k)                                       &
-                ) tmp = tmp + 1
+                if ( &
+                    is_rght_tri(i, j, k) &
+                    ) tmp = tmp + 1
             end do
         end do
 
@@ -39,7 +39,7 @@ contains
         integer, intent(in) :: i, j, k
 
         is_rght_tri = .false.
-        if ( i**2 + j**2 == k**2 ) then
+        if (i**2 + j**2 == k**2) then
             is_rght_tri = .true.
         end if
     end function is_rght_tri

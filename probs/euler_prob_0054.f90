@@ -1,5 +1,5 @@
 submodule(euler_interface_m) euler_problem_0054
-    implicit none 
+    implicit none
 
 contains
 
@@ -9,29 +9,29 @@ contains
 
     integer function ans()
         use euler_texas_holdem_m
-        implicit none 
+        implicit none
 
         type(texas_holdem_t) :: cards
         character(2) :: char_arr(10)
         integer :: istat, i
 
-        open( &
-            unit = 54, file = "euler0054.txt", &
-            status = "old", action = "read" &
-        )
+        open ( &
+            unit=54, file="euler0054.txt", &
+            status="old", action="read" &
+            )
 
-        i = 0 
+        i = 0
 
         do
-            read (54, *, iostat = istat) char_arr(:)
-            if (istat /= 0) exit 
+            read (54, *, iostat=istat) char_arr(:)
+            if (istat /= 0) exit
 
             cards = char_arr(:)
-            if ( .playerOneWin. cards ) i = i + 1
-        end do 
+            if (.playerOneWin.cards) i = i + 1
+        end do
 
-        close(54)
+        close (54)
         ans = i
-    end function ans 
+    end function ans
 
 end submodule euler_problem_0054

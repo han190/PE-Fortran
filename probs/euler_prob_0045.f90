@@ -11,7 +11,7 @@ contains
         integer(int64) :: x, y
 
         call hex_n_pen(3, x, y)
-        ans = y * (2_int64 * y - 1_int64)
+        ans = y*(2_int64*y - 1_int64)
     end function ans
 
     recursive subroutine hex_n_pen(i, x, y)
@@ -19,13 +19,13 @@ contains
         integer(int64), intent(out) :: x, y
         integer(int64) :: a, b
 
-        if ( i == 1 ) then
+        if (i == 1) then
             x = 1_int64
             y = 1_int64
         else
             call hex_n_pen(i - 1, a, b)
-            x = 97_int64 * a + 112_int64 * b - 44_int64
-            y = 84_int64 * a + 97_int64 * b - 38_int64
+            x = 97_int64*a + 112_int64*b - 44_int64
+            y = 84_int64*a + 97_int64*b - 38_int64
         end if
     end subroutine hex_n_pen
 

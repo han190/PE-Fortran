@@ -1,7 +1,7 @@
-program main 
+program main
     use iso_fortran_env, only: compiler_version
     use euler_prob_api_m
-    implicit none 
+    implicit none
 
     integer :: index_
     character(len=100) :: arg_val(0:1)
@@ -21,18 +21,18 @@ program main
         index_ = index_ + 1
     end do read_argument_loop
 
-    select case( trim(arg_val(1)) )
-    case("-h", "--help")
+    select case (trim(arg_val(1)))
+    case ("-h", "--help")
         call get_help()
         stop
-    case("-ca", "--compute-all")
+    case ("-ca", "--compute-all")
         call compute_all("ANSWER.md")
     case default
         print "(a)", "SYNTAX ERROR: -h or --help for further information."
         stop
     end select
 
-contains
+    contains
 
     subroutine get_help()
         character(len=3) :: a
@@ -60,7 +60,7 @@ contains
 
         call euler_init(probs)
 
-        open(1, file = filename)
+        open (1, file=filename)
         write (1, "(a)") "# Project Euler with Modern Fortran"//new_line("a")
         write (1, "(a)") "## Compilers"//new_line("a")
         write (1, "(a)") compiler_version()//new_line("a")
@@ -75,23 +75,23 @@ contains
             tspan(i) = t_f - t_i
         end do
 
-        tsum = sum(tspan, dim = 1)
-        nslv = real(count(ans /= failed, dim = 1))
+        tsum = sum(tspan, dim=1)
+        nslv = real(count(ans /= failed, dim=1))
 
         do i = 1, nop
-            write (1, 1120) i, ans(i), tspan(i), tspan(i) / tsum * 100.
-            1120 format("|", i6, "|", a20, "|", f10.6, "|", f9.4, "%|")
+            write (1, 1120) i, ans(i), tspan(i), tspan(i)/tsum*100.
+1120        format("|", i6, "|", a20, "|", f10.6, "|", f9.4, "%|")
         end do
 
         write (1, "(a)") new_line("a")//"## Summary"//new_line("a")
         write (1, "(a)") "|Benchmarks|Results|"
         write (1, "(a)") repeat(c_aligned, 2)//"|"
         write (1, 1121) int(nslv)
-        1121 format("|Problems solved|", i4, "|")
+1121    format("|Problems solved|", i4, "|")
         write (1, 1122) "|Total time spent|", tsum, "(s)|"
         write (1, 1122) "|Average time spent per problem|", tsum/nslv, "(s)|"
-        1122 format(a, f10.6, a)
+1122    format(a, f10.6, a)
 
-        close(1)
+        close (1)
     end subroutine compute_all
-end program main 
+end program main

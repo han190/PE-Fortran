@@ -15,8 +15,8 @@ contains
 
         outer: do i = 2, n - 1
 
-            if ( n_factor(i) == 0 ) then
-                inner: do j = 2 * i, n - 1, i
+            if (n_factor(i) == 0) then
+                inner: do j = 2*i, n - 1, i
                     n_factor(j) = n_factor(j) + 1
                 end do inner
             end if
@@ -26,7 +26,7 @@ contains
         goal = [4, 4, 4, 4]
 
         do i = 2, n - 1
-            if ( all( n_factor(i:i + 3) == goal(:) ) ) exit
+            if (all(n_factor(i:i + 3) == goal(:))) exit
         end do
 
         ans = i

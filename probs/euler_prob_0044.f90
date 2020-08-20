@@ -16,8 +16,8 @@ contains
         j = 1_int64
         i = 1_int64
 
-        do while ( i <= dim_of_arr )
-            if ( is_pen(j) ) then
+        do while (i <= dim_of_arr)
+            if (is_pen(j)) then
                 pen_arr(i) = j
                 i = i + 1_int64
             end if
@@ -31,7 +31,7 @@ contains
             do j = i + 1_int64, dim_of_arr
                 pm = pen_arr(i)
                 pn = pen_arr(j)
-                if ( is_pen_sum_diff(pm, pn) ) then
+                if (is_pen_sum_diff(pm, pn)) then
                     minimised_d = min(minimised_d, pn - pm)
                 end if
             end do
@@ -51,7 +51,7 @@ contains
         s = pj + pk
         d = pk - pj
 
-        if ( is_pen(s) .and. is_pen(d) ) then
+        if (is_pen(s) .and. is_pen(d)) then
             is_pen_sum_diff = .true.
         else
             is_pen_sum_diff = .false.
@@ -61,15 +61,15 @@ contains
     logical function is_pen(p)
         integer(int64), intent(in) :: p
 
-        if ( p <= 0 ) then
+        if (p <= 0) then
             error stop "is_pen: p > 0."
         end if
 
-        associate ( x => sqrt( 24.0_sp * real(p) + 1.0_sp ) )
-            if (                                                               &
-                is_int(x) .and.                                                &
-                mod( int(x, int64), 6_int64 ) == 5_int64                       &
-            ) then
+        associate (x => sqrt(24.0_sp*real(p) + 1.0_sp))
+            if ( &
+                is_int(x) .and. &
+                mod(int(x, int64), 6_int64) == 5_int64 &
+                ) then
                 is_pen = .true.
             else
                 is_pen = .false.
@@ -81,7 +81,7 @@ contains
         real, intent(in) :: n
 
         is_int = .false.
-        if ( n - floor(n) <= tiny_sp ) then
+        if (n - floor(n) <= tiny_sp) then
             is_int = .true.
         end if
     end function is_int

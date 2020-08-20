@@ -1,7 +1,7 @@
-submodule(euler_interface_m) euler_prob_0013_m 
-    implicit none 
+submodule(euler_interface_m) euler_prob_0013_m
+    implicit none
 
-contains 
+contains
 
     module character(len=20) function euler0013()
         write (euler0013, "(i20)") ans()
@@ -9,9 +9,9 @@ contains
 
     integer(int64) function ans()
         integer(int64) :: long_int(50, 100)
-        integer(int64) :: tmp(50), i, j, k, t 
+        integer(int64) :: tmp(50), i, j, k, t
 
-        open(unit = 13, file = "euler0013.txt", status = "old", action = "read")
+        open (unit=13, file="euler0013.txt", status="old", action="read")
         do i = 1, 100
             read (13, "(50(i1))") long_int(1_int64:50_int64, i)
         end do
@@ -26,16 +26,16 @@ contains
 
         do j = 50_int64, 2_int64, -1_int64
             t = tmp(j)
-            tmp(j) = tmp(j) - ( tmp(j) / 10_int64 ) * 10_int64
+            tmp(j) = tmp(j) - (tmp(j)/10_int64)*10_int64
             tmp(j - 1_int64) = tmp(j - 1_int64) + &
-                ( t - tmp(j) ) / 10_int64
+                               (t - tmp(j))/10_int64
         end do
 
-        k = floor( log10( real( tmp(1) ) ) + 1_int64 )
+        k = floor(log10(real(tmp(1))) + 1_int64)
         t = 0_int64
         do i = 1_int64, 10_int64 - k
-            t = t + tmp(i) * 10_int64**( 11_int64 - k - i )
+            t = t + tmp(i)*10_int64**(11_int64 - k - i)
         end do
-        ans = t 
-    end function ans 
+        ans = t
+    end function ans
 end submodule euler_prob_0013_m

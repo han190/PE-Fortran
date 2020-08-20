@@ -1,14 +1,14 @@
 module euler_lexical_sort_m
 
-    use euler_utils_m, only: swap 
-    implicit none 
+    use euler_utils_m, only: swap
+    implicit none
     private
 
     integer, allocatable :: index_arr(:)
-    logical :: case_sensitive 
+    logical :: case_sensitive
     public :: lexical_sort
 
-contains 
+contains
 
     subroutine lexical_sort(str_arr, case_insensitive)
         character(len=*), intent(inout) :: str_arr(:)
@@ -60,29 +60,29 @@ contains
 
         call swap( &
             index_arr(low), &
-            index_arr( (low + high) / 2 ) &
-        )
+            index_arr((low + high)/2) &
+            )
         lastsmall = low
 
         do k = low + 1, high
             if ( &
                 string_comp( &
-                    str_arr( index_arr(k) ), &
-                    str_arr( index_arr(low) ) &
+                str_arr(index_arr(k)), &
+                str_arr(index_arr(low)) &
                 ) &
-            ) then
+                ) then
                 lastsmall = lastsmall + 1
                 call swap( &
                     index_arr(lastsmall), &
                     index_arr(k) &
-                )
+                    )
             end if
         end do
-        
+
         call swap( &
             index_arr(low), &
             index_arr(lastsmall) &
-        )
+            )
         pivot_loc = lastsmall
     end subroutine partition
 
@@ -95,7 +95,7 @@ contains
             lexical_less = p < q
         else
             kq = 1
-            do k = 1, max( LEN_trim(p), LEN_trim(q) )
+            do k = 1, max(LEN_trim(p), LEN_trim(q))
                 if (upper_case(p(k:k)) == upper_case(q(k:k))) then
                     cycle
                 else
@@ -123,5 +123,5 @@ contains
             L = letter
         end if
     end function upper_case
-    
+
 end module euler_lexical_sort_m

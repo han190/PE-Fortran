@@ -1,11 +1,11 @@
 submodule(euler_interface_m) euler_prob_0032_m
-    implicit none 
+    implicit none
 
-contains 
+contains
 
     module character(len=20) function euler0032()
         write (euler0032, "(i20)") ans()
-    end function euler0032 
+    end function euler0032
 
     integer(int64) function ans()
         integer(int64) :: temp, i, j, k, arr_of_prods(9)
@@ -14,15 +14,15 @@ contains
         k = 1_int64
         do i = 1_int64, 9_int64
             do j = 1234_int64, 9876_int64
-                if (                                                           &
-                    digs_of_int(i * j) > 4_int64                               &
-                ) cycle
-                temp = i * 10_int64**8 + j * 10_int64**4 + i * j
+                if ( &
+                    digs_of_int(i*j) > 4_int64 &
+                    ) cycle
+                temp = i*10_int64**8 + j*10_int64**4 + i*j
 
-                if (                                                           &
-                    is_pandigital( temp, digs_of_int(temp) )                   &
-                ) then
-                    arr_of_prods(k) = i * j
+                if ( &
+                    is_pandigital(temp, digs_of_int(temp)) &
+                    ) then
+                    arr_of_prods(k) = i*j
                     k = k + 1_int64
                 end if
             end do
@@ -30,22 +30,22 @@ contains
 
         do i = 12_int64, 98_int64
             do j = 123_int64, 987_int64
-                if (                                                           &
-                    digs_of_int(i * j) > 4_int64                               &
-                ) cycle
-                temp = i * 10_int64**7 + j * 10_int64**4 + i * j
-                if (                                                           &
-                    is_pandigital( temp, digs_of_int(temp) )                   &
-                ) then
-                    arr_of_prods(k) = i * j
+                if ( &
+                    digs_of_int(i*j) > 4_int64 &
+                    ) cycle
+                temp = i*10_int64**7 + j*10_int64**4 + i*j
+                if ( &
+                    is_pandigital(temp, digs_of_int(temp)) &
+                    ) then
+                    arr_of_prods(k) = i*j
                     k = k + 1_int64
                 end if
             end do
         end do
 
         call remove_duplicates(arr_of_prods, arr_of_nonrepeats)
-        ans = sum(arr_of_nonrepeats, dim = 1)
-    end function ans 
+        ans = sum(arr_of_nonrepeats, dim=1)
+    end function ans
 
     subroutine remove_duplicates(i_arr, o_arr)
         integer(int64), intent(in) :: i_arr(:)

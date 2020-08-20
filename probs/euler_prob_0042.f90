@@ -11,20 +11,20 @@ contains
         integer, intent(in) :: n
         character(len=500) :: names(n)
         integer :: stat, i, j
-        integer, parameter :: max_score = 26 * 20
+        integer, parameter :: max_score = 26*20
         logical :: is_tri_num(max_score)
 
         call tri_num(max_score, is_tri_num)
 
         names = 'n/a'
-        open(unit = 42, file = "euler0042.txt", status = "old", action = "read")
+        open (unit=42, file="euler0042.txt", status="old", action="read")
         read (42, *, iostat=stat) names(1:n)
 
         i = 1
         j = 0
 
-        do while ( names(i) /= 'n/a' )
-            if ( is_tri_num( score_of_word( names(i) ) ) ) then
+        do while (names(i) /= 'n/a')
+            if (is_tri_num(score_of_word(names(i)))) then
                 j = j + 1
             end if
             i = i + 1
@@ -40,7 +40,7 @@ contains
         isum = 0
 
         do j = 1, len_trim(str)
-            isum = isum + iachar( str(j:j) ) - 64
+            isum = isum + iachar(str(j:j)) - 64
         end do
 
         score_of_word = isum
@@ -54,8 +54,8 @@ contains
         is_tri_num = .false.
 
         i = 1
-        do while ( i * (i + 1) / 2 <= n )
-            is_tri_num( i * (i + 1) / 2 ) = .true.
+        do while (i*(i + 1)/2 <= n)
+            is_tri_num(i*(i + 1)/2) = .true.
             i = i + 1
         end do
     end subroutine tri_num

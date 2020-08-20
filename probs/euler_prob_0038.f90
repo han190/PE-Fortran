@@ -16,20 +16,20 @@ contains
 
             inner: do
                 if (tmp /= 0) then
-                    if ( digs_of_int(tmp) > 9_int64 ) then
+                    if (digs_of_int(tmp) > 9_int64) then
                         cycle outer
                     end if
                 end if
 
-                if ( is_pandigital(tmp) ) then
-                   call append(common_arr, tmp)
+                if (is_pandigital(tmp)) then
+                    call append(common_arr, tmp)
                 end if
 
-                tmp = i * j + tmp * 10_int64**digs_of_int( i * j )
+                tmp = i*j + tmp*10_int64**digs_of_int(i*j)
                 j = j + 1_int64
             end do inner
         end do outer
 
-        ans = maxval(common_arr, dim = 1)
+        ans = maxval(common_arr, dim=1)
     end function ans
 end submodule euler_prob_0038_m

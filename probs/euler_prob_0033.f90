@@ -16,17 +16,17 @@ contains
         do c = 1, 9
             do d = 1, c - 1
                 do n = 1, d - 1
-                    if (                                                       &
-                        ( n * 10 + c ) * d ==                                  &
-                        ( c * 10 + d ) * n                                     &
-                    ) then
-                        np = np * n
-                        dp = dp * d
+                    if ( &
+                        (n*10 + c)*d == &
+                        (c*10 + d)*n &
+                        ) then
+                        np = np*n
+                        dp = dp*d
                     end if
                 end do
             end do
         end do
-        ans = dp / gcd(np, dp)
+        ans = dp/gcd(np, dp)
     end function ans
 
 end submodule euler_prob_0033_m

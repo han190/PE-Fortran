@@ -16,7 +16,7 @@ contains
         do i = 2, n
             call int_2_arr(i, arr)
 
-            if ( sum( arr**5 ) == i ) then
+            if (sum(arr**5) == i) then
                 tmp = tmp + i
             end if
         end do

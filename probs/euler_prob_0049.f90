@@ -21,18 +21,18 @@ contains
             b = a - 3330
             c = b - 3330
 
-            cond =                                                             &
-                is_prime(a) .and.                                              &
-                is_prime(b) .and.                                              &
+            cond = &
+                is_prime(a) .and. &
+                is_prime(b) .and. &
                 is_prime(c)
 
-            if ( .not. cond ) cycle
+            if (.not. cond) cycle
 
             call sort_int(a)
             call sort_int(b)
             call sort_int(c)
 
-            if ( a == b .and. a == c ) exit
+            if (a == b .and. a == c) exit
         end do
 
         write (str1, "(i4)") i
@@ -57,7 +57,7 @@ contains
 
         do i = 1, 4
             do j = i + 1, 4
-                if ( str(i:i) > str(j:j) ) then
+                if (str(i:i) > str(j:j)) then
                     call swap_str(str(i:i), str(j:j))
                 end if
             end do

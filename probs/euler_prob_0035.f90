@@ -21,10 +21,10 @@ contains
         logical_arr = .false.
 
         do i = 1, n
-            if ( logical_arr(i) ) cycle
+            if (logical_arr(i)) cycle
             call is_circular_prime(i, arr, is_c)
 
-            if ( is_c ) then
+            if (is_c) then
                 logical_arr(arr) = .true.
             end if
         end do
@@ -40,7 +40,7 @@ contains
 
         is_circular = .true.
 
-        if ( .not. is_prime(n) ) then
+        if (.not. is_prime(n)) then
             is_circular = .false.
             return
         end if
@@ -49,7 +49,7 @@ contains
 
         loop: do
             if (tmp == n) exit
-            if ( .not. is_prime(tmp) ) then
+            if (.not. is_prime(tmp)) then
                 is_circular = .false.
                 return
             end if
@@ -64,7 +64,7 @@ contains
         integer, allocatable, intent(out) :: arr(:)
         integer :: i, tmp
 
-        allocate ( arr( digs_of_int(n) ) )
+        allocate (arr(digs_of_int(n)))
         tmp = n; arr(1) = tmp
 
         do i = 2, size(arr)
@@ -77,8 +77,8 @@ contains
         integer, intent(in) :: n
         integer :: tmp
 
-        tmp = 10**( digs_of_int(n) - 1 )
-        rot_int = tmp * unit_digit(n) + n / 10
+        tmp = 10**(digs_of_int(n) - 1)
+        rot_int = tmp*unit_digit(n) + n/10
     end function rot_int
 
 end submodule euler_prob_0035_m

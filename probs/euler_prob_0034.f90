@@ -13,7 +13,7 @@ contains
 
         isum = 0
         do i = 1, n
-            if ( is_curious(i) ) then
+            if (is_curious(i)) then
                 isum = isum + i
             end if
         end do
@@ -36,10 +36,10 @@ contains
         call int_2_arr(n, arr)
 
         do i = 1, size(arr)
-            tmp = tmp + factorial( arr(i) )
+            tmp = tmp + factorial(arr(i))
         end do
 
-        if ( tmp == n ) is_curious = .true.
+        if (tmp == n) is_curious = .true.
     end function is_curious
 
 end submodule euler_prob_0034_m

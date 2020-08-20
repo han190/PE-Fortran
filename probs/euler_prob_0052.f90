@@ -1,5 +1,5 @@
 submodule(euler_interface_m) euler_problem_0052
-    implicit none 
+    implicit none
 
 contains
 
@@ -16,13 +16,13 @@ contains
             call digs_used_in_num(i, arr)
 
             inner: do j = 2, 6
-                call digs_used_in_num(i * j, arr_tmp)
-                
-                if ( all(arr .eqv. arr_tmp) ) then
-                    if (j == 6) exit outer 
-                else 
-                    exit inner 
-                end if 
+                call digs_used_in_num(i*j, arr_tmp)
+
+                if (all(arr .eqv. arr_tmp)) then
+                    if (j == 6) exit outer
+                else
+                    exit inner
+                end if
             end do inner
 
             i = i + 1
@@ -32,17 +32,17 @@ contains
     end function ans
 
     subroutine digs_used_in_num(n, arr)
-        integer, intent(in) :: n 
+        integer, intent(in) :: n
         logical, intent(out) :: arr(0:9)
         integer, allocatable :: int_arr(:)
         integer :: i
 
         call int_2_arr(n, int_arr)
-        arr = .false. 
+        arr = .false.
 
         do i = 1, digs_of_int(n)
-            arr( int_arr(i) ) = .true.
-        end do 
+            arr(int_arr(i)) = .true.
+        end do
     end subroutine digs_used_in_num
 
 end submodule euler_problem_0052
