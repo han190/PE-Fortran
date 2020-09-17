@@ -5,7 +5,7 @@ module euler_mi_m
     type, public :: very_long_int_t
         integer, allocatable :: arr(:)
         character(len=1) :: sgn
-        contains
+    contains
         procedure, private :: init_char_sub, init_int_sub, init_arr_sub
         generic :: assignment(=) => init_char_sub, init_int_sub, init_arr_sub
         procedure, private :: equal_func, equal_int_func, equal_char_func
@@ -32,9 +32,7 @@ contains
         integer, allocatable, intent(inout) :: arr(:)
         integer, intent(in) :: n
 
-        if (allocated(arr)) then
-            deallocate (arr)
-        end if
+        if (allocated(arr)) deallocate (arr)
         allocate (arr(1:n))
     end subroutine re_alloc
 
@@ -165,10 +163,9 @@ contains
         integer, allocatable, intent(inout) :: arr(:)
         integer, allocatable :: tmp1(:), tmp2(:), tmp_arr(:)
 
-        allocate ( &
-            tmp1(size(arr) + 2), tmp2(size(arr) + 2), &
-            tmp_arr(size(arr) + 2) &
-            )
+        allocate (tmp1(size(arr) + 2), &
+                  tmp2(size(arr) + 2), &
+                  tmp_arr(size(arr) + 2))
 
         tmp1(:) = 0; tmp2(:) = 0; tmp_arr(:) = 0
         tmp_arr(3:) = arr(:)
@@ -273,21 +270,14 @@ contains
         type(very_long_int_t) :: ans
 
         if (equal_abs_val_func(a%arr, b%arr) .and. a%sgn /= b%sgn) then
-
             ans = '0'
-
         else if (a%sgn == '+' .and. b%sgn == '+') then
-
             call core_add_sub(a%arr, b%arr, ans%arr)
             ans%sgn = '+'
-
         else if (a%sgn == '-' .and. b%sgn == '-') then
-
             call core_add_sub(a%arr, b%arr, ans%arr)
             ans%sgn = '-'
-
         else if (a%sgn == '+' .and. b%sgn == '-') then
-
             if (greater_abs_val_func(a%arr, b%arr)) then
                 call core_subtract_func(a%arr, b%arr, ans%arr)
                 ans%sgn = '+'
@@ -295,9 +285,7 @@ contains
                 call core_subtract_func(b%arr, a%arr, ans%arr)
                 ans%sgn = '-'
             end if
-
         else if (a%sgn == '-' .and. b%sgn == '+') then
-
             if (greater_abs_val_func(a%arr, b%arr)) then
                 call core_subtract_func(a%arr, b%arr, ans%arr)
                 ans%sgn = '-'
@@ -305,9 +293,7 @@ contains
                 call core_subtract_func(b%arr, a%arr, ans%arr)
                 ans%sgn = '+'
             end if
-
         end if
-
     end function add_func
 
     function subtract_func(a, b) result(ans)
@@ -316,11 +302,8 @@ contains
         type(very_long_int_t) :: ans
 
         if (equal_abs_val_func(a%arr, b%arr) .and. a%sgn == b%sgn) then
-
             ans = '0'
-
         else if (a%sgn == '+' .and. b%sgn == '+') then
-
             if (greater_abs_val_func(a%arr, b%arr)) then
                 call core_subtract_func(a%arr, b%arr, ans%arr)
                 ans%sgn = '+'
@@ -328,19 +311,13 @@ contains
                 call core_subtract_func(b%arr, a%arr, ans%arr)
                 ans%sgn = '-'
             end if
-
         else if (a%sgn == '+' .and. b%sgn == '-') then
-
             call core_add_sub(a%arr, b%arr, ans%arr)
             ans%sgn = '+'
-
         else if (a%sgn == '-' .and. b%sgn == '+') then
-
             call core_add_sub(a%arr, b%arr, ans%arr)
             ans%sgn = '-'
-
         else if (a%sgn == '-' .and. b%sgn == '-') then
-
             if (greater_abs_val_func(a%arr, b%arr)) then
                 call core_subtract_func(a%arr, b%arr, ans%arr)
                 ans%sgn = '-'
@@ -348,7 +325,6 @@ contains
                 call core_subtract_func(b%arr, a%arr, ans%arr)
                 ans%sgn = '+'
             end if
-
         end if
     end function subtract_func
 
@@ -357,23 +333,20 @@ contains
         integer, allocatable, intent(out) :: ans(:)
         type(mtrx_t), allocatable :: mtrx(:)
         integer, allocatable :: tmp(:)
-        integer :: i
+        integer :: i, j
 
         associate (x => size(arr1) + size(arr2), y => size(arr2))
             allocate (mtrx(y))
 
             do i = 1, y
                 allocate (mtrx(i)%iarr(x))
-
                 tmp = arr1(:)*arr2(size(arr2) - i + 1)
                 call carry_sub(tmp) ! could be optimized here.
                 call cut_leading_zeros(tmp)
                 associate (row => mtrx(i)%iarr(:))
                     row = 0
-                    row( &
-                        size(row) - size(tmp) - i + 2: &
-                        size(row) - i + 1 &
-                        ) = tmp(:)
+                    j = size(row) - i
+                    row(j - size(tmp) + 2:j + 1) = tmp(:)
                 end associate
             end do
 
@@ -394,19 +367,13 @@ contains
         type(very_long_int_t), intent(in) :: b
         type(very_long_int_t) :: ans
 
-        if ( &
-            (a%sgn == '+' .and. b%sgn == '+') .or. &
-            (a%sgn == '-' .and. b%sgn == '-') &
-            ) then
-
+        if ((a%sgn == '+' .and. b%sgn == '+') .or. &
+            (a%sgn == '-' .and. b%sgn == '-')) then
             call core_multiply_func(a%arr, b%arr, ans%arr)
             ans%sgn = '+'
-
         else
-
             call core_multiply_func(a%arr, b%arr, ans%arr)
             ans%sgn = '-'
-
         end if
     end function multiply_func
 
