@@ -4,7 +4,7 @@
 
 ## Dependencies
 
-You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended. The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature [findloc](https://gcc.gnu.org/onlinedocs/gfortran/FINDLOC.html) is used in problem 54) on Mac and Linux (Fedora). Also, the [Meson](https://mesonbuild.com/index.html) Build system (>= 0.53) is used to compile this project. 
+You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended. The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature [findloc](https://gcc.gnu.org/onlinedocs/gfortran/FINDLOC.html) is used in problem 54) on Mac and Linux. Also, the [Meson](https://mesonbuild.com/index.html) Build system (>= 0.53) is used to compile this project. 
 
 ## Compiling and executing the program
 
