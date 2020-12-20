@@ -1,0 +1,30 @@
+module euler_prob_api_m
+
+    ! This code is automatically generated through 
+    ! fypp, A python powered fortran metaprogramming.
+    ! Please do not modify it.
+
+    use euler_interface_m
+    implicit none
+
+    type :: euler_probs_t
+        procedure(euler_prob_x), nopass, pointer :: ans
+        type(euler_probs_t), pointer :: next => null()
+    end type euler_probs_t
+
+    abstract interface
+        character(len=20) function euler_prob_x()
+        end function euler_prob_x
+    end interface
+
+contains
+
+    subroutine euler_init(probs)
+        type(euler_probs_t), intent(out) :: probs(:)
+
+        #: for i in range(1, NUM_PROB + 1)
+        probs(${i}$)%ans => euler${"%4.4d" % (i,)}$
+        #: endfor
+    end subroutine euler_init
+
+end module euler_prob_api_m
