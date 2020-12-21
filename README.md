@@ -2,16 +2,14 @@
 
 [Project Euler](https://projecteuler.net/about) is a weekly updated math problem set. I created this project mainly because I want to practice my Fortran programming skills, so although not necessary, everything is written by modern Fortran. If you are learning Fortran, this project might be helpful.
 
-## Dependencies
-
-You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended. The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature [findloc](https://gcc.gnu.org/onlinedocs/gfortran/FINDLOC.html) is used in problem 54) on Mac and Linux. Also, the [Meson](https://mesonbuild.com/index.html) Build system (>= 0.53) is used to compile this project. 
+You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended. The code is tested with gfortran (version >= 9.0, since the Fortran 2008 feature [findloc](https://gcc.gnu.org/onlinedocs/gfortran/FINDLOC.html) is used in problem 54) on Mac and Linux.
 
 ## Compiling and executing the program
 
-To compile and execute the project,
+To build the project,
 
 ```shell
-meson build && cd build && ninja && ./project_euler_with_modern_fortran -ca
+./install.sh && cd build && ./pefortran --compute-all
 ```
 
 the answers can be found in `build/ANSWER.md`.
@@ -52,6 +50,7 @@ with my computer
 Here is what I plan to do in the future. (Not likely to be done recently cuz I am kinda busy...)
 
 - [x] Organize folders, use Shell scripts to compile codes.
-- [x] Use a build tool, for example [Meson](https://mesonbuild.com/) to wrap all the codes. (Crappy but I did it...)
+- [x] Use a build tool, for example [Meson](https://mesonbuild.com/) to wrap all the codes. (PS1: Crappy but I did it...) (PS2: I deleted it since it is not necessary to use a build tool with such a small project.)
+- [x] Use some Fortran preprocessor to simplify my code.
 - [ ] Write a wiki page to clearly explain the algorithms, Fortran features, or anything that is interesting for each question.
 - [ ] When I finish 75 problems, write a command line interface. When I finish 100 problems, write a GUI.

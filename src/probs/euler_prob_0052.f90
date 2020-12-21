@@ -1,4 +1,4 @@
-submodule(euler_interface_m) euler_problem_0052
+submodule(euler_interface_m) euler_prob_0052_m
     implicit none
 
 contains
@@ -45,4 +45,4 @@ contains
         end do
     end subroutine digs_used_in_num
 
-end submodule euler_problem_0052
+end submodule euler_prob_0052_m

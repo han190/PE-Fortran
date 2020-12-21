@@ -1,4 +1,4 @@
-submodule(euler_interface_m) euler_problem_0054
+submodule(euler_interface_m) euler_prob_0054_m
     implicit none
 
 contains
@@ -34,4 +34,4 @@ contains
         ans = i
     end function ans
 
-end submodule euler_problem_0054
+end submodule euler_prob_0054_m

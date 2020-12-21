@@ -1,4 +1,4 @@
-submodule(euler_interface_m) euler_problem_0058
+submodule(euler_interface_m) euler_prob_0058_m
     implicit none
 
 contains
@@ -67,4 +67,4 @@ contains
     !     side_len = n * 2_int64 - 1_int64
     ! end function side_len
 
-end submodule euler_problem_0058
+end submodule euler_prob_0058_m

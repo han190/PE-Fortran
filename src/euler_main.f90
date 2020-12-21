@@ -4,14 +4,14 @@ program main
     implicit none
 
     integer :: index_
-    character(len=100) :: arg_val(0:1)
+    character(len=100) :: arg_val(1:2)
 
     if (command_argument_count() > 2) then
         print "(a)", "SYNTAX ERROR: -h or --help for further information."
         stop
     end if
 
-    index_ = 0
+    index_ = 1
     read_argument_loop: do
         if (len_trim(arg_val(index_)) == 0 .or. index_ >= 2) then
             exit read_argument_loop
@@ -40,8 +40,8 @@ program main
         a = "(a)"
         print a, "Project Euler with Modern Fortran"
         print a, "Syntax:"
-        print a, "./project_euler_with_modern_fortran -h/--help"
-        print a, "./project_euler_with_modern_fortran -ca/--compute-all"
+        print a, "./pefortran -h/--help"
+        print a, "./pefortran -ca/--compute-all"
     end subroutine get_help
 
     subroutine compute_all(filename)

@@ -1,4 +1,4 @@
-submodule(euler_interface_m) euler_problem_0056
+submodule(euler_interface_m) euler_prob_0056_m
     use euler_mi_m
     implicit none
 
@@ -27,4 +27,4 @@ contains
         ans = maxval(sum_arr)
     end function ans
 
-end submodule euler_problem_0056
+end submodule euler_prob_0056_m

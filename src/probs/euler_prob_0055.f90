@@ -1,4 +1,4 @@
-submodule(euler_interface_m) euler_problem_0055
+submodule(euler_interface_m) euler_prob_0055_m
     use euler_mi_m
     implicit none
     !
@@ -78,4 +78,4 @@ contains
         end associate
     end function reverse_long
 
-end submodule euler_problem_0055
+end submodule euler_prob_0055_m

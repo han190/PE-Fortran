@@ -1,4 +1,4 @@
-submodule(euler_interface_m) euler_problem_0057
+submodule(euler_interface_m) euler_prob_0057_m
     use euler_mi_m
     implicit none
 
@@ -41,4 +41,4 @@ contains
         call move_alloc(tmp%arr, b%arr)
     end subroutine swap_long
 
-end submodule euler_problem_0057
+end submodule euler_prob_0057_m
