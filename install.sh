@@ -13,8 +13,8 @@ BLD="${PWD}/build"
 
 # Fortran compiler
 FC="gfortran"
-FCFLAGS="-O3 -ffast-math"
-# FCFLAGS="-Wall -Wextra -fimplicit-none -fcheck=all -fbacktrace"
+FCFLAGS="-O3 -ffast-math -std=f2018"
+# FCFLAGS="-Wall -Wextra -fimplicit-none -fcheck=all -fbacktrace -std=f2018"
 COMPILE_F90="${FC} ${FCFLAGS} -c"
 # Test COMPILE_F90
 # echo ${COMPILE_F90}

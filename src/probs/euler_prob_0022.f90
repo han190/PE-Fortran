@@ -11,12 +11,10 @@ contains
         use euler_lexical_sort_m, only: lexical_sort
         implicit none
         integer(int64) :: i, j, stat, tmp
-        character(len=20) :: arr_of_names(6000)
+        character(len=20), allocatable :: arr_of_names(:)
 
-        open ( &
-            unit=22, file="euler0022.txt", &
-            status="old", action="read" &
-            )
+        open (unit=22, file="euler0022.txt", status="old", action="read")
+        allocate(arr_of_names(6000))
         arr_of_names = "n/a"
         read (22, *, iostat=stat) arr_of_names(1:6000)
 
