@@ -2,6 +2,7 @@
 
 # Number of problems
 # NPROB=58
+NPROB_MAX=58
 
 # Directories
 PWD=$(pwd)
@@ -31,7 +32,7 @@ case $i in
     -d|--default)
     FC="gfortran"
     BLD_OPT="release"
-    NPROB=58
+    NPROB=${NPROB_MAX}
     shift # past argument with no value
     ;;
     -h|--help)
@@ -50,6 +51,18 @@ case $i in
 esac
 done
 
+if [[ -z ${FC} ]]; then
+    FC="gfortran"
+fi
+
+if [[ -z ${BLD_OPT} ]]; then
+    BLD_OPT="release"
+fi
+
+if [[ -z "${NPROB}" ]]; then
+    NPROB=${NPROB_MAX}
+fi
+
 echo "Compiler used: ${FC}"
 echo "Build option: ${BLD_OPT}"
 echo "Number of problems tried: ${NPROB}"
@@ -61,7 +74,7 @@ elif [[ ${FC} == "gfortran" ]] && [[ ${BLD_OPT} == "debug" ]]; then
 elif [[ ${FC} == "ifort" ]] && [[ ${BLD_OPT} == "release" ]]; then
     FCFLAGS="-O3 -xHost -ipo"
 elif [[ ${FC} == "ifort" ]] && [[ ${BLD_OPT} == "debug" ]]; then
-    FCFLAGS="-g -check all -fpe0 -warn -traceback -debug extended"
+    FCFLAGS="-O0 -g -traceback"
 fi
 
 COMPILE_F90="${FC} ${FCFLAGS} -c"
