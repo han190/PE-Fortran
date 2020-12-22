@@ -13,7 +13,7 @@ pip install fypp
 To build the project,
 
 ```shell
-./install.sh -d
+./install.sh
 ```
 
 the answers can be found in `build/ANSWER.md`. Other flags can be found in `./install -h`
