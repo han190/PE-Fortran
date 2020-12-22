@@ -5,6 +5,7 @@ program main
 
     integer :: index_
     character(len=100) :: arg_val(1:2)
+    integer, parameter :: nop = ${NUM_PROB}$
 
     if (command_argument_count() > 2) then
         print "(a)", "SYNTAX ERROR: -h or --help for further information."
@@ -40,15 +41,12 @@ program main
         a = "(a)"
         print a, "Project Euler with Modern Fortran"
         print a, "Syntax:"
-        print a, "./pefortran -h/--help"
-        print a, "./pefortran -ca/--compute-all"
+        print a, "./pe-fortran -h/--help"
+        print a, "./pe-fortran -ca/--compute-all"
     end subroutine get_help
 
     subroutine compute_all(filename)
-        ! use file_generator_m, only: nop
-        ! implicit none
         character(len=*), intent(in) :: filename
-        integer, parameter :: nop = 58
         character(len=20) :: ans(nop)
         character(len=1), parameter :: space = " ", dash = "-"
         character(len=20), parameter :: failed = repeat(space, 19)//"x"
@@ -87,9 +85,16 @@ program main
         write (1, "(a)") "|Benchmarks|Results|"
         write (1, "(a)") repeat(c_aligned, 2)//"|"
         write (1, 1121) int(nslv)
-1121    format("|Problems solved|", i4, "|")
         write (1, 1122) "|Total time spent|", tsum, "(s)|"
         write (1, 1122) "|Average time spent per problem|", tsum/nslv, "(s)|"
+
+        write (*, *)
+        write (*, "(a)") "Quick results:"
+        write (*, "(a20, i10)")      "Problems solved:    ", int(nslv)
+        write (*, "(a20, f10.6, a)") "Total time spent:   ", tsum, "(s)"
+        write (*, "(a20, f10.6, a)") "Time spent/problem: ", tsum/nslv, "(s)"
+
+1121    format("|Problems solved|", i4, "|")
 1122    format(a, f10.6, a)
 
         close (1)

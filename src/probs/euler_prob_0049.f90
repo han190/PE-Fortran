@@ -3,7 +3,7 @@ submodule(euler_interface_m) euler_prob_0049_m
 
 contains
 
-    character(len=20) function euler0049()
+    module character(len=20) function euler0049()
         write (euler0049, "(a20)") trim(ans())
     end function euler0049
 
