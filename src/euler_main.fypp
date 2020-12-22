@@ -78,7 +78,6 @@ program main
 
         do i = 1, nop
             write (1, 1120) i, ans(i), tspan(i), tspan(i)/tsum*100.
-1120        format("|", i6, "|", a20, "|", f10.6, "|", f9.4, "%|")
         end do
 
         write (1, "(a)") new_line("a")//"## Summary"//new_line("a")
@@ -94,6 +93,7 @@ program main
         write (*, "(a20, f10.6, a)") "Total time spent:   ", tsum, "(s)"
         write (*, "(a20, f10.6, a)") "Time spent/problem: ", tsum/nslv, "(s)"
 
+1120    format("|", i6, "|", a20, "|", f10.6, "|", f9.4, "%|")
 1121    format("|Problems solved|", i4, "|")
 1122    format(a, f10.6, a)
 
