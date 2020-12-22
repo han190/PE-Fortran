@@ -5,12 +5,12 @@
 NPROB_MAX=58
 
 # Directories
-PWD=$(pwd)
-SRC="${PWD}/src"
-DAT="${PWD}/data"
+CUR=$(pwd)
+SRC="${CUR}/src"
+DAT="${CUR}/data"
 PRB="${SRC}/probs"
 UTL="${SRC}/utils"
-BLD="${PWD}/build"
+BLD="${CUR}/build"
 
 # Fortran compiler
 
@@ -19,21 +19,21 @@ do
 case $i in
     -b=*|--build=*)
     BLD_OPT="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -c=*|--compiler=*)
     FC="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -n=*|--num_prob=*)
     NPROB="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -d|--default)
     FC="gfortran"
     BLD_OPT="release"
     NPROB=${NPROB_MAX}
-    shift # past argument with no value
+    shift
     ;;
     -h|--help)
     echo "Project Euler with Modern Fortran"
@@ -134,4 +134,10 @@ echo "Creating executable..."
 ${FC} ${FCFLAGS} -o pe-fortran *.o
 echo "Executing Project Euler with Modern Fortran..."
 ./pe-fortran --compute-all
+
+# Copy ANSWER.md to project root directory
+cd ${CUR}
+cp ${BLD}/ANSWER.md .
+echo "Copying ANSWER.md to project directory..."
+
 echo "The project is successfully compiled/executed!"
