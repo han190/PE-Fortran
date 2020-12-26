@@ -60,10 +60,14 @@ case $i in
     -r|--remove)
     if [[ -d ${BLD} ]]; then
         rm -r ${BLD}
+    else
+        echo "Folder build doesn't exist."
     fi
 
     if [[ -f ANSWER.md ]]; then
         rm ANSWER.md
+    else
+        echo "File ANSWER.md doesn't exist."
     fi
     exit
 esac
