@@ -52,24 +52,24 @@ contains
     subroutine rank_sub(this, s_arr)
         class(poker_t) :: this
         integer, intent(out) :: s_arr(6)
-        integer :: vals(1:14), suits(1:4), i, x, y
+        integer :: vals(1:14), suits(1:4), x, y, z
 
-        call to_arrs_sub(this, vals, suits)
+        call this%to_arrs(vals, suits)
+        s_arr = 0
 
         ! Royal Flush
         if (all(vals(10:14) == 1) .and. any(suits(:) == 5)) then
-            s_arr(1) = 10
-            s_arr(2:) = 0
+            x = findloc(suits(:), 5, dim=1)
+            s_arr(1:2) = [10, x]
             return
         end if
 
         ! Straight flush
         if (any(suits(:) == 5)) then
-            do i = 1, 10
-                if (all(vals(i:i + 4) == 1)) then
-                    s_arr(1) = 9
-                    s_arr(2) = i
-                    s_arr(3:) = 0
+            do x = 1, 10
+                if (all(vals(x:x + 4) == 1)) then
+                    y = findloc(suits(:), 5, dim=1)
+                    s_arr(1:3) = [9, x, y]
                     return
                 end if
             end do
@@ -79,11 +79,7 @@ contains
         if (any(vals(:) == 4)) then
             x = findloc(vals(:), 4, dim=1, back=.true.)
             y = findloc(vals(:), 1, dim=1, back=.true.)
-
-            s_arr(1) = 8
-            s_arr(2) = x
-            s_arr(3) = y
-            s_arr(4:) = 0
+            s_arr(1:3) = [8, x, y]
             return
         end if
 
@@ -91,38 +87,21 @@ contains
         if (any(vals(:) == 3) .and. any(vals(:) == 2)) then
             x = findloc(vals(:), 3, dim=1, back=.true.)
             y = findloc(vals(:), 2, dim=1, back=.true.)
-
-            s_arr(1) = 7
-            s_arr(2) = x
-            s_arr(3) = y
-            s_arr(4:) = 0
+            s_arr(1:3) = [7, x, y]
             return
         end if
 
         ! Flush
         if (any(suits(:) == 5)) then
-            s_arr(:) = 0
             s_arr(1) = 6
-            x = 2
-
-            do i = 14, 2, -1
-                if (x >= 7) exit
-
-                if (vals(i) /= 0) then
-                    s_arr(x) = i
-                    x = x + 1
-                end if
-            end do
-
+            call knt_one_by_one(2, vals, s_arr)
             return
         end if
 
         ! Straight
-        do i = 1, 10
-            if (all(vals(i:i + 4) == 1)) then
-                s_arr(1) = 5
-                s_arr(2) = i
-                s_arr(3:) = 0
+        do x = 1, 10
+            if (all(vals(x:x + 4) == 1)) then
+                s_arr(1:2) = [5, x]
                 return
             end if
         end do
@@ -130,14 +109,9 @@ contains
         ! Three of a kind
         if (any(vals(:) == 3)) then
             x = findloc(vals(:), 3, dim=1, back=.true.)
-            s_arr(1) = 4
-            s_arr(2) = x
-
-            x = findloc(vals(:), 1, dim=1, back=.true.)
-            y = findloc(vals(2:14), 1, dim=1) + 1
-            s_arr(3) = x
-            s_arr(4) = y
-            s_arr(5:6) = 0
+            y = findloc(vals(:), 1, dim=1, back=.true.)
+            z = findloc(vals(2:14), 1, dim=1) + 1
+            s_arr(1:4) = [4, x, y, z]
             return
         end if
 
@@ -145,51 +119,42 @@ contains
         if (count(vals(2:14) == 2) == 2) then
             x = findloc(vals(:), 2, dim=1, back=.true.)
             y = findloc(vals(2:14), 2, dim=1) + 1
-            s_arr(1) = 3
-            s_arr(2) = x
-            s_arr(3) = y
-
-            x = findloc(vals(:), 1, dim=1, back=.true.)
-            s_arr(4) = x
-            s_arr(5:) = 0
+            z = findloc(vals(:), 1, dim=1, back=.true.)
+            s_arr(1:4) = [3, x, y, z]
             return
         end if
 
         ! One pair
         if (any(vals(:) == 2)) then
             x = findloc(vals(:), 2, dim=1, back=.true.)
-            s_arr(:) = 0
-            s_arr(1) = 2
-            s_arr(2) = x
-
-            x = 3
-
-            do i = 14, 2, -1
-                if (x >= 7) exit
-
-                if (vals(i) == 1) then
-                    s_arr(x) = i
-                    x = x + 1
-                end if
-            end do
-
+            s_arr(1:2) = [2, x]
+            call knt_one_by_one(3, vals, s_arr)
             return
         end if
 
         ! High card
         s_arr(1) = 1
-        x = 2
+        call knt_one_by_one(2, vals, s_arr)
 
-        do i = 14, 2, -1
-            if (x >= 7) exit
+    contains
 
-            if (vals(i) == 1) then
-                s_arr(x) = i
-                x = x + 1
-            end if
-        end do
-    end subroutine
+        subroutine knt_one_by_one(x_, val_arr, output_arr)
+            integer, intent(in) :: val_arr(:), x_
+            integer, intent(out) :: output_arr(:)
+            integer :: idx, tmp
 
+            tmp = x_
+            do idx = 14, 2, -1
+                if (tmp >= 7) exit
+                if (val_arr(idx) == 1) then
+                    output_arr(tmp) = idx
+                    tmp = tmp + 1
+                end if
+            end do
+        end subroutine knt_one_by_one
+
+    end subroutine rank_sub
+    
 end module euler_poker_m
 
 module euler_texas_holdem_m

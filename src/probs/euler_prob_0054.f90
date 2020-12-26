@@ -12,21 +12,15 @@ contains
         implicit none
 
         type(texas_holdem_t) :: cards
-        character(2) :: char_arr(10)
         integer :: istat, i
 
-        open ( &
-            unit=54, file="euler0054.txt", &
-            status="old", action="read" &
-            )
+        open (unit=54, file="euler0054.txt", &
+              status="old", action="read")
 
         i = 0
-
         do
-            read (54, *, iostat=istat) char_arr(:)
+            read (54, *, iostat=istat) cards
             if (istat /= 0) exit
-
-            cards = char_arr(:)
             if (.playerOneWin.cards) i = i + 1
         end do
 
