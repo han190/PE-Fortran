@@ -3,6 +3,7 @@
 # Number of problems
 # NPROB=58
 NPROB_MAX=58
+VERSION="0.0.1"
 
 # Directories
 CUR=$(pwd)
@@ -42,12 +43,29 @@ case $i in
     echo "  -b=, --build=       Build options: release/debug"
     echo "  -c=, --compiler=    Compiler options: gfortran/ifort"
     echo "  -n=, --num_prob=    Number of problems: 50(max=58)"
-    echo "  -d , --default      This implies"
+    echo "  -d,  --default      This implies:"
     echo "                      --build=release --compiler=gfortran"
     echo "                      --num_prob=58(currently solved)"
-    echo "  -h , --help         To pop out this dialog."
+    echo "  -v,  --version      Check version."
+    echo "  -r,  --remove       Remove build files and ANSWER.md."
+    echo "  -h,  --help         To pop out this dialog."
     exit
     shift
+    ;;
+    -v|--version)
+    echo ${VERSION}
+    exit
+    shift
+    ;;
+    -r|--remove)
+    if [[ -d ${BLD} ]]; then
+        rm -r ${BLD}
+    fi
+
+    if [[ -f ANSWER.md ]]; then
+        rm ANSWER.md
+    fi
+    exit
 esac
 done
 
