@@ -1,8 +1,7 @@
 #! /usr/bin/env bash
 
 # Number of problems
-# NPROB=58
-NPROB_MAX=58
+NPROB_MAX=60
 VERSION="0.0.1"
 
 # Directories
