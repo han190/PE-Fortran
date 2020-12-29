@@ -4,14 +4,14 @@ submodule(euler_interface_m) euler_prob_0060_m
 contains
 
     module character(len=20) function euler0060()
-        write (euler0060, "(i20)") ans([9000000_int64, 1200_int64, 1200_int64])
+        write (euler0060, "(i20)") ans([5000000_int64, 1060_int64])
     end function euler0060
 
     integer(int64) function ans(n)
         use euler_primes_m, only: sieve_of_Eratosthenes
         implicit none
 
-        integer(int64), intent(in) :: n(3)
+        integer(int64), intent(in) :: n(2)
         integer(int64) :: i, k, flags(2)
         logical, allocatable :: isprime(:), conc_is_prime(:, :)
         integer(int64), allocatable :: primes(:), test_pair(:), idx(:)
@@ -27,7 +27,7 @@ contains
         next_permutation_avail = .true.
         flags = [1, 2]
 
-        allocate (conc_is_prime(n(3), n(3)))
+        allocate (conc_is_prime(n(2), n(2)))
         conc_is_prime = .true.
 
         do while (next_permutation_avail)
