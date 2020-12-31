@@ -8,45 +8,37 @@ You will need a Fortran compiler to run this project. The [GNU Fortran compiler]
 pip install fypp
 ```
 
+To install `gfortran`
+
+```shell
+sudo apt install gfortran
+```
+
 ## Compiling and executing the program
 
 To build the project,
 
 ```shell
-./install.sh
+./PEFortran.sh
 ```
 
-the answers can be found in `build/ANSWER.md`. Other flags can be found in `./install -h`
+the answers can be found in `ANSWER.md`. Other flags available can found by `./PEFortran -h`, 
 
-## A summary of results
-
-Since it is aimed as a language learning project, the performance of the code is NOT a priority. The `Tspan` for each problem in the output file `ANSWER.md` indicate the time it takes to call the corresponding problem function and `probs` is a procedure pointer array.
-
-```fortran
-do i = 1, nop
-    call cpu_time(t_i)
-    ans(i) = probs(i)%euler_prob_p()
-    call cpu_time(t_f)
-    tspan(i) = t_f - t_i
-end do
+```shell
+./PEFortran -h
+Project Euler with Modern Fortran
+Version: 0.0.1
+Flags possible:
+  -b=, --build=       Build options: release/debug
+  -c=, --compiler=    Compiler options: gfortran/ifort
+  -n=, --num_prob=    Number of problems: (max=60)
+  -d,  --default      This implies:
+                      --build=release --compiler=gfortran
+                      --num_prob=60(currently solved)
+  -v,  --version      Check version.
+  -r,  --remove       Remove build files and ANSWER.md.
+  -h,  --help         To pop out this dialog.
 ```
-
-
-## Benchmarks
-
-| Summary                        |               |
-|:-------------------------------|:--------------|
-| Problems solved                |   56          |
-| Total time spent               |   0.541019(s) |
-| Average time spent per problem |   0.009661(s) |
-
-with my computer 
-
-|Specs of my computer                                           |
-|:--------------------------------------------------------------|
-|Compiler: GNU Fortran (Ubuntu 10.2.0-13ubuntu1) 10.2.0         |
-|CPU: Intel Core i7-8700K @ 12x 4.7GHz                          |
-|RAM: 31965MiB                                                  |
 
 
 ## A todo list
@@ -57,4 +49,4 @@ Here is what I plan to do in the future. (Not likely to be done recently cuz I a
 - [x] Use a build tool, for example [Meson](https://mesonbuild.com/) to wrap all the codes. (PS1: Crappy but I did it...) (PS2: I deleted it since it is not necessary to use a build tool with such a small project.)
 - [x] Use some Fortran preprocessor to simplify my code.
 - [ ] Write a wiki page to clearly explain the algorithms, Fortran features, or anything that is interesting for each question.
-- [ ] When I finish 75 problems, write a command line interface. When I finish 100 problems, write a GUI.
+- [ ] When I finish 75 problems, write a command line interface. When I finish 100 problems (if that is possible), write a GUI.

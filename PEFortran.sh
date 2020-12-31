@@ -37,7 +37,7 @@ case $i in
     ;;
     -h|--help)
     echo "Project Euler with Modern Fortran"
-    echo 
+    echo "Version: ${VERSION}"
     echo "Flags possible:"
     echo "  -b=, --build=       Build options: release/debug"
     echo "  -c=, --compiler=    Compiler options: gfortran/ifort"
