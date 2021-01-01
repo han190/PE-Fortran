@@ -35,7 +35,7 @@ contains
                     end if
                 end associate
             end do inner
-            next_permutation_avail = next_combination(k, n, idx)
+            next_permutation_avail = next_permutation(k, n, idx)
         end do outer
     end function ans
 
@@ -93,31 +93,5 @@ contains
         if (sum(knt)/real(size(arr))*100. > 45. .and. &
             maxloc(knt, dim=1) == 1) ret = .true.
     end function is_english
-
-    function next_combination(k, n, idx) result(ret)
-        integer, intent(in) :: k, n
-        integer, intent(inout) :: idx(k)
-        logical :: ret, carr(k)
-        integer :: i, x, end_arr(k)
-
-        end_arr = [(i, i=n - k + 1, n)]
-        ret = .true.
-        if (all(idx == end_arr)) then
-            ret = .false.
-            return
-        end if
-
-        carr = .true.
-        label_carry: do i = k, 1, -1
-            if (idx(i) == n - k + i) carr(i) = .false.
-        end do label_carry
-
-        if (all(carr .eqv. .true.)) then
-            idx(k) = idx(k) + 1
-        else
-            x = findloc(carr, value=.false., dim=1) - 1
-            idx(x:k) = [(idx(x) + i, i=1, k - x + 1)]
-        end if
-    end function next_combination
 
 end submodule euler_prob_0059_m

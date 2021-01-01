@@ -81,6 +81,12 @@ module euler_utils_m
         module procedure append_int32, append_int64
     end interface append
 
+    public :: next_permutation
+    interface next_permutation
+        module procedure next_permutation_int32
+        module procedure next_permutation_int64
+    end interface next_permutation
+
 contains
 
     integer function unit_digit_int32(n)
@@ -484,5 +490,57 @@ contains
             arr(1) = e
         end if
     end subroutine append_int64
+
+    function next_permutation_int32(k, n, idx) result(ret)
+        integer, intent(in) :: k, n
+        integer, intent(inout) :: idx(k)
+        logical :: ret, carr(k)
+        integer :: i, x, end_arr(k)
+
+        end_arr = [(i, i=n - k + 1, n)]
+        ret = .true.
+        if (all(idx == end_arr)) then
+            ret = .false.
+            return
+        end if
+
+        carr = .true.
+        label_carry: do i = k, 1, -1
+            if (idx(i) == n - k + i) carr(i) = .false.
+        end do label_carry
+
+        if (all(carr .eqv. .true.)) then
+            idx(k) = idx(k) + 1
+        else
+            x = findloc(carr, value=.false., dim=1) - 1
+            idx(x:k) = [(idx(x) + i, i=1, k - x + 1)]
+        end if
+    end function next_permutation_int32
+
+    function next_permutation_int64(k, n, idx) result(ret)
+        integer(int64), intent(in) :: k, n
+        integer(int64), intent(inout) :: idx(k)
+        logical :: ret, carr(k)
+        integer(int64) :: i, x, end_arr(k)
+
+        end_arr = [(i, i=n - k + 1, n)]
+        ret = .true.
+        if (all(idx == end_arr)) then
+            ret = .false.
+            return
+        end if
+
+        carr = .true.
+        label_carry: do i = k, 1, -1
+            if (idx(i) == n - k + i) carr(i) = .false.
+        end do label_carry
+
+        if (all(carr .eqv. .true.)) then
+            idx(k) = idx(k) + 1
+        else
+            x = findloc(carr, value=.false., dim=1) - 1
+            idx(x:k) = [(idx(x) + i, i=1, k - x + 1)]
+        end if
+    end function next_permutation_int64
 
 end module euler_utils_m
