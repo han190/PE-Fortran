@@ -84,6 +84,8 @@ if [[ -z "${NPROB}" ]]; then
     NPROB=${NPROB_MAX}
 fi
 
+echo "Project Euler with Modern Fortran"
+echo "Version: " ${VERSION}
 echo "Compiler used: ${FC}"
 echo "Build option: ${BLD_OPT}"
 echo "Number of problems tried: ${NPROB}"
