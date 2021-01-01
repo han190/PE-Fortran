@@ -1,9 +1,5 @@
 module euler_prob_api_m
 
-    ! This code is automatically generated through 
-    ! fypp, A python powered fortran metaprogramming.
-    ! Please do not modify it.
-
     use euler_interface_m
     implicit none
 

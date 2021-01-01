@@ -4,7 +4,7 @@ module euler_poker_m
 
     type, public :: poker_t
         character(len=2) :: hands(5)
-        contains
+    contains
         procedure, private :: initialize_sub
         generic :: assignment(=) => initialize_sub
         procedure :: to_arrs => to_arrs_sub
@@ -154,7 +154,7 @@ contains
         end subroutine knt_one_by_one
 
     end subroutine rank_sub
-    
+
 end module euler_poker_m
 
 module euler_texas_holdem_m
@@ -164,7 +164,7 @@ module euler_texas_holdem_m
 
     type, public :: texas_holdem_t
         type(poker_t) :: decks(2)
-        contains
+    contains
         procedure, private :: initialize_sub
         generic :: assignment(=) => initialize_sub
         procedure, private :: compare_sub

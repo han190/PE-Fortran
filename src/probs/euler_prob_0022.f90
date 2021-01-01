@@ -14,7 +14,7 @@ contains
         character(len=:), allocatable :: names(:)
 
         open (unit=22, file="euler0022.txt", status="old", action="read")
-        allocate(character(len=20) :: names(6000))
+        allocate (character(len=20) :: names(6000))
         names = "n/a"
         read (22, *, iostat=istat) names
 

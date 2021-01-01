@@ -21,7 +21,7 @@ contains
         character(len=:), allocatable :: pivot
         integer :: i, j
 
-        allocate(character(len=len(a(high))) :: pivot)
+        allocate (character(len=len(a(high))) :: pivot)
         pivot = a(high)
         i = low
         do j = low, high

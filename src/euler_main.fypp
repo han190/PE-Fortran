@@ -33,7 +33,7 @@ program main
         stop
     end select
 
-    contains
+contains
 
     subroutine get_help()
         character(len=3) :: a
@@ -89,7 +89,7 @@ program main
 
         write (*, *)
         write (*, "(a)") "Quick results:"
-        write (*, "(a20, i10)")      "Problems solved:    ", int(nslv)
+        write (*, "(a20, i10)") "Problems solved:    ", int(nslv)
         write (*, "(a20, f10.6, a)") "Total time spent:   ", tsum, "(s)"
         write (*, "(a20, f10.6, a)") "Time spent/problem: ", tsum/nslv, "(s)"
 

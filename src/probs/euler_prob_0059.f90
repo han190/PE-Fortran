@@ -15,8 +15,8 @@ contains
 
         next_permutation_avail = .true.
         encrypted = read_file("euler0059.txt")
-        letters = [(i, i = 97, 122)]
-        allocate(decrypted(size(encrypted)))
+        letters = [(i, i=97, 122)]
+        allocate (decrypted(size(encrypted)))
         idx = [1, 2, 3]
         idx2(1, :) = [1, 2, 3]
         idx2(2, :) = [1, 3, 2]
@@ -25,7 +25,7 @@ contains
         idx2(5, :) = [3, 1, 2]
         idx2(6, :) = [3, 2, 1]
 
-        outer: do while (next_permutation_avail)    
+        outer: do while (next_permutation_avail)
             inner: do i = 1, size(idx2(:, 1))
                 associate (ii => idx(idx2(i, :)))
                     call decrypt(encrypted, letters(ii), decrypted)
@@ -59,10 +59,10 @@ contains
         integer, parameter :: sufficiently_large_number = 5000
 
         iunit = 59
-        open(unit=iunit, file=filename, iostat=istat, status="old")
+        open (unit=iunit, file=filename, iostat=istat, status="old")
         allocate (arr(sufficiently_large_number))
         arr = 0
-        read(iunit, *, iostat=istat) arr
+        read (iunit, *, iostat=istat) arr
         call remove_trailing_zeros(arr)
     end function read_file
 
@@ -86,7 +86,7 @@ contains
 
         check_ = ["e", "t", "a", "o", "i", "n", "s", "h"]
         do i = 1, size(check_)
-            knt(i) = count(arr == iachar(check_(i))) 
+            knt(i) = count(arr == iachar(check_(i)))
         end do
 
         ret = .false.
