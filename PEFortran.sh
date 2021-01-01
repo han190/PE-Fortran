@@ -131,6 +131,7 @@ cd ${BLD}
 cp ${DAT}/*.txt .
 
 # Compile files in utils
+TIME1=`date +%s`
 echo "Compiling files in ./src/utils..."
 for f in "${UTIL_FILES[@]}"; do
     ${COMPILE_F90} ${UTL}/${f}.f90
@@ -155,6 +156,9 @@ echo "Compiling euler_main.f90..."
 ${COMPILE_F90} euler_main.f90
 echo "Creating executable..."
 ${FC} ${FCFLAGS} -o pe-fortran *.o
+TIME2=`date +%s`
+COMPILE_TIME=$((TIME2 - TIME1))
+echo "Compile and precompile time: ${COMPILE_TIME} seconds"
 echo "Executing Project Euler with Modern Fortran..."
 ./pe-fortran --compute-all
 
