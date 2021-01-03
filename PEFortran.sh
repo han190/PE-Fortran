@@ -90,13 +90,13 @@ echo "Compiler used: ${FC}"
 echo "Build option: ${BLD_OPT}"
 echo "Number of problems tried: ${NPROB}"
 
-if [[ ${FC} == "gfortran" ]] && [[ ${BLD_OPT} == "release" ]]; then
+if [[ ${FC:0:8} == "gfortran" ]] && [[ ${BLD_OPT} == "release" ]]; then
     FCFLAGS="-O3 -ffast-math -std=f2018"
-elif [[ ${FC} == "gfortran" ]] && [[ ${BLD_OPT} == "debug" ]]; then
+elif [[ ${FC:0:8} == "gfortran" ]] && [[ ${BLD_OPT} == "debug" ]]; then
     FCFLAGS="-Wall -Wextra -fimplicit-none -fcheck=all -fbacktrace -std=f2018"
-elif [[ ${FC} == "ifort" ]] && [[ ${BLD_OPT} == "release" ]]; then
+elif [[ ${FC:0:5} == "ifort" ]] && [[ ${BLD_OPT} == "release" ]]; then
     FCFLAGS="-O3 -xHost -ipo"
-elif [[ ${FC} == "ifort" ]] && [[ ${BLD_OPT} == "debug" ]]; then
+elif [[ ${FC:0:5} == "ifort" ]] && [[ ${BLD_OPT} == "debug" ]]; then
     FCFLAGS="-O0 -g -traceback"
 fi
 
