@@ -28,8 +28,7 @@ contains
         outer: do while (next_permutation_avail)
             inner: do i = 1, size(idx2(:, 1))
                 idx3(:) = idx(idx2(i, :))
-                call decrypt(encrypted, letters(idx3), decrypted)
-                if (is_english(decrypted)) then
+                if (is_english(decrypted, letters(idx3))) then
                     ans = sum(decrypted)
                     return
                 end if
@@ -77,19 +76,20 @@ contains
         end do
     end subroutine decrypt
 
-    function is_english(arr) result(ret)
-        integer, intent(in) :: arr(:)
+    function is_english(encrypted, key) result(ret)
+        integer, intent(in) :: encrypted(:), key(:)
         logical :: ret
         character(len=1) :: check_(8)
-        integer :: i, knt(8)
+        integer :: i, knt(8), decrypted(size(encrypted))
 
+        call decrypt(encrypted, key, decrypted)
         check_ = ["e", "t", "a", "o", "i", "n", "s", "h"]
         do i = 1, size(check_)
-            knt(i) = count(arr == iachar(check_(i)))
+            knt(i) = count(decrypted == iachar(check_(i)))
         end do
 
         ret = .false.
-        if (sum(knt)/real(size(arr))*100. > 45. .and. &
+        if (sum(knt)/real(size(decrypted))*100. > 45. .and. &
             maxloc(knt, dim=1) == 1) ret = .true.
     end function is_english
 
