@@ -2,27 +2,21 @@
 
 [Project Euler](https://projecteuler.net/about) is a weekly updated math problem set. I created this project mainly because I want to practice my Fortran programming skills, so although not necessary, everything is written by modern Fortran. If you are learning Fortran, this project might be helpful.
 
-You will need a Fortran compiler to run this project. The [GNU Fortran compiler](https://gcc.gnu.org/fortran/) is recommended. The code is tested with `gfortran` (version >= 9.0, since the Fortran 2008 feature [findloc](https://gcc.gnu.org/onlinedocs/gfortran/FINDLOC.html) is used in problem 54) and `ifort`. Also, this project uses [fypp](https://github.com/aradi/fypp) as the preprocessor. To install fypp the easist way is 
+You will need a Fortran compiler to run this project. The code is tested with `gfortran` (version >= 9.0) and `ifort`. Also, this project uses [fypp](https://github.com/aradi/fypp) as the preprocessor. To install fypp the easist way is 
 
 ```shell
 pip install fypp
 ```
 
-To install `gfortran`
-
-```shell
-sudo apt install gfortran
-```
-
 ## Compiling and executing the program
 
-To build the project,
+To compile and execute the project,
 
 ```shell
 ./PEFortran.sh
 ```
 
-the answers can be found in `ANSWER.md`. Other flags available can found by `./PEFortran -h`, 
+the answers are saved in `ANSWER.md`. For further information, type `./PEFortran -h`, 
 
 ```shell
 ./PEFortran -h
