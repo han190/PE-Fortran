@@ -1,8 +1,6 @@
-# Project Euler with Modern Fortran
+# Yet another Project Euler solutions...
 
-[Project Euler](https://projecteuler.net/about) is a weekly updated math problem set. I created this project mainly because I want to practice my Fortran programming skills, so although not necessary, everything is written by modern Fortran. If you are learning Fortran, this project might be helpful.
-
-You will need a Fortran compiler to run this project. The code is tested with `gfortran` (version >= 9.0) and `ifort`. Also, this project uses [fypp](https://github.com/aradi/fypp) as the preprocessor. To install fypp the easist way is 
+[Project Euler](https://projecteuler.net/about) is a problem set. I solve PE problems to polish my Fortran skills, expand my math  knowledge base and most importantly, for fun. If you are looking for the same things, check it out! The project is tested with [`gfortran`](https://gcc.gnu.org/fortran/) (version >= 9.0) and [`ifort`](https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-fortran-compiler-release-notes.html). Also, [fypp](https://github.com/aradi/fypp) is used as the Fortran preprocessor. To install fypp the easist way is 
 
 ```shell
 pip install fypp
@@ -33,7 +31,6 @@ Flags possible:
   -r,  --remove       Remove build files and ANSWER.md.
   -h,  --help         To pop out this dialog.
 ```
-
 
 ## A todo list
 
