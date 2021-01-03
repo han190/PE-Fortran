@@ -107,9 +107,14 @@ echo "Compiler flags used: FCFLAGS=${FCFLAGS}"
 FYPP="fypp"
 FYPPFLAGS="-DNUM_PROB=${NPROB}"
 COMPILE_FPP="${FYPP} ${FYPPFLAGS}"
-# Test COMPILE_FPP
-# echo ${COMPILE_FPP}
-echo "fypp version: $(fypp --version)"
+if command -v fypp >/dev/null 2>&1 ; then
+    echo "fypp found"
+    echo "fypp version: $(fypp --version)"
+else
+    echo "fypp not found."
+    echo "Please install fypp first"
+    exit
+fi
 
 # Make directory build if it doesn't exist
 # otherwise delete build and make a new one
@@ -163,4 +168,4 @@ echo "Executing Project Euler with Modern Fortran..."
 cd ${CUR}
 cp ${BLD}/ANSWER.md .
 echo "Copying ANSWER.md to project directory..."
-echo "The project is successfully compiled/executed!"
+echo "The compilation and execution is completed!"
