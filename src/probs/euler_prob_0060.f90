@@ -4,7 +4,10 @@ submodule(euler_interface_m) euler_prob_0060_m
 contains
 
     module character(len=20) function euler0060()
-        write (euler0060, "(i20)") ans([5000000_int64, 1060_int64])
+        integer(int64) :: input_arr(2)
+
+        input_arr = [5000000_int64, 1060_int64]
+        write (euler0060, "(i20)") ans(input_arr)
     end function euler0060
 
     integer(int64) function ans(n)

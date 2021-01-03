@@ -10,11 +10,19 @@ contains
     integer function ans()
         integer, allocatable :: encrypted(:), decrypted(:)
         integer, parameter :: n = 26, k = 3
-        integer :: letters(n), idx(k), idx2(2*k, k), key(k), i
+        integer :: letters(n), idx(k), idx2(2*k, k), key(k), i, j
         logical :: next_permutation_avail
+        integer :: iunit, istat
+        integer, parameter :: large_number = 5000
 
         next_permutation_avail = .true.
-        encrypted = read_file("euler0059.txt")
+        iunit = 59
+        open (unit=iunit, file="euler0059.txt", status="old")
+        allocate (encrypted(large_number))
+        encrypted = 0
+        read (iunit, *, iostat=istat) encrypted
+        call remove_trailing_zeros(encrypted)
+
         letters = [(i, i=97, 122)]
         allocate (decrypted(size(encrypted)))
         idx = [1, 2, 3]
@@ -27,7 +35,9 @@ contains
 
         outer: do while (next_permutation_avail)
             inner: do i = 1, size(idx2(:, 1))
-                key = letters(idx(idx2(i, :)))
+                innermost: do j = 1, 3
+                    key(j) = letters(idx(idx2(i, j)))
+                end do innermost
                 call decrypt(encrypted, key, decrypted)
                 if (is_english(decrypted)) then
                     ans = sum(decrypted)
@@ -50,20 +60,6 @@ contains
         tmp = arr(1:i - 1)
         call move_alloc(tmp, arr)
     end subroutine remove_trailing_zeros
-
-    function read_file(filename) result(arr)
-        character(len=*), intent(in) :: filename
-        integer, allocatable :: arr(:)
-        integer :: iunit, istat
-        integer, parameter :: sufficiently_large_number = 5000
-
-        iunit = 59
-        open (unit=iunit, file=filename, iostat=istat, status="old")
-        allocate (arr(sufficiently_large_number))
-        arr = 0
-        read (iunit, *, iostat=istat) arr
-        call remove_trailing_zeros(arr)
-    end function read_file
 
     subroutine decrypt(encrypted, key, decrypted)
         integer, intent(in) :: encrypted(:), key(:)
