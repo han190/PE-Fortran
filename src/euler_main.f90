@@ -5,7 +5,6 @@ program main
 
     integer :: index_
     character(len=100) :: arg_val(1:2)
-    integer, parameter :: nop = ${NUM_PROB}$
 
     if (command_argument_count() > 2) then
         print "(a)", "SYNTAX ERROR: -h or --help for further information."

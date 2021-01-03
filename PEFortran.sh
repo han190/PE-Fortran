@@ -150,10 +150,8 @@ for f in "${PRB}/*"; do
     ${COMPILE_F90} ${f}
 done
 
-echo "Generating euler_main.f90..."
-${COMPILE_FPP} ${SRC}/euler_main.fypp euler_main.f90
 echo "Compiling euler_main.f90..."
-${COMPILE_F90} euler_main.f90
+${COMPILE_F90} ${SRC}/euler_main.f90
 echo "Creating executable..."
 ${FC} ${FCFLAGS} -o pe-fortran *.o
 TIME2=`date +%s`

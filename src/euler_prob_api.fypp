@@ -3,6 +3,8 @@ module euler_prob_api_m
     use euler_interface_m
     implicit none
 
+    integer, parameter :: nop = ${NUM_PROB}$
+
     type :: euler_probs_t
         procedure(euler_prob_x), nopass, pointer :: ans
         type(euler_probs_t), pointer :: next => null()
