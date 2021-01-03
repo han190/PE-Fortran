@@ -97,7 +97,7 @@ elif [[ ${FC:0:8} == "gfortran" ]] && [[ ${BLD_OPT} == "debug" ]]; then
 elif [[ ${FC:0:5} == "ifort" ]] && [[ ${BLD_OPT} == "release" ]]; then
     FCFLAGS="-O3 -xHost -ipo"
 elif [[ ${FC:0:5} == "ifort" ]] && [[ ${BLD_OPT} == "debug" ]]; then
-    FCFLAGS="-O0 -g -traceback"
+    FCFLAGS="-O0 -g -traceback -debug all -check all"
 fi
 
 COMPILE_F90="${FC} ${FCFLAGS} -c"
@@ -108,7 +108,6 @@ FYPP="fypp"
 FYPPFLAGS="-DNUM_PROB=${NPROB}"
 COMPILE_FPP="${FYPP} ${FYPPFLAGS}"
 if command -v fypp >/dev/null 2>&1 ; then
-    echo "fypp found"
     echo "fypp version: $(fypp --version)"
 else
     echo "fypp not found."

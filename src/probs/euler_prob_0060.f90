@@ -18,7 +18,14 @@ contains
         logical :: prime_pair_found, next_permutation_avail, checked
 
         call sieve_of_Eratosthenes(n(1), isprime)
-        primes = pack([(i, i=0, size(isprime))], isprime .eqv. .true.)
+        allocate (primes(count(isprime)))
+        k = 1
+        do i = 0, size(isprime) - 1
+            if (isprime(i)) then
+                primes(k) = isprime(i)
+                k = k + 1
+            end if
+        end do
 
         k = 5
         allocate (idx(k))
@@ -54,32 +61,6 @@ contains
         pow = digs_of_int(arr(2))
         ab = arr(1)*10**pow + arr(2)
     end function concatenate
-
-    function next_permutation(k, n, idx) result(ret)
-        integer(int64), intent(in) :: k, n
-        integer(int64), intent(inout) :: idx(k)
-        logical :: ret, carr(k)
-        integer(int64) :: i, x, end_arr(k)
-
-        end_arr = [(i, i=n - k + 1, n)]
-        ret = .true.
-        if (all(idx == end_arr)) then
-            ret = .false.
-            return
-        end if
-
-        carr = .true.
-        label_carry: do i = k, 1, -1
-            if (idx(i) == n - k + i) carr(i) = .false.
-        end do label_carry
-
-        if (all(carr .eqv. .true.)) then
-            idx(k) = idx(k) + 1
-        else
-            x = findloc(carr, value=.false., dim=1) - 1
-            idx(x:k) = [(idx(x) + i, i=1, k - x + 1)]
-        end if
-    end function next_permutation
 
     function checked_before(test_idx, conc_is_prime, flags) result(ret)
         integer(int64), intent(in) :: test_idx(:)

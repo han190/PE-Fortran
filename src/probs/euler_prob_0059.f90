@@ -10,7 +10,7 @@ contains
     integer function ans()
         integer, allocatable :: encrypted(:), decrypted(:)
         integer, parameter :: n = 26, k = 3
-        integer :: letters(n), idx(k), i, idx2(6, 3)
+        integer :: letters(n), idx(k), i, idx3(k), idx2(2*k, k)
         logical :: next_permutation_avail
 
         next_permutation_avail = .true.
@@ -27,13 +27,12 @@ contains
 
         outer: do while (next_permutation_avail)
             inner: do i = 1, size(idx2(:, 1))
-                associate (ii => idx(idx2(i, :)))
-                    call decrypt(encrypted, letters(ii), decrypted)
-                    if (is_english(decrypted)) then
-                        ans = sum(decrypted)
-                        return
-                    end if
-                end associate
+                idx3(:) = idx(idx2(i, :))
+                call decrypt(encrypted, letters(idx3), decrypted)
+                if (is_english(decrypted)) then
+                    ans = sum(decrypted)
+                    return
+                end if
             end do inner
             next_permutation_avail = next_permutation(k, n, idx)
         end do outer
