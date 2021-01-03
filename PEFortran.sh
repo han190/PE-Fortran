@@ -160,9 +160,7 @@ echo "Compile and precompile time: ${COMPILE_TIME} seconds"
 echo "Executing Project Euler with Modern Fortran..."
 ./pe-fortran --compute-all
 
-# Copy ANSWER.md to project root directory
 cd ${CUR}
 cp ${BLD}/ANSWER.md .
 echo "Copying ANSWER.md to project directory..."
-
 echo "The project is successfully compiled/executed!"
