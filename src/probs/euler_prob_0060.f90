@@ -22,7 +22,7 @@ contains
         k = 1
         do i = 0, size(isprime) - 1
             if (isprime(i)) then
-                primes(k) = isprime(i)
+                primes(k) = i
                 k = k + 1
             end if
         end do

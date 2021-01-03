@@ -10,7 +10,7 @@ contains
     integer function ans()
         integer, allocatable :: encrypted(:), decrypted(:)
         integer, parameter :: n = 26, k = 3
-        integer :: letters(n), idx(k), i, idx3(k), idx2(2*k, k)
+        integer :: letters(n), idx(k), idx2(2*k, k), key(k), i
         logical :: next_permutation_avail
 
         next_permutation_avail = .true.
@@ -27,8 +27,9 @@ contains
 
         outer: do while (next_permutation_avail)
             inner: do i = 1, size(idx2(:, 1))
-                idx3(:) = idx(idx2(i, :))
-                if (is_english(decrypted, letters(idx3))) then
+                key = letters(idx(idx2(i, :)))
+                call decrypt(encrypted, key, decrypted)
+                if (is_english(decrypted)) then
                     ans = sum(decrypted)
                     return
                 end if
@@ -76,13 +77,12 @@ contains
         end do
     end subroutine decrypt
 
-    function is_english(encrypted, key) result(ret)
-        integer, intent(in) :: encrypted(:), key(:)
+    function is_english(decrypted) result(ret)
+        integer, intent(in) :: decrypted(:)
         logical :: ret
         character(len=1) :: check_(8)
-        integer :: i, knt(8), decrypted(size(encrypted))
+        integer :: i, knt(8)
 
-        call decrypt(encrypted, key, decrypted)
         check_ = ["e", "t", "a", "o", "i", "n", "s", "h"]
         do i = 1, size(check_)
             knt(i) = count(decrypted == iachar(check_(i)))
