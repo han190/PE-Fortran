@@ -22,6 +22,7 @@ contains
         encrypted = 0
         read (iunit, *, iostat=istat) encrypted
         call remove_trailing_zeros(encrypted)
+        close (59)
 
         letters = [(i, i=97, 122)]
         allocate (decrypted(size(encrypted)))

@@ -43,7 +43,7 @@ do
         ;;
         -d|--default)
             FC="gfortran"
-            BLD_OPT="release"
+            BLD_OPT="optimize"
             NPROB=${NPROB_MAX}
             shift
         ;;
@@ -51,12 +51,12 @@ do
             echo "Project Euler with Modern Fortran"
             echo "Version: ${VERSION}"
             echo "Flags possible:"
-            echo "  -b=, --build=       Build options: release/debug"
-            echo "  -c=, --compiler=    Compiler options: gfortran/ifort"
+            echo "  -b=, --build=       Build options: optimize/debug"
+            echo "  -c=, --compiler=    Compiler options: gfortran/ifort/flang"
             echo "  -n=, --num_prob=    Number of problems: (max=${NPROB_MAX})"
             echo "  -d,  --default      This implies:"
-            echo "                      --build=release --compiler=gfortran"
-            echo "                      --num_prob=${NPROB_MAX}(currently solved)"
+            echo "                      --build=optimize --compiler=gfortran"
+            echo "                      --num_prob=${NPROB_MAX}"
             echo "  -v,  --version      Check version."
             echo "  -r,  --remove       Remove build files and ANSWER.md."
             echo "  -h,  --help         To pop out this dialog."
@@ -89,7 +89,7 @@ if [[ -z ${FC} ]]; then
 fi
 
 if [[ -z ${BLD_OPT} ]]; then
-    BLD_OPT="release"
+    BLD_OPT="optimize"
 fi
 
 if [[ -z "${NPROB}" ]]; then
@@ -102,14 +102,18 @@ checkIfCommandExists ${FC}
 echo "Build option: ${BLD_OPT}"
 echo "Number of problems tried: ${NPROB}"
 
-if [[ ${FC:0:8} == "gfortran" ]] && [[ ${BLD_OPT} == "release" ]]; then
+if [[ ${FC:0:8} == "gfortran" ]] && [[ ${BLD_OPT} == "optimize" ]]; then
     FCFLAGS="-O3 -ffast-math -std=f2018"
     elif [[ ${FC:0:8} == "gfortran" ]] && [[ ${BLD_OPT} == "debug" ]]; then
     FCFLAGS="-Wall -Wextra -fimplicit-none -fcheck=all -fbacktrace -std=f2018"
-    elif [[ ${FC:0:5} == "ifort" ]] && [[ ${BLD_OPT} == "release" ]]; then
+    elif [[ ${FC:0:5} == "ifort" ]] && [[ ${BLD_OPT} == "optimize" ]]; then
     FCFLAGS="-O3 -xHost -ipo"
     elif [[ ${FC:0:5} == "ifort" ]] && [[ ${BLD_OPT} == "debug" ]]; then
     FCFLAGS="-O0 -g -traceback -debug all -check all"
+    elif [[ ${FC:0:5} == "flang" ]] && [[ ${BLD_OPT} == "optimize" ]]; then
+    FCFLAGS="-O3 -ffast-math -std=f2018"
+    elif [[ ${FC:0:5} == "flang" ]] && [[ ${BLD_OPT} == "debug" ]]; then
+    FCFLAGS="-O0 -Wall -Wextra -fdebug-measure-parse-tree"
 fi
 
 COMPILE_F90="${FC} ${FCFLAGS} -c"
@@ -156,8 +160,9 @@ done
 
 # Genrate smod and obj files for all the problems
 echo "Compiling files in ./src/probs..."
-for f in "${PRB}/*"; do
-    ${COMPILE_F90} ${f}
+for i in $(seq -f "%04g" $NPROB); do
+    echo "Compiling euler_prob_${i}.f90..."
+    ${COMPILE_F90} ${PRB}/euler_prob_${i}.f90
 done
 
 echo "Compiling euler_main.f90..."
