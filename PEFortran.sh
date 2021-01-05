@@ -1,5 +1,17 @@
 #! /usr/bin/env bash
 
+# a function that checks if a command exit
+checkIfCommandExists () {
+    echo "Looking for $1..."
+    if command -v $1 >/dev/null 2>&1 ; then
+        echo "$1 found."
+    else 
+        echo "$1 not found."
+        echo "Please install $1 first."
+        exit
+    fi
+}
+
 # Number of problems
 NPROB_MAX=60
 VERSION="0.0.1"
@@ -86,7 +98,7 @@ fi
 
 echo "Project Euler with Modern Fortran"
 echo "Version: " ${VERSION}
-echo "Compiler used: ${FC}"
+checkIfCommandExists ${FC}
 echo "Build option: ${BLD_OPT}"
 echo "Number of problems tried: ${NPROB}"
 
@@ -105,15 +117,9 @@ echo "Compiler flags used: FCFLAGS=${FCFLAGS}"
 
 # Fortran preprocessor
 FYPP="fypp"
+checkIfCommandExists ${FYPP}
 FYPPFLAGS="-DNUM_PROB=${NPROB}"
 COMPILE_FPP="${FYPP} ${FYPPFLAGS}"
-if command -v fypp >/dev/null 2>&1 ; then
-    echo "fypp version: $(fypp --version)"
-else
-    echo "fypp not found."
-    echo "Please install fypp first"
-    exit
-fi
 
 # Make directory build if it doesn't exist
 # otherwise delete build and make a new one
@@ -130,14 +136,12 @@ UTIL_FILES=(\
     euler_poker euler_mi euler_lexical_sort\
 )
 
-# Go to directory
+# Go to directory and copy all the data files
 cd ${BLD}
-
-# Copy all the data files
 cp ${DAT}/*.txt .
 
 # Compile files in utils
-TIME1=`date +%s`
+TIME_START=`date +%s`
 echo "Compiling files in ./src/utils..."
 for f in "${UTIL_FILES[@]}"; do
     ${COMPILE_F90} ${UTL}/${f}.f90
@@ -160,8 +164,8 @@ echo "Compiling euler_main.f90..."
 ${COMPILE_F90} ${SRC}/euler_main.f90
 echo "Creating executable..."
 ${FC} ${FCFLAGS} -o pe-fortran *.o
-TIME2=`date +%s`
-COMPILE_TIME=$((TIME2 - TIME1))
+TIME_END=`date +%s`
+COMPILE_TIME=$((TIME_END - TIME_START))
 echo "Compile and precompile time: ${COMPILE_TIME} seconds"
 echo "Executing Project Euler with Modern Fortran..."
 ./pe-fortran --compute-all
