@@ -16,60 +16,60 @@ BLD="${CUR}/build"
 
 for i in "$@"
 do
-case $i in
-    -b=*|--build=*)
-    BLD_OPT="${i#*=}"
-    shift
-    ;;
-    -c=*|--compiler=*)
-    FC="${i#*=}"
-    shift
-    ;;
-    -n=*|--num_prob=*)
-    NPROB="${i#*=}"
-    shift
-    ;;
-    -d|--default)
-    FC="gfortran"
-    BLD_OPT="release"
-    NPROB=${NPROB_MAX}
-    shift
-    ;;
-    -h|--help)
-    echo "Project Euler with Modern Fortran"
-    echo "Version: ${VERSION}"
-    echo "Flags possible:"
-    echo "  -b=, --build=       Build options: release/debug"
-    echo "  -c=, --compiler=    Compiler options: gfortran/ifort"
-    echo "  -n=, --num_prob=    Number of problems: (max=${NPROB_MAX})"
-    echo "  -d,  --default      This implies:"
-    echo "                      --build=release --compiler=gfortran"
-    echo "                      --num_prob=${NPROB_MAX}(currently solved)"
-    echo "  -v,  --version      Check version."
-    echo "  -r,  --remove       Remove build files and ANSWER.md."
-    echo "  -h,  --help         To pop out this dialog."
-    exit
-    shift
-    ;;
-    -v|--version)
-    echo ${VERSION}
-    exit
-    shift
-    ;;
-    -r|--remove)
-    if [[ -d ${BLD} ]]; then
-        rm -r ${BLD}
-    else
-        echo "Folder build doesn't exist."
-    fi
-
-    if [[ -f ANSWER.md ]]; then
-        rm ANSWER.md
-    else
-        echo "File ANSWER.md doesn't exist."
-    fi
-    exit
-esac
+    case $i in
+        -b=*|--build=*)
+            BLD_OPT="${i#*=}"
+            shift
+        ;;
+        -c=*|--compiler=*)
+            FC="${i#*=}"
+            shift
+        ;;
+        -n=*|--num_prob=*)
+            NPROB="${i#*=}"
+            shift
+        ;;
+        -d|--default)
+            FC="gfortran"
+            BLD_OPT="release"
+            NPROB=${NPROB_MAX}
+            shift
+        ;;
+        -h|--help)
+            echo "Project Euler with Modern Fortran"
+            echo "Version: ${VERSION}"
+            echo "Flags possible:"
+            echo "  -b=, --build=       Build options: release/debug"
+            echo "  -c=, --compiler=    Compiler options: gfortran/ifort"
+            echo "  -n=, --num_prob=    Number of problems: (max=${NPROB_MAX})"
+            echo "  -d,  --default      This implies:"
+            echo "                      --build=release --compiler=gfortran"
+            echo "                      --num_prob=${NPROB_MAX}(currently solved)"
+            echo "  -v,  --version      Check version."
+            echo "  -r,  --remove       Remove build files and ANSWER.md."
+            echo "  -h,  --help         To pop out this dialog."
+            exit
+            shift
+        ;;
+        -v|--version)
+            echo ${VERSION}
+            exit
+            shift
+        ;;
+        -r|--remove)
+            if [[ -d ${BLD} ]]; then
+                rm -r ${BLD}
+            else
+                echo "Folder build doesn't exist."
+            fi
+            
+            if [[ -f ANSWER.md ]]; then
+                rm ANSWER.md
+            else
+                echo "File ANSWER.md doesn't exist."
+            fi
+            exit
+    esac
 done
 
 if [[ -z ${FC} ]]; then
@@ -92,11 +92,11 @@ echo "Number of problems tried: ${NPROB}"
 
 if [[ ${FC:0:8} == "gfortran" ]] && [[ ${BLD_OPT} == "release" ]]; then
     FCFLAGS="-O3 -ffast-math -std=f2018"
-elif [[ ${FC:0:8} == "gfortran" ]] && [[ ${BLD_OPT} == "debug" ]]; then
+    elif [[ ${FC:0:8} == "gfortran" ]] && [[ ${BLD_OPT} == "debug" ]]; then
     FCFLAGS="-Wall -Wextra -fimplicit-none -fcheck=all -fbacktrace -std=f2018"
-elif [[ ${FC:0:5} == "ifort" ]] && [[ ${BLD_OPT} == "release" ]]; then
+    elif [[ ${FC:0:5} == "ifort" ]] && [[ ${BLD_OPT} == "release" ]]; then
     FCFLAGS="-O3 -xHost -ipo"
-elif [[ ${FC:0:5} == "ifort" ]] && [[ ${BLD_OPT} == "debug" ]]; then
+    elif [[ ${FC:0:5} == "ifort" ]] && [[ ${BLD_OPT} == "debug" ]]; then
     FCFLAGS="-O0 -g -traceback -debug all -check all"
 fi
 
@@ -125,8 +125,10 @@ mkdir build
 # File names
 # Fypp files, utility files
 FYPP_FILES=(euler_interface euler_prob_api)
-UTIL_FILES=(euler_var_arr euler_utils euler_primes \
-            euler_poker euler_mi euler_lexical_sort)
+UTIL_FILES=(\
+    euler_var_arr euler_utils euler_primes \
+    euler_poker euler_mi euler_lexical_sort\
+)
 
 # Go to directory
 cd ${BLD}
