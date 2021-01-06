@@ -8,8 +8,6 @@ contains
     end function euler0022
 
     integer function ans()
-        use euler_lexical_sort_m, only: lexical_sort
-        implicit none
         integer :: i, j, istat, tmp
         character(len=:), allocatable :: names(:)
 
@@ -38,5 +36,50 @@ contains
         end do
         score_of_letters = s
     end function score_of_letters
+
+    subroutine lexical_sort(a)
+        character(len=*), intent(inout) :: a(:)
+
+        call quick_sort(a, 1, size(a))
+    end subroutine lexical_sort
+
+    recursive subroutine quick_sort(a, low, high)
+        character(len=*), intent(inout) :: a(:)
+        integer, intent(in) :: low, high
+        integer :: p
+
+        if (low < high) then
+            p = partition(a, low, high)
+            call quick_sort(a, low, p - 1)
+            call quick_sort(a, p + 1, high)
+        end if
+    end subroutine quick_sort
+
+    function partition(a, low, high) result(i)
+        character(len=*), intent(inout) :: a(:)
+        integer, intent(in) :: low, high
+        character(len=:), allocatable :: pivot
+        integer :: i, j
+
+        allocate (character(len=len(a(high))) :: pivot)
+        pivot = a(high)
+        i = low
+        do j = low, high
+            if (a(j) < pivot) then
+                call swap_chr(a(i), a(j))
+                i = i + 1
+            end if
+        end do
+        call swap_chr(a(i), a(high))
+    end function partition
+
+    subroutine swap_chr(a, b)
+        character(len=*), intent(inout) :: a, b
+        character(len=len(a)) :: tmp
+
+        tmp = a
+        a = b
+        b = tmp
+    end subroutine swap_chr
 
 end submodule euler_prob_0022_m

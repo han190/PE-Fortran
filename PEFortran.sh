@@ -136,7 +136,6 @@ FYPP_FILES=(euler_interface euler_prob_api)
 UTIL_FILES=(                    \
     euler_var_arr euler_utils   \
     euler_primes euler_mi       \
-    euler_lexical_sort          \
 )
 
 # Go to directory and copy all the data files
