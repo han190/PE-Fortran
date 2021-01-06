@@ -57,7 +57,7 @@ do
             echo "                      --num_prob=${NPROB_MAX}"
             echo "  -v,  --version      Check version."
             echo "  -r,  --remove       Remove build files and ANSWER.md."
-            echo "  -h,  --help         To pop out this dialog."
+            echo "  -h,  --help         Pop out this message."
             exit
             shift
         ;;
@@ -133,7 +133,11 @@ mkdir build
 # File names
 # Fypp files, utility files
 FYPP_FILES=(euler_interface euler_prob_api)
-UTIL_FILES=(euler_var_arr euler_utils euler_primes euler_mi euler_lexical_sort)
+UTIL_FILES=(                    \
+    euler_var_arr euler_utils   \
+    euler_primes euler_mi       \
+    euler_lexical_sort          \
+)
 
 # Go to directory and copy all the data files
 cd ${BLD}
@@ -156,7 +160,6 @@ done
 # Genrate smod and obj files for all the problems
 echo "Compiling files in ./src/probs..."
 for i in $(seq -f "%04g" $NPROB); do
-    echo "Compiling euler_prob_${i}.f90..."
     ${COMPILE_F90} ${PRB}/euler_prob_${i}.f90
 done
 
