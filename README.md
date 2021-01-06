@@ -1,6 +1,6 @@
 # Yet another Project Euler solutions...
 
-[Project Euler](https://projecteuler.net/about) is a problem set. I solve PE problems to polish my Fortran skills, expand my math  knowledge base and most importantly, for fun. If you are looking for the same things, check it out! The project is tested with [`gfortran`](https://gcc.gnu.org/fortran/), [`ifort`](https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-fortran-compiler-release-notes.html) and [`flang`](https://releases.llvm.org/11.0.0/tools/flang/docs/ReleaseNotes.html). Also, [fypp](https://github.com/aradi/fypp) is used as the Fortran preprocessor. To install fypp the easist way is 
+[Project Euler](https://projecteuler.net/about) is a problem set. I solve PE problems to polish my Fortran skills, expand my math  knowledge base and most importantly, for fun. If you are looking for the same things, check it out! The project is tested with [gfortran](https://gcc.gnu.org/fortran/), [ifort](https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-fortran-compiler-release-notes.html) and [flang](https://releases.llvm.org/11.0.0/tools/flang/docs/ReleaseNotes.html). Also, [fypp](https://github.com/aradi/fypp) is used as the Fortran preprocessor. To install fypp the easist way is 
 
 ```shell
 pip install fypp
