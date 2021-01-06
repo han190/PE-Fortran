@@ -6,8 +6,7 @@ checkIfCommandExists () {
     if command -v $1 >/dev/null 2>&1 ; then
         echo "$1 found."
     else 
-        echo "$1 not found."
-        echo "Please install $1 first."
+        echo "[STOPPED] $1 not found. Please install $1 first."
         exit
     fi
 }
@@ -24,8 +23,7 @@ PRB="${SRC}/probs"
 UTL="${SRC}/utils"
 BLD="${CUR}/build"
 
-# Fortran compiler
-
+# Flags available
 for i in "$@"
 do
     case $i in
@@ -135,10 +133,7 @@ mkdir build
 # File names
 # Fypp files, utility files
 FYPP_FILES=(euler_interface euler_prob_api)
-UTIL_FILES=(\
-    euler_var_arr euler_utils euler_primes \
-    euler_poker euler_mi euler_lexical_sort\
-)
+UTIL_FILES=(euler_var_arr euler_utils euler_primes euler_mi euler_lexical_sort)
 
 # Go to directory and copy all the data files
 cd ${BLD}
