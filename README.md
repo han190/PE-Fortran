@@ -1,6 +1,6 @@
 # Yet another Project Euler solutions...
 
-[Project Euler](https://projecteuler.net/about) is a problem set. I solve PE problems to polish my Fortran skills, expand my math  knowledge base and most importantly, for fun. If you are looking for the same things, check it out! The project is tested with [`gfortran`](https://gcc.gnu.org/fortran/) (version >= 9.0) and [`ifort`](https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-fortran-compiler-release-notes.html). Also, [fypp](https://github.com/aradi/fypp) is used as the Fortran preprocessor. To install fypp the easist way is 
+[Project Euler](https://projecteuler.net/about) is a problem set. I solve PE problems to polish my Fortran skills, expand my math  knowledge base and most importantly, for fun. If you are looking for the same things, check it out! The project is tested with [`gfortran`](https://gcc.gnu.org/fortran/) (version >= 9.0), [`ifort`](https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-fortran-compiler-release-notes.html) and [`flang`](https://releases.llvm.org/11.0.0/tools/flang/docs/ReleaseNotes.html). Also, [fypp](https://github.com/aradi/fypp) is used as the Fortran preprocessor. To install fypp the easist way is 
 
 ```shell
 pip install fypp
@@ -21,15 +21,15 @@ the answers are saved in `ANSWER.md`. For further information, type `./PEFortran
 Project Euler with Modern Fortran
 Version: 0.0.1
 Flags possible:
-  -b=, --build=       Build options: release/debug
-  -c=, --compiler=    Compiler options: gfortran/ifort
+  -b=, --build=       Build options: optimize/debug
+  -c=, --compiler=    Compiler options: gfortran/ifort/flang
   -n=, --num_prob=    Number of problems: (max=60)
   -d,  --default      This implies:
-                      --build=release --compiler=gfortran
-                      --num_prob=60(currently solved)
+                      --build=optimize --compiler=gfortran
+                      --num_prob=60
   -v,  --version      Check version.
   -r,  --remove       Remove build files and ANSWER.md.
-  -h,  --help         To pop out this dialog.
+  -h,  --help         Pop out this message.
 ```
 
 ## A todo list
