@@ -88,13 +88,15 @@ contains
 
         write (*, *)
         write (*, "(a)") "Quick results:"
-        write (*, "(a20, i10)") "Problems solved:    ", int(nslv)
-        write (*, "(a20, f10.6, a)") "Total time spent:   ", tsum, "(s)"
-        write (*, "(a20, f10.6, a)") "Time spent/problem: ", tsum/nslv, "(s)"
+        write (*, 1123) "Problems solved/tried:  ", int(nslv), nop
+        write (*, 1124) "Total time spent:       ", tsum, "(s)"
+        write (*, 1124) "Time spent per problem: ", tsum/nslv, "(s)"
 
 1120    format("|", i6, "|", a20, "|", f10.6, "|", f9.4, "%|")
 1121    format("|Problems solved|", i4, "|")
-1122    format(a, f10.6, a)
+1122    format(a, f4.2, a)
+1123    format(a24, t27, i4.4, '/', i4.4)
+1124    format(a24, t27, f6.3, a)
 
         close (1)
     end subroutine compute_all
