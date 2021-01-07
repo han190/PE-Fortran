@@ -159,7 +159,6 @@ done
 # Genrate smod and obj files for all the problems
 echo "Compiling files in ./src/probs..."
 for i in $(seq -f "%04g" $NPROB); do
-    echo "Compiling problem ${i}..."
     ${COMPILE_F90} ${PRB}/euler_prob_${i}.f90
 done
 
