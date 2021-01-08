@@ -156,22 +156,16 @@ contains
             associate (ab => concatenate(test_pair(idx)), &
                        ba => concatenate(test_pair(idx(2:1:-1))))
                 if (ab <= size(isprime) .and. &
-                    (.not. isprime(ab))) then
-                        flag = idx
-                        try_succeed = .false.
-                        return
-                else if (.not. is_prime(ab)) then
+                    .not. isprime(ab) .or. &
+                    .not. is_prime(ab)) then
                         flag = idx
                         try_succeed = .false.
                         return
                 end if
 
                 if (ba <= size(isprime) .and. &
-                    (.not. isprime(ba))) then
-                        flag = idx(2:1:-1)
-                        try_succeed = .false.
-                        return
-                else if (.not. is_prime(ba)) then
+                    .not. isprime(ba) .or. &
+                    .not. is_prime(ba)) then
                         flag = idx(2:1:-1)
                         try_succeed = .false.
                         return
