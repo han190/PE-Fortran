@@ -109,7 +109,7 @@ if [[ ${FC:0:8} == "gfortran" ]] && [[ ${BLD_OPT} == "optimize" ]]; then
     elif [[ ${FC:0:5} == "ifort" ]] && [[ ${BLD_OPT} == "debug" ]]; then
     FCFLAGS="-O0 -g -traceback -debug all -check all"
     elif [[ ${FC:0:5} == "flang" ]] && [[ ${BLD_OPT} == "optimize" ]]; then
-    FCFLAGS="-O3 -ffast-math -std=f2018"
+    FCFLAGS="-Ofast"
     elif [[ ${FC:0:5} == "flang" ]] && [[ ${BLD_OPT} == "debug" ]]; then
     FCFLAGS="-O0 -Wall -Wextra -fdebug-measure-parse-tree"
 fi
