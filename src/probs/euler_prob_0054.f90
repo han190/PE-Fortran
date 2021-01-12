@@ -11,9 +11,7 @@ contains
         character(len=2) :: str_arr(10)
         integer :: istat, i
 
-        open (unit=54, file="euler0054.txt", &
-              status="old", action="read")
-        
+        open (unit=54, file="euler0054.txt", status="old", action="read")
         i = 0
         do
             read (54, *, iostat=istat) str_arr

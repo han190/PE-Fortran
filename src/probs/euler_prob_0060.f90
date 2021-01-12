@@ -158,17 +158,17 @@ contains
                 if (ab <= size(isprime) .and. &
                     .not. isprime(ab) .or. &
                     .not. is_prime(ab)) then
-                        flag = idx
-                        try_succeed = .false.
-                        return
+                    flag = idx
+                    try_succeed = .false.
+                    return
                 end if
 
                 if (ba <= size(isprime) .and. &
                     .not. isprime(ba) .or. &
                     .not. is_prime(ba)) then
-                        flag = idx(2:1:-1)
-                        try_succeed = .false.
-                        return
+                    flag = idx(2:1:-1)
+                    try_succeed = .false.
+                    return
                 end if
                 avail = next_permutation(k, n, idx)
             end associate
