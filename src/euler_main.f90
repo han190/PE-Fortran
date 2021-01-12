@@ -51,53 +51,48 @@ contains
         character(len=20), parameter :: failed = repeat(space, 19)//"x"
         character(len=7), parameter :: c_aligned = "|:"//repeat(dash, 4)//":"
         real :: t_f, t_i, tspan(nop), tsum = 0., nslv = 0.
-
         type(euler_probs_t) :: probs(nop)
-        integer :: i
+        integer :: i, iunit
+        character(len=100) :: fmt
 
         call euler_init(probs)
-
-        open (1, file=filename)
-        write (1, "(a)") "# Project Euler with Modern Fortran"//new_line("a")
-        write (1, "(a)") "## Compilers"//new_line("a")
-        write (1, "(a)") compiler_version()//new_line("a")
-        write (1, "(a)") "## Answers and Benchmarks"//new_line("a")
-        write (1, "(a)") "|Prob|Answer|Tspan(s)|T/Ttot(%)|"
-        write (1, "(a)") repeat(c_aligned, 4)//"|"
-
         do i = 1, nop
             call cpu_time(t_i)
             ans(i) = probs(i)%ans()
             call cpu_time(t_f)
             tspan(i) = t_f - t_i
         end do
-
         tsum = sum(tspan, dim=1)
         nslv = real(count(ans /= failed, dim=1))
 
-        do i = 1, nop
-            write (1, 1120) i, ans(i), tspan(i), tspan(i)/tsum*100.
-        end do
+        iunit = 1120
+        open (iunit, file=filename)
+        write (iunit, "(a)") "# Fortran PE Solutions"//new_line("a")
+        write (iunit, "(a)") "## Compilers"//new_line("a")
+        write (iunit, "(a)") compiler_version()
+        write (iunit, "(a)") new_line("a")//"## Summary"//new_line("a")
+        write (iunit, "(a)") "|Benchmarks|Results|"
+        write (iunit, "(a)") repeat(c_aligned, 2)//"|"
+        write (iunit, "('|Problems solved|', i4, '|')") int(nslv)
+        write (iunit, "('|Time spent|', f4.2, '(s)|')") tsum
+        write (iunit, "('|Time spent per problem|', f4.2, '(s)|')") tsum/nslv
+        write (iunit, "(a)") new_line("a")//"## Answers"//new_line("a")
+        write (iunit, "(a)") "|Prob|Answer|Tspan(s)|T/Ttot(%)|"
+        write (iunit, "(a)") repeat(c_aligned, 4)//"|"
+        fmt = "('|', i6, '|', a20, '|', f10.6, '|', f9.4, '%|')"
+        print_all_answers: do i = 1, nop
+            write (iunit, trim(fmt)) i, ans(i), tspan(i), tspan(i)/tsum*100.
+        end do print_all_answers
+        close(iunit)
 
-        write (1, "(a)") new_line("a")//"## Summary"//new_line("a")
-        write (1, "(a)") "|Benchmarks|Results|"
-        write (1, "(a)") repeat(c_aligned, 2)//"|"
-        write (1, 1121) int(nslv)
-        write (1, 1122) "|Total time spent|", tsum, "(s)|"
-        write (1, 1122) "|Average time spent per problem|", tsum/nslv, "(s)|"
-
-        write (*, *)
-        write (*, "(a)") "Quick results:"
-        write (*, 1123) "Problems solved/tried:  ", int(nslv), nop
-        write (*, 1124) "Total time spent:       ", tsum, "(s)"
-        write (*, 1124) "Time spent per problem: ", tsum/nslv, "(s)"
-
-1120    format("|", i6, "|", a20, "|", f10.6, "|", f9.4, "%|")
-1121    format("|Problems solved|", i4, "|")
-1122    format(a, f4.2, a)
-1123    format(a24, t27, i4.4, '/', i4.4)
-1124    format(a24, t27, f6.3, a)
-
-        close (1)
+        print "(a)", "==================================="
+        print "(a)", "       Fortran PE Solutions        "
+        print "(a)", "==================================="
+        print "(a)", "Quick results:"
+        fmt = "(a24, t27, i4.4, '/', i4.4)"
+        print trim(fmt), "Problems solved/tried:  ", int(nslv), nop
+        fmt = "(a24, t27, f6.3, a)"
+        print trim(fmt), "Total time spent:       ", tsum, "(s)"
+        print trim(fmt), "Time spent per problem: ", tsum/nslv, "(s)"
     end subroutine compute_all
 end program main
