@@ -35,13 +35,10 @@ program main
 contains
 
     subroutine get_help()
-        character(len=3) :: a
-
-        a = "(a)"
-        print a, "Project Euler with Modern Fortran"
-        print a, "Syntax:"
-        print a, "./pe-fortran -h/--help"
-        print a, "./pe-fortran -ca/--compute-all"
+        print "(a)", "Project Euler with Modern Fortran"
+        print "(a)", "Syntax:"
+        print "(a)", "./pe-fortran -h/--help"
+        print "(a)", "./pe-fortran -ca/--compute-all"
     end subroutine get_help
 
     subroutine compute_all(filename)
