@@ -91,5 +91,6 @@ contains
         fmt = "(a24, t27, f6.3, a)"
         print trim(fmt), "Total time spent:       ", tsum, "(s)"
         print trim(fmt), "Time spent per problem: ", tsum/nslv, "(s)"
+        print "(a)", "==================================="
     end subroutine compute_all
 end program main
