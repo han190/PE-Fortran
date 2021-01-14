@@ -7,12 +7,12 @@ contains
         write (euler0058, "(i20)") ans()
     end function euler0058
 
-    integer function ans()
+    integer(int64) function ans()
         use euler_primes_m, only: sieve_of_Eratosthenes
         implicit none
 
         logical, allocatable :: is_prime(:)
-        integer(int64) :: n, k, arr(3)
+        integer(int64) :: n, k, arr(4)
         integer(int64), parameter :: rng = 700000000_int64
 
         call sieve_of_Eratosthenes(rng, is_prime)
@@ -48,7 +48,7 @@ contains
         arr(4) = bottom_left
     end subroutine diagonal_nums
 
-    integer function side_len(n)
+    integer(int64) function side_len(n)
         integer(int64), intent(in) :: n
 
         side_len = n*2_int64 - 1_int64

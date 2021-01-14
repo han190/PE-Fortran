@@ -155,20 +155,32 @@ contains
         do while (avail)
             associate (ab => concatenate(test_pair(idx)), &
                        ba => concatenate(test_pair(idx(2:1:-1))))
-                if (ab <= size(isprime) .and. &
-                    .not. isprime(ab) .or. &
-                    .not. is_prime(ab)) then
-                    flag = idx
-                    try_succeed = .false.
-                    return
+                if (ab <= size(isprime)) then 
+                    if (.not. isprime(ab)) then
+                        flag = idx
+                        try_succeed = .false.
+                        return
+                    end if
+                else
+                    if (.not. is_prime(ab)) then
+                        flag = idx
+                        try_succeed = .false.
+                        return
+                    end if
                 end if
 
-                if (ba <= size(isprime) .and. &
-                    .not. isprime(ba) .or. &
-                    .not. is_prime(ba)) then
-                    flag = idx(2:1:-1)
-                    try_succeed = .false.
-                    return
+                if (ba <= size(isprime)) then
+                    if (.not. isprime(ba)) then
+                        flag = idx(2:1:-1)
+                        try_succeed = .false.
+                        return
+                    end if
+                else
+                    if (.not. is_prime(ba)) then
+                        flag = idx(2:1:-1)
+                        try_succeed = .false.
+                        return
+                    end if
                 end if
                 avail = next_permutation(k, n, idx)
             end associate

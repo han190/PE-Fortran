@@ -53,6 +53,7 @@ contains
         character(len=100) :: fmt
 
         call euler_init(probs)
+        tspan = 0.
         do i = 1, nop
             call cpu_time(t_i)
             ans(i) = probs(i)%ans()
@@ -71,8 +72,8 @@ contains
         write (iunit, "(a)") "|Benchmarks|Results|"
         write (iunit, "(a)") repeat(c_aligned, 2)//"|"
         write (iunit, "('|Problems solved|', i4, '|')") int(nslv)
-        write (iunit, "('|Time spent|', f4.2, '(s)|')") tsum
-        write (iunit, "('|Time spent per problem|', f4.2, '(s)|')") tsum/nslv
+        write (iunit, "('|Time spent|', f9.2, '(s)|')") tsum
+        write (iunit, "('|Time spent per problem|', f9.2, '(s)|')") tsum/nslv
         write (iunit, "(a)") new_line("a")//"## Answers"//new_line("a")
         write (iunit, "(a)") "|Prob|Answer|Tspan(s)|T/Ttot(%)|"
         write (iunit, "(a)") repeat(c_aligned, 4)//"|"
