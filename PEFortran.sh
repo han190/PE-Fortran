@@ -46,7 +46,7 @@ do
             shift
         ;;
         -h|--help)
-            echo "Fortran PE Solutions (Version: ${VERSION})"
+            echo "Fortran Solutions to Project Euler (Version: ${VERSION})"
             echo "------------------------------------------------------------"
             echo "Flags possible:"
             echo "  -b=, --build=       Build options: optimize/debug"
