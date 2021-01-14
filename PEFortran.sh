@@ -46,8 +46,8 @@ do
             shift
         ;;
         -h|--help)
-            echo "Project Euler with Modern Fortran"
-            echo "Version: ${VERSION}"
+            echo "Fortran PE Solutions (Version: ${VERSION})"
+            echo "------------------------------------------------------------"
             echo "Flags possible:"
             echo "  -b=, --build=       Build options: optimize/debug"
             echo "  -c=, --compiler=    Compiler options: gfortran/ifort/flang"
@@ -58,6 +58,7 @@ do
             echo "  -v,  --version      Check version."
             echo "  -r,  --remove       Remove build files and ANSWER.md."
             echo "  -h,  --help         Pop out this message."
+            echo "------------------------------------------------------------"
             exit
             shift
         ;;
