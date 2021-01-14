@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-# a function that checks if a command exit
+# Functions
 checkIfCommandExists () {
     echo "Looking for $1..."
     if command -v $1 >/dev/null 2>&1 ; then
@@ -9,6 +9,22 @@ checkIfCommandExists () {
         echo "[STOPPED] $1 not found. Please install $1 first."
         exit
     fi
+}
+
+helpMessage () {
+    echo "Fortran Solutions to Project Euler (Version: ${VERSION})"
+    echo "------------------------------------------------------------"
+    echo "Flags possible:"
+    echo "  -b=, --build=       Build options: optimize/debug"
+    echo "  -c=, --compiler=    Compiler options: gfortran/ifort/flang"
+    echo "  -n=, --num_prob=    Number of problems: (max=${NPROB_MAX})"
+    echo "  -d,  --default      This implies:"
+    echo "                      --build=optimize --compiler=gfortran"
+    echo "                      --num_prob=${NPROB_MAX}"
+    echo "  -v,  --version      Check version."
+    echo "  -r,  --remove       Remove build files and ANSWER.md."
+    echo "  -h,  --help         Pop out this message."
+    echo "------------------------------------------------------------"
 }
 
 # Number of problems
@@ -46,19 +62,7 @@ do
             shift
         ;;
         -h|--help)
-            echo "Fortran Solutions to Project Euler (Version: ${VERSION})"
-            echo "------------------------------------------------------------"
-            echo "Flags possible:"
-            echo "  -b=, --build=       Build options: optimize/debug"
-            echo "  -c=, --compiler=    Compiler options: gfortran/ifort/flang"
-            echo "  -n=, --num_prob=    Number of problems: (max=${NPROB_MAX})"
-            echo "  -d,  --default      This implies:"
-            echo "                      --build=optimize --compiler=gfortran"
-            echo "                      --num_prob=${NPROB_MAX}"
-            echo "  -v,  --version      Check version."
-            echo "  -r,  --remove       Remove build files and ANSWER.md."
-            echo "  -h,  --help         Pop out this message."
-            echo "------------------------------------------------------------"
+            helpMessage
             exit
             shift
         ;;
