@@ -12,26 +12,25 @@ contains
         integer :: i, count_arr(n)
 
         do i = 1, n
-            count_arr(i) = rhgt_tri_w_p(i)
+            count_arr(i) = right_triangle_with_perimeter(i)
         end do
 
         ans = maxloc(count_arr, dim=1)
     end function ans
 
-    integer function rhgt_tri_w_p(p)
+    integer function right_triangle_with_perimeter(p)
         integer, intent(in) :: p
-        integer :: i, j, k, tmp
+        integer :: i, j, k, t
 
-        tmp = 0
+        t = 0
         do i = 1, p/2 + 1
             do j = 1, p - i - 1
                 k = p - i - j
-                if (is_right_triangle(i, j, k)) tmp = tmp + 1
+                if (is_right_triangle(i, j, k)) t = t + 1
             end do
         end do
-
-        rhgt_tri_w_p = tmp
-    end function rhgt_tri_w_p
+        right_triangle_with_perimeter = t
+    end function right_triangle_with_perimeter
 
     logical function is_right_triangle(i, j, k)
         integer, intent(in) :: i, j, k
