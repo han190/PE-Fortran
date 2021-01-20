@@ -12,13 +12,10 @@ contains
         integer, allocatable :: iarr(:)
         integer :: i, j, l
 
-        l = floor( &
-            real(n)* &
-            log10(2.0) + 1.0 &
-            )
-
+        l = floor(real(n)*log10(2.0) + 1.0)
         allocate (iarr(l))
-        iarr = 0; iarr(l) = 1
+        iarr = 0
+        iarr(l) = 1
 
         do i = 1, n
             iarr = iarr*2

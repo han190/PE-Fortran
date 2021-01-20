@@ -27,8 +27,7 @@ contains
         do j = 50_int64, 2_int64, -1_int64
             t = tmp(j)
             tmp(j) = tmp(j) - (tmp(j)/10_int64)*10_int64
-            tmp(j - 1_int64) = tmp(j - 1_int64) + &
-                               (t - tmp(j))/10_int64
+            tmp(j - 1_int64) = tmp(j - 1_int64) + (t - tmp(j))/10_int64
         end do
 
         k = floor(log10(real(tmp(1))) + 1_int64)

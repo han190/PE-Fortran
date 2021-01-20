@@ -26,22 +26,20 @@ contains
         do i = 1, p/2 + 1
             do j = 1, p - i - 1
                 k = p - i - j
-                if ( &
-                    is_rght_tri(i, j, k) &
-                    ) tmp = tmp + 1
+                if (is_right_triangle(i, j, k)) tmp = tmp + 1
             end do
         end do
 
         rhgt_tri_w_p = tmp
     end function rhgt_tri_w_p
 
-    logical function is_rght_tri(i, j, k)
+    logical function is_right_triangle(i, j, k)
         integer, intent(in) :: i, j, k
 
-        is_rght_tri = .false.
+        is_right_triangle = .false.
         if (i**2 + j**2 == k**2) then
-            is_rght_tri = .true.
+            is_right_triangle = .true.
         end if
-    end function is_rght_tri
+    end function is_right_triangle
 
 end submodule euler_prob_0039_m

@@ -155,7 +155,7 @@ contains
         do while (avail)
             associate (ab => concatenate(test_pair(idx)), &
                        ba => concatenate(test_pair(idx(2:1:-1))))
-                if (ab <= size(isprime)) then 
+                if (ab <= size(isprime)) then
                     if (.not. isprime(ab)) then
                         flag = idx
                         try_succeed = .false.

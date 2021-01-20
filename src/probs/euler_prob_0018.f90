@@ -12,18 +12,14 @@ contains
         implicit none
         integer, intent(in) :: n
         type(var_arr_t), allocatable :: var_arr(:)
-        integer :: i, j
+        integer :: i, j, x
 
         allocate (var_arr(n))
         do i = 1, n
             allocate (var_arr(i)%arr(i))
         end do
 
-        open ( &
-            unit=18, file="euler0018.txt", &
-            status="old", action="read" &
-            )
-
+        open (unit=18, file="euler0018.txt", status="old", action="read")
         do i = 1, n
             read (18, *) var_arr(i)%arr
         end do
@@ -31,10 +27,8 @@ contains
 
         do j = n - 1, 1, -1
             do i = 1, j
-                var_arr(j)%arr(i) = max( &
-                                    var_arr(j + 1)%arr(i), &
-                                    var_arr(j + 1)%arr(i + 1) &
-                                    ) + var_arr(j)%arr(i)
+                x = max(var_arr(j + 1)%arr(i), var_arr(j + 1)%arr(i + 1))
+                var_arr(j)%arr(i) = x + var_arr(j)%arr(i)
             end do
         end do
         ans = var_arr(1)%arr(1)

@@ -29,11 +29,7 @@ contains
             end if
         end do
 
-        allocate ( &
-            bndnt_arr( &
-            count(bndnt_drft /= 0) &
-            ) &
-            )
+        allocate (bndnt_arr(count(bndnt_drft /= 0)))
 
         ! bndnt_arr = pack(                                                    &
         !     bndnt_drft,                                                      &
@@ -50,10 +46,7 @@ contains
         can_be_written = .true.
         outer: do i = 1, size(bndnt_arr)
             inner: do j = 1, size(bndnt_arr)
-                associate ( &
-                    x => bndnt_arr(i) + &
-                    bndnt_arr(j) &
-                    )
+                associate (x => bndnt_arr(i) + bndnt_arr(j))
                     if (x < n + 1) then
                         can_be_written(x) = .false.
                     else
@@ -63,19 +56,8 @@ contains
             end do inner
         end do outer
 
-        !nums = [(i, i=1, n)]
-        do i = 1, n
-            nums(i) = i
-        end do
-
-        !tmp = sum( pack(nums, can_be_written), dim = 1 )
-        tmp = 0
-        do i = 1, size(nums)
-            if (can_be_written(i)) then
-                tmp = tmp + nums(i)
-            end if
-        end do
-
+        nums = [(i, i=1, n)]
+        tmp = sum(pack(nums, can_be_written), dim=1)
         ans = tmp
     end function ans
 end submodule euler_prob_0023_m

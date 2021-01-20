@@ -16,10 +16,7 @@ contains
 
         call sieve_of_Eratosthenes(n, is_prime)
         do i = n, 1, -1
-            if ( &
-                is_prime(i) .and. &
-                is_pandigital(i, digs_of_int(i)) &
-                ) exit
+            if (is_prime(i) .and. is_pandigital(i, digs_of_int(i))) exit
         end do
 
         ans = i

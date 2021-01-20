@@ -15,9 +15,7 @@ contains
         d = [(1, i=1, 6)]
 
         do i = 2, 6
-            associate ( &
-                x => floor(real((10**i - dig_arr(i))/i), sp) &
-                )
+            associate (x => floor(real((10**i - dig_arr(i))/i), sp))
                 d(i) = x + 10**(i - 1) - 1
             end associate
 

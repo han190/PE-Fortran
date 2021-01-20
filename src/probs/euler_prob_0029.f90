@@ -17,9 +17,7 @@ contains
             do j = 2, n + 1
                 arr_of_nums(1, j - 1, i - 1) = j
                 arr_of_nums(2, j - 1, i - 1) = i
-                call simplify_powers( &
-                    arr_of_nums(:, j - 1, i - 1) &
-                    )
+                call simplify_powers(arr_of_nums(:, j - 1, i - 1))
             end do
         end do
 
@@ -28,10 +26,8 @@ contains
 
         outer: do i = 2, n*n
             inner: do j = 1, k
-                if ( &
-                    res(1, j) == arr(1, i) .and. &
-                    res(2, j) == arr(2, i) &
-                    ) cycle outer
+                if (res(1, j) == arr(1, i) .and. &
+                    res(2, j) == arr(2, i)) cycle outer
             end do inner
             k = k + 1
             res(1:2, k) = arr(1:2, i)

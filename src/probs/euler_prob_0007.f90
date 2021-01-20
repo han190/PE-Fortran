@@ -17,9 +17,7 @@ contains
         loop_1: do
             if (j == n + 1) exit loop_1
             i = i + 1
-            if ( &
-                mod(i, 2) == 2 .and. i /= 2 &
-                ) then
+            if (mod(i, 2) == 2 .and. i /= 2) then
                 cycle loop_1
             else if (is_prime(int(i))) then
                 j = j + 1

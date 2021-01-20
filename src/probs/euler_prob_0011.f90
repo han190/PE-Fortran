@@ -11,10 +11,7 @@ contains
         integer :: int_arr(20, 20), the_box(4, 4)
         integer :: i, j, prod_max
 
-        open ( &
-            unit=11, file="euler0011.txt", &
-            status="old", action="read" &
-            )
+        open (unit=11, file="euler0011.txt", status="old", action="read")
         read (11, *) int_arr
         close (11)
 
@@ -40,10 +37,8 @@ contains
             d2(k) = m(k, 5 - k)
         end do
 
-        max_block = max( &
-                    product(m(1:4, 1)), product(m(1:4, 4)), &
-                    product(m(1, 1:4)), product(m(4, 1:4)), &
-                    product(d1(1:4)), product(d2(1:4)) &
-                    )
+        max_block = max(product(m(1:4, 1)), product(m(1:4, 4)), &
+                        product(m(1, 1:4)), product(m(4, 1:4)), &
+                        product(d1(1:4)), product(d2(1:4)))
     end function max_block
 end submodule euler_prob_0011_m

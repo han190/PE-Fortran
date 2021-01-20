@@ -21,10 +21,7 @@ contains
             end if
 
             p = p + (i - i/10_int64)*next_ten_pow
-            if ( &
-                p <= n .and. &
-                is_palindromic_2(p) &
-                ) isum = isum + p
+            if (p <= n .and. is_palindromic_2(p)) isum = isum + p
 
             i = i + 1_int64
             if (i == next_ten_pow) then

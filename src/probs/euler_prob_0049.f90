@@ -21,11 +21,7 @@ contains
             b = a - 3330
             c = b - 3330
 
-            cond = &
-                is_prime(a) .and. &
-                is_prime(b) .and. &
-                is_prime(c)
-
+            cond = is_prime(a) .and. is_prime(b) .and. is_prime(c)
             if (.not. cond) cycle
 
             call sort_int(a)

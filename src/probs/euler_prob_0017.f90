@@ -68,8 +68,7 @@ contains
         else
             d1 = (n/10)*10
             d2 = n - d1
-            count_letters10 = &
-                count_letters(d1) + count_letters(d2)
+            count_letters10 = count_letters(d1) + count_letters(d2)
         end if
 
         if (n == 0) then

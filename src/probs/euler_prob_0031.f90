@@ -18,10 +18,7 @@ contains
 
         outer: do j = 0, n
             inner: do i = 1, 7
-                associate ( &
-                    next => ans_arr(i, j), &
-                    prev => ans_arr(i - 1, j) &
-                    )
+                associate (next => ans_arr(i, j), prev => ans_arr(i - 1, j))
                     if (j < coins(i)) then
                         next = prev
                     else

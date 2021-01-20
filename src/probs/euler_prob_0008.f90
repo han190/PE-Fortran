@@ -19,9 +19,7 @@ contains
 
         tmp = 0_int64
         do i = 1_int64, 988_int64
-            if ( &
-                product(long_int(i:i + 12_int64)) > tmp &
-                ) then
+            if (product(long_int(i:i + 12_int64)) > tmp) then
                 tmp = product(long_int(i:i + 12_int64))
             end if
         end do

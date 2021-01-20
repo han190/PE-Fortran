@@ -11,34 +11,26 @@ contains
         integer(int64) :: temp, i, j, k, arr_of_prods(9)
         integer(int64), allocatable :: arr_of_nonrepeats(:)
 
-        k = 1_int64
-        do i = 1_int64, 9_int64
-            do j = 1234_int64, 9876_int64
-                if ( &
-                    digs_of_int(i*j) > 4_int64 &
-                    ) cycle
-                temp = i*10_int64**8 + j*10_int64**4 + i*j
+        k = 1
+        do i = 1, 9
+            do j = 1234, 9876
+                if (digs_of_int(i*j) > 4) cycle
+                temp = i*10**8 + j*10**4 + i*j
 
-                if ( &
-                    is_pandigital(temp, digs_of_int(temp)) &
-                    ) then
+                if (is_pandigital(temp, digs_of_int(temp))) then
                     arr_of_prods(k) = i*j
-                    k = k + 1_int64
+                    k = k + 1
                 end if
             end do
         end do
 
-        do i = 12_int64, 98_int64
-            do j = 123_int64, 987_int64
-                if ( &
-                    digs_of_int(i*j) > 4_int64 &
-                    ) cycle
-                temp = i*10_int64**7 + j*10_int64**4 + i*j
-                if ( &
-                    is_pandigital(temp, digs_of_int(temp)) &
-                    ) then
+        do i = 12, 98
+            do j = 123, 987
+                if (digs_of_int(i*j) > 4) cycle
+                temp = i*10**7 + j*10**4 + i*j
+                if (is_pandigital(temp, digs_of_int(temp))) then
                     arr_of_prods(k) = i*j
-                    k = k + 1_int64
+                    k = k + 1
                 end if
             end do
         end do
@@ -52,13 +44,13 @@ contains
         integer(int64), allocatable, intent(out) :: o_arr(:)
         integer(int64) :: i, k, tmp_arr(size(i_arr))
 
-        tmp_arr = 0_int64
-        k = 1_int64
+        tmp_arr = 0
+        k = 1
         tmp_arr(1) = i_arr(1)
 
-        do i = 2_int64, size(i_arr)
+        do i = 2, size(i_arr)
             if (any(tmp_arr == i_arr(i))) cycle
-            k = k + 1_int64
+            k = k + 1
             tmp_arr(k) = i_arr(i)
         end do
 

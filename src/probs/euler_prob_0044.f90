@@ -66,10 +66,7 @@ contains
         end if
 
         associate (x => sqrt(24.0_sp*real(p) + 1.0_sp))
-            if ( &
-                is_int(x) .and. &
-                mod(int(x, int64), 6_int64) == 5_int64 &
-                ) then
+            if (is_int(x) .and. mod(int(x, int64), 6_int64) == 5_int64) then
                 is_pen = .true.
             else
                 is_pen = .false.

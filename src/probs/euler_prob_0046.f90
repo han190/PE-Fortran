@@ -24,10 +24,7 @@ contains
             not_found = .false.
 
             inner: do while (res >= j)
-                if ( &
-                    is_prime(j) .and. &
-                    is_twice_square(res - j) &
-                    ) then
+                if (is_prime(j) .and. is_twice_square(res - j)) then
                     not_found = .true.
                     exit inner
                 end if
@@ -45,11 +42,8 @@ contains
         is_twice_square = .false.
         sqrt_nover2 = sqrt(0.5_dp*real(n, dp))
 
-        if ( &
-            sqrt_nover2 - &
-            real(floor(sqrt_nover2), dp) < &
-            tiny_dp &
-            ) is_twice_square = .true.
+        if (sqrt_nover2 - real(floor(sqrt_nover2), dp) < tiny_dp) &
+            is_twice_square = .true.
     end function is_twice_square
 
 end submodule euler_prob_0046_m

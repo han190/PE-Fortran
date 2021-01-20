@@ -11,16 +11,12 @@ contains
         integer, intent(in) :: n
         integer :: a, b, p_max
 
-        p_max = 0; a = 100
+        p_max = 0
+        a = 100
 
         do a = 100, n
             do b = 100, n
-                if ( &
-                    is_palindromic(a*b) .and. &
-                    a*b > p_max &
-                    ) then
-                    p_max = a*b
-                end if
+                if (is_palindromic(a*b) .and. a*b > p_max) p_max = a*b
             end do
         end do
 
