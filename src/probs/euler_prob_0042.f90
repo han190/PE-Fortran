@@ -10,15 +10,17 @@ contains
     integer function ans(n)
         integer, intent(in) :: n
         character(len=500) :: names(n)
-        integer :: stat, i, j
+        integer :: istat, iunit, i, j
         integer, parameter :: max_score = 26*20
         logical :: is_tri_num(max_score)
 
         call tri_num(max_score, is_tri_num)
 
         names = 'n/a'
-        open (unit=42, file="euler0042.txt", status="old", action="read")
-        read (42, *, iostat=stat) names(1:n)
+        iunit = 10042
+        open (unit=iunit, file="euler0042.txt", status="old", action="read")
+        read (iunit, *, iostat=istat) names(1:n)
+        close (iunit)
 
         i = 1
         j = 0

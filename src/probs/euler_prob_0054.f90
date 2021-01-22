@@ -9,16 +9,17 @@ contains
 
     integer function ans()
         character(len=2) :: str_arr(10)
-        integer :: istat, i
+        integer :: istat, iunit, i
 
-        open (unit=54, file="euler0054.txt", status="old", action="read")
+        iunit = 10054
+        open (unit=iunit, file="euler0054.txt", status="old", action="read")
         i = 0
         do
-            read (54, *, iostat=istat) str_arr
+            read (iunit, *, iostat=istat) str_arr
             if (istat /= 0) exit
             if (player_one_win(str_arr)) i = i + 1
         end do
-        close (54)
+        close (iunit)
         ans = i
     end function ans
 

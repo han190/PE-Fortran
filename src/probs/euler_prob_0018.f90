@@ -12,18 +12,19 @@ contains
         implicit none
         integer, intent(in) :: n
         type(var_arr_t), allocatable :: var_arr(:)
-        integer :: i, j, x
+        integer :: i, j, x, iunit
 
         allocate (var_arr(n))
         do i = 1, n
             allocate (var_arr(i)%arr(i))
         end do
 
-        open (unit=18, file="euler0018.txt", status="old", action="read")
+        iunit = 10018
+        open (unit=iunit, file="euler0018.txt", status="old", action="read")
         do i = 1, n
-            read (18, *) var_arr(i)%arr
+            read (iunit, *) var_arr(i)%arr
         end do
-        close (18)
+        close (iunit)
 
         do j = n - 1, 1, -1
             do i = 1, j

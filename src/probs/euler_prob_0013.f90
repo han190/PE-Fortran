@@ -8,14 +8,15 @@ contains
     end function euler0013
 
     integer(int64) function ans()
-        integer(int64) :: long_int(50, 100)
+        integer(int64) :: long_int(50, 100), iunit
         integer(int64) :: tmp(50), i, j, k, t
 
-        open (unit=13, file="euler0013.txt", status="old", action="read")
+        iunit = 10013
+        open (unit=iunit, file="euler0013.txt", status="old", action="read")
         do i = 1, 100
-            read (13, "(50(i1))") long_int(1_int64:50_int64, i)
+            read (iunit, "(50(i1))") long_int(1_int64:50_int64, i)
         end do
-        close (13)
+        close (iunit)
 
         do j = 50_int64, 1_int64, -1_int64
             tmp(j) = 0_int64

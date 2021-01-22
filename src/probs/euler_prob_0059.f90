@@ -16,13 +16,13 @@ contains
         integer, parameter :: large_number = 5000
 
         next_permutation_avail = .true.
-        iunit = 59
+        iunit = 10059
         open (unit=iunit, file="euler0059.txt", status="old")
         allocate (encrypted(large_number))
         encrypted = 0
         read (iunit, *, iostat=istat) encrypted
         call remove_trailing_zeros(encrypted)
-        close (59)
+        close (iunit)
 
         letters = [(i, i=97, 122)]
         allocate (decrypted(size(encrypted)))

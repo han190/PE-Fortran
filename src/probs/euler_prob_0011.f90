@@ -9,11 +9,12 @@ contains
 
     integer function ans()
         integer :: int_arr(20, 20), the_box(4, 4)
-        integer :: i, j, prod_max
+        integer :: i, j, prod_max, iunit
 
-        open (unit=11, file="euler0011.txt", status="old", action="read")
-        read (11, *) int_arr
-        close (11)
+        iunit = 10011
+        open (unit=iunit, file="euler0011.txt", status="old", action="read")
+        read (iunit, *) int_arr
+        close (iunit)
 
         prod_max = 0
         outer: do i = 1, 17

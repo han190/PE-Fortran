@@ -8,13 +8,15 @@ contains
     end function euler0022
 
     integer function ans()
-        integer :: i, j, istat, tmp
+        integer :: i, j, istat, iunit, tmp
         character(len=:), allocatable :: names(:)
 
-        open (unit=22, file="euler0022.txt", status="old", action="read")
+        iunit = 10022
+        open (unit=iunit, file="euler0022.txt", status="old", action="read")
         allocate (character(len=20) :: names(6000))
         names = "n/a"
-        read (22, *, iostat=istat) names
+        read (iunit, *, iostat=istat) names
+        close (iunit)
 
         i = count(names /= "n/a")
         call lexical_sort(names(1:i))
