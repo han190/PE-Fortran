@@ -12,7 +12,7 @@ checkIfCommandExists () {
 }
 
 helpMessage () {
-    echo "Fortran Solutions to Project Euler (Version: ${VERSION})"
+    echo "PE-Fortran (Version: ${VERSION})"
     echo "------------------------------------------------------------"
     echo "Flags possible:"
     echo "  -b=, --build=       Build options: optimize/debug"
@@ -25,6 +25,15 @@ helpMessage () {
     echo "  -r,  --remove       Remove build files and ANSWER.md."
     echo "  -h,  --help         Pop out this message."
     echo "------------------------------------------------------------"
+}
+
+printLogo () {   
+    echo
+    echo " _____  _____       _____            _                  "
+    echo "|  _  ||   __| ___ |   __| ___  ___ | |_  ___  ___  ___ "
+    echo "|   __||   __||___||   __|| . ||  _||  _||  _|| .'||   |"
+    echo "|__|   |_____|     |__|   |___||_|  |_|  |_|  |__,||_|_|"
+    echo
 }
 
 # Number of problems
@@ -62,6 +71,7 @@ do
             shift
         ;;
         -h|--help)
+            printLogo
             helpMessage
             exit
             shift
