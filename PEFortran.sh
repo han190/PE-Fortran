@@ -2,9 +2,8 @@
 
 # Functions
 checkIfCommandExists () {
-    echo "Looking for $1..."
     if command -v $1 >/dev/null 2>&1 ; then
-        echo "$1 found."
+        echo "Looking for $1... $1 found."
     else 
         echo "[STOPPED] $1 not found. Please install $1 first."
         exit
