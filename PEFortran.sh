@@ -154,7 +154,7 @@ UTIL_FILES=(                    \
 
 # Go to directory and copy all the data files
 cd ${BLD}
-cp ${DAT}/*.txt .
+ln -sf ${DAT}/*.txt .
 
 # Compile files in utils
 TIME_START=`date +%s`
