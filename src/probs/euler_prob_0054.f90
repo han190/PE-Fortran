@@ -38,11 +38,7 @@ contains
             v = findloc(value_arr(:), hands(i) (1:1), dim=1, back=.true.)
             s = findloc(suit_arr(:), hands(i) (2:2), dim=1)
             vals(v) = vals(v) + 1
-
-            if (v == 14) then
-                vals(1) = vals(1) + 1
-            end if
-
+            if (v == 14) vals(1) = vals(1) + 1
             suits(s) = suits(s) + 1
         end do
     end subroutine to_arrs
