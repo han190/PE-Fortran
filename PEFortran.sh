@@ -12,7 +12,6 @@ checkIfCommandExists () {
 
 helpMessage () {
     echo "PE-Fortran (Version: ${VERSION})"
-    echo "------------------------------------------------------------"
     echo "Flags possible:"
     echo "  -b=, --build=       Build options: optimize/debug"
     echo "  -c=, --compiler=    Compiler options: gfortran/ifort/flang"
@@ -23,7 +22,6 @@ helpMessage () {
     echo "  -v,  --version      Check version."
     echo "  -r,  --remove       Remove build files and ANSWER.md."
     echo "  -h,  --help         Pop out this message."
-    echo "------------------------------------------------------------"
 }
 
 printLogo () {   

@@ -53,7 +53,7 @@ contains
 
         ! Royal Flush
         if (all(vals(10:14) == 1) .and. any(suits(:) == 5)) then
-            x = findloc(suits(:), 5, dim=1)
+            x = findloc(suits, 5, dim=1)
             s_arr(1:2) = [10, x]
             return
         end if
@@ -62,7 +62,7 @@ contains
         if (any(suits(:) == 5)) then
             do x = 1, 10
                 if (all(vals(x:x + 4) == 1)) then
-                    y = findloc(suits(:), 5, dim=1)
+                    y = findloc(suits, 5, dim=1)
                     s_arr(1:3) = [9, x, y]
                     return
                 end if
@@ -71,16 +71,16 @@ contains
 
         ! Four of a kind
         if (any(vals(:) == 4)) then
-            x = findloc(vals(:), 4, dim=1, back=.true.)
-            y = findloc(vals(:), 1, dim=1, back=.true.)
+            x = findloc(vals, 4, dim=1, back=.true.)
+            y = findloc(vals, 1, dim=1, back=.true.)
             s_arr(1:3) = [8, x, y]
             return
         end if
 
         ! Full house
         if (any(vals(:) == 3) .and. any(vals(:) == 2)) then
-            x = findloc(vals(:), 3, dim=1, back=.true.)
-            y = findloc(vals(:), 2, dim=1, back=.true.)
+            x = findloc(vals, 3, dim=1, back=.true.)
+            y = findloc(vals, 2, dim=1, back=.true.)
             s_arr(1:3) = [7, x, y]
             return
         end if
@@ -102,8 +102,8 @@ contains
 
         ! Three of a kind
         if (any(vals(:) == 3)) then
-            x = findloc(vals(:), 3, dim=1, back=.true.)
-            y = findloc(vals(:), 1, dim=1, back=.true.)
+            x = findloc(vals, 3, dim=1, back=.true.)
+            y = findloc(vals, 1, dim=1, back=.true.)
             z = findloc(vals(2:14), 1, dim=1) + 1
             s_arr(1:4) = [4, x, y, z]
             return
@@ -111,16 +111,16 @@ contains
 
         ! Two pairs
         if (count(vals(2:14) == 2) == 2) then
-            x = findloc(vals(:), 2, dim=1, back=.true.)
+            x = findloc(vals, 2, dim=1, back=.true.)
             y = findloc(vals(2:14), 2, dim=1) + 1
-            z = findloc(vals(:), 1, dim=1, back=.true.)
+            z = findloc(vals, 1, dim=1, back=.true.)
             s_arr(1:4) = [3, x, y, z]
             return
         end if
 
         ! One pair
         if (any(vals(:) == 2)) then
-            x = findloc(vals(:), 2, dim=1, back=.true.)
+            x = findloc(vals, 2, dim=1, back=.true.)
             s_arr(1:2) = [2, x]
             call knt_one_by_one(3, vals, s_arr)
             return
