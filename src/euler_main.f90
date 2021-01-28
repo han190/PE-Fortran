@@ -83,15 +83,13 @@ contains
         end do print_all_answers
         close(iunit)
 
-        print "(a)", "==================================="
-        print "(a)", "       Fortran PE Solutions        "
-        print "(a)", "==================================="
-        print "(a)", "Quick results:"
+        print "(a)", "Fortran PE Solutions, Version (0.0.1) "
+        print "(a)", ">>> Quick results <<<"
         fmt = "(a24, t27, i4.4, '/', i4.4)"
         print trim(fmt), "Problems solved/tried:  ", int(nslv), nop
         fmt = "(a24, t27, f6.3, a)"
         print trim(fmt), "Total time spent:       ", tsum, "(s)"
         print trim(fmt), "Time spent per problem: ", tsum/nslv, "(s)"
-        print "(a)", "==================================="
     end subroutine compute_all
+
 end program main
