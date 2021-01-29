@@ -8,23 +8,18 @@ contains
     end function euler0058
 
     integer(int64) function ans()
-        use euler_primes_m, only: sieve_of_Eratosthenes
+        use euler_primes_m, only: is_prime
         implicit none
 
-        logical, allocatable :: is_prime(:)
-        integer(int64) :: n, k, arr(4)
-        integer(int64), parameter :: rng = 700000000_int64
+        integer(int64) :: n, k, i, arr(4)
 
-        call sieve_of_Eratosthenes(rng, is_prime)
         k = 0
         n = 2
-
         main_loop: do
             call diagonal_nums(n, arr)
-            if (arr(3) >= rng) then
-                error stop "Max range reached."
-            end if
-            k = k + count(is_prime(arr(1:3)))
+            do i = 1, 3
+                if (is_prime(arr(i))) k = k + 1
+            end do
 
             associate (p_nums => real(k), tot_nums => real((n - 1)*4 + 1))
                 if (p_nums/tot_nums < 0.1_sp) exit main_loop
