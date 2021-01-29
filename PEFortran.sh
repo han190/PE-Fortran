@@ -145,10 +145,7 @@ mkdir build
 # File names
 # Fypp files, utility files
 FYPP_FILES=(euler_interface euler_prob_api)
-UTIL_FILES=(                    \
-    euler_var_arr euler_utils   \
-    euler_primes euler_mi       \
-)
+UTIL_FILES=(euler_var_arr euler_utils euler_primes euler_mi)
 
 # Go to directory and copy all the data files
 cd ${BLD}
