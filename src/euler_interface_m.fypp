@@ -1,5 +1,7 @@
 module euler_interface_m
 
+    ! The code is automatically generated 
+    ! by fypp. Please do not modify it.
     use iso_fortran_env, only: int64
     use euler_utils_m
     implicit none

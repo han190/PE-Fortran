@@ -90,6 +90,7 @@ do
             else
                 echo "File ANSWER.md doesn't exist."
             fi
+            echo "All build files removed."
             exit
     esac
 done
@@ -144,8 +145,8 @@ mkdir build
 
 # File names
 # Fypp files, utility files
-FYPP_FILES=(euler_interface euler_prob_api)
-UTIL_FILES=(euler_var_arr euler_utils euler_primes euler_mi)
+FYPP_FILES=(euler_interface_m euler_prob_api_m)
+UTIL_FILES=(euler_var_arr_m euler_utils_m euler_primes_m euler_mi_m)
 
 # Go to directory and copy all the data files
 cd ${BLD}
@@ -168,7 +169,7 @@ done
 # Genrate smod and obj files for all the problems
 echo "Compiling files in ./src/probs..."
 for i in $(seq -f "%04g" $NPROB); do
-    ${COMPILE_F90} ${PRB}/euler_prob_${i}.f90
+    ${COMPILE_F90} ${PRB}/euler_interface_m\@euler_prob_${i}_m.f90
 done
 
 echo "Compiling euler_main.f90..."

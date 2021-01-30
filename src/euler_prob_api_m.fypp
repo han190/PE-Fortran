@@ -1,5 +1,7 @@
 module euler_prob_api_m
 
+    ! The code is automatically generated 
+    ! by fypp. Please do not modify it.
     use euler_interface_m
     implicit none
 
