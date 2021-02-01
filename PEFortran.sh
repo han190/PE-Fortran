@@ -33,6 +33,18 @@ printLogo () {
     echo
 }
 
+checkGfortranVer () {
+    CUR_V="$(gfortran -dumpversion)"
+    REQ_V="8.5.0"
+    if [ "$(printf '%s\n' "$REQ_V" "$CUR_V" | sort -V | head -n1)" = "$REQ_V" ]
+    then 
+        echo "Found gfortran version >= 9"
+    else
+        echo "[STOPPED] gfortran >= 9 is required."
+        exit
+    fi
+}
+
 # Number of problems
 NPROB_MAX=60
 VERSION="0.0.1"
@@ -99,6 +111,10 @@ if [[ -z ${FC} ]]; then
     FC="gfortran"
 fi
 
+if [[ -z ${FYPP} ]]; then
+    FYPP="fypp"
+fi
+
 if [[ -z ${BLD_OPT} ]]; then
     BLD_OPT="optimize"
 fi
@@ -107,9 +123,12 @@ if [[ -z "${NPROB}" ]]; then
     NPROB=${NPROB_MAX}
 fi
 
-echo "Project Euler with Modern Fortran"
-echo "Version: " ${VERSION}
 checkIfCommandExists ${FC}
+if [[ $FC = "gfortran" ]]; then
+    checkGfortranVer
+fi
+checkIfCommandExists ${FYPP}
+
 echo "Build option: ${BLD_OPT}"
 echo "Number of problems tried: ${NPROB}"
 
@@ -131,8 +150,6 @@ COMPILE_F90="${FC} ${FCFLAGS} -c"
 echo "Compiler flags used: FCFLAGS=${FCFLAGS}"
 
 # Fortran preprocessor
-FYPP="fypp"
-checkIfCommandExists ${FYPP}
 FYPPFLAGS="-DNUM_PROB=${NPROB}"
 COMPILE_FPP="${FYPP} ${FYPPFLAGS}"
 
@@ -154,21 +171,24 @@ ln -sf ${DAT}/*.txt .
 
 # Compile files in utils
 TIME_START=`date +%s`
-echo "Compiling files in ./src/utils..."
+# echo "Compiling files in ./src/utils..."
 for f in "${UTIL_FILES[@]}"; do
+    echo "Compiling ${f}.f90..."
     ${COMPILE_F90} ${UTL}/${f}.f90
 done
 
 # Pre-process fypp files and generate mod and obj files
-echo "Preprocessing and compiling files in ./src..."
 for f in "${FYPP_FILES[@]}"; do
+    echo "Precompiling ${f}.fypp..."
     ${COMPILE_FPP} ${SRC}/${f}.fypp ${f}.f90
+    echo "Compiling ${f}.f90..."
     ${COMPILE_F90} ${f}.f90
 done
 
 # Genrate smod and obj files for all the problems
-echo "Compiling files in ./src/probs..."
+# echo "Compiling files in ./src/probs..."
 for i in $(seq -f "%04g" $NPROB); do
+    echo "Compiling euler_interface_m@euler_prob_${i}_m.f90..."
     ${COMPILE_F90} ${PRB}/euler_interface_m\@euler_prob_${i}_m.f90
 done
 
