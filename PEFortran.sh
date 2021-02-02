@@ -1,6 +1,8 @@
 #! /usr/bin/env bash
 
-# Functions
+################################################################################
+# Handy functions
+################################################################################
 checkIfCommandExists () {
     if command -v $1 >/dev/null 2>&1 ; then
         echo "Looking for $1... $1 found."
@@ -34,30 +36,32 @@ printLogo () {
 }
 
 checkGfortranVer () {
-    CUR_V="$(gfortran -dumpversion)"
+    CUR_V="$($1 -dumpversion)"
     REQ_V="8.5.0"
     if [ "$(printf '%s\n' "$REQ_V" "$CUR_V" | sort -V | head -n1)" = "$REQ_V" ]
     then 
         echo "Found gfortran version >= 9"
+        VER_GE_NINE=true
     else
-        echo "[STOPPED] gfortran >= 9 is required."
-        exit
+        echo "[WARNING] gfortran < 9 detected, use legacy version."
+        VER_GE_NINE=false
     fi
 }
-
-# Number of problems
+################################################################################
+# Environment variables
+################################################################################
 NPROB_MAX=60
 VERSION="0.0.1"
 
-# Directories
 CUR=$(pwd)
 SRC="${CUR}/src"
 DAT="${CUR}/data"
 PRB="${SRC}/probs"
 UTL="${SRC}/utils"
 BLD="${CUR}/build"
-
+################################################################################
 # Flags available
+################################################################################
 for i in "$@"
 do
     case $i in
@@ -106,7 +110,9 @@ do
             exit
     esac
 done
-
+################################################################################
+# Set default values
+################################################################################
 if [[ -z ${FC} ]]; then
     FC="gfortran"
 fi
@@ -124,9 +130,7 @@ if [[ -z "${NPROB}" ]]; then
 fi
 
 checkIfCommandExists ${FC}
-if [[ $FC = "gfortran" ]]; then
-    checkGfortranVer
-fi
+checkGfortranVer ${FC}
 checkIfCommandExists ${FYPP}
 
 echo "Build option: ${BLD_OPT}"
@@ -152,7 +156,10 @@ echo "Compiler flags used: FCFLAGS=${FCFLAGS}"
 # Fortran preprocessor
 FYPPFLAGS="-DNUM_PROB=${NPROB}"
 COMPILE_FPP="${FYPP} ${FYPPFLAGS}"
-
+echo "Precompiler flags userd: FYPPFLAGS=${FYPPFLAGS}"
+################################################################################
+# Pre-process fypp files and generate mod and obj files
+################################################################################
 # Make directory build if it doesn't exist
 # otherwise delete build and make a new one
 if [[ -d "${BLD}" ]]; then
@@ -160,10 +167,13 @@ if [[ -d "${BLD}" ]]; then
 fi
 mkdir build
 
-# File names
-# Fypp files, utility files
+if [[ VER_GE_NINE = "true" ]]; then
+    UTIL_F90="euler_utils_m"
+else
+    UTIL_F90="euler_utils_legacy_m"
+fi
 FYPP_FILES=(euler_interface_m euler_prob_api_m)
-UTIL_FILES=(euler_var_arr_m euler_utils_m euler_primes_m euler_mi_m)
+UTIL_FILES=(euler_var_arr_m ${UTIL_F90} euler_primes_m euler_mi_m)
 
 # Go to directory and copy all the data files
 cd ${BLD}
@@ -171,22 +181,20 @@ ln -sf ${DAT}/*.txt .
 
 # Compile files in utils
 TIME_START=`date +%s`
-# echo "Compiling files in ./src/utils..."
 for f in "${UTIL_FILES[@]}"; do
     echo "Compiling ${f}.f90..."
     ${COMPILE_F90} ${UTL}/${f}.f90
 done
 
-# Pre-process fypp files and generate mod and obj files
 for f in "${FYPP_FILES[@]}"; do
     echo "Precompiling ${f}.fypp..."
     ${COMPILE_FPP} ${SRC}/${f}.fypp ${f}.f90
     echo "Compiling ${f}.f90..."
     ${COMPILE_F90} ${f}.f90
 done
-
+################################################################################
 # Genrate smod and obj files for all the problems
-# echo "Compiling files in ./src/probs..."
+################################################################################
 for i in $(seq -f "%04g" $NPROB); do
     echo "Compiling euler_interface_m@euler_prob_${i}_m.f90..."
     ${COMPILE_F90} ${PRB}/euler_interface_m\@euler_prob_${i}_m.f90
@@ -206,3 +214,6 @@ cd ${CUR}
 cp ${BLD}/ANSWER.md .
 echo "Copying ANSWER.md to project directory..."
 echo "The compilation and execution is completed!"
+################################################################################
+# End of shell script
+################################################################################
