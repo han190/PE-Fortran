@@ -1,4 +1,4 @@
-# Yet another Project Euler solutions...
+# Yet another Project Euler solutions :pencil:
 
 [Project Euler](https://projecteuler.net/about) is a problem set. I solve PE problems to polish my Fortran skills, expand my math knowledge base and most importantly, for fun. :smile: If you are looking for the same things, check it out! There are two dependencies to this project: `gfortran` and `fypp`. To install them (assuming you are on Ubuntu and you have `pip` installed)
 
@@ -7,22 +7,22 @@ sudo apt install gfortran
 pip install fypp
 ```
 
-## Compiling and executing the program
+## Compiling and executing this project :hammer:
 
-To compile and execute the project,
+To compile and execute this project,
 
 ```shell
 make
 make install
 ```
 
-To clean all generated files,
+To remove all generated files,
 
 ```shell
 make clean
 ```
 
-## A todo list
+## A todo list :dart:
 
 Here is what I plan to do in the future. (Not likely to be done recently cuz I am kinda busy...)
 
