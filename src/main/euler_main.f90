@@ -35,6 +35,15 @@ program main
 
 contains
 
+    subroutine print_logo()            
+        print "(a)", " "
+        print "(a)", " _____  _____       _____            _                  "
+        print "(a)", "|  _  ||   __| ___ |   __| ___  ___ | |_  ___  ___  ___ "
+        print "(a)", "|   __||   __||___||   __|| . ||  _||  _||  _|| .'||   |"
+        print "(a)", "|__|   |_____|     |__|   |___||_|  |_|  |_|  |__,||_|_|"
+        print "(a)", " "
+    end subroutine print_logo
+
     subroutine get_help()
         print "(a)", "Project Euler with Modern Fortran"
         print "(a)", "Syntax:"
@@ -84,6 +93,7 @@ contains
         end do print_all_answers
         close(iunit)
 
+        call print_logo()
         print "(a)", "Fortran PE Solutions, Version (0.0.1) "
         print "(a)", ">>> Quick results <<<"
         fmt = "(a24, t27, i4.4, '/', i4.4)"

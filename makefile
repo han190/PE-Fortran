@@ -22,11 +22,6 @@ install:
 	cp build/ANSWER.md .
 
 clean:
-	$(MAKE) clean --directory=src/util
-	$(MAKE) clean --directory=src/fypp
-	$(MAKE) clean --directory=src/prob
-	$(MAKE) clean --directory=src/main
-	$(MAKE) clean --directory=data
 	$(RM) -rf build
 	$(RM) ANSWER.md
-	@echo "All build files removed."
+	@echo "All generated files removed."
