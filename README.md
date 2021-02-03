@@ -1,8 +1,9 @@
 # Yet another Project Euler solutions...
 
-[Project Euler](https://projecteuler.net/about) is a problem set. I solve PE problems to polish my Fortran skills, expand my math knowledge base and most importantly, for fun. If you are looking for the same things, check it out! The project is tested with [gfortran](https://gcc.gnu.org/fortran/), [ifort](https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-fortran-compiler-release-notes.html) and [flang](https://releases.llvm.org/11.0.0/tools/flang/docs/ReleaseNotes.html). Also, [fypp](https://github.com/aradi/fypp) is used as the Fortran preprocessor. To install fypp the easist way is 
+[Project Euler](https://projecteuler.net/about) is a problem set. I solve PE problems to polish my Fortran skills, expand my math knowledge base and most importantly, for fun. If you are looking for the same things, check it out! There are two dependencies to this project: `gfortran` and `fypp`. To install them (assuming you are on Ubuntu and you have `pip` installed)
 
 ```shell
+sudo apt install gfortran
 pip install fypp
 ```
 
@@ -11,25 +12,14 @@ pip install fypp
 To compile and execute the project,
 
 ```shell
-./PEFortran.sh
+make
+make install
 ```
 
-the answers are saved in `ANSWER.md`. For further information, type `./PEFortran -h`, 
+To clean all generated files,
 
 ```shell
-./PEFortran -h
-Project Euler with Modern Fortran
-Version: 0.0.1
-Flags possible:
-  -b=, --build=       Build options: optimize/debug
-  -c=, --compiler=    Compiler options: gfortran/ifort/flang
-  -n=, --num_prob=    Number of problems: (max=60)
-  -d,  --default      This implies:
-                      --build=optimize --compiler=gfortran
-                      --num_prob=60
-  -v,  --version      Check version.
-  -r,  --remove       Remove build files and ANSWER.md.
-  -h,  --help         Pop out this message.
+make clean
 ```
 
 ## A todo list
