@@ -7,12 +7,9 @@ OBJS = $(addprefix $(BUILD_DIR)/, $(SRC:.f90=.o))
 MODS = $(addprefix $(BUILD_DIR)/, $(SRC:.f90=.mod))
 SMODS = $(addprefix $(BUILD_DIR)/, $(SRC:.f90=.smod))
 
-.PHONY: all clean
+.PHONY: all
 
 all: $(SRCS) $(OBJS)
-
-clean:
-	$(RM) $(OBJS) $(MODS) $(SMODS) $(SRCS)
 
 $(BUILD_DIR)/%.f90: %.fypp
 	$(FPP) $(FPPFLAGS) $< $@

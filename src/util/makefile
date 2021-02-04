@@ -7,13 +7,9 @@ BUILD_DIR = ../../build
 OBJS = $(addprefix $(BUILD_DIR)/, $(SRC:.f90=.o))
 MODS = $(addprefix $(BUILD_DIR)/, $(SRC:.f90=.mod))
 
-
-.PHONY: all clean
+.PHONY: all
 
 all: $(OBJS) $(MODS)
-
-clean:
-	$(RM) $(OBJS) $(MODS)
 
 $(BUILD_DIR)/%.o $(BUILD_DIR)/%.mod: %.f90
 	$(FC) $(FFLAGS) -J$(BUILD_DIR) -c $< -o $@
