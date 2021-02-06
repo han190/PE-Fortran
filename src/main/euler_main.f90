@@ -51,6 +51,30 @@ contains
         print "(a)", "./pe-fortran -ca/--compute-all"
     end subroutine get_help
 
+    function difficulty_bar(n) result(ret)
+        real, intent(in) :: n
+        character(len=50) :: ret
+        integer :: angry_level
+
+        ret = " "
+        angry_level = int(n/(100./nop))
+        select case (angry_level)
+        case (0)
+            ret = ""
+        case (1, 2)
+            ret = ":neutral_face:"
+        case (3, 4)
+            ret = ":slightly_frowning_face:"
+        case (5, 6)
+            ret = ":confused:"
+        case (7, 8)
+            ret = ":frowning_face:"
+        case (9:)
+            ret = ":imp:"
+        end select
+    end function difficulty_bar
+
+
     subroutine compute_all(filename)
         character(len=*), intent(in) :: filename
         character(len=20) :: ans(nop)
@@ -77,19 +101,32 @@ contains
         open (iunit, file=filename)
         write (iunit, "(a)") "# Fortran PE Solutions"//new_line("a")
         write (iunit, "(a)") "## Compilers"//new_line("a")
-        write (iunit, "(a)") compiler_version()
+        write (iunit, "(a)") "Compiler: "//compiler_version()
         write (iunit, "(a)") new_line("a")//"## Summary"//new_line("a")
         write (iunit, "(a)") "|Benchmarks|Results|"
         write (iunit, "(a)") repeat(c_aligned, 2)//"|"
         write (iunit, "('|Problems solved|', i4, '|')") int(nslv)
         write (iunit, "('|Time spent|', f9.2, '(s)|')") tsum
         write (iunit, "('|Time spent per problem|', f9.2, '(s)|')") tsum/nslv
+        write (iunit, "(a)") new_line("a")//"## Relative Difficulty"//&
+            new_line("a")
+        write (iunit, "(a)") "The relative difficulty is defined as:"//&
+            new_line("a")
+        write (iunit, "(a)") "Relative Difficulty of a problem = "//&
+            "( Time span of the problem / Time span of all problems ) / "//&
+            "( 100 / Number of problems solved )"//&
+            " and to intuitively visialize them I use emojis!"
+        write (iunit, "(a)") "|<1|1~2|3~4|5~6|7~8|>9|"
+        write (iunit, "(a)") repeat(c_aligned, 6)//"|"
+        write (iunit, "(a)") "||:neutral_face:|:slightly_frowning_face:|"//&
+            ":confused:|:frowning_face:|:imp:|"
         write (iunit, "(a)") new_line("a")//"## Answers"//new_line("a")
-        write (iunit, "(a)") "|Prob|Answer|Tspan(s)|T/Ttot(%)|"
+        write (iunit, "(a)") "|Prob|Answer|Tspan(s)|Relative<br />Difficulty|"
         write (iunit, "(a)") repeat(c_aligned, 4)//"|"
-        fmt = "('|', i6, '|', a20, '|', f10.6, '|', f9.4, '%|')"
+        fmt = "('|', i6, '|', a20, '|', f10.6, '|', a50, '|')"
         print_all_answers: do i = 1, nop
-            write (iunit, trim(fmt)) i, ans(i), tspan(i), tspan(i)/tsum*100.
+            write (iunit, trim(fmt)) i, ans(i), tspan(i), &
+                difficulty_bar(tspan(i)/tsum*100.)
         end do print_all_answers
         close(iunit)
 

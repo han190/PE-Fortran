@@ -15,7 +15,7 @@ To compile and execute this project,
 make && make install
 ```
 
-To remove all generated files,
+and the generated `ANSWER.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/ANSWER.md). To remove all generated files,
 
 ```shell
 make clean
