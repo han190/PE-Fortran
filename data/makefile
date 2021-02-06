@@ -1,4 +1,5 @@
 BUILD_DIR = ../build
+CUR_DIR = $(shell pwd)
 TXT_FILE = $(addprefix $(BUILD_DIR)/, $(wildcard *.txt))
 
 .PHONY: all
@@ -6,4 +7,4 @@ TXT_FILE = $(addprefix $(BUILD_DIR)/, $(wildcard *.txt))
 all: $(TXT_FILE)
 
 $(BUILD_DIR)/%.txt: %.txt
-	ln -f $< $@
+	cd $(BUILD_DIR); ln -sf $(CUR_DIR)/$< .

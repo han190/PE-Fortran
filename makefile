@@ -1,8 +1,6 @@
 # PE Fortran Solutions
 export NPROB = 60
 export FC = gfortran
-# export FFLAGS = -Wall -Wextra -fimplicit-none -fcheck=all -fbacktrace \
-# 	-Warray-temporaries -Wconversion -finit-real=nan -std=f2018
 export FFLAGS = -O3 -ffast-math -std=f2018
 export FPP = fypp
 export FPPFLAGS = -DNUM_PROB=$(NPROB)
