@@ -17,6 +17,7 @@ module euler_utils_m
     interface swap
         module procedure swap_sp, swap_dp
         module procedure swap_int32, swap_int64
+        module procedure swap_equal_len_char
     end interface swap
 
     public :: digs_of_int
@@ -126,6 +127,16 @@ contains
 
         tmp = a; a = b; b = tmp
     end subroutine swap_int64
+
+    subroutine swap_equal_len_char(a, b)
+        character(len=*), intent(inout) :: a
+        character(len=len(a)), intent(inout) :: b
+        character(len=len(a)) :: tmp
+
+        tmp = a
+        a = b
+        b = tmp
+    end subroutine swap_equal_len_char
 
     integer function digs_of_int_int32(n)
         integer, intent(in) :: n

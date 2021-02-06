@@ -9,6 +9,8 @@ contains
 
     character(len=20) function ans()
         use euler_primes_m, only: sieve_of_Eratosthenes
+        implicit none
+        
         integer :: i, a, b, c
         character(4) :: str1, str2, str3
         logical :: cond
@@ -54,19 +56,10 @@ contains
         do i = 1, 4
             do j = i + 1, 4
                 if (str(i:i) > str(j:j)) then
-                    call swap_str(str(i:i), str(j:j))
+                    call swap(str(i:i), str(j:j))
                 end if
             end do
         end do
     end subroutine sort_str4
-
-    subroutine swap_str(a, b)
-        character(1), intent(inout) :: a, b
-        character(1) :: tmp
-
-        tmp = a
-        a = b
-        b = tmp
-    end subroutine swap_str
 
 end submodule euler_prob_0049_m
