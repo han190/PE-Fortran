@@ -53,7 +53,7 @@ contains
 
     function difficulty_bar(n) result(ret)
         real, intent(in) :: n
-        character(len=50) :: ret
+        character(len=25) :: ret
         integer :: angry_level
 
         ret = " "
@@ -120,7 +120,7 @@ contains
         write (iunit, "(a)") new_line("a")//"## Answers"//new_line("a")
         write (iunit, "(a)") "|Prob|Answer|Tspan(s)|Relative<br />Difficulty|"
         write (iunit, "(a)") repeat(c_aligned, 4)//"|"
-        fmt = "('|', i6, '|', a20, '|', f10.6, '|', a50, '|')"
+        fmt = "('|', i6, '|', a20, '|', f10.6, '|', a25, '|')"
         print_all_answers: do i = 1, nop
             write (iunit, trim(fmt)) i, ans(i), tspan(i), &
                 difficulty_bar(tspan(i)/tsum*100.)
