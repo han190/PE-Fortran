@@ -110,12 +110,9 @@ contains
         write (iunit, "('|Time spent per problem|', f9.2, '(s)|')") tsum/nslv
         write (iunit, "(a)") new_line("a")//"## Relative Difficulty"//&
             new_line("a")
-        write (iunit, "(a)") "The relative difficulty is defined as:"//&
-            new_line("a")
         write (iunit, "(a)") "Relative Difficulty of a problem = "//&
             "( Time span of the problem / Time span of all problems ) / "//&
-            "( 100 / Number of problems solved )"//&
-            " and to intuitively visialize them I use emojis!"
+            "( 100 / Number of problems solved )"
         write (iunit, "(a)") "|<1|1~2|3~4|5~6|7~8|>9|"
         write (iunit, "(a)") repeat(c_aligned, 6)//"|"
         write (iunit, "(a)") "||:neutral_face:|:slightly_frowning_face:|"//&
