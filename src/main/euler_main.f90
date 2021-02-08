@@ -35,7 +35,7 @@ program main
 
 contains
 
-    subroutine print_logo()            
+    subroutine print_logo()
         print "(a)", " "
         print "(a)", " _____  _____       _____            _                  "
         print "(a)", "|  _  ||   __| ___ |   __| ___  ___ | |_  ___  ___  ___ "
@@ -74,7 +74,6 @@ contains
         end select
     end function difficulty_bar
 
-
     subroutine compute_all(filename)
         character(len=*), intent(in) :: filename
         character(len=20) :: ans(nop)
@@ -108,14 +107,14 @@ contains
         write (iunit, "('|Problems solved|', i4, '|')") int(nslv)
         write (iunit, "('|Time spent|', f9.2, '(s)|')") tsum
         write (iunit, "('|Time spent per problem|', f9.2, '(s)|')") tsum/nslv
-        write (iunit, "(a)") new_line("a")//"## Relative Difficulty"//&
+        write (iunit, "(a)") new_line("a")//"## Relative Difficulty"// &
             new_line("a")
-        write (iunit, "(a)") "Relative Difficulty of a problem = "//&
-            "( Time span of the problem / Time span of all problems ) / "//&
+        write (iunit, "(a)") "Relative Difficulty of a problem = "// &
+            "( Time span of the problem / Time span of all problems ) / "// &
             "( 100 / Number of problems solved )"
         write (iunit, "(a)") "|<1|1~2|3~4|5~6|7~8|>9|"
         write (iunit, "(a)") repeat(c_aligned, 6)//"|"
-        write (iunit, "(a)") "||:neutral_face:|:slightly_frowning_face:|"//&
+        write (iunit, "(a)") "||:neutral_face:|:slightly_frowning_face:|"// &
             ":confused:|:frowning_face:|:imp:|"
         write (iunit, "(a)") new_line("a")//"## Answers"//new_line("a")
         write (iunit, "(a)") "|Prob|Answer|Tspan(s)|Relative<br />Difficulty|"
@@ -125,7 +124,7 @@ contains
             write (iunit, trim(fmt)) i, ans(i), tspan(i), &
                 difficulty_bar(tspan(i)/tsum*100.)
         end do print_all_answers
-        close(iunit)
+        close (iunit)
 
         call print_logo()
         print "(a)", "Fortran PE Solutions, Version (0.0.1) "

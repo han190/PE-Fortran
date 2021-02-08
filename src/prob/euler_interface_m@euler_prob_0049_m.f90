@@ -10,7 +10,7 @@ contains
     character(len=20) function ans()
         use euler_primes_m, only: sieve_of_Eratosthenes
         implicit none
-        
+
         integer :: i, a, b, c
         character(4) :: str1, str2, str3
         logical :: cond
