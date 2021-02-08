@@ -110,7 +110,7 @@ contains
         write (iunit, "(a)") new_line("a")//"## Relative Difficulty"// &
             new_line("a")
         write (iunit, "(a)") "Relative Difficulty of a problem = "// &
-            " Normalize ( Tspan * Nprob / Tsum^2 )"
+            " Normalize [ Tspan / ( Tsum / Nprob ) ]"
         write (iunit, "(a)") "(Thus RD is a real number between 0 and 1.)"
         write (iunit, "(a)") "|Level 0|Level 1|Level 2|"//&
             "Level 3|Level 4|Time<br/>Consuming!|"
@@ -124,7 +124,7 @@ contains
         write (iunit, "(a)") "|Prob|Answer|Tspan(s)|Relative<br/>Difficulty|"
         write (iunit, "(a)") repeat(c_aligned, 4)//"|"
         fmt = "('|', i6, '|', a20, '|', f10.6, '|', a25, '|')"
-        rel_diff = tspan*nop/tsum**2
+        rel_diff = tspan/(tsum/nop)
         print_all_answers: do i = 1, nop
             write (iunit, trim(fmt)) i, ans(i), tspan(i), &
                 difficulty_bar(rel_diff(i), maxval(rel_diff), minval(rel_diff))
