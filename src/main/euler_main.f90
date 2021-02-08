@@ -51,27 +51,26 @@ contains
         print "(a)", "./pe-fortran -ca/--compute-all"
     end subroutine get_help
 
-    function difficulty_bar(n) result(ret)
-        real, intent(in) :: n
+    function difficulty_bar(t_, max_, min_) result(ret)
+        real, intent(in) :: t_, max_, min_
         character(len=25) :: ret
-        integer :: angry_level
+        real :: angry_level
 
         ret = " "
-        angry_level = int(n/(100./nop))
-        select case (angry_level)
-        case (0)
+        angry_level = (t_ - min_)/(max_ - min_)
+        if (angry_level >= 0 .and. angry_level < 0.00001) then
             ret = ""
-        case (1, 2)
+        else if ( angry_level >= 0.00001 .and. angry_level < 0.0001) then
             ret = ":neutral_face:"
-        case (3, 4)
+        else if ( angry_level >= 0.0001 .and. angry_level < 0.001) then
             ret = ":slightly_frowning_face:"
-        case (5, 6)
+        else if ( angry_level >= 0.001 .and. angry_level < 0.01) then
             ret = ":confused:"
-        case (7, 8)
+        else if ( angry_level >= 0.01 .and. angry_level < 0.1) then
             ret = ":frowning_face:"
-        case (9:)
+        else if ( angry_level >= 0.1 .and. angry_level <= 1.0) then
             ret = ":imp:"
-        end select
+        end if
     end function difficulty_bar
 
     subroutine compute_all(filename)
@@ -84,6 +83,7 @@ contains
         type(euler_probs_t) :: probs(nop)
         integer :: i, iunit
         character(len=100) :: fmt
+        real :: rel_diff(nop)
 
         call euler_init(probs)
         tspan = 0.
@@ -110,19 +110,24 @@ contains
         write (iunit, "(a)") new_line("a")//"## Relative Difficulty"// &
             new_line("a")
         write (iunit, "(a)") "Relative Difficulty of a problem = "// &
-            "( Time span of the problem / Time span of all problems ) / "// &
-            "( 100 / Number of problems solved )"
-        write (iunit, "(a)") "|<1|1~2|3~4|5~6|7~8|>9|"
+            " Normalize ( Tspan * Nprob / Tsum^2 )"
+        write (iunit, "(a)") "(Thus RD is a real number between 0 and 1.)"
+        write (iunit, "(a)") "|Level 0|Level 1|Level 2|"//&
+            "Level 3|Level 4|Time<br/>Consuming!|"
         write (iunit, "(a)") repeat(c_aligned, 6)//"|"
+        write (iunit, "(a)") "|~10<sup>-6<sup/>|~10<sup>-5<sup/>|"//&
+            "~10<sup>-4<sup/>|~10<sup>-3<sup/>|~10<sup>-2<sup/>|"//&
+            "~10<sup>-1<sup/>|"
         write (iunit, "(a)") "||:neutral_face:|:slightly_frowning_face:|"// &
             ":confused:|:frowning_face:|:imp:|"
         write (iunit, "(a)") new_line("a")//"## Answers"//new_line("a")
-        write (iunit, "(a)") "|Prob|Answer|Tspan(s)|Relative<br />Difficulty|"
+        write (iunit, "(a)") "|Prob|Answer|Tspan(s)|Relative<br/>Difficulty|"
         write (iunit, "(a)") repeat(c_aligned, 4)//"|"
         fmt = "('|', i6, '|', a20, '|', f10.6, '|', a25, '|')"
+        rel_diff = tspan*nop/tsum**2
         print_all_answers: do i = 1, nop
             write (iunit, trim(fmt)) i, ans(i), tspan(i), &
-                difficulty_bar(tspan(i)/tsum*100.)
+                difficulty_bar(rel_diff(i), maxval(rel_diff), minval(rel_diff))
         end do print_all_answers
         close (iunit)
 
