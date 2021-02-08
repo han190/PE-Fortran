@@ -6,7 +6,7 @@ export FFLAGS_DEBUG = -g -O0 -Wall -Wextra -fcheck=all -fbacktrace
 export FPP = fypp
 export FPPFLAGS = -DNUM_PROB=$(NPROB)
 
-.PHONY: all install debug clean
+.PHONY: all run debug clean
 
 all:
 	mkdir -p build
@@ -15,6 +15,7 @@ all:
 	$(MAKE) --directory=src/prob
 	$(MAKE) --directory=src/main
 	$(MAKE) --directory=data
+	@echo "Build succeded."
 
 debug: FFLAGS = $(FFLAGS_DEBUG)
 debug:
@@ -25,9 +26,10 @@ debug:
 	$(MAKE) --directory=src/main
 	$(MAKE) --directory=data
 
-install:
+run:
 	cd build;./pe-fortran --compute-all
 	cp build/ANSWER.md .
+	@echo "Successfully run PE-Fortran."
 
 clean:
 	$(RM) -rf build
