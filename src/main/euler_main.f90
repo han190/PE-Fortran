@@ -60,15 +60,15 @@ contains
         angry_level = (t_ - min_)/(max_ - min_)
         if (angry_level >= 0 .and. angry_level < 0.00001) then
             ret = ""
-        else if ( angry_level >= 0.00001 .and. angry_level < 0.0001) then
+        else if (angry_level >= 0.00001 .and. angry_level < 0.0001) then
             ret = ":neutral_face:"
-        else if ( angry_level >= 0.0001 .and. angry_level < 0.001) then
+        else if (angry_level >= 0.0001 .and. angry_level < 0.001) then
             ret = ":slightly_frowning_face:"
-        else if ( angry_level >= 0.001 .and. angry_level < 0.01) then
+        else if (angry_level >= 0.001 .and. angry_level < 0.01) then
             ret = ":confused:"
-        else if ( angry_level >= 0.01 .and. angry_level < 0.1) then
+        else if (angry_level >= 0.01 .and. angry_level < 0.1) then
             ret = ":frowning_face:"
-        else if ( angry_level >= 0.1 .and. angry_level <= 1.0) then
+        else if (angry_level >= 0.1 .and. angry_level <= 1.0) then
             ret = ":imp:"
         end if
     end function difficulty_bar
@@ -112,11 +112,11 @@ contains
         write (iunit, "(a)") "Relative Difficulty of a problem = "// &
             " Normalize [ Tspan / ( Tsum / Nprob ) ]"
         write (iunit, "(a)") "(Thus RD is a real number between 0 and 1.)"
-        write (iunit, "(a)") "|Level 0|Level 1|Level 2|"//&
+        write (iunit, "(a)") "|Level 0|Level 1|Level 2|"// &
             "Level 3|Level 4|Time<br/>Consuming!|"
         write (iunit, "(a)") repeat(c_aligned, 6)//"|"
-        write (iunit, "(a)") "|~10<sup>-6<sup/>|~10<sup>-5<sup/>|"//&
-            "~10<sup>-4<sup/>|~10<sup>-3<sup/>|~10<sup>-2<sup/>|"//&
+        write (iunit, "(a)") "|~10<sup>-6<sup/>|~10<sup>-5<sup/>|"// &
+            "~10<sup>-4<sup/>|~10<sup>-3<sup/>|~10<sup>-2<sup/>|"// &
             "~10<sup>-1<sup/>|"
         write (iunit, "(a)") "||:neutral_face:|:slightly_frowning_face:|"// &
             ":confused:|:frowning_face:|:imp:|"
