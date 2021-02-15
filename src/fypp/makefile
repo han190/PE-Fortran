@@ -1,7 +1,6 @@
 FYPPSRC = euler_interface_m.fypp euler_prob_api_m.fypp
 SRC = euler_interface_m.f90 euler_prob_api_m.f90
 
-BUILD_DIR = ../../build
 SRCS = $(addprefix $(BUILD_DIR)/, $(SRC))
 OBJS = $(addprefix $(BUILD_DIR)/, $(SRC:.f90=.o))
 MODS = $(addprefix $(BUILD_DIR)/, $(SRC:.f90=.mod))

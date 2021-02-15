@@ -3,7 +3,6 @@ SRC = euler_utils_m.f90 \
 	euler_primes_m.f90 \
 	euler_mi_m.f90
 
-BUILD_DIR = ../../build
 OBJS = $(addprefix $(BUILD_DIR)/, $(SRC:.f90=.o))
 MODS = $(addprefix $(BUILD_DIR)/, $(SRC:.f90=.mod))
 

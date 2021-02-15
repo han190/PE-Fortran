@@ -1,5 +1,4 @@
 SRC = $(wildcard *.f90)
-BUILD_DIR = ../../build
 
 SRCS = $(addprefix $(BUILD_DIR)/, $(SRC))
 OBJS = $(addprefix $(BUILD_DIR)/, $(SRC:.f90=.o))
