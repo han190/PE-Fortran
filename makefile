@@ -1,17 +1,18 @@
 # PE Fortran Solutions
 export NPROB = 60
 export FC = gfortran
-export FFLAGS = -O3 -ffast-math -std=f2018
+export FFLAGS_OPTIMIZE = -O3 -ffast-math -std=f2018
 export FFLAGS_DEBUG = -g -O0 -Wall -Wextra -fcheck=all -fbacktrace
 export FPP = fypp
 export FPPFLAGS = -DNUM_PROB=$(NPROB)
 export BUILD_DIR = $(CURDIR)/build
 export MKDIR = mkdir -p
 export RM = rm -rf
-export EXEC = pe-fortran.exe
+export EXEC = PE-Fortran.exe
 
 .PHONY: all debug install format clean
 
+all: FFLAGS = $(FFLAGS_OPTIMIZE)
 all:
 	$(MKDIR) $(BUILD_DIR)
 	$(MAKE) --directory=src/util
