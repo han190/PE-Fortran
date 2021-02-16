@@ -2,7 +2,12 @@ project('PE-Fortran', 'fortran',
     version: '0.0.1', 
     meson_version: '>=0.51',
     license: 'MIT',
-    default_options: ['buildtype=release'])
+    default_options: [
+        'buildtype=release', 
+        'warning_level=0', 
+        'optimization=3',
+        'auto_features=disabled']
+)
 
 # check os
 if host_machine.system() == 'windows'
@@ -22,9 +27,15 @@ data_dir = 'data'
 fc = meson.get_compiler('fortran')
 if fc.get_id() == 'gcc'
     if get_option('buildtype') == 'release'
-        dialect = ['-ffast-math']
+        dialect = ['-O3', '-ffast-math', '-std=f2018']
     elif get_option('buildtype') == 'debug'
         dialect = ['-Wall', '-Wextra', '-fcheck=all', '-fbacktrace']
+    endif
+elif fc.get_id() == 'intel'
+    if get_option('buildtype') == 'release'
+        dialect = ['-O3', '-xHost', '-ipo']
+    elif get_option('buildtype') == 'debug'
+        dialect = []
     endif
 endif
 add_global_arguments(dialect, language: 'fortran')
@@ -119,5 +130,4 @@ foreach data_file : data_src
         input: data_dir / data_file, output: data_file)
 endforeach
 
-executable('PE-Fortran', 
-    sources: [util_src, fypp_src, prob_src, main_src])
+executable('PE-Fortran', sources: [util_src, fypp_src, prob_src, main_src])
