@@ -100,8 +100,8 @@ contains
         open (iunit, file=filename)
         write (iunit, "(a)") "# Fortran PE Solutions"//new_line("a")
         write (iunit, "(a)") "## Compilers"//new_line("a")
-        write (iunit, "(a)") "Compiler version: "//compiler_version()
-        write (iunit, "(a)") "Compiler options: "//compiler_options()
+        write (iunit, "(a)") "- Compiler version: "//compiler_version()
+        write (iunit, "(a)") "- Compiler options: "//compiler_options()
         write (iunit, "(a)") new_line("a")//"## Summary"//new_line("a")
         write (iunit, "(a)") "|Benchmarks|Results|"
         write (iunit, "(a)") repeat(c_aligned, 2)//"|"

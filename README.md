@@ -28,8 +28,7 @@ Here is what I plan to do in the future. (Not likely to be done recently cuz I a
 - [x] Organize folders, use Shell scripts to compile codes.
 - [x] Use a build tool, for example Meson to wrap all the codes. 
   - PS1: Crappy but I did it with Meson.
-  - PS2: I deleted it since it is not necessary to use a build tool with such a small project.
-  - PS3: I rewrite everything using makefile... the good old makefile :zany_face:
+  - PS2: I rewrite everything using makefile... the good old makefile :zany_face:
 - [x] Use a Fortran preprocessor to simplify my code.
 - [ ] Write a documentation to clearly explain the algorithms, Fortran features, or anything that is interesting for each question.
 - [ ] Add version control.
