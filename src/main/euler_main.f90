@@ -51,15 +51,15 @@ contains
         angry_level = (t_ - min_)/(max_ - min_)
         if (angry_level >= 0 .and. angry_level < 10**(-5)) then
             ret = ""
-        else if (angry_level >= 10**(-5) .and. angry_level < 10**(-4)) then
+        else if (angry_level >= 10.**(-5) .and. angry_level < 10.**(-4)) then
             ret = ":neutral_face:"
-        else if (angry_level >= 10**(-4) .and. angry_level < 10**(-3)) then
+        else if (angry_level >= 10.**(-4) .and. angry_level < 10.**(-3)) then
             ret = ":slightly_frowning_face:"
-        else if (angry_level >= 10**(-3) .and. angry_level < 10**(-2)) then
+        else if (angry_level >= 10.**(-3) .and. angry_level < 10.**(-2)) then
             ret = ":confused:"
-        else if (angry_level >= 10**(-2) .and. angry_level < 10**(-1)) then
+        else if (angry_level >= 10.**(-2) .and. angry_level < 10.**(-1)) then
             ret = ":frowning_face:"
-        else if (angry_level >= 10**(-1) .and. angry_level <= 10**(0)) then
+        else if (angry_level >= 10.**(-1) .and. angry_level <= 10.**(0)) then
             ret = ":imp:"
         end if
     end function difficulty_bar
