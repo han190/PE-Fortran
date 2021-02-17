@@ -49,7 +49,7 @@ contains
 
         ret = ""
         angry_level = (t_ - min_)/(max_ - min_)
-        if (angry_level >= 0 .and. angry_level < 10**(-5)) then
+        if (angry_level >= 0. .and. angry_level < 10.**(-5)) then
             ret = ""
         else if (angry_level >= 10.**(-5) .and. angry_level < 10.**(-4)) then
             ret = ":neutral_face:"
