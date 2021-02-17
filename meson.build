@@ -6,7 +6,8 @@ project('PE-Fortran', 'fortran',
         'buildtype=release', 
         'warning_level=0', 
         'optimization=3',
-        'auto_features=disabled']
+        'auto_features=disabled',
+        'fortran_std=f2018']
 )
 
 # check os
@@ -27,7 +28,7 @@ data_dir = 'data'
 fc = meson.get_compiler('fortran')
 if fc.get_id() == 'gcc'
     if get_option('buildtype') == 'release'
-        dialect = ['-ffast-math', '-std=f2018']
+        dialect = ['-ffast-math']
     elif get_option('buildtype') == 'debug'
         dialect = ['-O0', '-Wall', '-Wextra', '-fcheck=all', '-fbacktrace']
     endif
