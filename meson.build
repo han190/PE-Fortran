@@ -33,9 +33,9 @@ if fc.get_id() == 'gcc'
     endif
 elif fc.get_id() == 'intel'
     if get_option('buildtype') == 'release'
-        dialect = ['-O3', '-xHost', '-ipo']
+        dialect = ['-xHost', '-ipo']
     elif get_option('buildtype') == 'debug'
-        dialect = []
+        dialect = ['-warn', '-debug extended', '-fpe0']
     endif
 endif
 add_global_arguments(dialect, language: 'fortran')
