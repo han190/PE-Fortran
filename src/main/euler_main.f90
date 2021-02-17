@@ -1,6 +1,6 @@
 program main
 
-    use iso_fortran_env, only: compiler_version
+    use iso_fortran_env, only: compiler_version, compiler_options
     use euler_prob_api_m
     implicit none
 
@@ -100,7 +100,8 @@ contains
         open (iunit, file=filename)
         write (iunit, "(a)") "# Fortran PE Solutions"//new_line("a")
         write (iunit, "(a)") "## Compilers"//new_line("a")
-        write (iunit, "(a)") "Compiler: "//compiler_version()
+        write (iunit, "(a)") "Compiler version: "//compiler_version()
+        write (iunit, "(a)") "Compiler options: "//compiler_options()
         write (iunit, "(a)") new_line("a")//"## Summary"//new_line("a")
         write (iunit, "(a)") "|Benchmarks|Results|"
         write (iunit, "(a)") repeat(c_aligned, 2)//"|"

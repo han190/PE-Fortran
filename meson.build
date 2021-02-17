@@ -27,9 +27,9 @@ data_dir = 'data'
 fc = meson.get_compiler('fortran')
 if fc.get_id() == 'gcc'
     if get_option('buildtype') == 'release'
-        dialect = ['-O3', '-ffast-math', '-std=f2018']
+        dialect = ['-ffast-math', '-std=f2018']
     elif get_option('buildtype') == 'debug'
-        dialect = ['-Wall', '-Wextra', '-fcheck=all', '-fbacktrace']
+        dialect = ['-O0', '-Wall', '-Wextra', '-fcheck=all', '-fbacktrace']
     endif
 elif fc.get_id() == 'intel'
     if get_option('buildtype') == 'release'

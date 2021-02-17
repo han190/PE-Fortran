@@ -34,7 +34,6 @@ debug:
 
 install:
 	cd $(BUILD_DIR);./$(EXEC) --compute-all
-	cp $(BUILD_DIR)/ANSWER.md .
 	@echo "Successfully run PE-Fortran."
 
 format:
