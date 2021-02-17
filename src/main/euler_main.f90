@@ -35,15 +35,6 @@ program main
 
 contains
 
-    subroutine print_logo()
-        print "(a)", " "
-        print "(a)", " _____  _____       _____            _                  "
-        print "(a)", "|  _  ||   __| ___ |   __| ___  ___ | |_  ___  ___  ___ "
-        print "(a)", "|   __||   __||___||   __|| . ||  _||  _||  _|| .'||   |"
-        print "(a)", "|__|   |_____|     |__|   |___||_|  |_|  |_|  |__,||_|_|"
-        print "(a)", " "
-    end subroutine print_logo
-
     subroutine get_help()
         print "(a)", "Project Euler with Modern Fortran"
         print "(a)", "Syntax:"
@@ -56,19 +47,19 @@ contains
         character(len=25) :: ret
         real :: angry_level
 
-        ret = " "
+        ret = ""
         angry_level = (t_ - min_)/(max_ - min_)
-        if (angry_level >= 0 .and. angry_level < 0.00001) then
+        if (angry_level >= 0 .and. angry_level < 10**(-5)) then
             ret = ""
-        else if (angry_level >= 0.00001 .and. angry_level < 0.0001) then
+        else if (angry_level >= 10**(-5) .and. angry_level < 10**(-4)) then
             ret = ":neutral_face:"
-        else if (angry_level >= 0.0001 .and. angry_level < 0.001) then
+        else if (angry_level >= 10**(-4) .and. angry_level < 10**(-3)) then
             ret = ":slightly_frowning_face:"
-        else if (angry_level >= 0.001 .and. angry_level < 0.01) then
+        else if (angry_level >= 10**(-3) .and. angry_level < 10**(-2)) then
             ret = ":confused:"
-        else if (angry_level >= 0.01 .and. angry_level < 0.1) then
+        else if (angry_level >= 10**(-2) .and. angry_level < 10**(-1)) then
             ret = ":frowning_face:"
-        else if (angry_level >= 0.1 .and. angry_level <= 1.0) then
+        else if (angry_level >= 10**(-1) .and. angry_level <= 10**(0)) then
             ret = ":imp:"
         end if
     end function difficulty_bar
@@ -132,7 +123,6 @@ contains
         end do print_all_answers
         close (iunit)
 
-        call print_logo()
         print "(a)", "Fortran PE Solutions, Version (0.0.1) "
         print "(a)", ">>> Quick results <<<"
         fmt = "(a24, t27, i4.4, '/', i4.4)"
