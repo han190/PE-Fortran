@@ -7,7 +7,8 @@ project('PE-Fortran', 'fortran',
         'warning_level=0', 
         'optimization=3',
         'auto_features=disabled',
-        'fortran_std=f2018']
+        'fortran_std=f2018'
+    ]
 )
 
 # check os
@@ -41,22 +42,26 @@ elif fc.get_id() == 'intel'
 endif
 add_global_arguments(dialect, language: 'fortran')
 
-fypp = find_program('fypp')
 num_probs = 60
+fypp = find_program('fypp')
 fypp_flag = '-DNUM_PROB=@0@'.format(num_probs)
-
-gen = generator(fypp,
-    output: '@BASENAME@.f90',
-    arguments: ['@INPUT@', '@EXTRA_ARGS@', '@OUTPUT@'])
-fypp_src = gen.process(fypp_dir / 'euler_interface_m.fypp', 
-    fypp_dir / 'euler_prob_api_m.fypp', extra_args: fypp_flag)
+message('fypp_flag = @0@'.format(fypp_flag))
+gen_f90 = generator(
+    fypp, output: '@BASENAME@.f90',
+    arguments: ['@INPUT@', '@EXTRA_ARGS@', '@OUTPUT@']
+)
+fypp_src = gen_f90.process(
+    fypp_dir/'euler_interface_m.fypp', 
+    fypp_dir/'euler_prob_api_m.fypp', 
+    extra_args: fypp_flag
+)
 
 util_src = [
-    util_dir / 'euler_utils_m.f90', util_dir / 'euler_var_arr_m.f90',
-    util_dir / 'euler_primes_m.f90', util_dir / 'euler_mi_m.f90'
+    util_dir/'euler_utils_m.f90', util_dir/'euler_var_arr_m.f90',
+    util_dir/'euler_primes_m.f90', util_dir/'euler_mi_m.f90'
 ]
 
-main_src = [main_dir / 'euler_main.f90']
+main_src = [main_dir/'euler_main.f90']
 
 prob_num = [
     '0001', '0002', '0003', '0004', '0005', '0006', '0007', '0008', '0009', 
@@ -69,7 +74,7 @@ prob_num = [
 ]
 prob_src = []
 foreach prob : prob_num
-    prob_src += prob_dir / 'euler_interface_m@euler_prob_' + prob + '_m.f90'
+    prob_src += prob_dir/'euler_interface_m@euler_prob_' + prob + '_m.f90'
 endforeach
 
 data_src = [
@@ -77,9 +82,9 @@ data_src = [
     'euler0022.txt', 'euler0042.txt', 'euler0054.txt', 'euler0059.txt'
 ]
 foreach data_file : data_src
-    configure_file(copy:true, input: data_dir / data_file, output: data_file)
+    configure_file(copy:true, input: data_dir/data_file, output: data_file)
 endforeach
 
-exec = executable('PE-Fortran', 
-    sources: [util_src, fypp_src, prob_src, main_src])
-test('test run', exec, args: '--compute-all')
+src = [util_src, fypp_src, prob_src, main_src]
+exec = executable('PE-Fortran', sources: src)
+test('Compute All Problems', exec, args: '--compute-all')
