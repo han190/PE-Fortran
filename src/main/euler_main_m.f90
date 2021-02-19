@@ -91,7 +91,7 @@ contains
             write (iunit, '(a)') new_line('a')//'## Relative Difficulty'// &
                 new_line('a')
             write (iunit, '(a)') '- Relative Difficulty of a problem = '// &
-                ' Normalize [ Tspan / ( Tsum / Nprob ) ]'
+                ' Normalize [ Tspan / ( Tsum / Nprob ) ]'//new_line('a')
             write (iunit, '(a)') '|Level 0|Level 1|Level 2|'// &
                 'Level 3|Level 4|Time<br/>Consuming!|'
             write (iunit, '(a)') repeat(c_aligned, 6)//'|'
