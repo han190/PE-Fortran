@@ -31,7 +31,7 @@ if fc.get_id() == 'gcc'
     if get_option('buildtype') == 'release'
         dialect = ['-ffast-math']
     elif get_option('buildtype') == 'debug'
-        dialect = ['-O0', '-Wall', '-Wextra', '-fcheck=all', '-fbacktrace']
+        dialect = ['-fcheck=all', '-fbacktrace']
     endif
 elif fc.get_id() == 'intel'
     if get_option('buildtype') == 'release'
