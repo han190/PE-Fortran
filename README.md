@@ -13,28 +13,16 @@ sudo apt install make gfortran
 pip install fypp meson ninja
 ```
 
-### Build with Makefile 
-
-To build this project with Makefile,
-
-```shell
-make && make install
-```
-
-and the generated `ANSWER.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/README.md). To remove all generated files,
-
-```shell
-make clean
-```
-
 ### Build with Meson
 
-To build this project with Meson,
+To build this project with Meson, navigate to the root directory of this repo and type
 
 ```shell
 meson builddir
 meson test -C builddir
 ```
+
+The generated `builddir/ANSWER.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/README.md).
 
 ## A todo list :dart:
 
