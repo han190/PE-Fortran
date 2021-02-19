@@ -61,8 +61,7 @@ util_src = [
     util_dir/'euler_primes_m.f90', util_dir/'euler_mi_m.f90'
 ]
 
-main_src = [main_dir/'euler_main.f90']
-
+main_src = [main_dir/'euler_main_m.f90', main_dir/'euler_main.f90']
 prob_num = [
     '0001', '0002', '0003', '0004', '0005', '0006', '0007', '0008', '0009', 
     '0010', '0011', '0012', '0013', '0014', '0015', '0016', '0017', '0018', 
