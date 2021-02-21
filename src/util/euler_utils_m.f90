@@ -439,66 +439,46 @@ contains
     end subroutine arr_2_int_int64
 
     subroutine append_sp(arr, e)
-        real(sp), allocatable, dimension(:), intent(inout) :: arr
+        real(sp), allocatable, intent(inout) :: arr(:)
         real(sp), intent(in) :: e
-        real(sp), allocatable, dimension(:) :: tmp
 
         if (allocated(arr)) then
-            call move_alloc(arr, tmp)
-            allocate (arr(size(tmp) + 1))
-            arr(1:size(tmp)) = tmp(:)
-            arr(size(tmp) + 1) = e
+            arr = [arr, [e]]
         else
-            allocate (arr(1))
-            arr(1) = e
+            arr = [e]
         end if
     end subroutine append_sp
 
     subroutine append_dp(arr, e)
-        real(dp), allocatable, dimension(:), intent(inout) :: arr
+        real(dp), allocatable, intent(inout) :: arr(:)
         real(dp), intent(in) :: e
-        real(dp), allocatable, dimension(:) :: tmp
 
         if (allocated(arr)) then
-            call move_alloc(arr, tmp)
-            allocate (arr(size(tmp) + 1))
-            arr(1:size(tmp)) = tmp(:)
-            arr(size(tmp) + 1) = e
+            arr = [arr, [e]]
         else
-            allocate (arr(1))
-            arr(1) = e
+            arr = [e]
         end if
     end subroutine append_dp
 
     subroutine append_int32(arr, e)
-        integer, allocatable, dimension(:), intent(inout) :: arr
+        integer, allocatable, intent(inout) :: arr(:)
         integer, intent(in) :: e
-        integer, allocatable, dimension(:) :: tmp
 
         if (allocated(arr)) then
-            call move_alloc(arr, tmp)
-            allocate (arr(size(tmp) + 1))
-            arr(1:size(tmp)) = tmp(:)
-            arr(size(tmp) + 1) = e
+            arr = [arr, [e]]
         else
-            allocate (arr(1))
-            arr(1) = e
+            arr = [e]
         end if
     end subroutine append_int32
 
     subroutine append_int64(arr, e)
-        integer(int64), allocatable, dimension(:), intent(inout) :: arr
+        integer(int64), allocatable, intent(inout) :: arr(:)
         integer(int64), intent(in) :: e
-        integer(int64), allocatable, dimension(:) :: tmp
 
         if (allocated(arr)) then
-            call move_alloc(arr, tmp)
-            allocate (arr(size(tmp) + 1))
-            arr(1:size(tmp)) = tmp(:)
-            arr(size(tmp) + 1) = e
+            arr = [arr, [e]]
         else
-            allocate (arr(1))
-            arr(1) = e
+            arr = [e]
         end if
     end subroutine append_int64
 
