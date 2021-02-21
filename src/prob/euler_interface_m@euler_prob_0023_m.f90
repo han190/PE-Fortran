@@ -10,22 +10,22 @@ contains
     function ans() result(ret)
         integer, allocatable :: abundant(:)
         integer, parameter :: min_ = 12, max_ = 28123
-        logical :: can_be_written(max_)
+        logical :: cannot_be_written(max_)
         integer :: i, j, ret
 
-        do i = min_, max_
+        gen_abundant_arr: do i = min_, max_
             if (is_abundant(i)) call append(abundant, i)
-        end do
+        end do gen_abundant_arr
 
-        can_be_written = .false.
+        cannot_be_written = .true.
         do i = 1, size(abundant)
             do j = i, size(abundant)
                 associate(x => abundant(i) + abundant(j))
-                    if (x <= max_) can_be_written(x) = .true.
+                    if (x <= max_) cannot_be_written(x) = .false.
                 end associate
             end do
         end do
-        ret = sum(pack([(i, i = 1, max_)], .not. can_be_written))
+        ret = sum(pack([(i, i = 1, max_)], cannot_be_written))
     end function ans
 
     function is_abundant(val) result(ret)
