@@ -28,18 +28,6 @@ contains
         ret = sum(pack([(i, i = 1, max_)], .not. can_be_written))
     end function ans
 
-    function sum_of_proper_divisors(val) result(ret)
-        integer, intent(in) :: val
-        integer :: ret, i
-
-        ret = 1
-        do i = 2, val/2 + 1
-            if (mod(val, i) == 0) then
-                ret = ret + i
-            end if
-        end do
-    end function sum_of_proper_divisors
-
     function is_abundant(val) result(ret)
         integer, intent(in) :: val
         logical :: ret
@@ -47,5 +35,15 @@ contains
         ret = .false.
         if (sum_of_proper_divisors(val) > val) ret = .true.
     end function is_abundant
+
+    function sum_of_proper_divisors(val) result(ret)
+        integer, intent(in) :: val
+        integer :: ret, i
+
+        ret = 1
+        do i = 2, val/2 + 1
+            if (mod(val, i) == 0) ret = ret + i
+        end do
+    end function sum_of_proper_divisors
 
 end submodule euler_prob_0023_m
