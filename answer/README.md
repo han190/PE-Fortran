@@ -2,16 +2,16 @@
 
 ## Compilers
 
-- Compiler version: GCC version 9.3.0
-- Compiler options: -fdiagnostics-color=always -I PE-Fortran.p -I . -I .. -mtune=generic -march=x86-64 -auxbase-strip PE-Fortran.p/src_main_euler_main_m.f90.o -O3 -std=f2018 -ffast-math -J PE-Fortran.p -fpre-include=/usr/include/finclude/math-vector-fortran.h
+- Compiler version: Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.1 Build 20201112_000000
+- Compiler options: -IPE-Fortran.p -I. -I.. -D_FILE_OFFSET_BITS=64 -stand=f18 -O3 -xHost -ipo -module PE-Fortran.p -gen-dep=PE-Fortran.p/src_main_euler_main_m.f90.o -gen-depformat=make -o PE-Fortran.p/src_main_euler_main_m.f90.o -c
 
 ## Summary
 
 |Benchmarks|Results|
 |:----:|:----:|
 |Problems solved|  59|
-|Time spent|     1.67(s)|
-|Time spent per problem|     0.03(s)|
+|Time spent|     1.27(s)|
+|Time spent per problem|     0.02(s)|
 
 ## Relative Difficulty
 
@@ -26,63 +26,63 @@
 
 |Prob|Answer|Tspan(s)|Relative<br/>Difficulty|
 |:----:|:----:|:----:|:----:|
-|     1|              233168|  0.000018|:neutral_face:           |
-|     2|             4613732|  0.000004|                         |
-|     3|                6857|  0.002830|:confused:               |
-|     4|              906609|  0.004183|:confused:               |
-|     5|           232792560|  0.000003|                         |
-|     6|            25164150|  0.000003|                         |
-|     7|              104743|  0.002974|:confused:               |
-|     8|         23514624000|  0.000075|:slightly_frowning_face: |
-|     9|            31875000|  0.000094|:slightly_frowning_face: |
-|    10|        142913828922|  0.006649|:frowning_face:          |
-|    11|            70600674|  0.000067|:slightly_frowning_face: |
-|    12|            76576500|  0.089505|:imp:                    |
-|    13|          5537376230|  0.000262|:slightly_frowning_face: |
-|    14|              837799|  0.122977|:imp:                    |
-|    15|        137846528820|  0.000006|:neutral_face:           |
-|    16|                1366|  0.000504|:confused:               |
+|     1|              233168|  0.000011|:neutral_face:           |
+|     2|             4613732|  0.000005|:neutral_face:           |
+|     3|                6857|  0.003396|:confused:               |
+|     4|              906609|  0.004896|:frowning_face:          |
+|     5|           232792560|  0.000002|                         |
+|     6|            25164150|  0.000002|                         |
+|     7|              104743|  0.002894|:confused:               |
+|     8|         23514624000|  0.000074|:slightly_frowning_face: |
+|     9|            31875000|  0.000149|:slightly_frowning_face: |
+|    10|        142913828922|  0.005695|:frowning_face:          |
+|    11|            70600674|  0.000050|:slightly_frowning_face: |
+|    12|            76576500|  0.027900|:frowning_face:          |
+|    13|          5537376230|  0.000187|:slightly_frowning_face: |
+|    14|              837799|  0.093779|:imp:                    |
+|    15|        137846528820|  0.000002|                         |
+|    16|                1366|  0.000496|:confused:               |
 |    17|               21124|  0.000015|:neutral_face:           |
-|    18|                1074|  0.000035|:neutral_face:           |
-|    19|                 171|  0.000001|                         |
-|    20|                 648|  0.000030|:neutral_face:           |
-|    21|               31626|  0.001937|:confused:               |
-|    22|           871198282|  0.001686|:confused:               |
-|    23|             4179871|  0.346573|:imp:                    |
-|    24|          2783915460|  0.000007|:neutral_face:           |
-|    25|                4782|  0.015488|:frowning_face:          |
-|    26|                 983|  0.000402|:slightly_frowning_face: |
-|    27|              -59231|  0.000002|                         |
-|    28|           669171001|  0.000001|                         |
-|    29|                9183|  0.014006|:frowning_face:          |
-|    30|              443839|  0.031862|:frowning_face:          |
-|    31|               73682|  0.000005|                         |
-|    32|               45228|  0.002353|:confused:               |
+|    18|                1074|  0.000042|:slightly_frowning_face: |
+|    19|                 171|  0.000004|                         |
+|    20|                 648|  0.000029|:neutral_face:           |
+|    21|               31626|  0.002354|:confused:               |
+|    22|           474822712|  0.001680|:confused:               |
+|    23|             4179871|  0.121727|:imp:                    |
+|    24|          2783915460|  0.000004|                         |
+|    25|                4782|  0.018522|:frowning_face:          |
+|    26|                 983|  0.000394|:confused:               |
+|    27|              -59231|  0.000001|                         |
+|    28|           669171001|  0.000002|                         |
+|    29|                9183|  0.022060|:frowning_face:          |
+|    30|              443839|  0.042749|:imp:                    |
+|    31|               73682|  0.000003|                         |
+|    32|               45228|  0.002097|:confused:               |
 |    33|                 100|  0.000002|                         |
-|    34|               40730|  0.002090|:confused:               |
-|    35|                  55|  0.008459|:frowning_face:          |
-|    36|              872187|  0.000027|:neutral_face:           |
-|    37|              748317|  0.003796|:confused:               |
-|    38|           932718654|  0.001467|:confused:               |
-|    39|                 840|  0.042340|:frowning_face:          |
-|    40|                 210|  0.000013|:neutral_face:           |
-|    41|             7652413|  0.052279|:imp:                    |
-|    42|                 162|  0.000668|:confused:               |
-|    43|         16695334890|  0.081195|:imp:                    |
-|    44|             5482660|  0.029287|:frowning_face:          |
-|    45|          1533776805|  0.000005|                         |
-|    46|                5777|  0.001255|:confused:               |
-|    47|              134043|  0.004222|:confused:               |
-|    48|          9110846700|  0.016590|:frowning_face:          |
-|    49|        296962999629|  0.000035|:neutral_face:           |
-|    50|              997651|  0.003295|:confused:               |
-|    51|                   x|  0.000000|                         |
-|    52|              142857|  0.010322|:frowning_face:          |
-|    53|                4075|  0.000010|:neutral_face:           |
-|    54|                 376|  0.001797|:confused:               |
-|    55|                 249|  0.009208|:frowning_face:          |
-|    56|                 972|  0.017174|:frowning_face:          |
-|    57|                 153|  0.003493|:confused:               |
-|    58|               26241|  0.219189|:imp:                    |
-|    59|              129448|  0.017411|:frowning_face:          |
-|    60|               26033|  0.501950|:imp:                    |
+|    34|               40730|  0.002423|:confused:               |
+|    35|                  55|  0.005649|:frowning_face:          |
+|    36|              872187|  0.000031|:neutral_face:           |
+|    37|              748317|  0.012455|:frowning_face:          |
+|    38|           932718654|  0.001946|:confused:               |
+|    39|                 840|  0.016338|:frowning_face:          |
+|    40|                 210|  0.000002|                         |
+|    41|             7652413|  0.046685|:imp:                    |
+|    42|                 162|  0.000460|:confused:               |
+|    43|         16695334890|  0.051596|:imp:                    |
+|    44|             5482660|  0.046120|:imp:                    |
+|    45|          1533776805|  0.000001|                         |
+|    46|                5777|  0.002130|:confused:               |
+|    47|              134043|  0.004064|:frowning_face:          |
+|    48|          9110846700|  0.014477|:frowning_face:          |
+|    49|        296962999629|  0.000022|:neutral_face:           |
+|    50|              997651|  0.003741|:confused:               |
+|    51|                   x|  0.000001|                         |
+|    52|              142857|  0.012211|:frowning_face:          |
+|    53|                4075|  0.000007|:neutral_face:           |
+|    54|                 376|  0.000856|:confused:               |
+|    55|                 249|  0.044408|:imp:                    |
+|    56|                 972|  0.028177|:frowning_face:          |
+|    57|                 153|  0.003492|:confused:               |
+|    58|               26241|  0.227061|:imp:                    |
+|    59|              129448|  0.014654|:frowning_face:          |
+|    60|               26033|  0.383319|:imp:                    |
