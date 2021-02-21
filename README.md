@@ -6,12 +6,14 @@
 
 ### Prerequistes
 
-There are two dependencies to this project: [gfortran](https://gcc.gnu.org/wiki/GFortran) and [fypp](https://fypp.readthedocs.io/en/stable/). If you want to build the project with Meson, you will need [Meson](https://mesonbuild.com/index.html) and [Ninja](https://ninja-build.org/manual.html) as well. To install them (assuming you are on Ubuntu and you have [pip](https://pip.pypa.io/en/stable/) installed)
+You will need [Meson](https://mesonbuild.com/index.html), [Ninja](https://ninja-build.org/manual.html), [fypp](https://fypp.readthedocs.io/en/stable/), and [gfortran](https://gcc.gnu.org/wiki/GFortran) or [ifort](https://software.intel.com/content/www/us/en/develop/documentation/fortran-compiler-oneapi-dev-guide-and-reference/top.html) to compile and execute this project. To install them (assuming you are on Ubuntu and have [pip](https://pip.pypa.io/en/stable/) installed)
 
 ```shell
-sudo apt install make gfortran
+sudo apt install gfortran
 pip install fypp meson ninja
 ```
+
+For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)!
 
 ### Build with Meson
 
@@ -20,6 +22,12 @@ To build this project with Meson, navigate to the root directory of this repo an
 ```shell
 meson builddir
 meson test -C builddir
+```
+
+To build with `ifort`
+
+```shell
+FC=ifort meson builddir
 ```
 
 The generated `builddir/ANSWER.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/README.md).
