@@ -41,8 +41,14 @@ contains
         integer :: ret, i
 
         ret = 1
-        do i = 2, val/2 + 1
-            if (mod(val, i) == 0) ret = ret + i
+        do i = 2, int(sqrt(real(val)))
+            if (mod(val, i) == 0) then
+                if (val/i == i) then
+                    ret = ret + i
+                else
+                    ret = ret + i + val/i
+                end if
+            end if
         end do
     end function sum_of_proper_divisors
 
