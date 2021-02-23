@@ -92,12 +92,12 @@ contains
 
     integer function unit_digit_int32(n)
         integer, intent(in) :: n
-        unit_digit_int32 = n - n/10*10
+        unit_digit_int32 = mod(n, 10)
     end function unit_digit_int32
 
     integer(int64) function unit_digit_int64(n)
         integer(int64), intent(in) :: n
-        unit_digit_int64 = n - n/10_int64*10_int64
+        unit_digit_int64 = mod(n, 10_int64)
     end function unit_digit_int64
 
     subroutine swap_sp(a, b)
@@ -239,10 +239,8 @@ contains
 
         if (n2 == 0) then
             ans = n1
-            return
         else
             ans = gcd_int32(n2, mod(n1, n2))
-            return
         end if
     end function gcd_int32
 
@@ -252,10 +250,8 @@ contains
 
         if (n2 == 0_int64) then
             ans = n1
-            return
         else
             ans = gcd_int64(n2, mod(n1, n2))
-            return
         end if
     end function gcd_int64
 
@@ -305,7 +301,7 @@ contains
         integer, intent(in) :: n
         integer, intent(in), optional :: digs
         integer :: tmp, j, l
-        logical, allocatable, dimension(:) :: logic_arr
+        logical, allocatable :: logic_arr(:)
 
         if (present(digs)) then
             allocate (logic_arr(digs))
@@ -337,7 +333,7 @@ contains
         integer(int64), intent(in) :: n
         integer(int64), intent(in), optional :: digs
         integer(int64) :: tmp, j, l
-        logical, allocatable, dimension(:) :: logic_arr
+        logical, allocatable :: logic_arr(:)
 
         if (present(digs)) then
             allocate (logic_arr(digs))
@@ -367,7 +363,7 @@ contains
 
     subroutine int_2_arr_int32(n, arr)
         integer, intent(in) :: n
-        integer, allocatable, dimension(:), intent(out) :: arr
+        integer, allocatable, intent(out) :: arr(:)
         integer :: tmp, i, l
 
         tmp = n
@@ -388,7 +384,7 @@ contains
 
     subroutine int_2_arr_int64(n, arr)
         integer(int64), intent(in) :: n
-        integer, allocatable, dimension(:), intent(out) :: arr
+        integer, allocatable, intent(out) :: arr(:)
         integer(int64) :: tmp
         integer :: i, l
 
@@ -409,7 +405,7 @@ contains
     end subroutine int_2_arr_int64
 
     subroutine arr_2_int_int32(arr, n)
-        integer, dimension(:), intent(in) :: arr
+        integer, intent(in) :: arr(:)
         integer, intent(out) :: n
         integer :: i, tmp, l
 
@@ -424,7 +420,7 @@ contains
     end subroutine arr_2_int_int32
 
     subroutine arr_2_int_int64(arr, n)
-        integer(int64), dimension(:), intent(in) :: arr
+        integer(int64), intent(in) :: arr(:)
         integer(int64), intent(out) :: n
         integer(int64) :: i, tmp, l
 
