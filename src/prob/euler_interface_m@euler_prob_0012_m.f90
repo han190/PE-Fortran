@@ -7,37 +7,29 @@ contains
         write (euler0012, "(i20)") ans(500)
     end function euler0012
 
-    integer function ans(n)
+    function ans(n) result(ret)
         integer, intent(in) :: n
-        integer :: j, k
+        integer :: ret, i
 
-        j = 0; k = 0
+        i = 0
+        ret = 0
         do
-            j = j + 1
-            k = k + j
-            if (nums_of_divs(k) > n) exit
+            i = i + 1
+            ret = ret + i
+            if (number_of_divisors(ret) > n) exit
         end do
-        ans = k
     end function ans
 
-    integer function nums_of_divs(n)
-        integer, intent(in) :: n
-        integer :: m, i, tmp
+    function number_of_divisors(val) result(ret)
+        integer, intent(in) :: val
+        integer :: ret, i, x
 
-        m = int(sqrt(real(n, sp)))
-        tmp = 0
-
-        do i = 1, m - 1
-            if (mod(n, i) == 0) then
-                tmp = tmp + 1
-            end if
+        ret = 0
+        x = int(sqrt(real(val)))
+        do i = 1, x - 1
+            if (mod(val, i) == 0) ret = ret + 2
         end do
-        tmp = tmp*2
+        if (mod(val, x) == 0) ret = ret + 1
+    end function number_of_divisors
 
-        if (mod(n, m) == 0) then
-            tmp = tmp + 1
-        end if
-
-        nums_of_divs = tmp
-    end function nums_of_divs
 end submodule euler_prob_0012_m
