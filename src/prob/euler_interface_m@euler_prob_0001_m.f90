@@ -7,16 +7,20 @@ contains
         write (euler0001, "(i20)") ans(3, 5, 1000)
     end function euler0001
 
-    integer function ans(i, j, tmp)
-        integer, intent(in) :: i, j, tmp
+    function ans(i, j, n) result(ret)
+        integer, intent(in) :: i, j, n
+        integer :: ret
 
-        ans = sdb(i, tmp - 1) + sdb(j, tmp - 1) - sdb(i*j, tmp - 1)
+        ret = sum_divisibly_by(i, n - 1) &
+            + sum_divisibly_by(j, n - 1) &
+            - sum_divisibly_by(i*j, n - 1)
     end function ans
 
-    integer function sdb(i, j) ! sum divisibly by
+    function sum_divisibly_by(i, j) result(ret)
         integer, intent(in) :: i, j
+        integer :: ret
 
-        sdb = i*(j/i*(j/i + 1))/2
-    end function sdb
+        ret = i*(j/i*(j/i + 1))/2
+    end function sum_divisibly_by
 
 end submodule euler_prob_0001_m
