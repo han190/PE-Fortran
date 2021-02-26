@@ -4,9 +4,6 @@ project('PE-Fortran', 'fortran',
     license: 'MIT',
     default_options: [
         'buildtype=release', 
-        'warning_level=0', 
-        'optimization=3',
-        'auto_features=disabled',
         'fortran_std=f2018'
     ]
 )
