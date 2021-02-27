@@ -118,6 +118,11 @@ contains
         case default
             error stop 'File extension not supported.'
         end select
+
+	write (*, "('PE Fortran Solutions')")
+        write (*, "('Problems solved:', t20, i9)") int(nslv)
+        write (*, "('Total time spent:', t20, f9.2, '(s)')") tsum
+        write (*, "('Time spent per problem:', t20, f9.2, '(s)')") tsum/nslv
     end subroutine print_answer
 
 end module euler_main_m
