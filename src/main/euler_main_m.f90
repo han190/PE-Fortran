@@ -67,9 +67,9 @@ contains
     subroutine print_answer(ext)
         character(len=*), intent(in) :: ext
         character(len=20) :: ans(nop)
-        real :: tspan(nop), tsum, nslv, rel_diff(nop)
+        real :: tspan(nop), tsum, nslv, diff_(nop)
         character(len=7), parameter :: c_aligned = "|:"//repeat(dash, 4)//":"
-        character(len=100) :: fmt
+        character(len=100) :: fmt, x
         integer :: iunit, i
 
         call compute_all(ans, tspan, tsum, nslv)
@@ -107,19 +107,17 @@ contains
             write (iunit, '(a)') repeat(c_aligned, 4)//'|'
 
             fmt = "('|', i6, '|', a20, '|', f10.6, '|', a25, '|')"
-            rel_diff = tspan/(tsum/nop)
+            diff_ = tspan/(tsum/nop)
             print_all_answers: do i = 1, nop
-                write (iunit, trim(fmt)) i, ans(i), tspan(i), &
-                    compute_diff(rel_diff(i), &
-                                 maxval(rel_diff), &
-                                 minval(rel_diff))
+                x = compute_diff(diff_(i), maxval(diff_), minval(diff_))
+                write (iunit, trim(fmt)) i, ans(i), tspan(i), trim(x)
             end do print_all_answers
             close (iunit)
         case default
             error stop 'File extension not supported.'
         end select
 
-	write (*, "('PE Fortran Solutions')")
+        write (*, "('PE Fortran Solutions')")
         write (*, "('Problems solved:', t20, i9)") int(nslv)
         write (*, "('Total time spent:', t20, f9.2, '(s)')") tsum
         write (*, "('Time spent per problem:', t20, f9.2, '(s)')") tsum/nslv
