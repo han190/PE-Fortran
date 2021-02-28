@@ -10,13 +10,14 @@ contains
     function ans() result(ret)
         integer, allocatable :: abundant(:)
         integer, parameter :: min_ = 12, max_ = 28123
-        logical :: cannot_be_written(max_)
+        logical, allocatable :: cannot_be_written(:)
         integer :: i, j, ret
 
         gen_abundant_arr: do i = min_, max_
             if (is_abundant(i)) call append(abundant, i)
         end do gen_abundant_arr
 
+        allocate (cannot_be_written(max_))
         cannot_be_written = .true.
         do i = 1, size(abundant)
             do j = i, size(abundant)
