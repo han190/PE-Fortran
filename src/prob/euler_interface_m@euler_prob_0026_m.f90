@@ -28,21 +28,20 @@ contains
         end do
     end function answer
 
-    integer(int64) function multiplicative_order(n, m)
+    function multiplicative_order(n, m) result(ret)
         integer(int64), intent(in) :: n, m
-        integer(int64) :: res, k, tmp
+        integer(int64) :: ret, res, k
 
-        k = 1_int64; tmp = 1_int64
+        k = 1_int64; ret = 1_int64
         do
             res = mod(k*m, n)
             if (res /= 1_int64) then
                 k = res
-                tmp = tmp + 1_int64
+                ret = ret + 1_int64
             else
                 exit
             end if
         end do
-        multiplicative_order = tmp
     end function multiplicative_order
 
 end submodule euler_prob_0026_m
