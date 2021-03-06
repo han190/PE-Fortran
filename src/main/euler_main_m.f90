@@ -25,22 +25,24 @@ contains
     function compute_diff(t_, max_, min_) result(ret)
         real, intent(in) :: t_, max_, min_
         character(len=25) :: ret
+        character(len=7) :: circle
         real :: angry_level
 
+        circle = '&#9900;'
         ret = ''
         angry_level = (t_ - min_)/(max_ - min_)
         if (angry_level >= 0. .and. angry_level < 10.**(-5)) then
             ret = ''
         else if (angry_level >= 10.**(-5) .and. angry_level < 10.**(-4)) then
-            ret = ':neutral_face:'
+            ret = '_Lv1_'
         else if (angry_level >= 10.**(-4) .and. angry_level < 10.**(-3)) then
-            ret = ':slightly_frowning_face:'
+            ret = '_Lv2_'
         else if (angry_level >= 10.**(-3) .and. angry_level < 10.**(-2)) then
-            ret = ':confused:'
+            ret = '_Lv3_'
         else if (angry_level >= 10.**(-2) .and. angry_level < 10.**(-1)) then
-            ret = ':frowning_face:'
+            ret = '_Lv4_'
         else if (angry_level >= 10.**(-1) .and. angry_level <= 10.**(0)) then
-            ret = ':imp:'
+            ret = '&#9775;'
         end if
     end function compute_diff
 
@@ -98,9 +100,7 @@ contains
             write (iunit, '(a)') '|~10<sup>-6<sup/>|~10<sup>-5<sup/>|'// &
                 '~10<sup>-4<sup/>|~10<sup>-3<sup/>|~10<sup>-2<sup/>|'// &
                 '~10<sup>-1<sup/>|'
-            write (iunit, '(a)') &
-                '||:neutral_face:|:slightly_frowning_face:|'// &
-                ':confused:|:frowning_face:|:imp:|'
+            write (iunit, '(a)') '||_Lv1_|_Lv2_|_Lv3_|_Lv4_|&#9775;|'
             write (iunit, '(a)') new_line('a')//'## Answers'//new_line('a')
             write (iunit, '(a)') &
                 '|Prob|Answer|Tspan(s)|Relative<br/>Difficulty|'

@@ -1,6 +1,6 @@
 # Yet another Project Euler solutions...
 
-[Project Euler](https://projecteuler.net/about) is a problem set. I solve PE problems to polish my Fortran skills, expand my math knowledge base and most importantly FOR FUN :smiley:. If you are looking for the same things, check it out!
+[Project Euler](https://projecteuler.net/about) is a problem set. I solve PE problems to polish my Fortran skills, expand my math knowledge base and most importantly FOR FUN. If you are looking for the same things, check it out!
 
 ## Getting Started
 
@@ -32,13 +32,13 @@ FC=ifort meson builddir
 
 The generated `builddir/ANSWER.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/README.md).
 
-## A todo list :dart:
+## A todo list
 
 Here is what I plan to do in the future. (Not likely to be done recently cuz I am kinda busy...)
 
 - [x] Organize folders, use Shell scripts to compile codes.
 - [x] Use a build tool, for example Meson to wrap all the codes. 
-  - PS: Crappy but I did it with Meson :zany_face:.
+  - PS: Crappy but I did it with Meson.
 - [x] Use a Fortran preprocessor to simplify my code.
 - [ ] Write a documentation to clearly explain the algorithms, Fortran features, or anything that is interesting for each question.
 - [ ] Add version control.
