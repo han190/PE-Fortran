@@ -25,24 +25,22 @@ contains
     function compute_diff(t_, max_, min_) result(ret)
         real, intent(in) :: t_, max_, min_
         character(len=25) :: ret
-        character(len=7) :: circle
-        real :: angry_level
+        real :: diff
 
-        circle = '&#9900;'
         ret = ''
-        angry_level = (t_ - min_)/(max_ - min_)
-        if (angry_level >= 0. .and. angry_level < 10.**(-5)) then
+        diff = (t_ - min_)/(max_ - min_)
+        if (diff >= 0. .and. diff < 10.**(-5)) then
             ret = ''
-        else if (angry_level >= 10.**(-5) .and. angry_level < 10.**(-4)) then
-            ret = '_Lv1_'
-        else if (angry_level >= 10.**(-4) .and. angry_level < 10.**(-3)) then
-            ret = '_Lv2_'
-        else if (angry_level >= 10.**(-3) .and. angry_level < 10.**(-2)) then
-            ret = '_Lv3_'
-        else if (angry_level >= 10.**(-2) .and. angry_level < 10.**(-1)) then
-            ret = '_Lv4_'
-        else if (angry_level >= 10.**(-1) .and. angry_level <= 10.**(0)) then
-            ret = '&#9775;'
+        else if (diff >= 10.**(-5) .and. diff < 10.**(-4)) then
+            ret = 'Lv1'
+        else if (diff >= 10.**(-4) .and. diff < 10.**(-3)) then
+            ret = 'Lv2'
+        else if (diff >= 10.**(-3) .and. diff < 10.**(-2)) then
+            ret = 'Lv3'
+        else if (diff >= 10.**(-2) .and. diff < 10.**(-1)) then
+            ret = 'Lv4'
+        else if (diff >= 10.**(-1) .and. diff <= 10.**(0)) then
+            ret = 'Chronoeater'
         end if
     end function compute_diff
 
@@ -95,15 +93,15 @@ contains
             write (iunit, '(a)') '- Relative Difficulty of a problem = '// &
                 ' Normalize [ Tspan / ( Tsum / Nprob ) ]'//new_line('a')
             write (iunit, '(a)') '|Level 0|Level 1|Level 2|'// &
-                'Level 3|Level 4|Time<br/>Consuming!|'
+                'Level 3|Level 4|Level 5|'
             write (iunit, '(a)') repeat(c_aligned, 6)//'|'
             write (iunit, '(a)') '|~10<sup>-6<sup/>|~10<sup>-5<sup/>|'// &
                 '~10<sup>-4<sup/>|~10<sup>-3<sup/>|~10<sup>-2<sup/>|'// &
                 '~10<sup>-1<sup/>|'
-            write (iunit, '(a)') '||_Lv1_|_Lv2_|_Lv3_|_Lv4_|&#9775;|'
+            write (iunit, '(a)') '||Lv1|Lv2|Lv3|Lv4|Chronoeater|'
             write (iunit, '(a)') new_line('a')//'## Answers'//new_line('a')
             write (iunit, '(a)') &
-                '|Prob|Answer|Tspan(s)|Relative<br/>Difficulty|'
+                '|Prob|Answer|Tspan(s)|Relative Difficulty|'
             write (iunit, '(a)') repeat(c_aligned, 4)//'|'
 
             fmt = "('|', i6, '|', a20, '|', f10.6, '|', a25, '|')"
