@@ -32,15 +32,15 @@ contains
         if (diff >= 0. .and. diff < 10.**(-5)) then
             ret = ''
         else if (diff >= 10.**(-5) .and. diff < 10.**(-4)) then
-            ret = 'Lv1'
+            ret = '_Lv1_'
         else if (diff >= 10.**(-4) .and. diff < 10.**(-3)) then
-            ret = 'Lv2'
+            ret = '_Lv2_'
         else if (diff >= 10.**(-3) .and. diff < 10.**(-2)) then
-            ret = 'Lv3'
+            ret = '_Lv3_'
         else if (diff >= 10.**(-2) .and. diff < 10.**(-1)) then
-            ret = 'Lv4'
+            ret = '_Lv4_'
         else if (diff >= 10.**(-1) .and. diff <= 10.**(0)) then
-            ret = 'Chronoeater'
+            ret = '_Time-consuming_'
         end if
     end function compute_diff
 
@@ -98,7 +98,7 @@ contains
             write (iunit, '(a)') '|~10<sup>-6<sup/>|~10<sup>-5<sup/>|'// &
                 '~10<sup>-4<sup/>|~10<sup>-3<sup/>|~10<sup>-2<sup/>|'// &
                 '~10<sup>-1<sup/>|'
-            write (iunit, '(a)') '||Lv1|Lv2|Lv3|Lv4|Chronoeater|'
+            write (iunit, '(a)') '||_Lv1_|_Lv2_|_Lv3_|_Lv4_|_Time-consuming_|'
             write (iunit, '(a)') new_line('a')//'## Answers'//new_line('a')
             write (iunit, '(a)') &
                 '|Prob|Answer|Tspan(s)|Relative Difficulty|'

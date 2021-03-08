@@ -30,7 +30,7 @@ To build with `ifort`
 FC=ifort meson builddir
 ```
 
-The generated `builddir/ANSWER.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/README.md).
+The generated `builddir/ANSWER.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/ANSWER.md).
 
 ## A todo list
 
