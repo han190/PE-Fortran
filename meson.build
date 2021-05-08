@@ -55,7 +55,7 @@ fypp_src = gen_f90.process(
 
 util_src = [
     util_dir/'euler_utils_m.f90', util_dir/'euler_var_arr_m.f90',
-    util_dir/'euler_primes_m.f90', util_dir/'euler_mi_m.f90'
+    util_dir/'euler_primes_m.f90', util_dir/'euler_multiprecision_m.f90'
 ]
 
 main_src = [main_dir/'euler_main_m.f90', main_dir/'euler_main.f90']

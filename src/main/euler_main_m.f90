@@ -90,14 +90,16 @@ contains
                 tsum/nslv
             write (iunit, '(a)') new_line('a')//'## Relative Difficulty'// &
                 new_line('a')
-            write (iunit, '(a)') '- Relative Difficulty of a problem = '// &
-                ' Normalize [ Tspan / ( Tsum / Nprob ) ]'//new_line('a')
+            write (iunit, '(a)') '- Relative Difficulty(Prob) = '// &
+                ' Normalize(Tspan(Prob) / ( Ttot/Nprob ))'//new_line('a')
+            write (iunit, '(a)') 'where Normalize(x<sub>i</sub>) = '// &
+                ' (x<sub>i</sub> - min(x))/(max(x) - min(x))'//new_line('a')
             write (iunit, '(a)') '|Level 0|Level 1|Level 2|'// &
                 'Level 3|Level 4|Level 5|'
             write (iunit, '(a)') repeat(c_aligned, 6)//'|'
-            write (iunit, '(a)') '|~10<sup>-6<sup/>|~10<sup>-5<sup/>|'// &
-                '~10<sup>-4<sup/>|~10<sup>-3<sup/>|~10<sup>-2<sup/>|'// &
-                '~10<sup>-1<sup/>|'
+            write (iunit, '(a)') '|~10<sup>-6</sup>|~10<sup>-5</sup>|'// &
+                '~10<sup>-4</sup>|~10<sup>-3</sup>|~10<sup>-2</sup>|'// &
+                '~10<sup>-1</sup>|'
             write (iunit, '(a)') '||_Lv1_|_Lv2_|_Lv3_|_Lv4_|_Time-consuming_|'
             write (iunit, '(a)') new_line('a')//'## Answers'//new_line('a')
             write (iunit, '(a)') &

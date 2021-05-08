@@ -1,30 +1,26 @@
 submodule(euler_interface_m) euler_prob_0056_m
-    use euler_mi_m
+    use euler_multiprecision_m
     implicit none
 
 contains
 
     module character(len=20) function euler0056()
-        write (euler0056, "(i20)") ans()
+        write (euler0056, "(i20)") answer()
     end function euler0056
 
-    integer function ans()
-        type(very_long_int_t) :: int_arr(10), mul(10)
-        integer :: sum_arr(10, 10), i, j
-
-        do i = 1, 10
-            mul(i) = 89 + i
-            int_arr(i) = mul(i)**89
-        end do
-
-        do j = 1, 10
-            do i = 1, 10
-                int_arr(i) = mul(i)*int_arr(i)
+    function answer() result(ret)
+        integer, parameter :: const = 89, ubound = 10
+        type(multiprecision_int_t) :: int_arr(ubound)
+        integer :: ret, i, j, sum_arr(ubound, ubound)
+        
+        int_arr = [(to_long(const + i)**const, i = 1, ubound)]
+        do j = 1, ubound
+            do i = 1, ubound
+                int_arr(i) = to_long(const + i)*int_arr(i)
                 sum_arr(i, j) = sum(int_arr(i)%arr)
             end do
         end do
-
-        ans = maxval(sum_arr)
-    end function ans
+        ret = maxval(sum_arr)
+    end function answer
 
 end submodule euler_prob_0056_m

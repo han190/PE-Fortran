@@ -1,13 +1,6 @@
 submodule(euler_interface_m) euler_prob_0055_m
-    use euler_mi_m
+    use euler_multiprecision_m
     implicit none
-    !
-    ! OK, I wrote an arbitrary precision library for this problem using the
-    ! oo features of Fortran2003. No doubt it is slower than directly storing
-    ! all the big numbers into allocatable integer(1) arrays but writing
-    ! everything into oo structures makes my code cleaner and the lib could be
-    ! reused if I want to.
-    !---------------------------------------------------------------------------
 
 contains
 
@@ -17,7 +10,7 @@ contains
 
     integer function ans(upper_bound)
         integer, intent(in) :: upper_bound
-        type(very_long_int_t) :: num
+        type(multiprecision_int_t) :: num
         integer :: i, k
 
         k = 0
@@ -34,8 +27,8 @@ contains
     end function ans
 
     logical function is_lychrel(num)
-        type(very_long_int_t), intent(in) :: num
-        type(very_long_int_t) :: tmp, tmp2
+        type(multiprecision_int_t), intent(in) :: num
+        type(multiprecision_int_t) :: tmp, tmp2
         integer :: i
 
         i = 0
@@ -55,27 +48,25 @@ contains
         end do
     end function is_lychrel
 
-    logical function is_palindromic_long(i)
-        type(very_long_int_t), intent(in) :: i
-        type(very_long_int_t) :: tmp
+    logical function is_palindromic_long(val)
+        type(multiprecision_int_t), intent(in) :: val
+        type(multiprecision_int_t) :: tmp
 
-        tmp = reverse_long(i)
-        if (tmp == i) then
+        tmp = reverse_long(val)
+        if (tmp == val) then
             is_palindromic_long = .true.
         else
             is_palindromic_long = .false.
         end if
     end function is_palindromic_long
 
-    function reverse_long(i) result(a)
-        type(very_long_int_t), intent(in) :: i
-        type(very_long_int_t) :: a
+    function reverse_long(val) result(ret)
+        type(multiprecision_int_t), intent(in) :: val
+        type(multiprecision_int_t) :: ret
 
-        associate (x => size(i%arr))
-            allocate (a%arr(x))
-            a%arr(1:x) = i%arr(x:1:-1)
-            a%sgn = '+'
-        end associate
+        allocate (ret%arr(size(val%arr)))
+        ret%arr(1:size(val%arr)) = val%arr(size(val%arr):1:-1)
+        ret%sgn = '+'
     end function reverse_long
 
 end submodule euler_prob_0055_m
