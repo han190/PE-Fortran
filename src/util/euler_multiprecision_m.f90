@@ -284,9 +284,8 @@ contains
     logical function eq_int_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
-        type(multiprecision_int_t) :: tmp
 
-        tmp = val; eq_int_func = this%eq_func(tmp)
+        eq_int_func = this%eq_func(to_long(val))
     end function eq_int_func
 
     logical function eq_char_func(this, val)
@@ -315,9 +314,8 @@ contains
     logical function gt_int_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
-        type(multiprecision_int_t) :: tmp
 
-        tmp = val; gt_int_func = this%gt_func(tmp)
+        gt_int_func = this%gt_func(to_long(val))
     end function gt_int_func
 
     logical function gt_char_func(this, val)
@@ -346,9 +344,8 @@ contains
     logical function lt_int_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
-        type(multiprecision_int_t) :: tmp
 
-        tmp = val; lt_int_func = this%lt_func(tmp)
+        lt_int_func = this%lt_func(to_long(val))
     end function lt_int_func
 
     logical function lt_char_func(this, val)
@@ -369,9 +366,8 @@ contains
     logical function ge_int_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
-        type(multiprecision_int_t) :: tmp
 
-        tmp = val; ge_int_func = this%ge_func(tmp)
+        ge_int_func = this%ge_func(to_long(val))
     end function ge_int_func
 
     logical function ge_char_func(this, val)
@@ -392,9 +388,8 @@ contains
     logical function le_int_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
-        type(multiprecision_int_t) :: tmp
 
-        tmp = val; le_int_func = this%le_func(tmp)
+        le_int_func = this%le_func(to_long(val))
     end function le_int_func
 
     logical function le_char_func(this, val)
@@ -440,9 +435,9 @@ contains
     function add_int_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
-        type(multiprecision_int_t) :: ret, tmp
+        type(multiprecision_int_t) :: ret
 
-        tmp = val; ret = this%add_func(tmp)
+        ret = this%add_func(to_long(val))
     end function add_int_func
 
     function add_char_func(this, val) result(ret)
@@ -488,9 +483,9 @@ contains
     function sub_int_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
-        type(multiprecision_int_t) :: ret, tmp
+        type(multiprecision_int_t) :: ret
 
-        tmp = val; ret = this%sub_func(tmp)
+        ret = this%sub_func(to_long(val))
     end function sub_int_func
 
     function sub_char_func(this, val) result(ret)
@@ -521,9 +516,9 @@ contains
     function mul_int_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
-        type(multiprecision_int_t) :: ret, tmp
+        type(multiprecision_int_t) :: ret
 
-        tmp = val; ret = this%mul_func(tmp)
+        ret = this%mul_func(to_long(val))
     end function mul_int_func
 
     function mul_char_func(this, val) result(ret)
