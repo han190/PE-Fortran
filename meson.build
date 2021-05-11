@@ -39,6 +39,7 @@ elif fc.get_id() == 'intel'
 endif
 add_global_arguments(dialect, language: 'fortran')
 
+# Fortran preprocessor
 num_probs = 60
 fypp = find_program('fypp')
 fypp_flag = '-DNUM_PROB=@0@'.format(num_probs)
@@ -53,21 +54,22 @@ fypp_src = gen_f90.process(
     extra_args: fypp_flag
 )
 
+# Source files
 util_src = [
     util_dir/'euler_utils_m.f90', util_dir/'euler_var_arr_m.f90',
     util_dir/'euler_primes_m.f90', util_dir/'euler_multiprecision_m.f90'
 ]
 
 main_src = [main_dir/'euler_main_m.f90', main_dir/'euler_main.f90']
-prob_num = [
-    '0001', '0002', '0003', '0004', '0005', '0006', '0007', '0008', '0009', 
-    '0010', '0011', '0012', '0013', '0014', '0015', '0016', '0017', '0018', 
-    '0019', '0020', '0021', '0022', '0023', '0024', '0025', '0026', '0027', 
-    '0028', '0029', '0030', '0031', '0032', '0033', '0034', '0035', '0036', 
-    '0037', '0038', '0039', '0040', '0041', '0042', '0043', '0044', '0045', 
-    '0046', '0047', '0048', '0049', '0050', '0051', '0052', '0053', '0054', 
-    '0055', '0056', '0057', '0058', '0059', '0060'
-]
+
+# Meson doesn't have wildcards, instead one has to use extra commands if 
+# they have many sources files. For more details, consult:
+# https://github.com/mesonbuild/meson/blob/master/docs/markdown/FAQ.md
+
+prob_num = run_command(
+    'python', 'numGenerator.py', num_probs.to_string()
+).stdout().split()
+
 prob_src = []
 foreach prob : prob_num
     prob_src += prob_dir/'euler_interface_m@euler_prob_' + prob + '_m.f90'
