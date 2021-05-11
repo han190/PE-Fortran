@@ -7,16 +7,10 @@ module euler_multiprecision_util_m
 contains
 
     function cut_leading_zeros(arr) result(ret)
-        integer, allocatable, intent(in) :: arr(:)
+        integer, intent(in) :: arr(:)
         integer, allocatable :: ret(:)
-        integer :: i
-
-        i = 1
-        find_zeros: do
-            if (arr(i) /= 0 .or. i >= size(arr)) exit find_zeros
-            i = i + 1
-        end do find_zeros
-        ret = arr(i:)
+        
+        ret = arr(findloc(arr == 0, value=.false., dim=1):)
     end function cut_leading_zeros
 
     function carry(arr) result(ret)
