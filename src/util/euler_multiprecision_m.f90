@@ -93,28 +93,6 @@ contains
         if (ret /= 0) error stop 'compare: invalid output.'
     end function compare
 
-    ! function mul(arr1, arr2) result(ret)
-    !     integer, intent(in) :: arr1(:), arr2(:)
-    !     integer, allocatable :: ret(:), tmp(:)
-    !     integer :: i
-
-    !     associate (col => size(arr1), row => size(arr2), &
-    !                tot => size(arr1) + size(arr2))
-    !         allocate (tmp(tot + 1), ret(tot + 1))
-    !         ret = 0
-
-    !         do i = 1, row
-    !             associate (x => tot - i + 1)
-    !                 tmp = 0; tmp(x - col:x + 1) = arr1
-    !             end associate
-    !             tmp = carry(tmp*arr2(row - i + 1))
-    !             ret = ret + tmp
-    !         end do
-    !         ret = carry(ret)
-    !     end associate
-    !     ret = cut_leading_zeros(ret)
-    ! end function mul
-
     function mul(arr1, arr2) result(ret)
         integer, intent(in) :: arr1(:), arr2(:)
         integer, allocatable :: tmp(:), tmp_row(:), ret(:)
