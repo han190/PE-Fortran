@@ -10,17 +10,14 @@ project('PE-Fortran', 'fortran',
 
 # check os
 if host_machine.system() == 'windows'
-    fypp_dir = 'src\\fypp'
-    util_dir = 'src\\util'
-    prob_dir = 'src\\prob'
-    main_dir = 'src\\main'
+    error('Windows is not supported currently.')
 elif host_machine.system() == 'linux'
     fypp_dir = 'src/fypp'
     util_dir = 'src/util'
     prob_dir = 'src/prob'
     main_dir = 'src/main'
+    data_dir = 'data'
 endif
-data_dir = 'data'
 
 # check compiler
 fc = meson.get_compiler('fortran')
