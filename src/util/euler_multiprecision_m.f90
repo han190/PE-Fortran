@@ -15,13 +15,9 @@ contains
 
     function carry(arr) result(ret)
         integer, intent(in) :: arr(:)
-        integer, allocatable :: tmp1(:), tmp2(:), ret(:)
+        integer, dimension(size(arr) + 2) :: tmp1, tmp2, ret
 
-        associate (x => size(arr))
-            allocate (tmp1(x + 2), tmp2(x + 2), ret(x + 2))
-        end associate
         tmp1 = 0; tmp2 = 0; ret(1:2) = 0; ret(3:) = arr(:)
-
         do
             if (all(ret <= 9)) exit
             tmp1(:) = ret(:) - ret(:)/10*10
