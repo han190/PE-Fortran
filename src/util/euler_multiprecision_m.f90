@@ -92,16 +92,13 @@ contains
         integer, allocatable :: tmp(:), tmp_row(:), ret(:)
         integer :: i
 
-        associate (size1 => size(arr1), size2 => size(arr2), &
-                   tot => size(arr1) + size(arr2))
-            allocate (tmp_row(tot), tmp(tot + 2))
+        associate (s1 => size(arr1), s2 => size(arr2))
+            allocate (tmp_row(s1 + s2), tmp(s1 + s2 + 2))
             tmp = 0
 
-            do i = 1, size2
-                associate (x => tot - i + 1)
-                    tmp_row = 0; tmp_row(x - size1 + 1:x) = arr1
-                end associate
-                tmp = tmp + carry(tmp_row*arr2(size2 - i + 1))
+            do i = s2, 1, -1
+                tmp_row = 0; tmp_row(i + 1:i + s1) = arr1
+                tmp = tmp + carry(tmp_row*arr2(i))
             end do
         end associate
         ret = cut_leading_zeros(carry(tmp))
