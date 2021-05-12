@@ -69,7 +69,7 @@ prob_num = run_command(
 
 prob_src = []
 foreach prob : prob_num
-    prob_src += prob_dir/'euler_interface_m@euler_prob_' + prob + '_m.f90'
+    prob_src += prob_dir/'euler_prob_' + prob + '_m.f90'
 endforeach
 
 data_src = [
