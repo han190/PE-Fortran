@@ -163,19 +163,15 @@ module euler_multiprecision_m
         module procedure to_long_char, to_long_int
     end interface
 
-    !   ! TODO-list
-    !   ! For a multiprecision_int_t, once the type is declared
-    !   type(multiprecision_int_t) :: val1, val2, val3
-    !
-    !   ! One should be able to:
-    !   ! 1. print the value
-    !   call val1%print(val_only=.false., sgn_only=.false.)
-    !   ! 2. floor division
-    !   val3 = val1 / val2
-    !   ! 3. power (partially done)
-    !   val3 = val1**val2
-    !   ! 4. factorial
-    !   val2 = .fac. val1
+    !! TODO-list
+    !! For a multiprecision_int_t, once the type is declared
+    !! type(multiprecision_int_t) :: val1, val2, val3
+    !!
+    !! One should be able to:
+    !! 1. Print the value
+    !! 2. Floor division
+    !! 3. Power (partially done)
+    !! 4. Factorial
 
 contains
 
