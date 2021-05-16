@@ -64,7 +64,7 @@ main_src = [main_dir/'euler_main_m.f90', main_dir/'euler_main.f90']
 # https://github.com/mesonbuild/meson/blob/master/docs/markdown/FAQ.md
 
 prob_num = run_command(
-    'python', 'numGenerator.py', num_probs.to_string()
+    'python', 'numbers.py', num_probs.to_string()
 ).stdout().split()
 
 prob_src = []
