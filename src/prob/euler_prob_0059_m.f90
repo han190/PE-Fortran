@@ -4,10 +4,11 @@ submodule(euler_interface_m) euler_prob_0059_m
 contains
 
     module character(len=20) function euler0059()
-        write (euler0059, "(i20)") ans()
+        write (euler0059, "(i20)") answer()
     end function euler0059
 
-    integer function ans()
+    function answer() result(ret)
+        integer :: ret
         integer, allocatable :: encrypted(:), decrypted(:)
         integer, parameter :: n = 26, k = 3
         integer :: letters(n), idx(k), idx2(2*k, k), key(k), i, j
@@ -34,6 +35,7 @@ contains
         idx2(5, :) = [3, 1, 2]
         idx2(6, :) = [3, 2, 1]
 
+        ret = 0
         outer: do while (next_permutation_avail)
             inner: do i = 1, size(idx2(:, 1))
                 innermost: do j = 1, 3
@@ -41,13 +43,13 @@ contains
                 end do innermost
                 call decrypt(encrypted, key, decrypted)
                 if (is_english(decrypted)) then
-                    ans = sum(decrypted)
+                    ret = sum(decrypted)
                     return
                 end if
             end do inner
             next_permutation_avail = next_permutation(k, n, idx)
         end do outer
-    end function ans
+    end function answer
 
     subroutine remove_trailing_zeros(arr)
         integer, allocatable, intent(inout) :: arr(:)
