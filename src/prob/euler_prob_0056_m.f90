@@ -12,8 +12,8 @@ contains
         integer, parameter :: const = 89, ubound = 10
         type(multiprecision_int_t) :: int_arr(ubound)
         integer :: ret, i, j, sum_arr(ubound, ubound)
-        
-        int_arr = [(to_long(const + i)**const, i = 1, ubound)]
+
+        int_arr = [(to_long(const + i)**const, i=1, ubound)]
         do j = 1, ubound
             do i = 1, ubound
                 int_arr(i) = to_long(const + i)*int_arr(i)

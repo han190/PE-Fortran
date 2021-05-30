@@ -21,12 +21,12 @@ contains
         cannot_be_written = .true.
         do i = 1, size(abundant)
             do j = i, size(abundant)
-                associate(x => abundant(i) + abundant(j))
+                associate (x => abundant(i) + abundant(j))
                     if (x <= max_) cannot_be_written(x) = .false.
                 end associate
             end do
         end do
-        ret = sum(pack([(i, i = 1, max_)], cannot_be_written))
+        ret = sum(pack([(i, i=1, max_)], cannot_be_written))
     end function ans
 
     function is_abundant(val) result(ret)

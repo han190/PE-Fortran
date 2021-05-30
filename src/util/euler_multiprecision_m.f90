@@ -9,7 +9,7 @@ contains
     function cut_leading_zeros(arr) result(ret)
         integer, intent(in) :: arr(:)
         integer, allocatable :: ret(:)
-        
+
         ret = arr(findloc(arr == 0, value=.false., dim=1):)
     end function cut_leading_zeros
 

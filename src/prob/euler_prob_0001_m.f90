@@ -11,9 +11,9 @@ contains
         integer, intent(in) :: i, j, n
         integer :: ret
 
-        ret = sum_divisibly_by(i, n - 1) &
-            + sum_divisibly_by(j, n - 1) &
-            - sum_divisibly_by(i*j, n - 1)
+        ret = sum_divisibly_by(i, n - 1) + &
+              sum_divisibly_by(j, n - 1) - &
+              sum_divisibly_by(i*j, n - 1)
     end function ans
 
     function sum_divisibly_by(i, j) result(ret)
