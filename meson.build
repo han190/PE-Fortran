@@ -8,18 +8,14 @@ project('PE-Fortran', 'fortran',
     ]
 )
 
-# check os
-if host_machine.system() == 'windows'
-    error('Windows is not supported currently.')
-elif host_machine.system() == 'linux'
-    fypp_dir = 'src/fypp'
-    util_dir = 'src/util'
-    prob_dir = 'src/prob'
-    main_dir = 'src/main'
-    data_dir = 'data'
-endif
+# Directories
+fypp_dir = 'src/fypp'
+util_dir = 'src/util'
+prob_dir = 'src/prob'
+main_dir = 'src/main'
+data_dir = 'data'
 
-# check compiler
+# Check compiler
 fc = meson.get_compiler('fortran')
 if fc.get_id() == 'gcc'
     if get_option('buildtype') == 'release'
@@ -53,11 +49,16 @@ fypp_src = gen_f90.process(
 
 # Source files
 util_src = [
-    util_dir/'euler_utils_m.f90', util_dir/'euler_var_arr_m.f90',
-    util_dir/'euler_primes_m.f90', util_dir/'euler_multiprecision_m.f90'
+    util_dir/'euler_utils_m.f90', 
+    util_dir/'euler_var_arr_m.f90',
+    util_dir/'euler_primes_m.f90', 
+    util_dir/'euler_multiprecision_m.f90'
 ]
 
-main_src = [main_dir/'euler_main_m.f90', main_dir/'euler_main.f90']
+main_src = [
+    main_dir/'euler_main_m.f90', 
+    main_dir/'euler_main.f90'
+]
 
 # Meson doesn't have wildcards, instead one has to use extra commands if 
 # they have many sources files. For more details, consult:
@@ -73,8 +74,14 @@ foreach prob : prob_num
 endforeach
 
 data_src = [
-    'euler0008.txt', 'euler0011.txt', 'euler0013.txt', 'euler0018.txt',
-    'euler0022.txt', 'euler0042.txt', 'euler0054.txt', 'euler0059.txt'
+    'euler0008.txt',
+    'euler0011.txt',
+    'euler0013.txt',
+    'euler0018.txt',
+    'euler0022.txt',
+    'euler0042.txt',
+    'euler0054.txt',
+    'euler0059.txt'
 ]
 foreach data_file : data_src
     configure_file(copy:true, input: data_dir/data_file, output: data_file)
