@@ -7,14 +7,14 @@ module euler_multiprecision_util_m
 contains
 
     function cut_leading_zeros(arr) result(ret)
-        integer, intent(in) :: arr(:)
+        integer, contiguous, intent(in) :: arr(:)
         integer, allocatable :: ret(:)
 
         ret = arr(findloc(arr == 0, value=.false., dim=1):)
     end function cut_leading_zeros
 
     function carry(arr) result(ret)
-        integer, intent(in) :: arr(:)
+        integer, contiguous, intent(in) :: arr(:)
         integer, dimension(size(arr) + 2) :: tmp1, tmp2, ret
 
         tmp1 = 0; tmp2 = 0; ret(1:2) = 0; ret(3:) = arr(:)
@@ -27,7 +27,7 @@ contains
     end function carry
 
     function add(arr1, arr2) result(ret)
-        integer, allocatable, intent(in) :: arr1(:), arr2(:)
+        integer, contiguous, intent(in) :: arr1(:), arr2(:)
         integer, allocatable, dimension(:) :: ret, tmp1, tmp2
 
         associate (x => max(size(arr1), size(arr2)) + 1)
@@ -39,7 +39,7 @@ contains
     end function add
 
     function sub(arr1, arr2) result(ret)
-        integer, allocatable, intent(in) :: arr1(:), arr2(:)
+        integer, contiguous, intent(in) :: arr1(:), arr2(:)
         integer, allocatable, dimension(:) :: ret, tmp1, tmp2, tmp
         integer :: i
 
@@ -62,7 +62,7 @@ contains
     end function sub
 
     function compare(arr1, arr2) result(ret)
-        integer, allocatable, intent(in) :: arr1(:), arr2(:)
+        integer, contiguous, intent(in) :: arr1(:), arr2(:)
         integer :: ret, i
 
         if (size(arr1) > size(arr2)) then
@@ -84,7 +84,7 @@ contains
     end function compare
 
     function mul(arr1, arr2) result(ret)
-        integer, intent(in) :: arr1(:), arr2(:)
+        integer, contiguous, intent(in) :: arr1(:), arr2(:)
         integer, allocatable :: tmp(:), tmp_row(:), ret(:)
         integer :: i
 
@@ -101,11 +101,11 @@ contains
     end function mul
 
     recursive function pow2(arr, n) result(ret)
-        integer, intent(in) :: arr(:)
+        integer, contiguous, intent(in) :: arr(:)
         integer, intent(in) :: n
         integer, allocatable :: ret(:)
 
-        if (n < 0) error stop 'pow2: n must be positive.'
+        if (n < 0) error stop 'pow2: n is nonnegative.'
 
         if (n == 0) then
             ret = [1]
