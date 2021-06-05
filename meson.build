@@ -9,11 +9,7 @@ project('PE-Fortran', 'fortran',
 )
 
 # Directories
-fypp_dir = 'src/fypp'
-util_dir = 'src/util'
-prob_dir = 'src/prob'
-main_dir = 'src/main'
-data_dir = 'data'
+SRC_DIR = 'src'
 
 # Check compiler
 fc = meson.get_compiler('fortran')
@@ -32,7 +28,15 @@ elif fc.get_id() == 'intel'
 endif
 add_global_arguments(dialect, language: 'fortran')
 
-# Fortran preprocessor
+# Source files
+src = [
+    SRC_DIR/'euler_utils_m.f90', 
+    SRC_DIR/'euler_var_arr_m.f90',
+    SRC_DIR/'euler_primes_m.f90', 
+    SRC_DIR/'euler_multiprecision_m.f90'
+]
+
+# Preprocessing .fypp files
 num_probs = 60
 fypp = find_program('fypp')
 fypp_flag = '-DNUM_PROB=@0@'.format(num_probs)
@@ -41,23 +45,16 @@ gen_f90 = generator(
     fypp, output: '@BASENAME@.f90',
     arguments: ['@INPUT@', '@EXTRA_ARGS@', '@OUTPUT@']
 )
-fypp_src = gen_f90.process(
-    fypp_dir/'euler_interface_m.fypp', 
-    fypp_dir/'euler_prob_api_m.fypp', 
+
+src += gen_f90.process(
+    SRC_DIR/'euler_interface_m.fypp', 
+    SRC_DIR/'euler_prob_api_m.fypp', 
     extra_args: fypp_flag
 )
 
-# Source files
-util_src = [
-    util_dir/'euler_utils_m.f90', 
-    util_dir/'euler_var_arr_m.f90',
-    util_dir/'euler_primes_m.f90', 
-    util_dir/'euler_multiprecision_m.f90'
-]
-
-main_src = [
-    main_dir/'euler_main_m.f90', 
-    main_dir/'euler_main.f90'
+src += [
+    SRC_DIR/'euler_main_m.f90', 
+    SRC_DIR/'euler_main.f90'
 ]
 
 # Meson doesn't have wildcards, instead one has to use extra commands if 
@@ -68,9 +65,8 @@ prob_num = run_command(
     'python', 'numbers.py', num_probs.to_string()
 ).stdout().split()
 
-prob_src = []
 foreach prob : prob_num
-    prob_src += prob_dir/'euler_prob_' + prob + '_m.f90'
+    src += SRC_DIR/'prob/euler_prob_' + prob + '_m.f90'
 endforeach
 
 data_src = [
@@ -83,10 +79,10 @@ data_src = [
     'euler0054.txt',
     'euler0059.txt'
 ]
+
 foreach data_file : data_src
-    configure_file(copy:true, input: data_dir/data_file, output: data_file)
+    configure_file(copy:true, input: 'data'/data_file, output: data_file)
 endforeach
 
-src = [util_src, fypp_src, prob_src, main_src]
 exec = executable('PE-Fortran', sources: src)
 test('Compute All Problems', exec, args: '--compute-all')
