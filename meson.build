@@ -23,7 +23,7 @@ elif fc.get_id() == 'intel'
     if get_option('buildtype') == 'release'
         dialect = ['-xHost', '-ipo']
     elif get_option('buildtype') == 'debug'
-        dialect = ['-warn', '-debug extended', '-fpe0']
+        dialect = ['-check', '-traceback', '-fpe0']
     endif
 endif
 add_global_arguments(dialect, language: 'fortran')
