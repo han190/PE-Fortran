@@ -14,14 +14,14 @@ contains
         use euler_primes_m, only: sieve_of_Eratosthenes
         implicit none
 
-        integer, parameter :: start = 100000, end = 999999
+        integer, parameter :: PRIME_START = 100000, PRIME_END = 999999
         integer :: i, j, s, idx, tmp, p_knt, c_knt, ret
         integer, allocatable :: prime(:), arr(:)
         logical, allocatable :: is_prime(:)
 
-        call sieve_of_Eratosthenes(end, is_prime)
-        prime = pack([(i, i=0, end - 1)], is_prime)
-        prime = pack(prime, prime > start)
+        call sieve_of_Eratosthenes(PRIME_END, is_prime)
+        prime = pack([(i, i=0, PRIME_END - 1)], is_prime)
+        prime = pack(prime, prime > PRIME_START)
 
         outer: do idx = 1, size(prime)
             call int_2_arr(prime(idx), arr)
