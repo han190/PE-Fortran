@@ -118,9 +118,10 @@ contains
         end select
 
         write (*, "('PE Fortran Solutions')")
-        write (*, "('Problems solved:', t20, i9)") int(nslv)
-        write (*, "('Total time spent:', t20, f9.2, '(s)')") tsum
-        write (*, "('Time spent per problem:', t20, f9.2, '(s)')") tsum/nslv
+        write (*, "(26('-'), 1x, 9('-'))")
+        write (*, "('Problems solved:', t27, 1x, i9)") int(nslv)
+        write (*, "('Total time spent (s):', t27, 1x, f9.2)") tsum
+        write (*, "('Time spent per problem (s):', t27, 1x, f9.2)") tsum/nslv
     end subroutine print_answer
 
 end module euler_main_m
