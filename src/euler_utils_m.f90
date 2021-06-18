@@ -86,6 +86,7 @@ module euler_utils_m
     interface next_permutation
         module procedure next_permutation_int32
         module procedure next_permutation_int64
+        module procedure next_permutation2_int32
     end interface next_permutation
 
 contains
@@ -529,5 +530,30 @@ contains
             idx(x:k) = [(idx(x) + i, i=1, k - x + 1)]
         end if
     end function next_permutation_int64
+
+    function next_permutation2_int32(arr) result(ret)
+        integer, intent(inout) :: arr(:)
+        integer :: i, k, l, tmp
+        logical :: ret
+
+        do i = size(arr) - 1, 1, -1
+            if (arr(i) < arr(i + 1)) then
+                k = i
+                ret = .true.
+                exit
+            else
+                ret = .false.
+            end if
+        end do
+
+        do i = size(arr), 1, -1
+            if (arr(k) < arr(i)) then
+                l = i; exit
+            end if
+        end do
+
+        call swap(arr(k), arr(l))
+        arr(k + 1:size(arr)) = arr(size(arr):k + 1:-1)
+    end function next_permutation2_int32
 
 end module euler_utils_m

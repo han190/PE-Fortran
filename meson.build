@@ -37,7 +37,7 @@ src = [
 ]
 
 # Preprocessing .fypp files
-num_probs = 60
+num_probs = 61
 fypp = find_program('fypp')
 fypp_flag = '-DNUM_PROB=@0@'.format(num_probs)
 message('fypp_flag = @0@'.format(fypp_flag))
