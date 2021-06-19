@@ -14,7 +14,7 @@ contains
         type(var_arr_t), allocatable :: arr(:)
         logical :: avail
 
-        avail = .true.
+        avail = .true.; ret = 0
         idx = [3, 4, 5, 6, 7, 8]
         call get_polygonals(polygonals)
 

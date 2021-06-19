@@ -533,7 +533,7 @@ contains
 
     function next_permutation2_int32(arr) result(ret)
         integer, intent(inout) :: arr(:)
-        integer :: i, k, l, tmp
+        integer :: i, k, l
         logical :: ret
 
         do i = size(arr) - 1, 1, -1
