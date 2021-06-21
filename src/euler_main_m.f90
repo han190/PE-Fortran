@@ -77,8 +77,9 @@ contains
         real :: tsum, nslv
         character(len=7), parameter :: md_table = "|:"//repeat(dash, 4)//":"
         character(len=100) :: fmt
-        integer :: iunit, i
+        integer, parameter :: iunit = 1120
         character(len=25), allocatable :: levels(:)
+        integer :: i
 
         call get_answers(answer, tspan)
         tsum = sum(tspan, dim=1)
@@ -88,8 +89,7 @@ contains
 
         select case (ext)
         case ('markdown')
-            iunit = 1120
-            open (unit=iunit, file='ANSWER.md')
+            open (unit=iunit, file='answer.md')
             write (iunit, '(a)') '# Fortran PE Solutions'//new_line('a')
             write (iunit, '(a)') new_line('a')//'## Summary'//new_line('a')
             write (iunit, '(a)') '|Benchmarks|Results|'
@@ -102,9 +102,27 @@ contains
             write (iunit, '(a)') repeat(md_table, 4)//'|'
 
             fmt = "('|', i6, '|', a20, '|', f10.6, '|', a25, '|')"
-            print_all_answers: do i = 1, size(tspan)
+            do i = 1, size(tspan)
                 write (iunit, trim(fmt)) i, answer(i), tspan(i), levels(i)
-            end do print_all_answers
+            end do 
+            close (iunit)
+        case ('text')
+            open (unit=iunit, file='answer.txt')
+            write (iunit, '(a)') 'Fortran PE Solutions'
+            write (iunit, '(a)') new_line('a')//'Summary'
+            write (iunit, '(a)') '-------'
+            write (iunit, "('Problems solved   ', i9)") int(nslv)
+            write (iunit, "('Time spent        ', f9.2, '(s)')") tsum
+            write (iunit, "('Time spent/problem', f9.2, '(s)')") tsum/nslv
+            write (iunit, '(a)') new_line('a')//'Answers'
+            write (iunit, '(a)') '-------'
+            fmt = "(a6, a20, a10, a13)"
+            write (iunit, trim(fmt)) 'Prob', 'Answer', 'Tspan(s)', 'Difficulty'
+
+            fmt = "(i6, a20, f10.6, a13)"
+            do i = 1, size(tspan)
+                write (iunit, trim(fmt)) i, answer(i), tspan(i), trim(levels(i))
+            end do 
             close (iunit)
         case default
             error stop 'File extension not supported.'
