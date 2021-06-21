@@ -536,6 +536,7 @@ contains
         integer :: i, k, l
         logical :: ret
 
+        k = 0; l = 0
         do i = size(arr) - 1, 1, -1
             if (arr(i) < arr(i + 1)) then
                 k = i

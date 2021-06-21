@@ -33,26 +33,9 @@ src = [
     SRC_DIR/'euler_utils_m.f90', 
     SRC_DIR/'euler_var_arr_m.f90',
     SRC_DIR/'euler_primes_m.f90', 
-    SRC_DIR/'euler_multiprecision_m.f90'
-]
-
-# Preprocessing .fypp files
-num_probs = 61
-fypp = find_program('fypp')
-fypp_flag = '-DNUM_PROB=@0@'.format(num_probs)
-message('fypp_flag = @0@'.format(fypp_flag))
-gen_f90 = generator(
-    fypp, output: '@BASENAME@.f90',
-    arguments: ['@INPUT@', '@EXTRA_ARGS@', '@OUTPUT@']
-)
-
-src += gen_f90.process(
-    SRC_DIR/'euler_interface_m.fypp', 
-    SRC_DIR/'euler_prob_api_m.fypp', 
-    extra_args: fypp_flag
-)
-
-src += [
+    SRC_DIR/'euler_multiprecision_m.f90',
+    SRC_DIR/'euler_interface_m.f90', 
+    SRC_DIR/'euler_prob_api_m.f90', 
     SRC_DIR/'euler_main_m.f90', 
     SRC_DIR/'euler_main.f90'
 ]
@@ -61,6 +44,7 @@ src += [
 # they have many sources files. For more details, consult:
 # https://github.com/mesonbuild/meson/blob/master/docs/markdown/FAQ.md
 
+num_probs = 61
 prob_num = run_command(
     'python', 'numbers.py', num_probs.to_string()
 ).stdout().split()
@@ -81,7 +65,10 @@ data_src = [
 ]
 
 foreach data_file : data_src
-    configure_file(copy:true, input: 'data'/data_file, output: data_file)
+    configure_file(
+        copy:true, input: 'data'/data_file, 
+        output: data_file
+    )
 endforeach
 
 exec = executable('PE-Fortran', sources: src)

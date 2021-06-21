@@ -7,6 +7,7 @@ module euler_main_m
     character(len=1), parameter :: space = ' ', dash = '-'
     character(len=4), parameter :: tab = repeat(space, 4)
     character(len=8), parameter :: tab2 = repeat(space, 8)
+    character(len=20), parameter :: failed = repeat(space, 19)//'x'
 
 contains
 
@@ -22,95 +23,87 @@ contains
         call get_help()
     end subroutine error_msg
 
-    function compute_diff(t_, max_, min_) result(ret)
-        real, intent(in) :: t_, max_, min_
-        character(len=25) :: ret
-        real :: diff
-
-        ret = ''
-        diff = (t_ - min_)/(max_ - min_)
-        if (diff >= 0. .and. diff < 10.**(-5)) then
-            ret = ''
-        else if (diff >= 10.**(-5) .and. diff < 10.**(-4)) then
-            ret = '_Lv1_'
-        else if (diff >= 10.**(-4) .and. diff < 10.**(-3)) then
-            ret = '_Lv2_'
-        else if (diff >= 10.**(-3) .and. diff < 10.**(-2)) then
-            ret = '_Lv3_'
-        else if (diff >= 10.**(-2) .and. diff < 10.**(-1)) then
-            ret = '_Lv4_'
-        else if (diff >= 10.**(-1) .and. diff <= 10.**(0)) then
-            ret = '_Time-consuming_'
-        end if
-    end function compute_diff
-
-    subroutine compute_all(ans, tspan, tsum, nslv)
-        character(len=20), intent(out) :: ans(nop)
-        real, intent(out) :: tspan(nop), tsum, nslv
-        character(len=20), parameter :: failed = repeat(space, 19)//'x'
-        real :: t_f, t_i
-        type(euler_probs_t) :: probs(nop)
+    subroutine get_levels(x, levels)
+        real, intent(in) :: x(:)
+        character(len=25), intent(out) :: levels(size(x))
+        real :: norm, min_x, max_x
         integer :: i
 
-        call euler_init(probs)
-        tspan = 0.; tsum = 0.; nslv = 0.
-        do i = 1, nop
-            call cpu_time(t_i)
-            ans(i) = probs(i)%ans()
-            call cpu_time(t_f)
-            tspan(i) = t_f - t_i
+        min_x = minval(x)
+        max_x = maxval(x)
+
+        do i = 1, size(x)
+            norm = (x(i) - min_x)/(max_x - min_x)
+            if (norm >= 0. .and. norm < 10.**(-5)) then
+                levels(i) = ''
+            else if (norm >= 10.**(-5) .and. norm < 10.**(-4)) then
+                levels(i) = '_Lv1_'
+            else if (norm >= 10.**(-4) .and. norm < 10.**(-3)) then
+                levels(i) = '_Lv2_'
+            else if (norm >= 10.**(-3) .and. norm < 10.**(-2)) then
+                levels(i) = '_Lv3_'
+            else if (norm >= 10.**(-2) .and. norm < 10.**(-1)) then
+                levels(i) = '_Lv4_'
+            else if (norm >= 10.**(-1) .and. norm <= 10.**(0)) then
+                levels(i) = '_LV5_'
+            end if
         end do
-        tsum = sum(tspan, dim=1)
-        nslv = real(count(ans /= failed, dim=1))
-    end subroutine compute_all
+    end subroutine get_levels
+
+    subroutine get_answers(answer, time_span)
+        character(len=20), allocatable, intent(out) :: answer(:)
+        real, allocatable, intent(out) :: time_span(:)
+        type(euler_probs_t), allocatable :: euler_problem(:)
+        real :: t_f, t_i
+        integer :: i
+
+        call euler_init(euler_problem)
+        associate (NUM_PROBLEMS => size(euler_problem))
+            allocate (answer(NUM_PROBLEMS), time_span(NUM_PROBLEMS))
+            time_span = 0.
+            do i = 1, NUM_PROBLEMS
+                call cpu_time(t_i)
+                answer(i) = euler_problem(i)%answer()
+                call cpu_time(t_f)
+                if (answer(i) /= failed) time_span(i) = t_f - t_i
+            end do
+        end associate
+    end subroutine get_answers
 
     subroutine print_answer(ext)
         character(len=*), intent(in) :: ext
-        character(len=20) :: ans(nop)
-        real :: tspan(nop), tsum, nslv, diff_(nop)
-        character(len=7), parameter :: c_aligned = "|:"//repeat(dash, 4)//":"
-        character(len=100) :: fmt, x
+        character(len=20), allocatable :: answer(:)
+        real, allocatable :: tspan(:)
+        real :: tsum, nslv
+        character(len=7), parameter :: md_table = "|:"//repeat(dash, 4)//":"
+        character(len=100) :: fmt
         integer :: iunit, i
+        character(len=25), allocatable :: levels(:)
 
-        call compute_all(ans, tspan, tsum, nslv)
+        call get_answers(answer, tspan)
+        tsum = sum(tspan, dim=1)
+        nslv = real(count(answer /= failed, dim=1))
+        allocate (levels(size(tspan)))
+        call get_levels(tspan/(tsum/size(tspan)), levels)
+
         select case (ext)
         case ('markdown')
             iunit = 1120
-            open (iunit, file='ANSWER.md')
-            write (iunit, '(a)') '# Fortran PE Solutions'
-            write (iunit, '(a)') new_line('a')//'## Compilers'//new_line('a')
-            write (iunit, '(a)') '- Compiler version: '//compiler_version()
-            write (iunit, '(a)') '- Compiler options: '//compiler_options()
+            open (unit=iunit, file='ANSWER.md')
+            write (iunit, '(a)') '# Fortran PE Solutions'//new_line('a')
             write (iunit, '(a)') new_line('a')//'## Summary'//new_line('a')
             write (iunit, '(a)') '|Benchmarks|Results|'
-            write (iunit, '(a)') repeat(c_aligned, 2)//'|'
+            write (iunit, '(a)') repeat(md_table, 2)//'|'
             write (iunit, "('|Problems solved|', i4, '|')") int(nslv)
             write (iunit, "('|Time spent|', f9.2, '(s)|')") tsum
-            write (iunit, "('|Time spent per problem|', f9.2, '(s)|')") &
-                tsum/nslv
-            write (iunit, '(a)') new_line('a')//'## Relative Difficulty'// &
-                new_line('a')
-            write (iunit, '(a)') '- Relative Difficulty(Prob) = '// &
-                ' Normalize(Tspan(Prob) / ( Ttot/Nprob ))'//new_line('a')
-            write (iunit, '(a)') 'where Normalize(x<sub>i</sub>) = '// &
-                ' (x<sub>i</sub> - min(x))/(max(x) - min(x))'//new_line('a')
-            write (iunit, '(a)') '|Level 0|Level 1|Level 2|'// &
-                'Level 3|Level 4|Level 5|'
-            write (iunit, '(a)') repeat(c_aligned, 6)//'|'
-            write (iunit, '(a)') '|~10<sup>-6</sup>|~10<sup>-5</sup>|'// &
-                '~10<sup>-4</sup>|~10<sup>-3</sup>|~10<sup>-2</sup>|'// &
-                '~10<sup>-1</sup>|'
-            write (iunit, '(a)') '||_Lv1_|_Lv2_|_Lv3_|_Lv4_|_Time-consuming_|'
+            write (iunit, "('|Time spent/problem|', f9.2, '(s)|')") tsum/nslv
             write (iunit, '(a)') new_line('a')//'## Answers'//new_line('a')
-            write (iunit, '(a)') &
-                '|Prob|Answer|Tspan(s)|Relative Difficulty|'
-            write (iunit, '(a)') repeat(c_aligned, 4)//'|'
+            write (iunit, '(a)') '|Prob|Answer|Tspan(s)|Difficulty|'
+            write (iunit, '(a)') repeat(md_table, 4)//'|'
 
             fmt = "('|', i6, '|', a20, '|', f10.6, '|', a25, '|')"
-            diff_ = tspan/(tsum/nop)
-            print_all_answers: do i = 1, nop
-                x = compute_diff(diff_(i), maxval(diff_), minval(diff_))
-                write (iunit, trim(fmt)) i, ans(i), tspan(i), trim(x)
+            print_all_answers: do i = 1, size(tspan)
+                write (iunit, trim(fmt)) i, answer(i), tspan(i), levels(i)
             end do print_all_answers
             close (iunit)
         case default
