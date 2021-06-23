@@ -11,16 +11,43 @@ module euler_main_m
 
 contains
 
+    subroutine get_version()
+        print '(a)', 'PE Fortran Solution: Version 0.0.1'
+    end subroutine get_version
+
     subroutine get_help()
+        character(len=:), allocatable :: fmt
+
+        fmt = '(t4, a, t40, a)'
         print '(a)', 'PE Fortran Solution'
-        print '(a)', ''
-        print '(t4, a, t24, a)', '-ca, --compute-all', 'Compute all problems.'
-        print '(t4, a, t24, a)', '-h,  --help', 'Pop up this message.'
+        print '(a)', 'Arguments available:'
+        print fmt, '-v, or --version', 'Version.'
+        print fmt, '-a N, or --all N', 'Compute problem 1 to N.'
+        print fmt, '-n N, or --problem-number N', 'Compute problem N.'
+        print fmt, '-d /path/to/data/, or '
+        print fmt, '--data-directory /path/to/data/', 'Path to data.'
+        print fmt, '-h, --help', 'Pop up this message.'
+        print '(a)',
+        print '(a)', 'Usage:'
+        print '(a)', '(1) Compute problem 1 to 50:'
+        print fmt, './PE-Fortran -a 50 -d /path/to/data/'
+        print '(a)', '(2) Compute problem 50:'
+        print fmt, './PE-Fortran -n 50 -d /path/to/data/'
+        print '(a)',
+
+        fmt = '(t2, a, t5, a)'
+        print '(a)', 'Tips:'
+        print fmt, '*', 'Some of the problems require extra data, you can'
+        print fmt, '', 'find all the data in the directory: '
+        print fmt, '', '/path/to/the/cloned/PE-Fortran/data/'
+        print fmt, '*', 'You can use relative path by'
+        print fmt, '', './PE-Fortran -n 50 -d $(realpath /relative/path/to/data/)'
     end subroutine get_help
 
     subroutine error_msg()
         print "(a)", "[SYNTAX ERROR]"
         call get_help()
+        stop
     end subroutine error_msg
 
     subroutine get_levels(x, levels)
@@ -50,7 +77,8 @@ contains
         end do
     end subroutine get_levels
 
-    subroutine get_answers(answer, time_span)
+    subroutine get_answers(problem_numbers, answer, time_span)
+        integer, intent(in) :: problem_numbers
         character(len=20), allocatable, intent(out) :: answer(:)
         real, allocatable, intent(out) :: time_span(:)
         type(euler_probs_t), allocatable :: euler_problem(:)
@@ -58,19 +86,37 @@ contains
         integer :: i
 
         call euler_init(euler_problem)
-        associate (NUM_PROBLEMS => size(euler_problem))
-            allocate (answer(NUM_PROBLEMS), time_span(NUM_PROBLEMS))
-            time_span = 0.
-            do i = 1, NUM_PROBLEMS
-                call cpu_time(t_i)
-                answer(i) = euler_problem(i)%answer()
-                call cpu_time(t_f)
-                if (answer(i) /= failed) time_span(i) = t_f - t_i
-            end do
-        end associate
+        allocate (answer(problem_numbers), time_span(problem_numbers))
+        time_span = 0.
+        do i = 1, problem_numbers
+            call cpu_time(t_i)
+            answer(i) = euler_problem(i)%answer()
+            call cpu_time(t_f)
+            if (answer(i) /= failed) time_span(i) = t_f - t_i
+        end do
     end subroutine get_answers
 
-    subroutine print_answer(ext)
+    subroutine get_answer(problem_number, answer, time_span)
+        integer, intent(in) :: problem_number
+        character(len=20), intent(out) :: answer
+        real, intent(out) :: time_span
+        type(euler_probs_t), allocatable :: euler_problem(:)
+        real :: time_final, time_initial
+
+        call euler_init(euler_problem)
+        time_span = 0.
+        call cpu_time(time_initial)
+        answer = euler_problem(problem_number)%answer()
+        call cpu_time(time_final)
+        if (answer /= failed) then
+            time_span = time_final - time_initial
+        else
+            error stop "[ERROR] Problem isn't calculated."
+        end if
+    end subroutine get_answer
+
+    subroutine print_answers(problem_numbers, ext)
+        integer, intent(in) :: problem_numbers
         character(len=*), intent(in) :: ext
         character(len=20), allocatable :: answer(:)
         real, allocatable :: tspan(:)
@@ -81,7 +127,7 @@ contains
         character(len=25), allocatable :: levels(:)
         integer :: i
 
-        call get_answers(answer, tspan)
+        call get_answers(problem_numbers, answer, tspan)
         tsum = sum(tspan, dim=1)
         nslv = real(count(answer /= failed, dim=1))
         allocate (levels(size(tspan)))
@@ -128,11 +174,25 @@ contains
             error stop 'File extension not supported.'
         end select
 
+        write (*, "(26('-'), 1x, 20('-'))")
         write (*, "('PE Fortran Solutions')")
-        write (*, "(26('-'), 1x, 9('-'))")
-        write (*, "('Problems solved:', t27, 1x, i9)") int(nslv)
-        write (*, "('Total time spent (s):', t27, 1x, f9.2)") tsum
-        write (*, "('Time spent per problem (s):', t27, 1x, f9.2)") tsum/nslv
+        write (*, "('Problems solved:', t27, 1x, i20)") int(nslv)
+        write (*, "('Total time spent (s):', t27, 1x, f20.2)") tsum
+        write (*, "('Time spent/problem (s):', t27, 1x, f20.2)") tsum/nslv
+    end subroutine print_answers
+
+    subroutine print_answer(problem_number, ext)
+        integer, intent(in) :: problem_number
+        character(len=*), intent(in) :: ext
+        character(len=20) :: answer
+        real :: time_span
+
+        call get_answer(problem_number, answer, time_span)
+        write (*, "(26('-'), 1x, 20('-'))")
+        write (*, "('PE Fortran Solution')")
+        write (*, "('Problem Number:', t27, 1x, i20)") problem_number
+        write (*, "('Problem Answer:', t27, 1x, a20)") trim(answer)
+        write (*, "('Total time spent (s):', t27, 1x, f20.10)") time_span
     end subroutine print_answer
 
 end module euler_main_m

@@ -18,7 +18,7 @@ contains
 
         next_permutation_avail = .true.
         iunit = 10059
-        open (unit=iunit, file="euler0059.txt", status="old")
+        open (unit=iunit, file=data_dir//"/euler0059.txt", action="read")
         allocate (encrypted(large_number))
         encrypted = 0
         read (iunit, *, iostat=istat) encrypted

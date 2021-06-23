@@ -20,22 +20,51 @@ For a minimum installation of the Intel Fortran compiler, take a look at [this d
 To build this project with Meson, navigate to the root directory of this repo and type
 
 ```shell
-meson build
+meson --prefix=$(realpath ./bin/) build
+meson install -C build
 ```
 
 To build with `ifort`
 
 ```shell
-FC=ifort meson build
+FC=ifort meson --prefix=$(realpath ./bin/) build
 ```
 
-Then compute all problems 
+## Usage
+
+Navigate to `bin`, and type ./PE-Fortran --help` 
 
 ```shell
-meson test -C build
+PE Fortran Solution
+Arguments available:
+   -v, or --version                    Version.
+   -a N, or --all N                    Compute problem 1 to N.
+   -n N, or --problem-number N         Compute problem N.
+   -d /path/to/data/, or 
+   --data-directory /path/to/data/     Path to data.
+   -h, --help                          Pop up this message.
+
+Usage:
+(1) Compute problem 1 to 50:
+   ./PE-Fortran -a 50 -d /path/to/data/
+(2) Compute problem 50:
+   ./PE-Fortran -n 50 -d /path/to/data/
+
+Tips:
+ *  Some of the problems require extra data, you can
+    find all the data in the directory: 
+    /path/to/the/cloned/PE-Fortran/data/
+ *  You can use relative path by
+    ./PE-Fortran -n 50 -d $(realpath /relative/path/to/data/)
 ```
 
-The generated `build/ANSWER.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/ANSWER.md).
+For example, to calculate the first 50 problems
+
+```shell
+./PE-Fortran --all 50 --data-directory $(realpath .)
+```
+
+The generated `answer.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/ANSWER.md).
 
 ## A todo list
 

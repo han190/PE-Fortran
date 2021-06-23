@@ -12,7 +12,7 @@ contains
         integer :: istat, iunit, i
 
         iunit = 10054
-        open (unit=iunit, file="euler0054.txt", status="old", action="read")
+        open (unit=iunit, file=data_dir//"/euler0054.txt", action="read")
         i = 0
         do
             read (iunit, *, iostat=istat) str_arr

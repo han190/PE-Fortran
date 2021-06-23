@@ -11,7 +11,7 @@ contains
         integer(int64) :: long_int(1000), i, s, tmp, iunit
 
         iunit = 10008
-        open (unit=iunit, file="euler0008.txt", status="old", action="read")
+        open (unit=iunit, file=data_dir//"/euler0008.txt", action="read")
         do i = 1_int64, 20_int64
             s = (i - 1_int64)*50_int64 + 1_int64
             read (iunit, "(50(i1))") long_int(s:s + 49_int64)

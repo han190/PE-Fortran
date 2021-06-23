@@ -1,37 +1,39 @@
 program main
 
     use euler_main_m
+    use euler_utils_m, only: data_dir
     implicit none
 
-    integer :: index_
-    character(len=100) :: arg_val(1:2)
+    integer :: i, k, problem_number
+    character(len=100) :: arg(4)
 
-    if (command_argument_count() > 2 .or. &
-        command_argument_count() < 1) then
-        call error_msg()
-        stop
-    end if
+    ! data_dir = "/home/han/Projects/PE-Fortran/data/"
+    k = command_argument_count()
+    if (k >= 5 .or. k < 1) call error_msg()
 
-    index_ = 1
-    read_argument_loop: do
-        if (len_trim(arg_val(index_)) == 0 &
-            .or. index_ >= 2) then
-            exit read_argument_loop
-        end if
-
-        call get_command_argument(index_, arg_val(index_))
-        index_ = index_ + 1
+    read_argument_loop: do i = 1, 4
+        call get_command_argument(i, arg(i))
     end do read_argument_loop
 
-    select case (trim(arg_val(1)))
-    case ("-h", "--help")
-        call get_help()
-        stop
-    case ("-ca", "--compute-all")
-        call print_answer('markdown')
-    case default
-        call error_msg()
-        stop
-    end select
+    do i = 1, 4, 2
+        if (trim(arg(i)) == "-d" .or. trim(arg(i)) == "--data-directory") &
+            data_dir = trim(arg(i + 1))
+    end do
+
+    do i = 1, 4, 2
+        select case (trim(arg(i)))
+        case ("-h", "--help")
+            call get_help()
+            stop
+        case ("-a", "--all")
+            read (arg(i + 1), *) problem_number
+            call print_answers(problem_number, 'markdown')
+        case ("-v", "--version")
+            call get_version()
+        case ("-n", "--problem-number")
+            read (arg(i + 1), *) problem_number
+            call print_answer(problem_number, 'markdown')
+        end select
+    end do
 
 end program main
