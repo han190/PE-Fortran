@@ -41,7 +41,7 @@ contains
         print fmt, '', 'find all the data in the directory: '
         print fmt, '', '/path/to/the/cloned/PE-Fortran/data/'
         print fmt, '*', 'You can use relative path by'
-        print fmt, '', './PE-Fortran -n 50 -d $(realpath /relative/path/to/data/)'
+        print fmt, '', './PE-Fortran -n 50 -d $(realpath /relative/data/path/)'
     end subroutine get_help
 
     subroutine error_msg()
@@ -150,7 +150,7 @@ contains
             fmt = "('|', i6, '|', a20, '|', f10.6, '|', a25, '|')"
             do i = 1, size(tspan)
                 write (iunit, trim(fmt)) i, answer(i), tspan(i), levels(i)
-            end do 
+            end do
             close (iunit)
         case ('text')
             open (unit=iunit, file='answer.txt')
@@ -168,7 +168,7 @@ contains
             fmt = "(i6, a20, f10.6, a13)"
             do i = 1, size(tspan)
                 write (iunit, trim(fmt)) i, answer(i), tspan(i), trim(levels(i))
-            end do 
+            end do
             close (iunit)
         case default
             error stop 'File extension not supported.'
