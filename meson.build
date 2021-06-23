@@ -55,14 +55,14 @@ foreach prob : prob_num
 endforeach
 
 data_src = [
-    'data/euler0008.txt',
-    'data/euler0011.txt',
-    'data/euler0013.txt',
-    'data/euler0018.txt',
-    'data/euler0022.txt',
-    'data/euler0042.txt',
-    'data/euler0054.txt',
-    'data/euler0059.txt'
+    'data'/'euler0008.txt',
+    'data'/'euler0011.txt',
+    'data'/'euler0013.txt',
+    'data'/'euler0018.txt',
+    'data'/'euler0022.txt',
+    'data'/'euler0042.txt',
+    'data'/'euler0054.txt',
+    'data'/'euler0059.txt'
 ]
 install_data(data_src, install_dir: PREFIX)
 

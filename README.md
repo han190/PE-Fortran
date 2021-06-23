@@ -8,9 +8,11 @@
 
 You will need [Meson](https://mesonbuild.com/index.html), [Ninja](https://ninja-build.org/manual.html), and [gfortran](https://gcc.gnu.org/wiki/GFortran) or [ifort](https://software.intel.com/content/www/us/en/develop/documentation/fortran-compiler-oneapi-dev-guide-and-reference/top.html) to compile and execute this project. To install them (assuming you are on Ubuntu and have [pip](https://pip.pypa.io/en/stable/) installed)
 
-```shell
+```bash
 sudo apt install gfortran
 pip install meson ninja
+# For Windows users, I highly recommend choco!
+# With choco installed, run powershell as admin and 'choco install mingw'
 ```
 
 For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)!
@@ -19,22 +21,23 @@ For a minimum installation of the Intel Fortran compiler, take a look at [this d
 
 To build this project with Meson, navigate to the root directory of this repo and type
 
-```shell
+```bash
 meson --prefix=$(realpath ./bin/) build
+# meson --prefix="$(Resolve-Path .)\bin" build # Powershell
 meson install -C build
 ```
 
 To build with `ifort`
 
-```shell
+```bash
 FC=ifort meson --prefix=$(realpath ./bin/) build
 ```
 
 ## Usage
 
-Navigate to `bin`, and type ./PE-Fortran --help` 
+Navigate to `bin`, and type `./PE-Fortran --help` 
 
-```shell
+```
 PE Fortran Solution
 Arguments available:
    -v, or --version                    Version.
@@ -60,8 +63,10 @@ Tips:
 
 For example, to calculate the first 50 problems
 
-```shell
+```bash
 ./PE-Fortran --all 50 --data-directory $(realpath .)
+# ./PE-Fortran -a 50 -d $(realpath .) # The short way
+# .\PE-Fortran.exe --all 50 --data-directory $(Resolve-Path .) # Powershell
 ```
 
 The generated `answer.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/ANSWER.md).
