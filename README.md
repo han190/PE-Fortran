@@ -35,9 +35,11 @@ FC=ifort meson --prefix=$(realpath ./bin/) build
 
 ### Build with [fpm](https://github.com/fortran-lang/fpm)
 
+To build this project with fpm (recomended!), navigate to the root directory of this repo and
+
 ```bash
-fpm build --profile release
-fpm run --profile release PE-Fortran -- -a 61 -d $(realpath ./data/)
+fpm build # --profile release
+fpm run PE-Fortran -- -a 61 -d $(realpath ./data/)
 ```
 
 ## Usage
