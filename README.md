@@ -17,6 +17,15 @@ pip install meson ninja
 
 For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)!
 
+### Build with [Fortran Package Manager (fpm)](https://github.com/fortran-lang/fpm)
+
+To build this project with fpm (recomended!), navigate to the root directory of this repo and
+
+```bash
+fpm build # --profile release
+fpm run PE-Fortran -- -a 61 -d $(realpath ./data/)
+```
+
 ### Build with Meson
 
 To build this project with Meson, navigate to the root directory of this repo and type
@@ -33,14 +42,7 @@ To build with `ifort`
 FC=ifort meson --prefix=$(realpath ./bin/) build
 ```
 
-### Build with [fpm](https://github.com/fortran-lang/fpm)
 
-To build this project with fpm (recomended!), navigate to the root directory of this repo and
-
-```bash
-fpm build # --profile release
-fpm run PE-Fortran -- -a 61 -d $(realpath ./data/)
-```
 
 ## Usage
 

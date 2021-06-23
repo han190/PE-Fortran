@@ -19,13 +19,14 @@ contains
         character(len=:), allocatable :: fmt
 
         fmt = '(t4, a, t40, a)'
+        print "(62('-'))",
         print '(a)', 'PE Fortran Solution'
-        print '(a)', 'Arguments available:'
+        print '(a)', 'Arguments:'
         print fmt, '-v, or --version', 'Version.'
         print fmt, '-a N, or --all N', 'Compute problem 1 to N.'
         print fmt, '-n N, or --problem-number N', 'Compute problem N.'
         print fmt, '-d /path/to/data/, or '
-        print fmt, '--data-directory /path/to/data/', 'Path to data.'
+        print fmt, ' --data-directory /path/to/data/', 'Path to data.'
         print fmt, '-h, --help', 'Pop up this message.'
         print '(a)',
         print '(a)', 'Usage:'
@@ -35,17 +36,22 @@ contains
         print fmt, './PE-Fortran -n 50 -d /path/to/data/'
         print '(a)',
 
-        fmt = '(t2, a, t5, a)'
+        fmt = '(t1, a, t4, a)'
         print '(a)', 'Tips:'
-        print fmt, '*', 'Some of the problems require extra data, you can'
-        print fmt, '', 'find all the data in the directory: '
-        print fmt, '', '/path/to/the/cloned/PE-Fortran/data/'
-        print fmt, '*', 'You can use relative path by'
+        print fmt, '*', 'All the data required are stored in the directory:'
+        print fmt, ''
+        print fmt, '', '/path/to/the/project/PE-Fortran/data/'
+        print fmt, ''
+        print fmt, '', "The argument '--data-directory' requires an absolute"
+        print fmt, '', 'path but you can use'
         print fmt, '', './PE-Fortran -n 50 -d $(realpath /relative/data/path/)'
+        print "(62('-'))",
     end subroutine get_help
 
-    subroutine error_msg()
-        print "(a)", "[SYNTAX ERROR]"
+    subroutine error_msg(msg)
+        character(len=*), intent(in) :: msg
+
+        print "(a)", "[SYNTAX ERROR] "//trim(msg)
         call get_help()
         stop
     end subroutine error_msg

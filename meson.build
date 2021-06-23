@@ -36,6 +36,7 @@ src = [
     SRC_DIR/'euler_utils_m.f90',
     SRC_DIR/'euler_var_arr_m.f90',
     SRC_DIR/'euler_primes_m.f90',
+    SRC_DIR/'euler_multiprecision_util_m.f90'
     SRC_DIR/'euler_multiprecision_m.f90',
     SRC_DIR/'euler_interface_m.f90',
     SRC_DIR/'euler_prob_api_m.f90',
@@ -53,18 +54,6 @@ prob_num = run_command('python', 'numbers.py', NUM_PROBS).stdout().split()
 foreach prob : prob_num
     src += SRC_DIR/'euler/prob_' + prob + '_m.f90'
 endforeach
-
-data_src = [
-    'data'/'euler0008.txt',
-    'data'/'euler0011.txt',
-    'data'/'euler0013.txt',
-    'data'/'euler0018.txt',
-    'data'/'euler0022.txt',
-    'data'/'euler0042.txt',
-    'data'/'euler0054.txt',
-    'data'/'euler0059.txt'
-]
-install_data(data_src, install_dir: PREFIX)
 
 exec = executable('PE-Fortran', sources: src, install: true, install_dir: PREFIX)
 test('Compute All Problems', exec, args: ['-a', NUM_PROBS, '-d', PREFIX])

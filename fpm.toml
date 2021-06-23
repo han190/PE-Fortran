@@ -1,9 +1,11 @@
-name = "PE_Fortran_Solution"
+name = "PE-Fortran"
 version = "0.0.1"
 license = "MIT"
 maintainer = "htang2@alaska.edu"
 author = "Han Tang"
-copyright = "Copyright 2019 - 2021 Han Tang"
+copyright = "Copyright 2019-2021 Han Tang"
+description = "Solutions to Project Euler problems written by modern Fortran"
+keywords = ["fortran", "modern-fortran", "project-euler-solutions"]
 homepage = "https://github.com/han190/PE-Fortran"
 
 [ library ]
