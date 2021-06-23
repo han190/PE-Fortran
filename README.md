@@ -33,6 +33,13 @@ To build with `ifort`
 FC=ifort meson --prefix=$(realpath ./bin/) build
 ```
 
+### Build with [fpm](https://github.com/fortran-lang/fpm)
+
+```bash
+fpm build --profile release
+fpm run --profile release PE-Fortran -- -a 61 -d $(realpath ./data/)
+```
+
 ## Usage
 
 Navigate to `bin`, and type `./PE-Fortran --help` 
@@ -69,7 +76,7 @@ For example, to calculate the first 50 problems
 # .\PE-Fortran.exe --all 50 --data-directory $(Resolve-Path .) # Powershell
 ```
 
-The generated `answer.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/ANSWER.md).
+The generated `answer.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/answer.md).
 
 ## A todo list
 

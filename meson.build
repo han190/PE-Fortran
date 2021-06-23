@@ -40,7 +40,7 @@ src = [
     SRC_DIR/'euler_interface_m.f90',
     SRC_DIR/'euler_prob_api_m.f90',
     SRC_DIR/'euler_main_m.f90',
-    SRC_DIR/'euler_main.f90'
+    'app'/'euler_main.f90'
 ]
 
 # Meson doesn't have wildcards, instead one has to use extra commands if 
@@ -51,7 +51,7 @@ NUM_PROBS = '61'
 prob_num = run_command('python', 'numbers.py', NUM_PROBS).stdout().split()
 
 foreach prob : prob_num
-    src += SRC_DIR/'prob/euler_prob_' + prob + '_m.f90'
+    src += SRC_DIR/'euler/prob_' + prob + '_m.f90'
 endforeach
 
 data_src = [
