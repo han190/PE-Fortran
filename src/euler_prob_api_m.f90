@@ -17,7 +17,7 @@ contains
     subroutine euler_init(probs)
         type(euler_probs_t), allocatable, intent(out) :: probs(:)
 
-        allocate (probs(61))
+        allocate (probs(63))
         probs(1)%answer => euler0001
         probs(2)%answer => euler0002
         probs(3)%answer => euler0003
@@ -79,6 +79,8 @@ contains
         probs(59)%answer => euler0059
         probs(60)%answer => euler0060
         probs(61)%answer => euler0061
+        probs(62)%answer => euler0062
+        probs(63)%answer => euler0063
     end subroutine euler_init
 
 end module euler_prob_api_m

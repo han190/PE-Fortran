@@ -189,6 +189,12 @@ module euler_interface_m
         module character(len=20) function euler0061()
         end function euler0061
 
+        module character(len=20) function euler0062()
+        end function euler0062
+
+        module character(len=20) function euler0063()
+        end function euler0063
+
     end interface
 
 end module euler_interface_m
