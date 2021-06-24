@@ -19,7 +19,6 @@ contains
         character(len=:), allocatable :: fmt
 
         fmt = '(t4, a, t40, a)'
-        print "(62('-'))",
         print '(a)', 'PE Fortran Solution'
         print '(a)', 'Arguments:'
         print fmt, '-v, or --version', 'Version.'
@@ -27,15 +26,12 @@ contains
         print fmt, '-n N, or --problem-number N', 'Compute problem N.'
         print fmt, '-d /path/to/data/, or '
         print fmt, ' --data-directory /path/to/data/', 'Path to data.'
-        print fmt, '-h, --help', 'Pop up this message.'
-        print '(a)',
+        print fmt, '-h, --help', 'Pop up this message.'//new_line('a')
         print '(a)', 'Usage:'
         print '(a)', '(1) Compute problem 1 to 50:'
         print fmt, './PE-Fortran -a 50 -d /path/to/data/'
         print '(a)', '(2) Compute problem 50:'
-        print fmt, './PE-Fortran -n 50 -d /path/to/data/'
-        print '(a)',
-
+        print fmt, './PE-Fortran -n 50 -d /path/to/data/'//new_line('a')
         fmt = '(t1, a, t4, a)'
         print '(a)', 'Tips:'
         print fmt, '*', 'All the data required are stored in the directory:'
@@ -45,7 +41,6 @@ contains
         print fmt, '', "The argument '--data-directory' requires an absolute"
         print fmt, '', 'path but you can use'
         print fmt, '', './PE-Fortran -n 50 -d $(realpath /relative/data/path/)'
-        print "(62('-'))",
     end subroutine get_help
 
     subroutine error_msg(msg)
@@ -182,7 +177,8 @@ contains
 
         write (*, "(26('-'), 1x, 20('-'))")
         write (*, "('PE Fortran Solutions')")
-        write (*, "('Problems solved:', t27, 1x, i20)") int(nslv)
+        fmt = "('Problems solved/tried:', t27, 1x, i15.4, '/', i4.4)"
+        write (*, fmt) int(nslv), size(tspan)
         write (*, "('Total time spent (s):', t27, 1x, f20.2)") tsum
         write (*, "('Time spent/problem (s):', t27, 1x, f20.2)") tsum/nslv
     end subroutine print_answers

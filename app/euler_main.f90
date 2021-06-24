@@ -35,6 +35,7 @@ program main
             end if
             read (arg(i + 1), *) problem_number
             call print_answers(problem_number, 'markdown')
+            exit
         case ("-v", "--version")
             call get_version()
         case ("-n", "--problem-number")
@@ -43,6 +44,9 @@ program main
             end if
             read (arg(i + 1), *) problem_number
             call print_answer(problem_number, 'markdown')
+            exit
+        case default
+            call error_msg("Invalid argument!")
         end select
     end do
 
