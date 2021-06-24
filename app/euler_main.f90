@@ -28,7 +28,7 @@ program main
         select case (trim(arg(i)))
         case ("-h", "--help")
             call get_help()
-            stop
+            exit
         case ("-a", "--all")
             if (no_data_dir_specified) then
                 call error_msg("Data directory not specified!")
@@ -38,6 +38,7 @@ program main
             exit
         case ("-v", "--version")
             call get_version()
+            exit
         case ("-n", "--problem-number")
             if (no_data_dir_specified) then
                 call error_msg("Data directory not specified!")

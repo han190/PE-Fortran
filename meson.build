@@ -36,7 +36,7 @@ src = [
     SRC_DIR/'euler_utils_m.f90',
     SRC_DIR/'euler_var_arr_m.f90',
     SRC_DIR/'euler_primes_m.f90',
-    SRC_DIR/'euler_multiprecision_util_m.f90'
+    SRC_DIR/'euler_multiprecision_util_m.f90',
     SRC_DIR/'euler_multiprecision_m.f90',
     SRC_DIR/'euler_interface_m.f90',
     SRC_DIR/'euler_prob_api_m.f90',
@@ -48,13 +48,14 @@ src = [
 # they have many sources files. For more details, consult:
 # https://github.com/mesonbuild/meson/blob/master/docs/markdown/FAQ.md
 
-NUM_PROBS = '61'
+NUM_PROBS = '63'
 prob_num = run_command('python', 'numbers.py', NUM_PROBS).stdout().split()
 
 foreach prob : prob_num
     src += SRC_DIR/'euler/prob_' + prob + '_m.f90'
 endforeach
 
-exec = executable('PE-Fortran', sources: src, install: true, install_dir: PREFIX)
-test('Compute All Problems', exec, args: ['-a', NUM_PROBS, '-d', PREFIX])
-test('Compute Problem N', exec, args: ['-n', NUM_PROBS, '-d', PREFIX])
+exec = executable(
+    'PE-Fortran', sources: src, 
+    install: true, install_dir: PREFIX
+)
