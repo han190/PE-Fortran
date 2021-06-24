@@ -112,7 +112,8 @@ contains
         if (answer /= failed) then
             time_span = time_final - time_initial
         else
-            error stop "[ERROR] Problem isn't calculated."
+            print "(a)", "[ERROR] The author hasn't finish this problem yet!"
+            stop
         end if
     end subroutine get_answer
 
