@@ -40,6 +40,11 @@ module euler_multiprecision_m
         module procedure to_long_char, to_long_int
     end interface
 
+    public :: digits_of
+    interface digits_of
+        module procedure digits_of_func
+    end interface digits_of
+
     !! TODO-list
     !! For a multiprecision_int_t, once the type is declared
     !! type(multiprecision_int_t) :: val1, val2, val3
@@ -129,6 +134,13 @@ contains
 
         ret = val
     end function to_long_int
+
+    function digits_of_func(val) result(ret)
+        type(multiprecision_int_t), intent(in) :: val
+        integer :: ret
+
+        ret = size(val%arr)
+    end function digits_of_func
 
     logical function eq_func(this, val)
         class(multiprecision_int_t), intent(in) :: this

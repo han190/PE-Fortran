@@ -11,15 +11,14 @@ contains
         implicit none
 
         integer :: ret, power, digs
-        type(multiprecision_int_t) :: idx, val
+        type(multiprecision_int_t) :: idx
 
         ret = 0
         idx = 1
         outer: do while (idx <= 9)
             power = 1
             inner: do
-                val = idx**power
-                digs = size(val%arr)
+                digs = digits_of(idx**power)
                 if (digs < power) then
                     exit inner
                 else if (digs == power) then
