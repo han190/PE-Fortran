@@ -9,7 +9,7 @@ program main
     logical :: no_data_dir_specified
 
     k = command_argument_count()
-    if (k >= 5 .or. k < 1) call error_msg("Invalid argument count!")
+    if (k >= 5 .or. k < 1) call print_error_msg("Invalid argument count!")
 
     read_argument_loop: do i = 1, 4
         call get_command_argument(i, arg(i))
@@ -27,11 +27,11 @@ program main
     do i = 1, 4, 2
         select case (trim(arg(i)))
         case ("-h", "--help")
-            call get_help()
+            call print_help_messages()
             exit
         case ("-a", "--all")
             if (no_data_dir_specified) then
-                call error_msg("Data directory not specified!")
+                call print_error_msg("Data directory not specified!")
             end if
             read (arg(i + 1), *) problem_number
             call print_answers(problem_number, 'markdown')
@@ -41,13 +41,13 @@ program main
             exit
         case ("-n", "--problem-number")
             if (no_data_dir_specified) then
-                call error_msg("Data directory not specified!")
+                call print_error_msg("Data directory not specified!")
             end if
             read (arg(i + 1), *) problem_number
             call print_answer(problem_number, 'markdown')
             exit
         case default
-            call error_msg("Invalid argument!")
+            call print_error_msg("Invalid argument!")
         end select
     end do
 

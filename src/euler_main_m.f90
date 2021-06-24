@@ -4,10 +4,8 @@ module euler_main_m
     use euler_prob_api_m
     implicit none
 
-    character(len=1), parameter :: space = ' ', dash = '-'
-    character(len=4), parameter :: tab = repeat(space, 4)
-    character(len=8), parameter :: tab2 = repeat(space, 8)
-    character(len=20), parameter :: failed = repeat(space, 19)//'x'
+    character(len=20), parameter :: failed = repeat(' ', 19)//'x'
+    character(len=:), allocatable :: help_messages(:)
 
 contains
 
@@ -15,41 +13,42 @@ contains
         print '(a)', 'PE Fortran Solution: Version 0.0.1'
     end subroutine get_version
 
-    subroutine get_help()
-        character(len=:), allocatable :: fmt
+    subroutine get_help_messages()
+        help_messages = &
+            [character(len=80) :: &
+             'PE Fortran Solution', &
+             'Arguments:', &
+             '   -v, or --version,                  Print version.', &
+             '   -a N, or --all N,                  Compute problem 1 to N.', &
+             '   -n N, or --problem-number N,       Compute problem N.', &
+             '   -d /path/to/data/, or ', &
+             '   --data-directory /path/to/data/    Path to data.', &
+             '   -h, --help                         Pop up this message.', &
+             ' ', &
+             'Usage:', &
+             '   (1) Compute problem 1 to 50:', &
+             '       ./PE-Fortran -a 50 -d $(realpath /relative/data/path/)', &
+             '   (2) Compute problem 50:', &
+             '       ./PE-Fortran -n 50 -d $(realpath /relative/data/path/)', &
+             ' ']
+    end subroutine get_help_messages
 
-        fmt = '(t4, a, t40, a)'
-        print '(a)', 'PE Fortran Solution'
-        print '(a)', 'Arguments:'
-        print fmt, '-v, or --version', 'Version.'
-        print fmt, '-a N, or --all N', 'Compute problem 1 to N.'
-        print fmt, '-n N, or --problem-number N', 'Compute problem N.'
-        print fmt, '-d /path/to/data/, or '
-        print fmt, ' --data-directory /path/to/data/', 'Path to data.'
-        print fmt, '-h, --help', 'Pop up this message.'//new_line('a')
-        print '(a)', 'Usage:'
-        print '(a)', '(1) Compute problem 1 to 50:'
-        print fmt, './PE-Fortran -a 50 -d /path/to/data/'
-        print '(a)', '(2) Compute problem 50:'
-        print fmt, './PE-Fortran -n 50 -d /path/to/data/'//new_line('a')
-        fmt = '(t1, a, t4, a)'
-        print '(a)', 'Tips:'
-        print fmt, '*', 'All the data required are stored in the directory:'
-        print fmt, ''
-        print fmt, '', '/path/to/the/project/PE-Fortran/data/'
-        print fmt, ''
-        print fmt, '', "The argument '--data-directory' requires an absolute"
-        print fmt, '', 'path but you can use'
-        print fmt, '', './PE-Fortran -n 50 -d $(realpath /relative/data/path/)'
-    end subroutine get_help
+    subroutine print_help_messages()
+        integer :: i
 
-    subroutine error_msg(msg)
+        call get_help_messages()
+        do i = 1, size(help_messages)
+            print '(a)', help_messages(i)
+        end do
+    end subroutine print_help_messages
+
+    subroutine print_error_msg(msg)
         character(len=*), intent(in) :: msg
 
         print "(a)", "[SYNTAX ERROR] "//trim(msg)
-        call get_help()
+        call print_help_messages()
         stop
-    end subroutine error_msg
+    end subroutine print_error_msg
 
     subroutine get_levels(x, levels)
         real, intent(in) :: x(:)
@@ -123,7 +122,7 @@ contains
         character(len=20), allocatable :: answer(:)
         real, allocatable :: tspan(:)
         real :: tsum, nslv
-        character(len=7), parameter :: md_table = "|:"//repeat(dash, 4)//":"
+        character(len=7), parameter :: md_table = "|:"//repeat('-', 4)//":"
         character(len=100) :: fmt
         integer, parameter :: iunit = 1120
         character(len=25), allocatable :: levels(:)
