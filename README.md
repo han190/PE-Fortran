@@ -6,13 +6,7 @@
 
 ### Prerequistes
 
-You will a Fortran compiler ([gfortran](https://gcc.gnu.org/wiki/GFortran) or [ifort](https://software.intel.com/content/www/us/en/develop/documentation/fortran-compiler-oneapi-dev-guide-and-reference/top.html)) and the [Fortran Package Manager (fpm)](https://github.com/fortran-lang/fpm) to compile and execute this project. To install them (assuming you are on Ubuntu and have [conda](https://docs.conda.io/en/latest/) installed)
-
-```bash
-sudo apt install gfortran
-conda create -n fpm fpm
-conda activate fpm
-```
+You will need a Fortran compiler ([gfortran](https://gcc.gnu.org/wiki/GFortran) or [ifort](https://software.intel.com/content/www/us/en/develop/documentation/fortran-compiler-oneapi-dev-guide-and-reference/top.html)) and the [Fortran Package Manager (fpm)](https://github.com/fortran-lang/fpm) to compile/run/test/install this project. 
 
 For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)!
 
@@ -27,7 +21,7 @@ fpm build --profile release
 and run the project with
 
 ```bash
-fpm run --profile release PE-Fortran -- -a 50 -d $(realpath ./data/)
+fpm run --profile release PE-Fortran -- -a 50 -d "$(realpath ./data/)/"
 ```
 
 You could also install it by (the default `PREFIX` is `$HOME/.local/bin`)
@@ -39,7 +33,6 @@ fpm install --profile release
 ## Usage
 
 ```
-$ PE-Fortran --help
 PE Fortran Solution
 Arguments:
    -v, or --version                    Version.
@@ -62,16 +55,13 @@ Tips:
 
    The argument '--data-directory' requires an absolute
    path but you can use
-   ./PE-Fortran -n 50 -d $(realpath /relative/data/path/)
-
+   ./PE-Fortran -n 50 -d "$(realpath /relative/data/path/)/"
 ```
 
 For example, to calculate the first 50 problems
 
 ```bash
-./PE-Fortran --all 50 --data-directory $(realpath .)
-# ./PE-Fortran -a 50 -d $(realpath .) # The short way
-# .\PE-Fortran.exe --all 50 --data-directory $(Resolve-Path .) # Powershell
+./PE-Fortran --all 50 --data-directory "$(realpath ./data/)/"
 ```
 
 The generated `answer.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/answer.md).
