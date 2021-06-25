@@ -15,7 +15,7 @@ contains
         type(multiprecision_int_t) :: tmp, ret
 
         iunit = 10013
-        open (unit=iunit, file=data_dir//"/euler0013.txt", action="read")
+        open (unit=iunit, file=data_dir//"euler0013.txt", action="read")
         tmp%sgn = '+'; allocate (tmp%arr(50)); ret = 0
         do i = 1, 100
             read (iunit, "(50(i1))") tmp%arr

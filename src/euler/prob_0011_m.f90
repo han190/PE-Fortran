@@ -12,7 +12,7 @@ contains
         integer :: i, j, prod_max, iunit
 
         iunit = 10011
-        open (unit=iunit, file=data_dir//"/euler0011.txt", action="read")
+        open (unit=iunit, file=data_dir//"euler0011.txt", action="read")
         read (iunit, *) int_arr
         close (iunit)
 

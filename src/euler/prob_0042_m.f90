@@ -18,7 +18,7 @@ contains
 
         names = 'n/a'
         iunit = 10042
-        open (unit=iunit, file=data_dir//"/euler0042.txt", action="read")
+        open (unit=iunit, file=data_dir//"euler0042.txt", action="read")
         read (iunit, *, iostat=istat) names(1:n)
         close (iunit)
 

@@ -20,7 +20,7 @@ contains
         end do
 
         iunit = 10018
-        open (unit=iunit, file=data_dir//"/euler0018.txt", action="read")
+        open (unit=iunit, file=data_dir//"euler0018.txt", action="read")
         do i = 1, n
             read (iunit, *) var_arr(i)%arr
         end do
