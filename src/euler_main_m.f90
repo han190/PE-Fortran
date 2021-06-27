@@ -3,12 +3,10 @@ module euler_main_m
     use iso_fortran_env, only: compiler_options, compiler_version
     use euler_prob_api_m
     implicit none
-
     private
 
     character(len=20), parameter :: failed = repeat(' ', 19)//'x'
     character(len=:), allocatable :: help_messages(:)
-
     public :: get_arguments
 
 contains
@@ -34,6 +32,7 @@ contains
              '       ./PE-Fortran -a 50 -d $(realpath /relative/data/path/)', &
              '   (2) Compute problem 50:', &
              '       ./PE-Fortran -n 50 -d $(realpath /relative/data/path/)', &
+             '   *   For powershell, try -d "$(Resolve-Path \data\path) "', &
              ' ']
     end subroutine get_help_messages
 
