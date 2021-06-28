@@ -4,39 +4,34 @@ submodule(euler_interface_m) euler_prob_0042_m
 contains
 
     module character(len=20) function euler0042()
-        write (euler0042, "(i20)") ans(2000)
+        write (euler0042, "(i20)") answer()
     end function euler0042
 
-    integer function ans(n)
-        integer, intent(in) :: n
-        character(len=500) :: names(n)
-        integer :: istat, iunit, i, j
+    integer function answer()
+        use euler_data_m, only: get_euler_data_0042
+        implicit none
+
+        integer :: i, j
         integer, parameter :: max_score = 26*20
         logical :: is_tri_num(max_score)
+        character(len=:), allocatable :: names(:)
 
         call tri_num(max_score, is_tri_num)
+        call get_euler_data_0042(names)
 
-        names = 'n/a'
-        iunit = 10042
-        open (unit=iunit, file=data_dir//"euler0042.txt", action="read")
-        read (iunit, *, iostat=istat) names(1:n)
-        close (iunit)
-
-        i = 1
         j = 0
 
-        do while (names(i) /= 'n/a')
+        do i = 1, size(names)
             if (is_tri_num(score_of_word(names(i)))) then
                 j = j + 1
             end if
-            i = i + 1
         end do
 
-        ans = j
-    end function ans
+        answer = j
+    end function answer
 
     integer function score_of_word(str)
-        character(*), intent(in) :: str
+        character(len=*), intent(in) :: str
         integer :: j, isum
 
         isum = 0

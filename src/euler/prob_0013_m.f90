@@ -11,17 +11,19 @@ contains
     end function euler0013
 
     function answer() result(ret)
-        integer :: iunit, i
-        type(multiprecision_int_t) :: tmp, ret
+        use euler_data_m, only: get_euler_data_0013
+        implicit none
 
-        iunit = 10013
-        open (unit=iunit, file=data_dir//"euler0013.txt", action="read")
+        integer :: i
+        type(multiprecision_int_t) :: tmp, ret
+        character(len=:), allocatable :: euler_data(:)
+
+        call get_euler_data_0013(euler_data)
         tmp%sgn = '+'; allocate (tmp%arr(50)); ret = 0
         do i = 1, 100
-            read (iunit, "(50(i1))") tmp%arr
+            read (euler_data(i), "(50(i1))") tmp%arr
             ret = ret + tmp
         end do
-        close (iunit)
     end function answer
 
 end submodule euler_prob_0013_m

@@ -4,24 +4,26 @@ submodule(euler_interface_m) euler_prob_0054_m
 contains
 
     module character(len=20) function euler0054()
-        write (euler0054, "(i20)") ans()
+        write (euler0054, "(i20)") answer()
     end function euler0054
 
-    integer function ans()
-        character(len=2) :: str_arr(10)
-        integer :: istat, iunit, i
+    integer function answer()
+        use euler_data_m, only: get_euler_data_0054
+        implicit none
 
-        iunit = 10054
-        open (unit=iunit, file=data_dir//"euler0054.txt", action="read")
+        character(len=2) :: str_arr(10)
+        integer :: i, j
+        character(len=:), allocatable :: euler_data(:)
+
+        call get_euler_data_0054(euler_data)
         i = 0
-        do
-            read (iunit, *, iostat=istat) str_arr
-            if (istat /= 0) exit
+        do j = 1, size(euler_data)
+            read (euler_data(j), *) str_arr
             if (player_one_win(str_arr)) i = i + 1
         end do
-        close (iunit)
-        ans = i
-    end function ans
+
+        answer = i
+    end function answer
 
     subroutine to_arrs(hands, vals, suits)
         character(len=2), intent(in) :: hands(5)

@@ -8,17 +8,15 @@ contains
     end function euler0022
 
     integer function ans()
-        integer :: i, j, istat, iunit, tmp
+        use euler_data_m, only: get_euler_data_0022
+        implicit none
+
+        integer :: i, j, tmp
         character(len=:), allocatable :: names(:)
 
-        iunit = 10022
-        open (unit=iunit, file=data_dir//"euler0022.txt", action="read")
-        allocate (character(len=20) :: names(6000))
-        names = "n/a"
-        read (iunit, *, iostat=istat) names
-        close (iunit)
+        call get_euler_data_0022(names)
 
-        i = count(names /= "n/a")
+        i = size(names)
         call lexical_sort(names(1:i))
         tmp = 0
         do j = 1, i

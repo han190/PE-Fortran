@@ -9,22 +9,23 @@ contains
 
     integer function ans(n)
         use euler_var_arr_m, only: var_arr_t
+        use euler_data_m, only: get_euler_data_0018
         implicit none
+
         integer, intent(in) :: n
         type(var_arr_t), allocatable :: var_arr(:)
-        integer :: i, j, x, iunit
+        integer :: i, j, x
+        character(len=:), allocatable :: euler_data(:)
 
         allocate (var_arr(n))
         do i = 1, n
             allocate (var_arr(i)%arr(i))
         end do
 
-        iunit = 10018
-        open (unit=iunit, file=data_dir//"euler0018.txt", action="read")
+        call get_euler_data_0018(euler_data)
         do i = 1, n
-            read (iunit, *) var_arr(i)%arr
+            read (euler_data(i), *) var_arr(i)%arr
         end do
-        close (iunit)
 
         do j = n - 1, 1, -1
             do i = 1, j

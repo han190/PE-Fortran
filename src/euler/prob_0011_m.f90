@@ -8,13 +8,15 @@ contains
     end function euler0011
 
     integer function ans()
-        integer :: int_arr(20, 20), the_box(4, 4)
-        integer :: i, j, prod_max, iunit
+        use euler_data_m, only: get_euler_data_0011
+        implicit none
 
-        iunit = 10011
-        open (unit=iunit, file=data_dir//"euler0011.txt", action="read")
-        read (iunit, *) int_arr
-        close (iunit)
+        integer :: int_arr(20, 20), the_box(4, 4)
+        integer :: i, j, prod_max
+        character(len=:), allocatable :: euler_data(:)
+
+        call get_euler_data_0011(euler_data)
+        read (euler_data, *) int_arr
 
         prod_max = 0
         outer: do i = 1, 17

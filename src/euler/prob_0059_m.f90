@@ -8,22 +8,20 @@ contains
     end function euler0059
 
     function answer() result(ret)
+        use euler_data_m, only: get_euler_data_0059
+        implicit none 
+
         integer :: ret
         integer, allocatable :: encrypted(:), decrypted(:)
         integer, parameter :: n = 26, k = 3
         integer :: letters(n), idx(k), idx2(2*k, k), key(k), i, j
         logical :: next_permutation_avail
-        integer :: iunit, istat
-        integer, parameter :: large_number = 5000
+        integer :: large_number
 
         next_permutation_avail = .true.
-        iunit = 10059
-        open (unit=iunit, file=data_dir//"euler0059.txt", action="read")
-        allocate (encrypted(large_number))
-        encrypted = 0
-        read (iunit, *, iostat=istat) encrypted
-        call remove_trailing_zeros(encrypted)
-        close (iunit)
+
+        call get_euler_data_0059(encrypted)
+        large_number = size(encrypted)
 
         letters = [(i, i=97, 122)]
         allocate (decrypted(size(encrypted)))
@@ -50,19 +48,6 @@ contains
             next_permutation_avail = next_permutation(k, n, idx)
         end do outer
     end function answer
-
-    subroutine remove_trailing_zeros(arr)
-        integer, allocatable, intent(inout) :: arr(:)
-        integer, allocatable :: tmp(:)
-        integer :: i
-
-        do i = 1, size(arr)
-            if (all(arr(i:) == 0)) exit
-        end do
-        allocate (tmp(size(arr(1:i - 1))))
-        tmp = arr(1:i - 1)
-        call move_alloc(tmp, arr)
-    end subroutine remove_trailing_zeros
 
     subroutine decrypt(encrypted, key, decrypted)
         integer, intent(in) :: encrypted(:), key(:)

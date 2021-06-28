@@ -8,20 +8,22 @@ contains
     end function euler0008
 
     integer(int64) function ans()
-        integer(int64) :: long_int(1000), i, s, tmp, iunit
+        use euler_data_m, only: get_euler_data_0008
+        implicit none
 
-        iunit = 10008
-        open (unit=iunit, file=data_dir//"euler0008.txt", action="read")
-        do i = 1_int64, 20_int64
-            s = (i - 1_int64)*50_int64 + 1_int64
-            read (iunit, "(50(i1))") long_int(s:s + 49_int64)
+        integer(int64) :: long_int(1000), i, s, tmp
+        character(len=:), allocatable :: euler_data(:)
+
+        call get_euler_data_0008(euler_data)
+        do i = 1, 20
+            s = (i - 1)*50 + 1
+            read (euler_data(i), "(50(i1))") long_int(s:s + 49)
         end do
-        close (iunit)
 
-        tmp = 0_int64
-        do i = 1_int64, 988_int64
-            if (product(long_int(i:i + 12_int64)) > tmp) then
-                tmp = product(long_int(i:i + 12_int64))
+        tmp = 0
+        do i = 1, 988
+            if (product(long_int(i:i + 12)) > tmp) then
+                tmp = product(long_int(i:i + 12))
             end if
         end do
         ans = tmp

@@ -6,7 +6,6 @@ module euler_utils_m
     integer, parameter, public :: sp = real32, dp = real64
     real(sp), parameter, public :: tiny_sp = tiny(0._sp)
     real(dp), parameter, public :: tiny_dp = tiny(0._dp)
-    character(len=:), allocatable, public :: data_dir
 
     public :: unit_digit
     interface unit_digit

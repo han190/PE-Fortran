@@ -22,17 +22,14 @@ contains
              'Arguments:', &
              '   -v, or --version,                  Print version.', &
              '   -a N, or --all N,                  Compute problem 1 to N.', &
-             '   -n N, or --problem-number N,       Compute problem N.', &
-             '   -d /path/to/data/, or ', &
-             '   --data-directory /path/to/data/    Path to data.', &
+             '   -p N, or --problem N,              Compute problem N.', &
              '   -h, --help                         Pop up this message.', &
              ' ', &
              'Usage:', &
              '   (1) Compute problem 1 to 50:', &
-             '       ./PE-Fortran -a 50 -d $(realpath /relative/data/path/)', &
+             '       PE-Fortran -a 50', &
              '   (2) Compute problem 50:', &
-             '       ./PE-Fortran -n 50 -d $(realpath /relative/data/path/)', &
-             '   *   For powershell, try -d "$(Resolve-Path \data\path) "', &
+             '       PE-Fortran -n 50', &
              ' ']
     end subroutine get_help_messages
 
@@ -200,32 +197,10 @@ contains
         write (*, "('Total time spent (s):', t27, 1x, f20.10)") time_span
     end subroutine print_answer
 
-    logical function is_windows()
-        character(len=32) :: val
-        integer :: length, rc
-
-        is_windows = .false.
-        call get_environment_variable('OS', val, length, rc)
-        if (rc == 0 .and. length > 0 .and. index(val, 'Windows_NT') > 0) then
-            is_windows = .true.
-        end if
-    end function is_windows
-
-    function last_character(str) result(ret)
-        character(len=*), intent(in) :: str
-        character(len=1) :: ret
-
-        ret = str(len(str):len(str))
-    end function last_character
-
     subroutine get_arguments()
-        use euler_utils_m, only: data_dir
-        implicit none
-
         character(len=100), allocatable :: arguments(:)
-        character(len=:), allocatable :: tmp
         integer :: argument_count, idx, problem_number
-        logical :: no_data_dir_specified, compute_all, compute_single
+        logical :: compute_all, compute_single
 
         argument_count = command_argument_count()
         if (argument_count >= 5 .or. argument_count < 1) then
@@ -237,7 +212,7 @@ contains
             call get_command_argument(idx, arguments(idx))
         end do
 
-        if (argument_count == 2) then
+        if (argument_count == 1) then
             select case (trim(arguments(1)))
             case ("-h", "--help")
                 call print_help_messages()
@@ -248,49 +223,54 @@ contains
             case default
                 call print_error_msg("Invalid argument syntax!")
             end select
-        else if (argument_count == 4) then
-            no_data_dir_specified = .true.
+        else if (argument_count == 2) then
             compute_single = .false.
             compute_all = .false.
 
-            do idx = 1, 4, 2
-                select case (trim(arguments(idx)))
-                case ("-d", "--data-directory")
-                    tmp = trim(arguments(idx + 1))
-                    if (last_character(tmp) /= "/" .or. &
-                        last_character(tmp) /= "\") then
-                        if (is_windows()) then
-                            data_dir = tmp//"\"
-                        else
-                            data_dir = tmp//"/"
-                        end if
-                    else
-                        data_dir = tmp
-                    end if
-                    no_data_dir_specified = .false.
-                case ("-a", "--all")
-                    read(arguments(idx + 1), *) problem_number
-                    compute_all = .true.
-                case ("-n", "--problem-number")
-                    read(arguments(idx + 1), *) problem_number
-                    compute_single = .true.
-                case default
-                    call print_error_msg("Invalid argument syntax!")
-                end select
-            end do
+            idx = 1
+            select case (trim(arguments(idx)))
+            case ("-a", "--all")
+                read(arguments(idx + 1), *) problem_number
+                compute_all = .true.
+            case ("-p", "--problem")
+                read(arguments(idx + 1), *) problem_number
+                compute_single = .true.
+            case default
+                call print_error_msg("Invalid argument syntax!")
+            end select
         else
             call print_error_msg("Invalid argument count!")
         end if
 
-        if (no_data_dir_specified) then
-            call print_error_msg("Data direcotry not specified!")
-        else if (compute_single) then
+        if (compute_single) then
             call print_answer(problem_number, "markdown")
         else if (compute_all) then
             call print_answers(problem_number, "markdown")
         else
             call print_error_msg("Invalid argument syntax!")
         end if
+
+    contains
+
+        ! Inspired by fpm source code
+        logical function is_windows()
+            character(len=32) :: val
+            integer :: length, rc
+
+            is_windows = .false.
+            call get_environment_variable('OS', val, length, rc)
+            if (rc == 0 .and. length > 0 .and. &
+                index(val, 'Windows_NT') > 0) then
+                is_windows = .true.
+            end if
+        end function is_windows
+
+        function last_character(str) result(ret)
+            character(len=*), intent(in) :: str
+            character(len=1) :: ret
+
+            ret = str(len(str):len(str))
+        end function last_character
     end subroutine get_arguments
 
 end module euler_main_m
