@@ -15,19 +15,19 @@ For a minimum installation of the Intel Fortran compiler, take a look at [this d
 To build this project with fpm, navigate to the root directory of this repo and
 
 ```bash
-fpm build --profile release
+fpm build
 ```
 
 and run the project with
 
 ```bash
-fpm run --profile release PE-Fortran -- -a 50 -d "$(realpath ./data/)/"
+fpm run -- -a 50
 ```
 
 You could also install it by (the default `PREFIX` is `$HOME/.local/bin`)
 
 ```bash
-fpm install --profile release
+fpm install
 ```
 
 ## Usage
@@ -35,33 +35,16 @@ fpm install --profile release
 ```
 PE Fortran Solution
 Arguments:
-   -v, or --version                    Version.
-   -a N, or --all N                    Compute problem 1 to N.
-   -n N, or --problem-number N         Compute problem N.
-   -d /path/to/data/, or 
-    --data-directory /path/to/data/    Path to data.
-   -h, --help                          Pop up this message.
+   -v, or --version,                  Print version.
+   -a N, or --all N,                  Compute problem 1 to N.
+   -p N, or --problem N,              Compute problem N.
+   -h, --help                         Pop up this message.
 
 Usage:
-(1) Compute problem 1 to 50:
-   ./PE-Fortran -a 50 -d /path/to/data/
-(2) Compute problem 50:
-   ./PE-Fortran -n 50 -d /path/to/data/
-
-Tips:
-*  All the data required are stored in the directory:
-
-   /path/to/the/project/PE-Fortran/data/
-
-   The argument '--data-directory' requires an absolute
-   path but you can use
-   ./PE-Fortran -n 50 -d "$(realpath /relative/data/path/)/"
-```
-
-For example, to calculate the first 50 problems
-
-```bash
-./PE-Fortran --all 50 --data-directory "$(realpath ./data/)/"
+   (1) Compute problem 1 to 50:
+       PE-Fortran -a 50
+   (2) Compute problem 50:
+       PE-Fortran -p 50
 ```
 
 The generated `answer.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/answer.md).
