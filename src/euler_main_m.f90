@@ -20,10 +20,12 @@ contains
             [character(len=80) :: &
              'PE Fortran Solution', &
              'Arguments:', &
-             '   -v, or --version,                  Print version.', &
-             '   -a N, or --all N,                  Compute problem 1 to N.', &
-             '   -p N, or --problem N,              Compute problem N.', &
+             '   -v, --version,                     Print version.', &
              '   -h, --help                         Pop up this message.', &
+             '   -f, --fancy                        Use emojis to express ', &
+             '                                      relative difficulties.', &
+             '   -a N, --all N,                     Compute problem 1 to N.', &
+             '   -p N, --problem N,                 Compute problem N.', &
              ' ', &
              'Usage:', &
              '   (1) Compute problem 1 to 50:', &
@@ -50,11 +52,34 @@ contains
         stop
     end subroutine print_error_msg
 
-    subroutine get_levels(x, levels)
+    subroutine get_levels(x, levels, fancy_style)
         real, intent(in) :: x(:)
         character(len=25), intent(out) :: levels(size(x))
+        logical, intent(in), optional :: fancy_style
         real :: norm, min_x, max_x
         integer :: i
+        logical :: is_fancy
+        character(len=:), allocatable :: lvl1, lvl2, lvl3, lvl4, lvl5
+
+        if (present(fancy_style)) then
+            is_fancy = fancy_style
+        else
+            is_fancy = .false.
+        end if
+
+        if (is_fancy) then
+            lvl1 = ":neutral_face:"
+            lvl2 = ":confused:"
+            lvl3 = ":slightly_frowning_face:"
+            lvl4 = ":frowning_face:"
+            lvl5 = ":smiling_imp:"
+        else
+            lvl1 = "_Lv1_"
+            lvl2 = "_Lv2_"
+            lvl3 = "_Lv3_"
+            lvl4 = "_Lv4_"
+            lvl5 = "_Lv5_"
+        end if
 
         min_x = minval(x)
         max_x = maxval(x)
@@ -64,15 +89,15 @@ contains
             if (norm >= 0. .and. norm < 10.**(-5)) then
                 levels(i) = ''
             else if (norm >= 10.**(-5) .and. norm < 10.**(-4)) then
-                levels(i) = '_Lv1_'
+                levels(i) = lvl1
             else if (norm >= 10.**(-4) .and. norm < 10.**(-3)) then
-                levels(i) = '_Lv2_'
+                levels(i) = lvl2
             else if (norm >= 10.**(-3) .and. norm < 10.**(-2)) then
-                levels(i) = '_Lv3_'
+                levels(i) = lvl3
             else if (norm >= 10.**(-2) .and. norm < 10.**(-1)) then
-                levels(i) = '_Lv4_'
+                levels(i) = lvl4
             else if (norm >= 10.**(-1) .and. norm <= 10.**(0)) then
-                levels(i) = '_LV5_'
+                levels(i) = lvl5
             end if
         end do
     end subroutine get_levels
@@ -116,9 +141,10 @@ contains
         end if
     end subroutine get_answer
 
-    subroutine print_answers(problem_numbers, ext)
+    subroutine print_answers(problem_numbers, ext, fancy_style)
         integer, intent(in) :: problem_numbers
         character(len=*), intent(in) :: ext
+        logical, optional, intent(in) :: fancy_style
         character(len=20), allocatable :: answer(:)
         real, allocatable :: tspan(:)
         real :: tsum, nslv
@@ -127,18 +153,25 @@ contains
         integer, parameter :: iunit = 1120
         character(len=25), allocatable :: levels(:)
         integer :: i
+        logical :: is_fancy
+
+        if (present(fancy_style)) then
+            is_fancy = fancy_style
+        else
+            is_fancy = .false.
+        end if
 
         call get_answers(problem_numbers, answer, tspan)
         tsum = sum(tspan, dim=1)
         nslv = real(count(answer /= failed, dim=1))
         allocate (levels(size(tspan)))
-        call get_levels(tspan/(tsum/size(tspan)), levels)
+        call get_levels(tspan/(tsum/size(tspan)), levels, fancy_style)
 
         select case (ext)
         case ('markdown')
             open (unit=iunit, file='answer.md')
             write (iunit, '(a)') '# Fortran PE Solutions'//new_line('a')
-            write (iunit, '(a)') new_line('a')//'## Summary'//new_line('a')
+            write (iunit, '(a)') '## Summary'//new_line('a')
             write (iunit, '(a)') '|Benchmarks|Results|'
             write (iunit, '(a)') repeat(md_table, 2)//'|'
             write (iunit, "('|Problems solved|', i4, '|')") int(nslv)
@@ -200,7 +233,7 @@ contains
     subroutine get_arguments()
         character(len=100), allocatable :: arguments(:)
         integer :: argument_count, idx, problem_number
-        logical :: compute_all, compute_single
+        logical :: compute_all, compute_single, is_fancy
 
         argument_count = command_argument_count()
         if (argument_count >= 5 .or. argument_count < 1) then
@@ -223,21 +256,29 @@ contains
             case default
                 call print_error_msg("Invalid argument syntax!")
             end select
-        else if (argument_count == 2) then
+        else if (argument_count >= 2) then
             compute_single = .false.
             compute_all = .false.
+            is_fancy = .false.
 
             idx = 1
-            select case (trim(arguments(idx)))
-            case ("-a", "--all")
-                read(arguments(idx + 1), *) problem_number
-                compute_all = .true.
-            case ("-p", "--problem")
-                read(arguments(idx + 1), *) problem_number
-                compute_single = .true.
-            case default
-                call print_error_msg("Invalid argument syntax!")
-            end select
+            do while (idx <= argument_count)
+                select case (trim(arguments(idx)))
+                case ("-a", "--all")
+                    read(arguments(idx + 1), *) problem_number
+                    compute_all = .true.
+                    idx = idx + 2
+                case ("-p", "--problem")
+                    read(arguments(idx + 1), *) problem_number
+                    compute_single = .true.
+                    idx = idx + 2
+                case ("-f", "--fancy")
+                    is_fancy = .true.
+                    idx = idx + 1
+                case default
+                    call print_error_msg("Invalid argument syntax!")
+                end select
+            end do
         else
             call print_error_msg("Invalid argument count!")
         end if
@@ -245,7 +286,7 @@ contains
         if (compute_single) then
             call print_answer(problem_number, "markdown")
         else if (compute_all) then
-            call print_answers(problem_number, "markdown")
+            call print_answers(problem_number, "markdown", is_fancy)
         else
             call print_error_msg("Invalid argument syntax!")
         end if
