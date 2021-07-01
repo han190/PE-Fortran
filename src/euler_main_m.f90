@@ -55,51 +55,43 @@ contains
     subroutine get_levels(x, levels, fancy_style)
         real, intent(in) :: x(:)
         character(len=25), intent(out) :: levels(size(x))
-        logical, intent(in), optional :: fancy_style
+        logical, intent(in) :: fancy_style
         real :: norm, min_x, max_x
-        integer :: i
-        logical :: is_fancy
-        character(len=:), allocatable :: lvl1, lvl2, lvl3, lvl4, lvl5
+        integer :: i, j
+        type :: arr_of_alloc_str
+            character(len=:), allocatable :: str
+        end type arr_of_alloc_str
+        type(arr_of_alloc_str) :: level_name(0:5)
 
-        if (present(fancy_style)) then
-            is_fancy = fancy_style
+        if (fancy_style) then
+            level_name(5)%str = " "
+            level_name(4)%str = ":neutral_face:"
+            level_name(3)%str = ":confused:"
+            level_name(2)%str = ":slightly_frowning_face:"
+            level_name(1)%str = ":frowning_face:"
+            level_name(0)%str = ":smiling_imp:"
         else
-            is_fancy = .false.
-        end if
-
-        if (is_fancy) then
-            lvl1 = ":neutral_face:"
-            lvl2 = ":confused:"
-            lvl3 = ":slightly_frowning_face:"
-            lvl4 = ":frowning_face:"
-            lvl5 = ":smiling_imp:"
-        else
-            lvl1 = "_Lv1_"
-            lvl2 = "_Lv2_"
-            lvl3 = "_Lv3_"
-            lvl4 = "_Lv4_"
-            lvl5 = "_Lv5_"
+            level_name(5)%str = " "
+            level_name(4)%str = "_Lv5_"
+            level_name(3)%str = "_Lv4_"
+            level_name(2)%str = "_Lv3_"
+            level_name(1)%str = "_Lv2_"
+            level_name(0)%str = "_Lv1_"
         end if
 
         min_x = minval(x)
         max_x = maxval(x)
+        levels = "" ! Initilization
 
-        do i = 1, size(x)
+        outer: do i = 1, size(x)
             norm = (x(i) - min_x)/(max_x - min_x)
-            if (norm >= 0. .and. norm < 10.**(-5)) then
-                levels(i) = ''
-            else if (norm >= 10.**(-5) .and. norm < 10.**(-4)) then
-                levels(i) = lvl1
-            else if (norm >= 10.**(-4) .and. norm < 10.**(-3)) then
-                levels(i) = lvl2
-            else if (norm >= 10.**(-3) .and. norm < 10.**(-2)) then
-                levels(i) = lvl3
-            else if (norm >= 10.**(-2) .and. norm < 10.**(-1)) then
-                levels(i) = lvl4
-            else if (norm >= 10.**(-1) .and. norm <= 10.**(0)) then
-                levels(i) = lvl5
-            end if
-        end do
+            inner: do j = 5, 1, -1
+                if (norm >= 10.**(-j) .and. norm <= 10.**(-j + 1)) then
+                    levels(i) = level_name(j - 1)%str
+                    exit inner
+                end if
+            end do inner
+        end do outer
     end subroutine get_levels
 
     subroutine get_answers(problem_numbers, answer, time_span)
