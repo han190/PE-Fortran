@@ -9,7 +9,7 @@ contains
 
     function answer() result(ret)
         use euler_data_m, only: get_euler_data_0059
-        implicit none 
+        implicit none
 
         integer :: ret
         integer, allocatable :: encrypted(:), decrypted(:)

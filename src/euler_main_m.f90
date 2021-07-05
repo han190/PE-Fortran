@@ -23,12 +23,12 @@ contains
     subroutine get_version_messages()
         version_messages = &
             [character(len=80) :: &
-                'Project Name: PE-Fortran', &
-                'Version: 0.0.1', &
-                'License: MIT', &
-                'Copyright: Copyright 2019 - 2021, Han Tang', &
-                'Homepage: https://github.com/han190/PE-Fortran', &
-                ' ']
+             'Project Name: PE-Fortran', &
+             'Version: 0.0.1', &
+             'License: MIT', &
+             'Copyright: Copyright 2019 - 2021, Han Tang', &
+             'Homepage: https://github.com/han190/PE-Fortran', &
+             ' ']
     end subroutine get_version_messages
 
     subroutine print_version_messages()
@@ -249,7 +249,7 @@ contains
             call print_error_msg("Invalid argument count!")
         end if
 
-        allocate(arguments(argument_count))
+        allocate (arguments(argument_count))
         do idx = 1, argument_count
             call get_command_argument(idx, arguments(idx))
         end do
@@ -274,11 +274,11 @@ contains
             do while (idx <= argument_count)
                 select case (trim(arguments(idx)))
                 case ("-a", "--all")
-                    read(arguments(idx + 1), *) problem_number
+                    read (arguments(idx + 1), *) problem_number
                     compute_all = .true.
                     idx = idx + 2
                 case ("-p", "--problem")
-                    read(arguments(idx + 1), *) problem_number
+                    read (arguments(idx + 1), *) problem_number
                     compute_single = .true.
                     idx = idx + 2
                 case ("-f", "--fancy")
