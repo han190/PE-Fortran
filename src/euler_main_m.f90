@@ -6,26 +6,47 @@ module euler_main_m
     private
 
     character(len=20), parameter :: failed = repeat(' ', 19)//'x'
-    character(len=:), allocatable :: help_messages(:)
+    character(len=:), allocatable :: help_messages(:), version_messages(:)
     public :: get_arguments
 
 contains
 
-    subroutine get_version()
-        print '(a)', 'PE Fortran Solution: Version 0.0.1'
-    end subroutine get_version
+    subroutine print_allocatable_character_array(character_array)
+        character(len=:), allocatable, intent(in) :: character_array(:)
+        integer :: i
+
+        do i = 1, size(character_array)
+            print '(a)', character_array(i)
+        end do
+    end subroutine print_allocatable_character_array
+
+    subroutine get_version_messages()
+        version_messages = &
+            [character(len=80) :: &
+                'Project Name: PE-Fortran', &
+                'Version: 0.0.1', &
+                'License: MIT', &
+                'Copyright: Copyright 2019 - 2021, Han Tang', &
+                'Homepage: https://github.com/han190/PE-Fortran', &
+                ' ']
+    end subroutine get_version_messages
+
+    subroutine print_version_messages()
+        call get_version_messages()
+        call print_allocatable_character_array(version_messages)
+    end subroutine print_version_messages
 
     subroutine get_help_messages()
         help_messages = &
             [character(len=80) :: &
              'PE Fortran Solution', &
              'Arguments:', &
-             '   -v, --version,                     Print version.', &
-             '   -h, --help                         Pop up this message.', &
-             '   -f, --fancy                        Use emojis to express ', &
-             '                                      relative difficulties.', &
-             '   -a N, --all N,                     Compute problem 1 to N.', &
-             '   -p N, --problem N,                 Compute problem N.', &
+             '   -v, --version          Print version.', &
+             '   -h, --help             Pop up this message.', &
+             '   -f, --fancy            Use emojis to express ', &
+             '                          relative difficulties.', &
+             '   -a N, --all N          Compute problem 1 to N.', &
+             '   -p N, --problem N      Compute problem N.', &
              ' ', &
              'Usage:', &
              '   (1) Compute problem 1 to 50:', &
@@ -36,12 +57,8 @@ contains
     end subroutine get_help_messages
 
     subroutine print_help_messages()
-        integer :: i
-
         call get_help_messages()
-        do i = 1, size(help_messages)
-            print '(a)', help_messages(i)
-        end do
+        call print_allocatable_character_array(help_messages)
     end subroutine print_help_messages
 
     subroutine print_error_msg(msg)
@@ -243,7 +260,7 @@ contains
                 call print_help_messages()
                 return
             case ("-v", "--version")
-                call get_version()
+                call print_version_messages()
                 return
             case default
                 call print_error_msg("Invalid argument syntax!")
@@ -282,28 +299,6 @@ contains
         else
             call print_error_msg("Invalid argument syntax!")
         end if
-
-    contains
-
-        ! Inspired by fpm source code
-        logical function is_windows()
-            character(len=32) :: val
-            integer :: length, rc
-
-            is_windows = .false.
-            call get_environment_variable('OS', val, length, rc)
-            if (rc == 0 .and. length > 0 .and. &
-                index(val, 'Windows_NT') > 0) then
-                is_windows = .true.
-            end if
-        end function is_windows
-
-        function last_character(str) result(ret)
-            character(len=*), intent(in) :: str
-            character(len=1) :: ret
-
-            ret = str(len(str):len(str))
-        end function last_character
     end subroutine get_arguments
 
 end module euler_main_m
