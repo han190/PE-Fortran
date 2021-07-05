@@ -178,7 +178,7 @@ contains
 
         select case (ext)
         case ('markdown')
-            open (unit=iunit, file='answer.md')
+            open (unit=iunit, file='ANSWER.md')
             write (iunit, '(a)') '# Fortran PE Solutions'//new_line('a')
             write (iunit, '(a)') '## Summary'//new_line('a')
             write (iunit, '(a)') '|Benchmarks|Results|'
@@ -196,7 +196,7 @@ contains
             end do
             close (iunit)
         case ('text')
-            open (unit=iunit, file='answer.txt')
+            open (unit=iunit, file='ANSWER.txt')
             write (iunit, '(a)') 'Fortran PE Solutions'
             write (iunit, '(a)') new_line('a')//'Summary'
             write (iunit, '(a)') '-------'
