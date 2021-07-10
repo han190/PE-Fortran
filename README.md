@@ -35,19 +35,51 @@ fpm install
 ```
 PE Fortran Solution
 Arguments:
-   -v, or --version,                  Print version.
-   -a N, or --all N,                  Compute problem 1 to N.
-   -p N, or --problem N,              Compute problem N.
-   -h, --help                         Pop up this message.
+   -v, --version          Print version.
+   -h, --help             Pop up this message.
+   -f, --fancy            Use emojis to express
+                          relative difficulties.
+   -a N, --all N          Compute problem 1 to N.
+   -p N, --problem N      Compute problem N.
 
 Usage:
    (1) Compute problem 1 to 50:
        PE-Fortran -a 50
    (2) Compute problem 50:
-       PE-Fortran -p 50
+       PE-Fortran -n 50
 ```
 
-The generated `answer.md` will look something like [this](https://github.com/han190/PE-Fortran/tree/master/answer/answer.md).
+## Quick start
+
+```bash
+# If Intel OneAPI and fpm are correctly installed
+# To generate the ANSWER.md
+
+# Spec of my PC:
+# OS: Fedora 34 (Container Image) on Windows 10 x86_64
+# Kernel: 5.4.72-microsoft-standard-WSL2
+# Uptime: 14 mins
+# Packages: 4947 (rpm)
+# Shell: zsh 5.8
+# Resolution: 1920x1200
+# Theme: Adwaita [GTK3]
+# Icons: Adwaita [GTK3]
+# Terminal: Windows Terminal
+# CPU: Intel i7-8700K (12) @ 3.695GHz
+# Memory: 343MiB / 51302MiB
+
+conda activate fpm
+module load compiler
+fpm build --profile release --compiler ifort
+fpm install --profile release --compiler ifort
+
+PE-Fortran --all 63 --fancy
+# -------------------------- --------------------
+# PE Fortran Solutions
+# Problems solved/tried:                0062/0063
+# Total time spent (s):                      1.37
+# Time spent/problem (s):                    0.02
+```
 
 ## A todo list
 
