@@ -43,16 +43,18 @@ contains
              'Arguments:', &
              '   -v, --version          Print version.', &
              '   -h, --help             Pop up this message.', &
-             '   -f, --fancy            Use emojis to express ', &
+             '   -f, --fancy            (optional) Use emojis to express ', &
              '                          relative difficulties.', &
-             '   -a N, --all N          Compute problem 1 to N.', &
+             '   -a N, --all N          Compute problem 1 through N.', &
              '   -p N, --problem N      Compute problem N.', &
              ' ', &
              'Usage:', &
-             '   (1) Compute problem 1 to 50:', &
-             '       PE-Fortran -a 50', &
-             '   (2) Compute problem 50:', &
-             '       PE-Fortran -n 50', &
+             '   (1) Compute problem 1 through 50:', &
+             '       PE-Fortran --all 50', &
+             '   (2) Compute problem 1 through 50 with emoji output:', &
+             '       PE-Fortran --fancy --all 50', &
+             '   (3) Compute problem 50:', &
+             '       PE-Fortran --problem 50', &
              ' ']
     end subroutine get_help_messages
 
