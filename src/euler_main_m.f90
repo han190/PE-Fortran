@@ -77,25 +77,20 @@ contains
         logical, intent(in) :: fancy_style
         real :: norm, min_x, max_x
         integer :: i, j
-        type :: arr_of_alloc_str
-            character(len=:), allocatable :: str
-        end type arr_of_alloc_str
-        type(arr_of_alloc_str) :: level_name(0:5)
+        character(len=:), allocatable :: level_names(:)
 
         if (fancy_style) then
-            level_name(5)%str = " "
-            level_name(4)%str = ":neutral_face:"
-            level_name(3)%str = ":confused:"
-            level_name(2)%str = ":slightly_frowning_face:"
-            level_name(1)%str = ":frowning_face:"
-            level_name(0)%str = ":smiling_imp:"
+            level_names = &
+                [character(len=25) :: &
+                 ":smiling_imp:", &
+                 ":frowning_face:", &
+                 ":slightly_frowning_face:", &
+                 ":confused:", &
+                 ":neutral_face:", ""]
         else
-            level_name(5)%str = " "
-            level_name(4)%str = "_Lv5_"
-            level_name(3)%str = "_Lv4_"
-            level_name(2)%str = "_Lv3_"
-            level_name(1)%str = "_Lv2_"
-            level_name(0)%str = "_Lv1_"
+            level_names = &
+                [character(len=25) :: &
+                 "_Lv1_", "_Lv2_", "_Lv3_", "_Lv4_", "_Lv5_", ""]
         end if
 
         min_x = minval(x)
@@ -106,7 +101,7 @@ contains
             norm = (x(i) - min_x)/(max_x - min_x)
             inner: do j = 5, 1, -1
                 if (norm >= 10.**(-j) .and. norm <= 10.**(-j + 1)) then
-                    levels(i) = level_name(j - 1)%str
+                    levels(i) = trim(level_names(j))
                     exit inner
                 end if
             end do inner
