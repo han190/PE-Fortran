@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+   <meta name="description" content="Solutions to Project Euler problems written by modern Fortran">
+    
+    <meta name="author" content="Han Tang" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>euler_utils_m.f90 &ndash; PE Fortran</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+    
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">PE Fortran </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+        
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
+              
+            <li><a href="../lists/files.html">Source Files</a></li>
+        
+        
+        
+            <li><a href="../lists/modules.html">Modules</a></li>
+        
+            
+                                
+            <li><a href="../lists/procedures.html">Procedures</a></li>
+        
+        
+            <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
+               
+            <li><a href="../lists/types.html">Derived Types</a></li>
+        
+               
+        
+        
+            </ul>
+        
+            </li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
+                             
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
+
+
+
+
+          </ul>
+        
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+  
+  <div class="row">
+    <h1>euler_utils_m.f90
+    <small>Source File</small>
+    
+    </h1>
+    
+<div class="row">
+  <div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+    <li><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li> 
+     
+     
+     
+    
+    
+     <li><i class="fa fa-list-ol"></i>
+       <a data-toggle="tooltip"
+    data-placement="bottom" data-html="true"
+    title="11.6% of total for source files.">466 statements</a>
+     </li> 
+     
+     
+     
+    <li><i class="fa fa-code"></i><a href="../src/euler_utils_m.f90"> Source File</a></li>
+     
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+    
+  
+     <li class="active">euler_utils_m.f90</li>
+  </ol>
+</div>
+</div>
+</div>
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
+  </div>
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+    
+<div id="sidebar">
+  
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#mods-0">Modules</a></h3></div>
+  <div id="mods-0" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../module/euler_utils_m.html">euler_utils_m</a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../sourcefile/euler_utils_m.f90.html#src">euler_utils_m.f90</a>
+  </div>
+</div>
+
+
+
+</div>
+
+    </div>
+    <div class="col-md-9" id='text'>
+      
+      <br>
+    
+      
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Files dependent on this one</h3>
+      </div>
+      <div class="panel-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: sourcefile~~euler_utils_m.f90~~AfferentGraph Pages: 1 -->
+<svg id="sourcefileeuler_utils_mf90AfferentGraph" width="585pt" height="2678pt"
+ viewBox="0.00 0.00 585.00 2678.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 2674)">
+<title>sourcefile~~euler_utils_m.f90~~AfferentGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-2674 581,-2674 581,4 -4,4"/>
+<!-- sourcefile~euler_utils_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node1" class="node">
+<title>sourcefile~euler_utils_m.f90</title>
+<polygon fill="none" stroke="black" points="103,-1872 0,-1872 0,-1848 103,-1848 103,-1872"/>
+<text text-anchor="middle" x="51.5" y="-1857.6" font-family="Helvetica,sans-Serif" font-size="10.50">euler_utils_m.f90</text>
+</g>
+<!-- sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node2" class="node">
+<title>sourcefile~euler_primes_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node2"><a xlink:href=".././sourcefile/euler_primes_m.f90.html" xlink:title="euler_primes_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="263,-2397 145,-2397 145,-2373 263,-2373 263,-2397"/>
+<text text-anchor="middle" x="204" y="-2382.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">euler_primes_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~euler_primes_m.f90&#45;&gt;sourcefile~euler_utils_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge1" class="edge">
+<title>sourcefile~euler_primes_m.f90&#45;&gt;sourcefile~euler_utils_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M199.5,-2372.8C179.97,-2304.66 84.38,-1971.21 58.8,-1881.99"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="62.1,-1880.79 55.98,-1872.14 55.37,-1882.71 62.1,-1880.79"/>
+</g>
+<!-- sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node3" class="node">
+<title>sourcefile~euler_interface_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node3"><a xlink:href=".././sourcefile/euler_interface_m.f90.html" xlink:title="euler_interface_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="269,-1368 139,-1368 139,-1344 269,-1344 269,-1368"/>
+<text text-anchor="middle" x="204" y="-1353.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">euler_interface_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~euler_interface_m.f90&#45;&gt;sourcefile~euler_utils_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge2" class="edge">
+<title>sourcefile~euler_interface_m.f90&#45;&gt;sourcefile~euler_utils_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M199.28,-1368.46C179.31,-1435.33 84.79,-1751.86 59.01,-1838.2"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="55.6,-1837.39 56.09,-1847.98 62.31,-1839.4 55.6,-1837.39"/>
+</g>
+<!-- sourcefile~prob_0016_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node4" class="node">
+<title>sourcefile~prob_0016_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node4"><a xlink:href=".././sourcefile/prob_0016_m.f90.html" xlink:title="prob_0016_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-486 316,-486 316,-462 421,-462 421,-486"/>
+<text text-anchor="middle" x="368.5" y="-471.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0016_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0016_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge16" class="edge">
+<title>sourcefile~prob_0016_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.84,-485.66C311.74,-488.19 308.03,-491.27 305,-495 250.44,-562.31 213.12,-1205.32 206.17,-1333.74"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="202.67,-1333.76 205.63,-1343.94 209.66,-1334.14 202.67,-1333.76"/>
+</g>
+<!-- sourcefile~prob_0041_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node5" class="node">
+<title>sourcefile~prob_0041_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node5"><a xlink:href=".././sourcefile/prob_0041_m.f90.html" xlink:title="prob_0041_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2544 316,-2544 316,-2520 421,-2520 421,-2544"/>
+<text text-anchor="middle" x="368.5" y="-2529.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0041_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0041_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge5" class="edge">
+<title>sourcefile~prob_0041_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M321.29,-2519.9C315.55,-2517.43 309.97,-2514.49 305,-2511 264.92,-2482.87 232.84,-2434.17 216.59,-2406.27"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="219.5,-2404.31 211.52,-2397.34 213.42,-2407.76 219.5,-2404.31"/>
+</g>
+<!-- sourcefile~prob_0041_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge17" class="edge">
+<title>sourcefile~prob_0041_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.73,-2520.43C311.65,-2517.88 307.97,-2514.78 305,-2511 268.54,-2464.65 215.02,-1534.98 206.24,-1378.32"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.72,-1377.83 205.66,-1368.04 202.73,-1378.22 209.72,-1377.83"/>
+</g>
+<!-- sourcefile~prob_0002_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node6" class="node">
+<title>sourcefile~prob_0002_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node6"><a xlink:href=".././sourcefile/prob_0002_m.f90.html" xlink:title="prob_0002_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-444 316,-444 316,-420 421,-420 421,-444"/>
+<text text-anchor="middle" x="368.5" y="-429.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0002_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0002_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge18" class="edge">
+<title>sourcefile~prob_0002_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.82,-443.64C311.73,-446.18 308.02,-449.26 305,-453 247.83,-523.92 212.41,-1202.19 206.04,-1333.9"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="202.54,-1333.84 205.56,-1344 209.53,-1334.18 202.54,-1333.84"/>
+</g>
+<!-- sourcefile~prob_0005_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node7" class="node">
+<title>sourcefile~prob_0005_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node7"><a xlink:href=".././sourcefile/prob_0005_m.f90.html" xlink:title="prob_0005_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-402 316,-402 316,-378 421,-378 421,-402"/>
+<text text-anchor="middle" x="368.5" y="-387.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0005_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0005_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge19" class="edge">
+<title>sourcefile~prob_0005_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.8,-401.63C311.71,-404.16 308.01,-407.25 305,-411 245.26,-485.48 211.79,-1197.98 205.93,-1333.72"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="202.43,-1333.64 205.5,-1343.78 209.43,-1333.94 202.43,-1333.64"/>
+</g>
+<!-- sourcefile~prob_0015_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node8" class="node">
+<title>sourcefile~prob_0015_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node8"><a xlink:href=".././sourcefile/prob_0015_m.f90.html" xlink:title="prob_0015_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-360 316,-360 316,-336 421,-336 421,-360"/>
+<text text-anchor="middle" x="368.5" y="-345.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0015_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0015_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge20" class="edge">
+<title>sourcefile~prob_0015_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.78,-359.61C311.7,-362.15 308,-365.24 305,-369 242.67,-447.06 211.19,-1194.11 205.83,-1333.62"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="202.32,-1333.79 205.44,-1343.92 209.32,-1334.06 202.32,-1333.79"/>
+</g>
+<!-- sourcefile~prob_0035_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node9" class="node">
+<title>sourcefile~prob_0035_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node9"><a xlink:href=".././sourcefile/prob_0035_m.f90.html" xlink:title="prob_0035_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2502 316,-2502 316,-2478 421,-2478 421,-2502"/>
+<text text-anchor="middle" x="368.5" y="-2487.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0035_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0035_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge10" class="edge">
+<title>sourcefile~prob_0035_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M324.55,-2477.96C317.83,-2475.4 311.09,-2472.42 305,-2469 273.69,-2451.43 242.84,-2423.45 223.87,-2404.66"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="226.03,-2401.87 216.5,-2397.23 221.06,-2406.8 226.03,-2401.87"/>
+</g>
+<!-- sourcefile~prob_0035_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge21" class="edge">
+<title>sourcefile~prob_0035_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.74,-2478.42C311.66,-2475.87 307.98,-2472.77 305,-2469 234.86,-2380.13 209.49,-1528.01 205.56,-1378.38"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.05,-1378.04 205.3,-1368.14 202.05,-1378.23 209.05,-1378.04"/>
+</g>
+<!-- sourcefile~prob_0025_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node10" class="node">
+<title>sourcefile~prob_0025_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node10"><a xlink:href=".././sourcefile/prob_0025_m.f90.html" xlink:title="prob_0025_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-318 316,-318 316,-294 421,-294 421,-318"/>
+<text text-anchor="middle" x="368.5" y="-303.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0025_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0025_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge22" class="edge">
+<title>sourcefile~prob_0025_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.77,-317.6C311.68,-320.14 307.99,-323.24 305,-327 240.08,-408.64 210.61,-1190.44 205.73,-1333.56"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="202.23,-1333.64 205.39,-1343.76 209.23,-1333.88 202.23,-1333.64"/>
+</g>
+<!-- sourcefile~prob_0033_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node11" class="node">
+<title>sourcefile~prob_0033_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node11"><a xlink:href=".././sourcefile/prob_0033_m.f90.html" xlink:title="prob_0033_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-276 316,-276 316,-252 421,-252 421,-276"/>
+<text text-anchor="middle" x="368.5" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0033_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0033_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge23" class="edge">
+<title>sourcefile~prob_0033_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.75,-275.59C311.67,-278.13 307.99,-281.23 305,-285 237.48,-370.25 210.04,-1187.11 205.64,-1333.57"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="202.13,-1333.87 205.34,-1343.97 209.13,-1334.08 202.13,-1333.87"/>
+</g>
+<!-- sourcefile~prob_0003_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node12" class="node">
+<title>sourcefile~prob_0003_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node12"><a xlink:href=".././sourcefile/prob_0003_m.f90.html" xlink:title="prob_0003_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2460 316,-2460 316,-2436 421,-2436 421,-2460"/>
+<text text-anchor="middle" x="368.5" y="-2445.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0003_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0003_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge13" class="edge">
+<title>sourcefile~prob_0003_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M330,-2435.9C321.72,-2433.09 313.03,-2430.03 305,-2427 283.85,-2419.02 260.54,-2409.28 241.75,-2401.2"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="242.94,-2397.9 232.37,-2397.14 240.16,-2404.32 242.94,-2397.9"/>
+</g>
+<!-- sourcefile~prob_0003_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge24" class="edge">
+<title>sourcefile~prob_0003_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.75,-2436.41C311.67,-2433.87 307.99,-2430.77 305,-2427 237.48,-2341.75 210.04,-1524.89 205.64,-1378.43"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.13,-1377.92 205.34,-1368.03 202.13,-1378.13 209.13,-1377.92"/>
+</g>
+<!-- sourcefile~prob_0021_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node13" class="node">
+<title>sourcefile~prob_0021_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node13"><a xlink:href=".././sourcefile/prob_0021_m.f90.html" xlink:title="prob_0021_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-234 316,-234 316,-210 421,-210 421,-234"/>
+<text text-anchor="middle" x="368.5" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0021_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0021_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge25" class="edge">
+<title>sourcefile~prob_0021_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.74,-233.58C311.66,-236.13 307.98,-239.23 305,-243 234.86,-331.87 209.49,-1183.99 205.56,-1333.62"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="202.05,-1333.77 205.3,-1343.86 209.05,-1333.96 202.05,-1333.77"/>
+</g>
+<!-- sourcefile~prob_0040_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node14" class="node">
+<title>sourcefile~prob_0040_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node14"><a xlink:href=".././sourcefile/prob_0040_m.f90.html" xlink:title="prob_0040_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-192 316,-192 316,-168 421,-168 421,-192"/>
+<text text-anchor="middle" x="368.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0040_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0040_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge26" class="edge">
+<title>sourcefile~prob_0040_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.73,-191.57C311.65,-194.12 307.97,-197.22 305,-201 232.24,-293.5 208.96,-1181.14 205.48,-1333.72"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="201.98,-1333.7 205.26,-1343.78 208.98,-1333.86 201.98,-1333.7"/>
+</g>
+<!-- sourcefile~prob_0014_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node15" class="node">
+<title>sourcefile~prob_0014_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node15"><a xlink:href=".././sourcefile/prob_0014_m.f90.html" xlink:title="prob_0014_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-150 316,-150 316,-126 421,-126 421,-150"/>
+<text text-anchor="middle" x="368.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0014_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0014_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge27" class="edge">
+<title>sourcefile~prob_0014_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.71,-149.56C311.64,-152.11 307.97,-155.22 305,-159 229.68,-255.06 208.49,-1176.71 205.42,-1333.41"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="201.91,-1333.65 205.22,-1343.71 208.91,-1333.78 201.91,-1333.65"/>
+</g>
+<!-- sourcefile~prob_0052_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node16" class="node">
+<title>sourcefile~prob_0052_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node16"><a xlink:href=".././sourcefile/prob_0052_m.f90.html" xlink:title="prob_0052_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-108 316,-108 316,-84 421,-84 421,-108"/>
+<text text-anchor="middle" x="368.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0052_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0052_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge28" class="edge">
+<title>sourcefile~prob_0052_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.99,-107.37C311.81,-109.95 308.03,-113.12 305,-117 227.03,-216.72 207.98,-1174.34 205.34,-1333.6"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="201.84,-1333.61 205.18,-1343.67 208.84,-1333.72 201.84,-1333.61"/>
+</g>
+<!-- sourcefile~prob_0060_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node17" class="node">
+<title>sourcefile~prob_0060_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node17"><a xlink:href=".././sourcefile/prob_0060_m.f90.html" xlink:title="prob_0060_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2418 316,-2418 316,-2394 421,-2394 421,-2418"/>
+<text text-anchor="middle" x="368.5" y="-2403.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0060_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0060_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge15" class="edge">
+<title>sourcefile~prob_0060_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M315.64,-2399.3C302.18,-2397.56 287.49,-2395.66 273.33,-2393.83"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="273.51,-2390.32 263.14,-2392.51 272.61,-2397.27 273.51,-2390.32"/>
+</g>
+<!-- sourcefile~prob_0060_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge29" class="edge">
+<title>sourcefile~prob_0060_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.77,-2394.4C311.68,-2391.86 307.99,-2388.76 305,-2385 240.08,-2303.36 210.61,-1521.56 205.73,-1378.44"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.23,-1378.12 205.39,-1368.24 202.23,-1378.36 209.23,-1378.12"/>
+</g>
+<!-- sourcefile~prob_0056_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node18" class="node">
+<title>sourcefile~prob_0056_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node18"><a xlink:href=".././sourcefile/prob_0056_m.f90.html" xlink:title="prob_0056_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-66 316,-66 316,-42 421,-42 421,-66"/>
+<text text-anchor="middle" x="368.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0056_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0056_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge30" class="edge">
+<title>sourcefile~prob_0056_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.98,-65.36C311.8,-67.95 308.03,-71.12 305,-75 224.46,-178.29 207.53,-1170.26 205.29,-1333.36"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="201.78,-1333.6 205.15,-1343.64 208.78,-1333.69 201.78,-1333.6"/>
+</g>
+<!-- sourcefile~prob_0047_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node19" class="node">
+<title>sourcefile~prob_0047_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node19"><a xlink:href=".././sourcefile/prob_0047_m.f90.html" xlink:title="prob_0047_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-24 316,-24 316,0 421,0 421,-24"/>
+<text text-anchor="middle" x="368.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0047_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0047_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge31" class="edge">
+<title>sourcefile~prob_0047_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.97,-23.35C311.79,-25.94 308.02,-29.11 305,-33 221.8,-139.98 207.06,-1168.36 205.22,-1333.64"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="201.72,-1333.6 205.12,-1343.64 208.72,-1333.68 201.72,-1333.6"/>
+</g>
+<!-- sourcefile~prob_0036_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node20" class="node">
+<title>sourcefile~prob_0036_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node20"><a xlink:href=".././sourcefile/prob_0036_m.f90.html" xlink:title="prob_0036_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2124 316,-2124 316,-2100 421,-2100 421,-2124"/>
+<text text-anchor="middle" x="368.5" y="-2109.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0036_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0036_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge32" class="edge">
+<title>sourcefile~prob_0036_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.92,-2100.28C311.8,-2097.76 308.06,-2094.71 305,-2091 211.97,-1978.5 205.29,-1488.81 204.97,-1378.24"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="208.47,-1378.22 204.96,-1368.22 201.47,-1378.22 208.47,-1378.22"/>
+</g>
+<!-- sourcefile~prob_0046_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node21" class="node">
+<title>sourcefile~prob_0046_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node21"><a xlink:href=".././sourcefile/prob_0046_m.f90.html" xlink:title="prob_0046_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2376 316,-2376 316,-2352 421,-2352 421,-2376"/>
+<text text-anchor="middle" x="368.5" y="-2361.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0046_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0046_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge7" class="edge">
+<title>sourcefile~prob_0046_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M315.64,-2370.7C302.18,-2372.44 287.49,-2374.34 273.33,-2376.17"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="272.61,-2372.73 263.14,-2377.49 273.51,-2379.68 272.61,-2372.73"/>
+</g>
+<!-- sourcefile~prob_0046_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge33" class="edge">
+<title>sourcefile~prob_0046_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.78,-2352.39C311.7,-2349.85 308,-2346.76 305,-2343 242.67,-2264.94 211.19,-1517.89 205.83,-1378.38"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.32,-1377.94 205.44,-1368.08 202.32,-1378.21 209.32,-1377.94"/>
+</g>
+<!-- sourcefile~prob_0058_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node22" class="node">
+<title>sourcefile~prob_0058_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node22"><a xlink:href=".././sourcefile/prob_0058_m.f90.html" xlink:title="prob_0058_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2334 316,-2334 316,-2310 421,-2310 421,-2334"/>
+<text text-anchor="middle" x="368.5" y="-2319.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0058_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0058_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge9" class="edge">
+<title>sourcefile~prob_0058_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M330,-2334.1C321.72,-2336.91 313.03,-2339.97 305,-2343 283.85,-2350.98 260.54,-2360.72 241.75,-2368.8"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="240.16,-2365.68 232.37,-2372.86 242.94,-2372.1 240.16,-2365.68"/>
+</g>
+<!-- sourcefile~prob_0058_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge34" class="edge">
+<title>sourcefile~prob_0058_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.8,-2310.37C311.71,-2307.84 308.01,-2304.75 305,-2301 245.26,-2226.52 211.79,-1514.02 205.93,-1378.28"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.43,-1378.06 205.5,-1368.22 202.43,-1378.36 209.43,-1378.06"/>
+</g>
+<!-- sourcefile~prob_0013_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node23" class="node">
+<title>sourcefile~prob_0013_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node23"><a xlink:href=".././sourcefile/prob_0013_m.f90.html" xlink:title="prob_0013_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2082 316,-2082 316,-2058 421,-2058 421,-2082"/>
+<text text-anchor="middle" x="368.5" y="-2067.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0013_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0013_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge35" class="edge">
+<title>sourcefile~prob_0013_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.95,-2058.25C311.83,-2055.74 308.08,-2052.69 305,-2049 217.13,-1943.6 206.47,-1485.1 205.18,-1378.29"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="208.68,-1378.02 205.07,-1368.05 201.68,-1378.09 208.68,-1378.02"/>
+</g>
+<!-- sourcefile~prob_0038_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node24" class="node">
+<title>sourcefile~prob_0038_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node24"><a xlink:href=".././sourcefile/prob_0038_m.f90.html" xlink:title="prob_0038_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2040 316,-2040 316,-2016 421,-2016 421,-2040"/>
+<text text-anchor="middle" x="368.5" y="-2025.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0038_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0038_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge36" class="edge">
+<title>sourcefile~prob_0038_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.98,-2016.22C311.86,-2013.72 308.1,-2010.68 305,-2007 222.24,-1908.65 207.72,-1480.96 205.41,-1378.24"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="208.9,-1378.02 205.19,-1368.09 201.9,-1378.16 208.9,-1378.02"/>
+</g>
+<!-- sourcefile~prob_0034_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node25" class="node">
+<title>sourcefile~prob_0034_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node25"><a xlink:href=".././sourcefile/prob_0034_m.f90.html" xlink:title="prob_0034_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1998 316,-1998 316,-1974 421,-1974 421,-1998"/>
+<text text-anchor="middle" x="368.5" y="-1983.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0034_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0034_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge37" class="edge">
+<title>sourcefile~prob_0034_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.73,-1974.01C311.71,-1971.54 308.04,-1968.58 305,-1965 227.31,-1873.63 209.02,-1476.33 205.66,-1378.05"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.16,-1377.94 205.33,-1368.05 202.16,-1378.16 209.16,-1377.94"/>
+</g>
+<!-- sourcefile~prob_0057_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node26" class="node">
+<title>sourcefile~prob_0057_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node26"><a xlink:href=".././sourcefile/prob_0057_m.f90.html" xlink:title="prob_0057_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1956 316,-1956 316,-1932 421,-1932 421,-1956"/>
+<text text-anchor="middle" x="368.5" y="-1941.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0057_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0057_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge38" class="edge">
+<title>sourcefile~prob_0057_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.77,-1931.97C311.75,-1929.51 308.06,-1926.56 305,-1923 232.48,-1838.73 210.48,-1472.77 205.97,-1378.31"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.45,-1378 205.5,-1368.18 202.46,-1378.33 209.45,-1378"/>
+</g>
+<!-- sourcefile~prob_0042_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node27" class="node">
+<title>sourcefile~prob_0042_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node27"><a xlink:href=".././sourcefile/prob_0042_m.f90.html" xlink:title="prob_0042_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1914 316,-1914 316,-1890 421,-1890 421,-1914"/>
+<text text-anchor="middle" x="368.5" y="-1899.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0042_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0042_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge39" class="edge">
+<title>sourcefile~prob_0042_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.82,-1889.93C311.79,-1887.48 308.09,-1884.54 305,-1881 237.58,-1803.73 212.03,-1468.48 206.31,-1378.37"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.79,-1377.96 205.69,-1368.19 202.81,-1378.39 209.79,-1377.96"/>
+</g>
+<!-- sourcefile~prob_0031_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node28" class="node">
+<title>sourcefile~prob_0031_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node28"><a xlink:href=".././sourcefile/prob_0031_m.f90.html" xlink:title="prob_0031_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1872 316,-1872 316,-1848 421,-1848 421,-1872"/>
+<text text-anchor="middle" x="368.5" y="-1857.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0031_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0031_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge40" class="edge">
+<title>sourcefile~prob_0031_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.88,-1847.87C311.83,-1845.44 308.11,-1842.51 305,-1839 242.61,-1768.64 213.67,-1463.47 206.7,-1378.21"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="210.18,-1377.78 205.9,-1368.09 203.2,-1378.34 210.18,-1377.78"/>
+</g>
+<!-- sourcefile~prob_0044_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node29" class="node">
+<title>sourcefile~prob_0044_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node29"><a xlink:href=".././sourcefile/prob_0044_m.f90.html" xlink:title="prob_0044_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1830 316,-1830 316,-1806 421,-1806 421,-1830"/>
+<text text-anchor="middle" x="368.5" y="-1815.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0044_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0044_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge41" class="edge">
+<title>sourcefile~prob_0044_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M316.25,-1805.99C312.07,-1803.53 308.22,-1800.57 305,-1797 247.69,-1733.58 215.52,-1458.97 207.19,-1378.34"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="210.66,-1377.89 206.17,-1368.29 203.7,-1378.59 210.66,-1377.89"/>
+</g>
+<!-- sourcefile~prob_0049_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node30" class="node">
+<title>sourcefile~prob_0049_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node30"><a xlink:href=".././sourcefile/prob_0049_m.f90.html" xlink:title="prob_0049_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2292 316,-2292 316,-2268 421,-2268 421,-2292"/>
+<text text-anchor="middle" x="368.5" y="-2277.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0049_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0049_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge12" class="edge">
+<title>sourcefile~prob_0049_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M324.55,-2292.04C317.83,-2294.6 311.09,-2297.58 305,-2301 273.69,-2318.57 242.84,-2346.55 223.87,-2365.34"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="221.06,-2363.2 216.5,-2372.77 226.03,-2368.13 221.06,-2363.2"/>
+</g>
+<!-- sourcefile~prob_0049_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge42" class="edge">
+<title>sourcefile~prob_0049_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.82,-2268.36C311.73,-2265.82 308.02,-2262.74 305,-2259 247.83,-2188.08 212.41,-1509.81 206.04,-1378.1"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.53,-1377.82 205.56,-1368 202.54,-1378.16 209.53,-1377.82"/>
+</g>
+<!-- sourcefile~prob_0006_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node31" class="node">
+<title>sourcefile~prob_0006_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node31"><a xlink:href=".././sourcefile/prob_0006_m.f90.html" xlink:title="prob_0006_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1788 316,-1788 316,-1764 421,-1764 421,-1788"/>
+<text text-anchor="middle" x="368.5" y="-1773.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0006_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0006_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge43" class="edge">
+<title>sourcefile~prob_0006_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M316.34,-1763.91C312.14,-1761.47 308.26,-1758.53 305,-1755 252.78,-1698.51 217.63,-1454.52 207.8,-1378.62"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="211.23,-1377.79 206.49,-1368.31 204.28,-1378.67 211.23,-1377.79"/>
+</g>
+<!-- sourcefile~prob_0039_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node32" class="node">
+<title>sourcefile~prob_0039_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node32"><a xlink:href=".././sourcefile/prob_0039_m.f90.html" xlink:title="prob_0039_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1746 316,-1746 316,-1722 421,-1722 421,-1746"/>
+<text text-anchor="middle" x="368.5" y="-1731.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0039_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0039_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge44" class="edge">
+<title>sourcefile~prob_0039_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M316.74,-1721.99C312.41,-1719.53 308.39,-1716.57 305,-1713 212.55,-1615.71 204.36,-1440.05 204.5,-1378.24"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="208,-1378.11 204.61,-1368.07 201,-1378.04 208,-1378.11"/>
+</g>
+<!-- sourcefile~prob_0008_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node33" class="node">
+<title>sourcefile~prob_0008_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node33"><a xlink:href=".././sourcefile/prob_0008_m.f90.html" xlink:title="prob_0008_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1704 316,-1704 316,-1680 421,-1680 421,-1704"/>
+<text text-anchor="middle" x="368.5" y="-1689.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0008_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0008_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge45" class="edge">
+<title>sourcefile~prob_0008_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M316.87,-1679.87C312.51,-1677.43 308.45,-1674.51 305,-1671 222.4,-1587.01 207.97,-1435.13 205.49,-1378.28"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="208.99,-1378.09 205.14,-1368.22 201.99,-1378.34 208.99,-1378.09"/>
+</g>
+<!-- sourcefile~prob_0059_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node34" class="node">
+<title>sourcefile~prob_0059_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node34"><a xlink:href=".././sourcefile/prob_0059_m.f90.html" xlink:title="prob_0059_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1662 316,-1662 316,-1638 421,-1638 421,-1662"/>
+<text text-anchor="middle" x="368.5" y="-1647.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0059_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0059_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge78" class="edge">
+<title>sourcefile~prob_0059_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M317.33,-1637.88C312.82,-1635.44 308.61,-1632.51 305,-1629 232.05,-1557.99 211.97,-1429.4 206.74,-1378.05"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="210.22,-1377.68 205.81,-1368.05 203.25,-1378.33 210.22,-1377.68"/>
+</g>
+<!-- sourcefile~prob_0032_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node35" class="node">
+<title>sourcefile~prob_0032_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node35"><a xlink:href=".././sourcefile/prob_0032_m.f90.html" xlink:title="prob_0032_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1620 316,-1620 316,-1596 421,-1596 421,-1620"/>
+<text text-anchor="middle" x="368.5" y="-1605.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0032_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0032_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge46" class="edge">
+<title>sourcefile~prob_0032_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M318.16,-1595.98C313.38,-1593.52 308.88,-1590.56 305,-1587 241.68,-1528.81 216.62,-1423.6 208.41,-1378.03"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="211.84,-1377.3 206.72,-1368.03 204.94,-1378.48 211.84,-1377.3"/>
+</g>
+<!-- sourcefile~prob_0024_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node36" class="node">
+<title>sourcefile~prob_0024_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node36"><a xlink:href=".././sourcefile/prob_0024_m.f90.html" xlink:title="prob_0024_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1578 316,-1578 316,-1554 421,-1554 421,-1578"/>
+<text text-anchor="middle" x="368.5" y="-1563.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0024_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0024_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge47" class="edge">
+<title>sourcefile~prob_0024_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M319.06,-1553.98C314,-1551.52 309.19,-1548.56 305,-1545 251.21,-1499.31 222.16,-1417.24 210.77,-1378.03"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="214.08,-1376.86 208.02,-1368.17 207.34,-1378.74 214.08,-1376.86"/>
+</g>
+<!-- sourcefile~prob_0029_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node37" class="node">
+<title>sourcefile~prob_0029_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node37"><a xlink:href=".././sourcefile/prob_0029_m.f90.html" xlink:title="prob_0029_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1536 316,-1536 316,-1512 421,-1512 421,-1536"/>
+<text text-anchor="middle" x="368.5" y="-1521.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0029_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0029_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge48" class="edge">
+<title>sourcefile~prob_0029_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M320.4,-1511.95C314.93,-1509.48 309.65,-1506.53 305,-1503 260.39,-1469.17 228.8,-1409.49 214.17,-1377.57"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="217.28,-1375.96 210.02,-1368.25 210.89,-1378.81 217.28,-1375.96"/>
+</g>
+<!-- sourcefile~prob_0045_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node38" class="node">
+<title>sourcefile~prob_0045_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node38"><a xlink:href=".././sourcefile/prob_0045_m.f90.html" xlink:title="prob_0045_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1494 316,-1494 316,-1470 421,-1470 421,-1494"/>
+<text text-anchor="middle" x="368.5" y="-1479.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0045_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0045_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge49" class="edge">
+<title>sourcefile~prob_0045_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M322.56,-1469.88C316.44,-1467.38 310.41,-1464.44 305,-1461 269.22,-1438.22 237.23,-1399.95 219.53,-1376.44"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="222.22,-1374.19 213.47,-1368.22 216.58,-1378.34 222.22,-1374.19"/>
+</g>
+<!-- sourcefile~prob_0053_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node39" class="node">
+<title>sourcefile~prob_0053_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node39"><a xlink:href=".././sourcefile/prob_0053_m.f90.html" xlink:title="prob_0053_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1452 316,-1452 316,-1428 421,-1428 421,-1452"/>
+<text text-anchor="middle" x="368.5" y="-1437.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0053_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0053_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge50" class="edge">
+<title>sourcefile~prob_0053_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M326.93,-1427.94C319.51,-1425.29 311.93,-1422.29 305,-1419 278.15,-1406.26 249.68,-1387.77 230.01,-1374.12"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="231.82,-1371.11 221.63,-1368.22 227.8,-1376.84 231.82,-1371.11"/>
+</g>
+<!-- sourcefile~prob_0026_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node40" class="node">
+<title>sourcefile~prob_0026_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node40"><a xlink:href=".././sourcefile/prob_0026_m.f90.html" xlink:title="prob_0026_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2250 316,-2250 316,-2226 421,-2226 421,-2250"/>
+<text text-anchor="middle" x="368.5" y="-2235.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0026_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0026_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge3" class="edge">
+<title>sourcefile~prob_0026_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M321.29,-2250.1C315.55,-2252.57 309.97,-2255.51 305,-2259 264.92,-2287.13 232.84,-2335.83 216.59,-2363.73"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="213.42,-2362.24 211.52,-2372.66 219.5,-2365.69 213.42,-2362.24"/>
+</g>
+<!-- sourcefile~prob_0026_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge52" class="edge">
+<title>sourcefile~prob_0026_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.84,-2226.34C311.74,-2223.81 308.03,-2220.73 305,-2217 250.44,-2149.69 213.12,-1506.68 206.17,-1378.26"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.66,-1377.86 205.63,-1368.06 202.67,-1378.24 209.66,-1377.86"/>
+</g>
+<!-- sourcefile~prob_0001_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node41" class="node">
+<title>sourcefile~prob_0001_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node41"><a xlink:href=".././sourcefile/prob_0001_m.f90.html" xlink:title="prob_0001_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1410 316,-1410 316,-1386 421,-1386 421,-1410"/>
+<text text-anchor="middle" x="368.5" y="-1395.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0001_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0001_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge51" class="edge">
+<title>sourcefile~prob_0001_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M320.93,-1385.96C302.41,-1381.18 280.91,-1375.62 261.51,-1370.6"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="262.13,-1367.15 251.57,-1368.04 260.38,-1373.93 262.13,-1367.15"/>
+</g>
+<!-- sourcefile~prob_0019_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node42" class="node">
+<title>sourcefile~prob_0019_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node42"><a xlink:href=".././sourcefile/prob_0019_m.f90.html" xlink:title="prob_0019_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1368 316,-1368 316,-1344 421,-1344 421,-1368"/>
+<text text-anchor="middle" x="368.5" y="-1353.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0019_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0019_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge53" class="edge">
+<title>sourcefile~prob_0019_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.64,-1356C304.1,-1356 291.65,-1356 279.4,-1356"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="279.19,-1352.5 269.19,-1356 279.19,-1359.5 279.19,-1352.5"/>
+</g>
+<!-- sourcefile~prob_0012_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node43" class="node">
+<title>sourcefile~prob_0012_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node43"><a xlink:href=".././sourcefile/prob_0012_m.f90.html" xlink:title="prob_0012_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1326 316,-1326 316,-1302 421,-1302 421,-1326"/>
+<text text-anchor="middle" x="368.5" y="-1311.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0012_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0012_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge54" class="edge">
+<title>sourcefile~prob_0012_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M320.93,-1326.04C302.41,-1330.82 280.91,-1336.38 261.51,-1341.4"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="260.38,-1338.07 251.57,-1343.96 262.13,-1344.85 260.38,-1338.07"/>
+</g>
+<!-- sourcefile~prob_0030_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node44" class="node">
+<title>sourcefile~prob_0030_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node44"><a xlink:href=".././sourcefile/prob_0030_m.f90.html" xlink:title="prob_0030_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1284 316,-1284 316,-1260 421,-1260 421,-1284"/>
+<text text-anchor="middle" x="368.5" y="-1269.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0030_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0030_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge55" class="edge">
+<title>sourcefile~prob_0030_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M326.93,-1284.06C319.51,-1286.71 311.93,-1289.71 305,-1293 278.15,-1305.74 249.68,-1324.23 230.01,-1337.88"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="227.8,-1335.16 221.63,-1343.78 231.82,-1340.89 227.8,-1335.16"/>
+</g>
+<!-- sourcefile~prob_0020_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node45" class="node">
+<title>sourcefile~prob_0020_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node45"><a xlink:href=".././sourcefile/prob_0020_m.f90.html" xlink:title="prob_0020_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1242 316,-1242 316,-1218 421,-1218 421,-1242"/>
+<text text-anchor="middle" x="368.5" y="-1227.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0020_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0020_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge56" class="edge">
+<title>sourcefile~prob_0020_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M322.56,-1242.12C316.44,-1244.62 310.41,-1247.56 305,-1251 269.22,-1273.78 237.23,-1312.05 219.53,-1335.56"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="216.58,-1333.66 213.47,-1343.78 222.22,-1337.81 216.58,-1333.66"/>
+</g>
+<!-- sourcefile~prob_0051_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node46" class="node">
+<title>sourcefile~prob_0051_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node46"><a xlink:href=".././sourcefile/prob_0051_m.f90.html" xlink:title="prob_0051_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2208 316,-2208 316,-2184 421,-2184 421,-2208"/>
+<text text-anchor="middle" x="368.5" y="-2193.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0051_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0051_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge14" class="edge">
+<title>sourcefile~prob_0051_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M319.55,-2208.08C314.35,-2210.53 309.36,-2213.48 305,-2217 255.72,-2256.77 225.15,-2327.81 212.2,-2363.41"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="208.89,-2362.26 208.88,-2372.86 215.5,-2364.59 208.89,-2362.26"/>
+</g>
+<!-- sourcefile~prob_0051_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge57" class="edge">
+<title>sourcefile~prob_0051_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.86,-2184.32C311.76,-2181.79 308.04,-2178.73 305,-2175 201.63,-2048.23 203.11,-1495.82 204.63,-1378.11"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="208.13,-1378.16 204.78,-1368.11 201.13,-1378.06 208.13,-1378.16"/>
+</g>
+<!-- sourcefile~prob_0062_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node47" class="node">
+<title>sourcefile~prob_0062_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node47"><a xlink:href=".././sourcefile/prob_0062_m.f90.html" xlink:title="prob_0062_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1200 316,-1200 316,-1176 421,-1176 421,-1200"/>
+<text text-anchor="middle" x="368.5" y="-1185.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0062_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0062_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge58" class="edge">
+<title>sourcefile~prob_0062_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M320.4,-1200.05C314.93,-1202.52 309.65,-1205.47 305,-1209 260.39,-1242.83 228.8,-1302.51 214.17,-1334.43"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="210.89,-1333.19 210.02,-1343.75 217.28,-1336.04 210.89,-1333.19"/>
+</g>
+<!-- sourcefile~prob_0027_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node48" class="node">
+<title>sourcefile~prob_0027_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node48"><a xlink:href=".././sourcefile/prob_0027_m.f90.html" xlink:title="prob_0027_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1158 316,-1158 316,-1134 421,-1134 421,-1158"/>
+<text text-anchor="middle" x="368.5" y="-1143.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0027_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0027_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge59" class="edge">
+<title>sourcefile~prob_0027_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M319.06,-1158.02C314,-1160.48 309.19,-1163.44 305,-1167 251.21,-1212.69 222.16,-1294.76 210.77,-1333.97"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="207.34,-1333.26 208.02,-1343.83 214.08,-1335.14 207.34,-1333.26"/>
+</g>
+<!-- sourcefile~prob_0022_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node49" class="node">
+<title>sourcefile~prob_0022_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node49"><a xlink:href=".././sourcefile/prob_0022_m.f90.html" xlink:title="prob_0022_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1116 316,-1116 316,-1092 421,-1092 421,-1116"/>
+<text text-anchor="middle" x="368.5" y="-1101.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0022_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0022_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge60" class="edge">
+<title>sourcefile~prob_0022_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M318.16,-1116.02C313.38,-1118.48 308.88,-1121.44 305,-1125 241.68,-1183.19 216.62,-1288.4 208.41,-1333.97"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="204.94,-1333.52 206.72,-1343.97 211.84,-1334.7 204.94,-1333.52"/>
+</g>
+<!-- sourcefile~prob_0061_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node50" class="node">
+<title>sourcefile~prob_0061_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node50"><a xlink:href=".././sourcefile/prob_0061_m.f90.html" xlink:title="prob_0061_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1074 316,-1074 316,-1050 421,-1050 421,-1074"/>
+<text text-anchor="middle" x="368.5" y="-1059.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0061_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0061_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge61" class="edge">
+<title>sourcefile~prob_0061_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M317.33,-1074.12C312.82,-1076.56 308.61,-1079.49 305,-1083 232.05,-1154.01 211.97,-1282.6 206.74,-1333.95"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="203.25,-1333.67 205.81,-1343.95 210.22,-1334.32 203.25,-1333.67"/>
+</g>
+<!-- sourcefile~prob_0009_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node51" class="node">
+<title>sourcefile~prob_0009_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node51"><a xlink:href=".././sourcefile/prob_0009_m.f90.html" xlink:title="prob_0009_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-1032 316,-1032 316,-1008 421,-1008 421,-1032"/>
+<text text-anchor="middle" x="368.5" y="-1017.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0009_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0009_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge62" class="edge">
+<title>sourcefile~prob_0009_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M316.87,-1032.13C312.51,-1034.57 308.45,-1037.49 305,-1041 222.4,-1124.99 207.97,-1276.87 205.49,-1333.72"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="201.99,-1333.66 205.14,-1343.78 208.99,-1333.91 201.99,-1333.66"/>
+</g>
+<!-- sourcefile~prob_0010_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node52" class="node">
+<title>sourcefile~prob_0010_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node52"><a xlink:href=".././sourcefile/prob_0010_m.f90.html" xlink:title="prob_0010_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2166 316,-2166 316,-2142 421,-2142 421,-2166"/>
+<text text-anchor="middle" x="368.5" y="-2151.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0010_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0010_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge4" class="edge">
+<title>sourcefile~prob_0010_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M318.6,-2166C313.68,-2168.47 309.03,-2171.43 305,-2175 246.48,-2226.87 219.28,-2320.42 209.49,-2362.92"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="206.05,-2362.28 207.33,-2372.8 212.89,-2363.78 206.05,-2362.28"/>
+</g>
+<!-- sourcefile~prob_0010_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge63" class="edge">
+<title>sourcefile~prob_0010_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.89,-2142.3C311.78,-2139.78 308.05,-2136.72 305,-2133 206.87,-2013.45 204.17,-1493.03 204.79,-1378.39"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="208.29,-1378.07 204.86,-1368.05 201.29,-1378.03 208.29,-1378.07"/>
+</g>
+<!-- sourcefile~prob_0037_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node53" class="node">
+<title>sourcefile~prob_0037_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node53"><a xlink:href=".././sourcefile/prob_0037_m.f90.html" xlink:title="prob_0037_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2670 316,-2670 316,-2646 421,-2646 421,-2670"/>
+<text text-anchor="middle" x="368.5" y="-2655.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0037_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0037_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge6" class="edge">
+<title>sourcefile~prob_0037_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M317.73,-2645.94C313.09,-2643.49 308.74,-2640.54 305,-2637 237.02,-2572.57 214.3,-2456.03 207.55,-2407.33"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="211,-2406.72 206.25,-2397.24 204.06,-2407.61 211,-2406.72"/>
+</g>
+<!-- sourcefile~prob_0037_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge69" class="edge">
+<title>sourcefile~prob_0037_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.98,-2646.64C311.8,-2644.05 308.03,-2640.88 305,-2637 284.78,-2611.07 216.95,-1545.81 206.39,-1378.12"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.87,-1377.76 205.75,-1368 202.89,-1378.2 209.87,-1377.76"/>
+</g>
+<!-- sourcefile~prob_0055_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node54" class="node">
+<title>sourcefile~prob_0055_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node54"><a xlink:href=".././sourcefile/prob_0055_m.f90.html" xlink:title="prob_0055_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-990 316,-990 316,-966 421,-966 421,-990"/>
+<text text-anchor="middle" x="368.5" y="-975.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0055_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0055_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge64" class="edge">
+<title>sourcefile~prob_0055_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M316.74,-990.01C312.41,-992.47 308.39,-995.43 305,-999 212.55,-1096.29 204.36,-1271.95 204.5,-1333.76"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="201,-1333.96 204.61,-1343.93 208,-1333.89 201,-1333.96"/>
+</g>
+<!-- sourcefile~prob_0011_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node55" class="node">
+<title>sourcefile~prob_0011_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node55"><a xlink:href=".././sourcefile/prob_0011_m.f90.html" xlink:title="prob_0011_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-948 316,-948 316,-924 421,-924 421,-948"/>
+<text text-anchor="middle" x="368.5" y="-933.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0011_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0011_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge65" class="edge">
+<title>sourcefile~prob_0011_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M316.34,-948.09C312.14,-950.53 308.26,-953.47 305,-957 252.78,-1013.49 217.63,-1257.48 207.8,-1333.38"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="204.28,-1333.33 206.49,-1343.69 211.23,-1334.21 204.28,-1333.33"/>
+</g>
+<!-- sourcefile~prob_0007_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node56" class="node">
+<title>sourcefile~prob_0007_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node56"><a xlink:href=".././sourcefile/prob_0007_m.f90.html" xlink:title="prob_0007_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2628 316,-2628 316,-2604 421,-2604 421,-2628"/>
+<text text-anchor="middle" x="368.5" y="-2613.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0007_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0007_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge8" class="edge">
+<title>sourcefile~prob_0007_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M318.6,-2604C313.68,-2601.53 309.03,-2598.57 305,-2595 246.48,-2543.13 219.28,-2449.58 209.49,-2407.08"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="212.89,-2406.22 207.33,-2397.2 206.05,-2407.72 212.89,-2406.22"/>
+</g>
+<!-- sourcefile~prob_0007_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge67" class="edge">
+<title>sourcefile~prob_0007_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.99,-2604.63C311.81,-2602.05 308.03,-2598.88 305,-2595 265.94,-2545.04 214.28,-1541.83 206.11,-1378.41"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.59,-1377.94 205.6,-1368.12 202.6,-1378.28 209.59,-1377.94"/>
+</g>
+<!-- sourcefile~prob_0023_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node57" class="node">
+<title>sourcefile~prob_0023_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node57"><a xlink:href=".././sourcefile/prob_0023_m.f90.html" xlink:title="prob_0023_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-906 316,-906 316,-882 421,-882 421,-906"/>
+<text text-anchor="middle" x="368.5" y="-891.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0023_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0023_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge66" class="edge">
+<title>sourcefile~prob_0023_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M316.25,-906.01C312.07,-908.47 308.22,-911.43 305,-915 247.69,-978.42 215.52,-1253.03 207.19,-1333.66"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="203.7,-1333.41 206.17,-1343.71 210.66,-1334.11 203.7,-1333.41"/>
+</g>
+<!-- sourcefile~prob_0043_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node58" class="node">
+<title>sourcefile~prob_0043_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node58"><a xlink:href=".././sourcefile/prob_0043_m.f90.html" xlink:title="prob_0043_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-864 316,-864 316,-840 421,-840 421,-864"/>
+<text text-anchor="middle" x="368.5" y="-849.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0043_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0043_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge68" class="edge">
+<title>sourcefile~prob_0043_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.88,-864.13C311.83,-866.56 308.11,-869.49 305,-873 242.61,-943.36 213.67,-1248.53 206.7,-1333.79"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="203.2,-1333.66 205.9,-1343.91 210.18,-1334.22 203.2,-1333.66"/>
+</g>
+<!-- sourcefile~prob_0028_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node59" class="node">
+<title>sourcefile~prob_0028_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node59"><a xlink:href=".././sourcefile/prob_0028_m.f90.html" xlink:title="prob_0028_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-822 316,-822 316,-798 421,-798 421,-822"/>
+<text text-anchor="middle" x="368.5" y="-807.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0028_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0028_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge70" class="edge">
+<title>sourcefile~prob_0028_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.82,-822.07C311.79,-824.52 308.09,-827.46 305,-831 237.58,-908.27 212.03,-1243.52 206.31,-1333.63"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="202.81,-1333.61 205.69,-1343.81 209.79,-1334.04 202.81,-1333.61"/>
+</g>
+<!-- sourcefile~euler_prob_api_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node60" class="node">
+<title>sourcefile~euler_prob_api_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node60"><a xlink:href=".././sourcefile/euler_prob_api_m.f90.html" xlink:title="euler_prob_api_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="432,-780 305,-780 305,-756 432,-756 432,-780"/>
+<text text-anchor="middle" x="368.5" y="-765.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">euler_prob_api_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~euler_prob_api_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge71" class="edge">
+<title>sourcefile~euler_prob_api_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.77,-780.03C311.75,-782.49 308.06,-785.44 305,-789 232.48,-873.27 210.48,-1239.23 205.97,-1333.69"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="202.46,-1333.67 205.5,-1343.82 209.45,-1334 202.46,-1333.67"/>
+</g>
+<!-- sourcefile~prob_0050_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node61" class="node">
+<title>sourcefile~prob_0050_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node61"><a xlink:href=".././sourcefile/prob_0050_m.f90.html" xlink:title="prob_0050_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-2586 316,-2586 316,-2562 421,-2562 421,-2586"/>
+<text text-anchor="middle" x="368.5" y="-2571.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0050_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0050_m.f90&#45;&gt;sourcefile~euler_primes_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge11" class="edge">
+<title>sourcefile~prob_0050_m.f90&#45;&gt;sourcefile~euler_primes_m.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M319.55,-2561.92C314.35,-2559.47 309.36,-2556.52 305,-2553 255.72,-2513.23 225.15,-2442.19 212.2,-2406.59"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="215.5,-2405.41 208.88,-2397.14 208.89,-2407.74 215.5,-2405.41"/>
+</g>
+<!-- sourcefile~prob_0050_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge72" class="edge">
+<title>sourcefile~prob_0050_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.71,-2562.44C311.64,-2559.89 307.97,-2556.78 305,-2553 267.22,-2504.82 214.59,-1537.55 206.16,-1378.15"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="209.65,-1377.89 205.63,-1368.09 202.66,-1378.26 209.65,-1377.89"/>
+</g>
+<!-- sourcefile~prob_0017_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node62" class="node">
+<title>sourcefile~prob_0017_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node62"><a xlink:href=".././sourcefile/prob_0017_m.f90.html" xlink:title="prob_0017_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-738 316,-738 316,-714 421,-714 421,-738"/>
+<text text-anchor="middle" x="368.5" y="-723.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0017_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0017_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge74" class="edge">
+<title>sourcefile~prob_0017_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.73,-737.99C311.71,-740.46 308.04,-743.42 305,-747 227.31,-838.37 209.02,-1235.67 205.66,-1333.95"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="202.16,-1333.84 205.33,-1343.95 209.16,-1334.06 202.16,-1333.84"/>
+</g>
+<!-- sourcefile~prob_0063_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node63" class="node">
+<title>sourcefile~prob_0063_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node63"><a xlink:href=".././sourcefile/prob_0063_m.f90.html" xlink:title="prob_0063_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-696 316,-696 316,-672 421,-672 421,-696"/>
+<text text-anchor="middle" x="368.5" y="-681.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0063_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0063_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge75" class="edge">
+<title>sourcefile~prob_0063_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.98,-695.78C311.86,-698.28 308.1,-701.32 305,-705 222.24,-803.35 207.72,-1231.04 205.41,-1333.76"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="201.9,-1333.84 205.19,-1343.91 208.9,-1333.98 201.9,-1333.84"/>
+</g>
+<!-- sourcefile~prob_0004_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node64" class="node">
+<title>sourcefile~prob_0004_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node64"><a xlink:href=".././sourcefile/prob_0004_m.f90.html" xlink:title="prob_0004_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-654 316,-654 316,-630 421,-630 421,-654"/>
+<text text-anchor="middle" x="368.5" y="-639.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0004_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0004_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge76" class="edge">
+<title>sourcefile~prob_0004_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.95,-653.75C311.83,-656.26 308.08,-659.31 305,-663 217.13,-768.4 206.47,-1226.9 205.18,-1333.71"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="201.68,-1333.91 205.07,-1343.95 208.68,-1333.98 201.68,-1333.91"/>
+</g>
+<!-- sourcefile~prob_0048_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node65" class="node">
+<title>sourcefile~prob_0048_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node65"><a xlink:href=".././sourcefile/prob_0048_m.f90.html" xlink:title="prob_0048_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-612 316,-612 316,-588 421,-588 421,-612"/>
+<text text-anchor="middle" x="368.5" y="-597.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0048_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0048_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge77" class="edge">
+<title>sourcefile~prob_0048_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.92,-611.72C311.8,-614.24 308.06,-617.29 305,-621 211.97,-733.5 205.29,-1223.19 204.97,-1333.76"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="201.47,-1333.78 204.96,-1343.78 208.47,-1333.78 201.47,-1333.78"/>
+</g>
+<!-- sourcefile~prob_0018_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node66" class="node">
+<title>sourcefile~prob_0018_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node66"><a xlink:href=".././sourcefile/prob_0018_m.f90.html" xlink:title="prob_0018_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-570 316,-570 316,-546 421,-546 421,-570"/>
+<text text-anchor="middle" x="368.5" y="-555.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0018_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0018_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge73" class="edge">
+<title>sourcefile~prob_0018_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.89,-569.7C311.78,-572.22 308.05,-575.28 305,-579 206.87,-698.55 204.17,-1218.97 204.79,-1333.61"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="201.29,-1333.97 204.86,-1343.95 208.29,-1333.93 201.29,-1333.97"/>
+</g>
+<!-- sourcefile~prob_0054_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node67" class="node">
+<title>sourcefile~prob_0054_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node67"><a xlink:href=".././sourcefile/prob_0054_m.f90.html" xlink:title="prob_0054_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="421,-528 316,-528 316,-504 421,-504 421,-528"/>
+<text text-anchor="middle" x="368.5" y="-513.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">prob_0054_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~prob_0054_m.f90&#45;&gt;sourcefile~euler_interface_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge79" class="edge">
+<title>sourcefile~prob_0054_m.f90&#45;&gt;sourcefile~euler_interface_m.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M315.86,-527.68C311.76,-530.21 308.04,-533.27 305,-537 201.63,-663.77 203.11,-1216.18 204.63,-1333.89"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="201.13,-1333.94 204.78,-1343.89 208.13,-1333.84 201.13,-1333.94"/>
+</g>
+<!-- sourcefile~euler_main_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_node68" class="node">
+<title>sourcefile~euler_main_m.f90</title>
+<g id="a_sourcefile~~euler_utils_m.f90~~AfferentGraph_node68"><a xlink:href=".././sourcefile/euler_main_m.f90.html" xlink:title="euler_main_m.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="577,-780 468,-780 468,-756 577,-756 577,-780"/>
+<text text-anchor="middle" x="522.5" y="-765.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">euler_main_m.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~euler_main_m.f90&#45;&gt;sourcefile~euler_prob_api_m.f90 -->
+<g id="sourcefile~~euler_utils_m.f90~~AfferentGraph_edge80" class="edge">
+<title>sourcefile~euler_main_m.f90&#45;&gt;sourcefile~euler_prob_api_m.f90</title>
+<path fill="none" stroke="#ff00bf" stroke-dasharray="5,2" d="M467.91,-768C459.62,-768 450.93,-768 442.3,-768"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="442.22,-764.5 432.22,-768 442.22,-771.5 442.22,-764.5"/>
+</g>
+</g>
+</svg>
+</div><div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div><div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="-graph-help-label">Graph Key</h4></div><div class="modal-body">
+    <p>Nodes of different colours represent the following: </p>
+    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="202pt" height="32pt"
+ viewBox="0.00 0.00 201.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 197.5,-28 197.5,4 -4,4"/>
+<!-- Source File -->
+<g id="node1" class="node">
+<title>Source File</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Source File</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="193.5,-24 88.5,-24 88.5,0 193.5,0 193.5,-24"/>
+<text text-anchor="middle" x="141" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+    
+    <p>Solid arrows point from a file to a file which it depends on. A file
+    is dependent upon another if the latter must be compiled before the former
+    can be. Where possible, edges connecting nodes are given different colours to make them easier to distinguish in large graphs.
+    </p>
+    </div></div></div></div>
+      </div>
+    </div>
+      
+      <br>
+
+    <section class="visible-xs visible-sm hidden-md">
+      
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#mods-1">Modules</a></h3></div>
+  <div id="mods-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../module/euler_utils_m.html">euler_utils_m</a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../sourcefile/euler_utils_m.f90.html#src">euler_utils_m.f90</a>
+  </div>
+</div>
+
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
+    <section>
+      <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl"><pre><span></span><a id="ln-1" name="ln-1"></a><span class="k">module </span><span class="n">euler_utils_m</span>
+<a id="ln-2" name="ln-2"></a>    <span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span> <span class="k">only</span><span class="p">:</span> <span class="n">int64</span><span class="p">,</span> <span class="n">real32</span><span class="p">,</span> <span class="n">real64</span>
+<a id="ln-3" name="ln-3"></a>    <span class="k">implicit none</span>
+<a id="ln-4" name="ln-4"></a><span class="k">    private</span>
+<a id="ln-5" name="ln-5"></a>
+<a id="ln-6" name="ln-6"></a><span class="k">    </span><span class="kt">integer</span><span class="p">,</span> <span class="k">parameter</span><span class="p">,</span> <span class="k">public</span> <span class="kd">::</span> <span class="n">sp</span> <span class="o">=</span> <span class="n">real32</span><span class="p">,</span> <span class="n">dp</span> <span class="o">=</span> <span class="n">real64</span>
+<a id="ln-7" name="ln-7"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">sp</span><span class="p">),</span> <span class="k">parameter</span><span class="p">,</span> <span class="k">public</span> <span class="kd">::</span> <span class="n">tiny_sp</span> <span class="o">=</span> <span class="nb">tiny</span><span class="p">(</span><span class="mf">0._sp</span><span class="p">)</span>
+<a id="ln-8" name="ln-8"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">parameter</span><span class="p">,</span> <span class="k">public</span> <span class="kd">::</span> <span class="n">tiny_dp</span> <span class="o">=</span> <span class="nb">tiny</span><span class="p">(</span><span class="mf">0._dp</span><span class="p">)</span>
+<a id="ln-9" name="ln-9"></a>
+<a id="ln-10" name="ln-10"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">unit_digit</span>
+<a id="ln-11" name="ln-11"></a>    <span class="k">interface </span><span class="n">unit_digit</span>
+<a id="ln-12" name="ln-12"></a>        <span class="k">module procedure </span><span class="n">unit_digit_int32</span>
+<a id="ln-13" name="ln-13"></a>        <span class="k">module procedure </span><span class="n">unit_digit_int64</span>
+<a id="ln-14" name="ln-14"></a>    <span class="k">end interface </span><span class="n">unit_digit</span>
+<a id="ln-15" name="ln-15"></a>
+<a id="ln-16" name="ln-16"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">swap</span>
+<a id="ln-17" name="ln-17"></a>    <span class="k">interface </span><span class="n">swap</span>
+<a id="ln-18" name="ln-18"></a>        <span class="k">module procedure </span><span class="n">swap_sp</span><span class="p">,</span> <span class="n">swap_dp</span>
+<a id="ln-19" name="ln-19"></a>        <span class="k">module procedure </span><span class="n">swap_int32</span><span class="p">,</span> <span class="n">swap_int64</span>
+<a id="ln-20" name="ln-20"></a>        <span class="k">module procedure </span><span class="n">swap_equal_len_char</span>
+<a id="ln-21" name="ln-21"></a>    <span class="k">end interface </span><span class="n">swap</span>
+<a id="ln-22" name="ln-22"></a>
+<a id="ln-23" name="ln-23"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">digs_of_int</span>
+<a id="ln-24" name="ln-24"></a>    <span class="k">interface </span><span class="n">digs_of_int</span>
+<a id="ln-25" name="ln-25"></a>        <span class="k">module procedure </span><span class="n">digs_of_int_int32</span>
+<a id="ln-26" name="ln-26"></a>        <span class="k">module procedure </span><span class="n">digs_of_int_int64</span>
+<a id="ln-27" name="ln-27"></a>    <span class="k">end interface </span><span class="n">digs_of_int</span>
+<a id="ln-28" name="ln-28"></a>
+<a id="ln-29" name="ln-29"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">fibonacci</span>
+<a id="ln-30" name="ln-30"></a>    <span class="k">interface </span><span class="n">fibonacci</span>
+<a id="ln-31" name="ln-31"></a>        <span class="k">module procedure </span><span class="n">fib32</span><span class="p">,</span> <span class="n">fib64</span>
+<a id="ln-32" name="ln-32"></a>    <span class="k">end interface </span><span class="n">fibonacci</span>
+<a id="ln-33" name="ln-33"></a>
+<a id="ln-34" name="ln-34"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">reverse</span>
+<a id="ln-35" name="ln-35"></a>    <span class="k">interface </span><span class="n">reverse</span>
+<a id="ln-36" name="ln-36"></a>        <span class="k">module procedure </span><span class="n">reverse_int32</span><span class="p">,</span> <span class="n">reverse_int64</span>
+<a id="ln-37" name="ln-37"></a>    <span class="k">end interface </span><span class="n">reverse</span>
+<a id="ln-38" name="ln-38"></a>
+<a id="ln-39" name="ln-39"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">is_palindromic</span>
+<a id="ln-40" name="ln-40"></a>    <span class="k">interface </span><span class="n">is_palindromic</span>
+<a id="ln-41" name="ln-41"></a>        <span class="k">module procedure </span><span class="n">is_palindromic_int32</span>
+<a id="ln-42" name="ln-42"></a>        <span class="k">module procedure </span><span class="n">is_palindromic_int64</span>
+<a id="ln-43" name="ln-43"></a>    <span class="k">end interface </span><span class="n">is_palindromic</span>
+<a id="ln-44" name="ln-44"></a>
+<a id="ln-45" name="ln-45"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">gcd</span>
+<a id="ln-46" name="ln-46"></a>    <span class="k">interface </span><span class="n">gcd</span>
+<a id="ln-47" name="ln-47"></a>        <span class="k">module procedure </span><span class="n">gcd_int32</span><span class="p">,</span> <span class="n">gcd_int64</span>
+<a id="ln-48" name="ln-48"></a>    <span class="k">end interface </span><span class="n">gcd</span>
+<a id="ln-49" name="ln-49"></a>
+<a id="ln-50" name="ln-50"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">lcm</span>
+<a id="ln-51" name="ln-51"></a>    <span class="k">interface </span><span class="n">lcm</span>
+<a id="ln-52" name="ln-52"></a>        <span class="k">module procedure </span><span class="n">lcm_int32</span><span class="p">,</span> <span class="n">lcm_int64</span>
+<a id="ln-53" name="ln-53"></a>    <span class="k">end interface </span><span class="n">lcm</span>
+<a id="ln-54" name="ln-54"></a>
+<a id="ln-55" name="ln-55"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">factorial</span>
+<a id="ln-56" name="ln-56"></a>    <span class="k">interface </span><span class="n">factorial</span>
+<a id="ln-57" name="ln-57"></a>        <span class="k">module procedure </span><span class="n">factorial_int32</span>
+<a id="ln-58" name="ln-58"></a>        <span class="k">module procedure </span><span class="n">factorial_int64</span>
+<a id="ln-59" name="ln-59"></a>    <span class="k">end interface </span><span class="n">factorial</span>
+<a id="ln-60" name="ln-60"></a>
+<a id="ln-61" name="ln-61"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">is_pandigital</span>
+<a id="ln-62" name="ln-62"></a>    <span class="k">interface </span><span class="n">is_pandigital</span>
+<a id="ln-63" name="ln-63"></a>        <span class="k">module procedure </span><span class="n">is_pandigital_int32</span>
+<a id="ln-64" name="ln-64"></a>        <span class="k">module procedure </span><span class="n">is_pandigital_int64</span>
+<a id="ln-65" name="ln-65"></a>    <span class="k">end interface </span><span class="n">is_pandigital</span>
+<a id="ln-66" name="ln-66"></a>
+<a id="ln-67" name="ln-67"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">int_2_arr</span>
+<a id="ln-68" name="ln-68"></a>    <span class="k">interface </span><span class="n">int_2_arr</span>
+<a id="ln-69" name="ln-69"></a>        <span class="k">module procedure </span><span class="n">int_2_arr_int32</span>
+<a id="ln-70" name="ln-70"></a>        <span class="k">module procedure </span><span class="n">int_2_arr_int64</span>
+<a id="ln-71" name="ln-71"></a>    <span class="k">end interface </span><span class="n">int_2_arr</span>
+<a id="ln-72" name="ln-72"></a>
+<a id="ln-73" name="ln-73"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">arr_2_int</span>
+<a id="ln-74" name="ln-74"></a>    <span class="k">interface </span><span class="n">arr_2_int</span>
+<a id="ln-75" name="ln-75"></a>        <span class="k">module procedure </span><span class="n">arr_2_int_int32</span>
+<a id="ln-76" name="ln-76"></a>        <span class="k">module procedure </span><span class="n">arr_2_int_int64</span>
+<a id="ln-77" name="ln-77"></a>    <span class="k">end interface </span><span class="n">arr_2_int</span>
+<a id="ln-78" name="ln-78"></a>
+<a id="ln-79" name="ln-79"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">append</span>
+<a id="ln-80" name="ln-80"></a>    <span class="k">interface </span><span class="n">append</span>
+<a id="ln-81" name="ln-81"></a>        <span class="k">module procedure </span><span class="n">append_sp</span><span class="p">,</span> <span class="n">append_dp</span>
+<a id="ln-82" name="ln-82"></a>        <span class="k">module procedure </span><span class="n">append_int32</span><span class="p">,</span> <span class="n">append_int64</span>
+<a id="ln-83" name="ln-83"></a>    <span class="k">end interface </span><span class="n">append</span>
+<a id="ln-84" name="ln-84"></a>
+<a id="ln-85" name="ln-85"></a>    <span class="k">public</span> <span class="kd">::</span> <span class="n">next_permutation</span>
+<a id="ln-86" name="ln-86"></a>    <span class="k">interface </span><span class="n">next_permutation</span>
+<a id="ln-87" name="ln-87"></a>        <span class="k">module procedure </span><span class="n">next_permutation_int32</span>
+<a id="ln-88" name="ln-88"></a>        <span class="k">module procedure </span><span class="n">next_permutation_int64</span>
+<a id="ln-89" name="ln-89"></a>        <span class="k">module procedure </span><span class="n">next_permutation2_int32</span>
+<a id="ln-90" name="ln-90"></a>    <span class="k">end interface </span><span class="n">next_permutation</span>
+<a id="ln-91" name="ln-91"></a>
+<a id="ln-92" name="ln-92"></a><span class="k">contains</span>
+<a id="ln-93" name="ln-93"></a>
+<a id="ln-94" name="ln-94"></a><span class="k">    </span><span class="kt">integer </span><span class="k">function </span><span class="n">unit_digit_int32</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a id="ln-95" name="ln-95"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-96" name="ln-96"></a>        <span class="n">unit_digit_int32</span> <span class="o">=</span> <span class="nb">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<a id="ln-97" name="ln-97"></a>    <span class="k">end function </span><span class="n">unit_digit_int32</span>
+<a id="ln-98" name="ln-98"></a>
+<a id="ln-99" name="ln-99"></a>    <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="k">function </span><span class="n">unit_digit_int64</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a id="ln-100" name="ln-100"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-101" name="ln-101"></a>        <span class="n">unit_digit_int64</span> <span class="o">=</span> <span class="nb">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">10_int64</span><span class="p">)</span>
+<a id="ln-102" name="ln-102"></a>    <span class="k">end function </span><span class="n">unit_digit_int64</span>
+<a id="ln-103" name="ln-103"></a>
+<a id="ln-104" name="ln-104"></a>    <span class="k">subroutine </span><span class="n">swap_sp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<a id="ln-105" name="ln-105"></a>        <span class="kt">real</span><span class="p">(</span><span class="n">sp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+<a id="ln-106" name="ln-106"></a>        <span class="kt">real</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp</span>
+<a id="ln-107" name="ln-107"></a>
+<a id="ln-108" name="ln-108"></a>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">tmp</span>
+<a id="ln-109" name="ln-109"></a>    <span class="k">end subroutine </span><span class="n">swap_sp</span>
+<a id="ln-110" name="ln-110"></a>
+<a id="ln-111" name="ln-111"></a>    <span class="k">subroutine </span><span class="n">swap_dp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<a id="ln-112" name="ln-112"></a>        <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+<a id="ln-113" name="ln-113"></a>        <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp</span>
+<a id="ln-114" name="ln-114"></a>
+<a id="ln-115" name="ln-115"></a>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">tmp</span>
+<a id="ln-116" name="ln-116"></a>    <span class="k">end subroutine </span><span class="n">swap_dp</span>
+<a id="ln-117" name="ln-117"></a>
+<a id="ln-118" name="ln-118"></a>    <span class="k">subroutine </span><span class="n">swap_int32</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<a id="ln-119" name="ln-119"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+<a id="ln-120" name="ln-120"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">tmp</span>
+<a id="ln-121" name="ln-121"></a>
+<a id="ln-122" name="ln-122"></a>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">tmp</span>
+<a id="ln-123" name="ln-123"></a>    <span class="k">end subroutine </span><span class="n">swap_int32</span>
+<a id="ln-124" name="ln-124"></a>
+<a id="ln-125" name="ln-125"></a>    <span class="k">subroutine </span><span class="n">swap_int64</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<a id="ln-126" name="ln-126"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+<a id="ln-127" name="ln-127"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp</span>
+<a id="ln-128" name="ln-128"></a>
+<a id="ln-129" name="ln-129"></a>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">tmp</span>
+<a id="ln-130" name="ln-130"></a>    <span class="k">end subroutine </span><span class="n">swap_int64</span>
+<a id="ln-131" name="ln-131"></a>
+<a id="ln-132" name="ln-132"></a>    <span class="k">subroutine </span><span class="n">swap_equal_len_char</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<a id="ln-133" name="ln-133"></a>        <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span>
+<a id="ln-134" name="ln-134"></a>        <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">b</span>
+<a id="ln-135" name="ln-135"></a>        <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="kd">::</span> <span class="n">tmp</span>
+<a id="ln-136" name="ln-136"></a>
+<a id="ln-137" name="ln-137"></a>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">a</span>
+<a id="ln-138" name="ln-138"></a>        <span class="n">a</span> <span class="o">=</span> <span class="n">b</span>
+<a id="ln-139" name="ln-139"></a>        <span class="n">b</span> <span class="o">=</span> <span class="n">tmp</span>
+<a id="ln-140" name="ln-140"></a>    <span class="k">end subroutine </span><span class="n">swap_equal_len_char</span>
+<a id="ln-141" name="ln-141"></a>
+<a id="ln-142" name="ln-142"></a>    <span class="kt">integer </span><span class="k">function </span><span class="n">digs_of_int_int32</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a id="ln-143" name="ln-143"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-144" name="ln-144"></a>
+<a id="ln-145" name="ln-145"></a>        <span class="n">digs_of_int_int32</span> <span class="o">=</span> <span class="nb">floor</span><span class="p">(</span><span class="n">log10</span><span class="p">(</span><span class="kt">real</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">sp</span><span class="p">)))</span> <span class="o">+</span> <span class="mi">1</span>
+<a id="ln-146" name="ln-146"></a>    <span class="k">end function </span><span class="n">digs_of_int_int32</span>
+<a id="ln-147" name="ln-147"></a>
+<a id="ln-148" name="ln-148"></a>    <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="k">function </span><span class="n">digs_of_int_int64</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a id="ln-149" name="ln-149"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-150" name="ln-150"></a>
+<a id="ln-151" name="ln-151"></a>        <span class="n">digs_of_int_int64</span> <span class="o">=</span> <span class="nb">floor</span><span class="p">(</span><span class="n">log10</span><span class="p">(</span><span class="kt">real</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">sp</span><span class="p">)))</span> <span class="o">+</span> <span class="mi">1_int64</span>
+<a id="ln-152" name="ln-152"></a>    <span class="k">end function </span><span class="n">digs_of_int_int64</span>
+<a id="ln-153" name="ln-153"></a>
+<a id="ln-154" name="ln-154"></a>    <span class="k">recursive function </span><span class="n">fib32</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">ans</span><span class="p">)</span>
+<a id="ln-155" name="ln-155"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-156" name="ln-156"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">k</span><span class="p">,</span> <span class="n">ans</span>
+<a id="ln-157" name="ln-157"></a>
+<a id="ln-158" name="ln-158"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">92</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-159" name="ln-159"></a><span class="k">            error stop</span> <span class="s2">&quot;fib32: Invalid input number.&quot;</span>
+<a id="ln-160" name="ln-160"></a>        <span class="k">end if</span>
+<a id="ln-161" name="ln-161"></a>
+<a id="ln-162" name="ln-162"></a><span class="k">        if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-163" name="ln-163"></a><span class="k">            </span><span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="ln-164" name="ln-164"></a>        <span class="k">else if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-165" name="ln-165"></a><span class="k">            </span><span class="n">ans</span> <span class="o">=</span> <span class="mi">1</span>
+<a id="ln-166" name="ln-166"></a>        <span class="k">else if</span> <span class="p">(</span><span class="nb">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-167" name="ln-167"></a><span class="k">            </span><span class="n">k</span> <span class="o">=</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span>
+<a id="ln-168" name="ln-168"></a>            <span class="n">ans</span> <span class="o">=</span> <span class="n">fib32</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">fib32</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">-</span> <span class="n">fib32</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+<a id="ln-169" name="ln-169"></a>        <span class="k">else</span>
+<a id="ln-170" name="ln-170"></a><span class="k">            </span><span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+<a id="ln-171" name="ln-171"></a>            <span class="n">ans</span> <span class="o">=</span> <span class="n">fib32</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">fib32</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<a id="ln-172" name="ln-172"></a>        <span class="k">end if</span>
+<a id="ln-173" name="ln-173"></a><span class="k">    end function </span><span class="n">fib32</span>
+<a id="ln-174" name="ln-174"></a>
+<a id="ln-175" name="ln-175"></a>    <span class="k">recursive function </span><span class="n">fib64</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">ans</span><span class="p">)</span>
+<a id="ln-176" name="ln-176"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-177" name="ln-177"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="n">k</span><span class="p">,</span> <span class="n">ans</span>
+<a id="ln-178" name="ln-178"></a>
+<a id="ln-179" name="ln-179"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0_int64</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">92_int64</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-180" name="ln-180"></a><span class="k">            error stop</span> <span class="s2">&quot;fib64: Invalid input number.&quot;</span>
+<a id="ln-181" name="ln-181"></a>        <span class="k">end if</span>
+<a id="ln-182" name="ln-182"></a>
+<a id="ln-183" name="ln-183"></a><span class="k">        if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0_int64</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-184" name="ln-184"></a><span class="k">            </span><span class="n">ans</span> <span class="o">=</span> <span class="mi">0_int64</span>
+<a id="ln-185" name="ln-185"></a>        <span class="k">else if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1_int64</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2_int64</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-186" name="ln-186"></a><span class="k">            </span><span class="n">ans</span> <span class="o">=</span> <span class="mi">1_int64</span>
+<a id="ln-187" name="ln-187"></a>        <span class="k">else if</span> <span class="p">(</span><span class="nb">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2_int64</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0_int64</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-188" name="ln-188"></a><span class="k">            </span><span class="n">k</span> <span class="o">=</span> <span class="n">n</span><span class="o">/</span><span class="mi">2_int64</span>
+<a id="ln-189" name="ln-189"></a>            <span class="n">ans</span> <span class="o">=</span> <span class="n">fib64</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">fib64</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1_int64</span><span class="p">)</span><span class="o">*</span><span class="mi">2_int64</span> <span class="o">-</span> <span class="n">fib64</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+<a id="ln-190" name="ln-190"></a>        <span class="k">else</span>
+<a id="ln-191" name="ln-191"></a><span class="k">            </span><span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1_int64</span><span class="p">)</span><span class="o">/</span><span class="mi">2_int64</span>
+<a id="ln-192" name="ln-192"></a>            <span class="n">ans</span> <span class="o">=</span> <span class="n">fib64</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1_int64</span><span class="p">)</span><span class="o">**</span><span class="mi">2_int64</span> <span class="o">+</span> <span class="n">fib64</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">**</span><span class="mi">2_int64</span>
+<a id="ln-193" name="ln-193"></a>        <span class="k">end if</span>
+<a id="ln-194" name="ln-194"></a><span class="k">    end function </span><span class="n">fib64</span>
+<a id="ln-195" name="ln-195"></a>
+<a id="ln-196" name="ln-196"></a>    <span class="kt">integer </span><span class="k">function </span><span class="n">reverse_int32</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a id="ln-197" name="ln-197"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-198" name="ln-198"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">reversed</span><span class="p">,</span> <span class="n">tmp</span>
+<a id="ln-199" name="ln-199"></a>
+<a id="ln-200" name="ln-200"></a>        <span class="n">reversed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">n</span>
+<a id="ln-201" name="ln-201"></a>        <span class="k">do while</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<a id="ln-202" name="ln-202"></a>            <span class="n">reversed</span> <span class="o">=</span> <span class="n">reversed</span><span class="o">*</span><span class="mi">10</span> <span class="o">+</span> <span class="nb">mod</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<a id="ln-203" name="ln-203"></a>            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">/</span><span class="mi">10</span>
+<a id="ln-204" name="ln-204"></a>        <span class="k">end do</span>
+<a id="ln-205" name="ln-205"></a><span class="k">        </span><span class="n">reverse_int32</span> <span class="o">=</span> <span class="n">reversed</span>
+<a id="ln-206" name="ln-206"></a>    <span class="k">end function </span><span class="n">reverse_int32</span>
+<a id="ln-207" name="ln-207"></a>
+<a id="ln-208" name="ln-208"></a>    <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="k">function </span><span class="n">reverse_int64</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a id="ln-209" name="ln-209"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-210" name="ln-210"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="n">reversed</span><span class="p">,</span> <span class="n">tmp</span>
+<a id="ln-211" name="ln-211"></a>        <span class="n">reversed</span> <span class="o">=</span> <span class="mi">0_int64</span><span class="p">;</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">n</span>
+<a id="ln-212" name="ln-212"></a>        <span class="k">do while</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">&gt;</span> <span class="mi">0_int64</span><span class="p">)</span>
+<a id="ln-213" name="ln-213"></a>            <span class="n">reversed</span> <span class="o">=</span> <span class="n">reversed</span><span class="o">*</span><span class="mi">10_int64</span> <span class="o">+</span> <span class="nb">mod</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="mi">10_int64</span><span class="p">)</span>
+<a id="ln-214" name="ln-214"></a>            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">/</span><span class="mi">10_int64</span>
+<a id="ln-215" name="ln-215"></a>        <span class="k">end do</span>
+<a id="ln-216" name="ln-216"></a><span class="k">        </span><span class="n">reverse_int64</span> <span class="o">=</span> <span class="n">reversed</span>
+<a id="ln-217" name="ln-217"></a>    <span class="k">end function </span><span class="n">reverse_int64</span>
+<a id="ln-218" name="ln-218"></a>
+<a id="ln-219" name="ln-219"></a>    <span class="kt">logical </span><span class="k">function </span><span class="n">is_palindromic_int32</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a id="ln-220" name="ln-220"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-221" name="ln-221"></a>
+<a id="ln-222" name="ln-222"></a>        <span class="n">is_palindromic_int32</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-223" name="ln-223"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="n">reverse_int32</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">then</span>
+<a id="ln-224" name="ln-224"></a><span class="k">            </span><span class="n">is_palindromic_int32</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-225" name="ln-225"></a>        <span class="k">end if</span>
+<a id="ln-226" name="ln-226"></a><span class="k">    end function </span><span class="n">is_palindromic_int32</span>
+<a id="ln-227" name="ln-227"></a>
+<a id="ln-228" name="ln-228"></a>    <span class="kt">logical </span><span class="k">function </span><span class="n">is_palindromic_int64</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a id="ln-229" name="ln-229"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-230" name="ln-230"></a>
+<a id="ln-231" name="ln-231"></a>        <span class="n">is_palindromic_int64</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-232" name="ln-232"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="n">reverse_int64</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">then</span>
+<a id="ln-233" name="ln-233"></a><span class="k">            </span><span class="n">is_palindromic_int64</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-234" name="ln-234"></a>        <span class="k">end if</span>
+<a id="ln-235" name="ln-235"></a><span class="k">    end function </span><span class="n">is_palindromic_int64</span>
+<a id="ln-236" name="ln-236"></a>
+<a id="ln-237" name="ln-237"></a>    <span class="k">recursive function </span><span class="n">gcd_int32</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">ans</span><span class="p">)</span>
+<a id="ln-238" name="ln-238"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span>
+<a id="ln-239" name="ln-239"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">ans</span>
+<a id="ln-240" name="ln-240"></a>
+<a id="ln-241" name="ln-241"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">n2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-242" name="ln-242"></a><span class="k">            </span><span class="n">ans</span> <span class="o">=</span> <span class="n">n1</span>
+<a id="ln-243" name="ln-243"></a>        <span class="k">else</span>
+<a id="ln-244" name="ln-244"></a><span class="k">            </span><span class="n">ans</span> <span class="o">=</span> <span class="n">gcd_int32</span><span class="p">(</span><span class="n">n2</span><span class="p">,</span> <span class="nb">mod</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">))</span>
+<a id="ln-245" name="ln-245"></a>        <span class="k">end if</span>
+<a id="ln-246" name="ln-246"></a><span class="k">    end function </span><span class="n">gcd_int32</span>
+<a id="ln-247" name="ln-247"></a>
+<a id="ln-248" name="ln-248"></a>    <span class="k">recursive function </span><span class="n">gcd_int64</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">ans</span><span class="p">)</span>
+<a id="ln-249" name="ln-249"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span>
+<a id="ln-250" name="ln-250"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ans</span>
+<a id="ln-251" name="ln-251"></a>
+<a id="ln-252" name="ln-252"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">n2</span> <span class="o">==</span> <span class="mi">0_int64</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-253" name="ln-253"></a><span class="k">            </span><span class="n">ans</span> <span class="o">=</span> <span class="n">n1</span>
+<a id="ln-254" name="ln-254"></a>        <span class="k">else</span>
+<a id="ln-255" name="ln-255"></a><span class="k">            </span><span class="n">ans</span> <span class="o">=</span> <span class="n">gcd_int64</span><span class="p">(</span><span class="n">n2</span><span class="p">,</span> <span class="nb">mod</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">))</span>
+<a id="ln-256" name="ln-256"></a>        <span class="k">end if</span>
+<a id="ln-257" name="ln-257"></a><span class="k">    end function </span><span class="n">gcd_int64</span>
+<a id="ln-258" name="ln-258"></a>
+<a id="ln-259" name="ln-259"></a>    <span class="kt">integer </span><span class="k">function </span><span class="n">lcm_int32</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span>
+<a id="ln-260" name="ln-260"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span>
+<a id="ln-261" name="ln-261"></a>
+<a id="ln-262" name="ln-262"></a>        <span class="n">lcm_int32</span> <span class="o">=</span> <span class="n">n1</span><span class="o">*</span><span class="n">n2</span><span class="o">/</span><span class="n">gcd_int32</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span>
+<a id="ln-263" name="ln-263"></a>    <span class="k">end function </span><span class="n">lcm_int32</span>
+<a id="ln-264" name="ln-264"></a>
+<a id="ln-265" name="ln-265"></a>    <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="k">function </span><span class="n">lcm_int64</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span>
+<a id="ln-266" name="ln-266"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span>
+<a id="ln-267" name="ln-267"></a>
+<a id="ln-268" name="ln-268"></a>        <span class="n">lcm_int64</span> <span class="o">=</span> <span class="n">n1</span><span class="o">*</span><span class="n">n2</span><span class="o">/</span><span class="n">gcd_int64</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span>
+<a id="ln-269" name="ln-269"></a>    <span class="k">end function </span><span class="n">lcm_int64</span>
+<a id="ln-270" name="ln-270"></a>
+<a id="ln-271" name="ln-271"></a>    <span class="kt">integer </span><span class="k">function </span><span class="n">factorial_int32</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a id="ln-272" name="ln-272"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-273" name="ln-273"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">tmp</span>
+<a id="ln-274" name="ln-274"></a>
+<a id="ln-275" name="ln-275"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">13</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-276" name="ln-276"></a><span class="k">            error stop</span> <span class="s2">&quot;FACTORIAL_INT32: n &gt;= 13.&quot;</span>
+<a id="ln-277" name="ln-277"></a>        <span class="k">end if</span>
+<a id="ln-278" name="ln-278"></a>
+<a id="ln-279" name="ln-279"></a><span class="k">        </span><span class="n">tmp</span> <span class="o">=</span> <span class="mi">1</span>
+<a id="ln-280" name="ln-280"></a>        <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span>
+<a id="ln-281" name="ln-281"></a>            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">*</span><span class="n">i</span>
+<a id="ln-282" name="ln-282"></a>        <span class="k">end do</span>
+<a id="ln-283" name="ln-283"></a><span class="k">        </span><span class="n">factorial_int32</span> <span class="o">=</span> <span class="n">tmp</span>
+<a id="ln-284" name="ln-284"></a>    <span class="k">end function </span><span class="n">factorial_int32</span>
+<a id="ln-285" name="ln-285"></a>
+<a id="ln-286" name="ln-286"></a>    <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="k">function </span><span class="n">factorial_int64</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a id="ln-287" name="ln-287"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-288" name="ln-288"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">tmp</span>
+<a id="ln-289" name="ln-289"></a>
+<a id="ln-290" name="ln-290"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">13_int64</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-291" name="ln-291"></a><span class="k">            error stop</span> <span class="s2">&quot;FACTORIAL_INT32: n &gt;= 13.&quot;</span>
+<a id="ln-292" name="ln-292"></a>        <span class="k">end if</span>
+<a id="ln-293" name="ln-293"></a>
+<a id="ln-294" name="ln-294"></a><span class="k">        </span><span class="n">tmp</span> <span class="o">=</span> <span class="mi">1_int64</span>
+<a id="ln-295" name="ln-295"></a>        <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1_int64</span><span class="p">,</span> <span class="n">n</span>
+<a id="ln-296" name="ln-296"></a>            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">*</span><span class="n">i</span>
+<a id="ln-297" name="ln-297"></a>        <span class="k">end do</span>
+<a id="ln-298" name="ln-298"></a><span class="k">        </span><span class="n">factorial_int64</span> <span class="o">=</span> <span class="n">tmp</span>
+<a id="ln-299" name="ln-299"></a>    <span class="k">end function </span><span class="n">factorial_int64</span>
+<a id="ln-300" name="ln-300"></a>
+<a id="ln-301" name="ln-301"></a>    <span class="kt">logical </span><span class="k">function </span><span class="n">is_pandigital_int32</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">digs</span><span class="p">)</span>
+<a id="ln-302" name="ln-302"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-303" name="ln-303"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">digs</span>
+<a id="ln-304" name="ln-304"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">l</span>
+<a id="ln-305" name="ln-305"></a>        <span class="kt">logical</span><span class="p">,</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">logic_arr</span><span class="p">(:)</span>
+<a id="ln-306" name="ln-306"></a>
+<a id="ln-307" name="ln-307"></a>        <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">digs</span><span class="p">))</span> <span class="k">then</span>
+<a id="ln-308" name="ln-308"></a><span class="k">            allocate</span> <span class="p">(</span><span class="n">logic_arr</span><span class="p">(</span><span class="n">digs</span><span class="p">))</span>
+<a id="ln-309" name="ln-309"></a>            <span class="n">l</span> <span class="o">=</span> <span class="n">digs</span>
+<a id="ln-310" name="ln-310"></a>        <span class="k">else</span>
+<a id="ln-311" name="ln-311"></a><span class="k">            </span><span class="n">l</span> <span class="o">=</span> <span class="mi">9</span>
+<a id="ln-312" name="ln-312"></a>            <span class="k">allocate</span> <span class="p">(</span><span class="n">logic_arr</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+<a id="ln-313" name="ln-313"></a>        <span class="k">end if</span>
+<a id="ln-314" name="ln-314"></a>
+<a id="ln-315" name="ln-315"></a><span class="k">        </span><span class="n">is_pandigital_int32</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-316" name="ln-316"></a>        <span class="n">logic_arr</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-317" name="ln-317"></a>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">n</span>
+<a id="ln-318" name="ln-318"></a>
+<a id="ln-319" name="ln-319"></a>        <span class="k">do</span>
+<a id="ln-320" name="ln-320"></a><span class="k">            </span><span class="n">j</span> <span class="o">=</span> <span class="n">unit_digit_int32</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+<a id="ln-321" name="ln-321"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="n">l</span><span class="p">)</span> <span class="k">exit</span>
+<a id="ln-322" name="ln-322"></a><span class="k">            </span><span class="n">logic_arr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-323" name="ln-323"></a>            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">/</span><span class="mi">10</span>
+<a id="ln-324" name="ln-324"></a>        <span class="k">end do</span>
+<a id="ln-325" name="ln-325"></a>
+<a id="ln-326" name="ln-326"></a><span class="k">        if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="n">logic_arr</span><span class="p">)</span> <span class="o">==</span> <span class="n">l</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-327" name="ln-327"></a><span class="k">            </span><span class="n">is_pandigital_int32</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-328" name="ln-328"></a>        <span class="k">else</span>
+<a id="ln-329" name="ln-329"></a><span class="k">            </span><span class="n">is_pandigital_int32</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-330" name="ln-330"></a>        <span class="k">end if</span>
+<a id="ln-331" name="ln-331"></a><span class="k">    end function </span><span class="n">is_pandigital_int32</span>
+<a id="ln-332" name="ln-332"></a>
+<a id="ln-333" name="ln-333"></a>    <span class="kt">logical </span><span class="k">function </span><span class="n">is_pandigital_int64</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">digs</span><span class="p">)</span>
+<a id="ln-334" name="ln-334"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-335" name="ln-335"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">digs</span>
+<a id="ln-336" name="ln-336"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">l</span>
+<a id="ln-337" name="ln-337"></a>        <span class="kt">logical</span><span class="p">,</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">logic_arr</span><span class="p">(:)</span>
+<a id="ln-338" name="ln-338"></a>
+<a id="ln-339" name="ln-339"></a>        <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">digs</span><span class="p">))</span> <span class="k">then</span>
+<a id="ln-340" name="ln-340"></a><span class="k">            allocate</span> <span class="p">(</span><span class="n">logic_arr</span><span class="p">(</span><span class="n">digs</span><span class="p">))</span>
+<a id="ln-341" name="ln-341"></a>            <span class="n">l</span> <span class="o">=</span> <span class="n">digs</span>
+<a id="ln-342" name="ln-342"></a>        <span class="k">else</span>
+<a id="ln-343" name="ln-343"></a><span class="k">            </span><span class="n">l</span> <span class="o">=</span> <span class="mi">9_int64</span>
+<a id="ln-344" name="ln-344"></a>            <span class="k">allocate</span> <span class="p">(</span><span class="n">logic_arr</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+<a id="ln-345" name="ln-345"></a>        <span class="k">end if</span>
+<a id="ln-346" name="ln-346"></a>
+<a id="ln-347" name="ln-347"></a><span class="k">        </span><span class="n">is_pandigital_int64</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-348" name="ln-348"></a>        <span class="n">logic_arr</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-349" name="ln-349"></a>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">n</span>
+<a id="ln-350" name="ln-350"></a>
+<a id="ln-351" name="ln-351"></a>        <span class="k">do</span>
+<a id="ln-352" name="ln-352"></a><span class="k">            </span><span class="n">j</span> <span class="o">=</span> <span class="n">unit_digit_int64</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+<a id="ln-353" name="ln-353"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">==</span> <span class="mi">0_int64</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="n">l</span><span class="p">)</span> <span class="k">exit</span>
+<a id="ln-354" name="ln-354"></a><span class="k">            </span><span class="n">logic_arr</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-355" name="ln-355"></a>            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">/</span><span class="mi">10_int64</span>
+<a id="ln-356" name="ln-356"></a>        <span class="k">end do</span>
+<a id="ln-357" name="ln-357"></a>
+<a id="ln-358" name="ln-358"></a><span class="k">        if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="n">logic_arr</span><span class="p">)</span> <span class="o">==</span> <span class="n">l</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-359" name="ln-359"></a><span class="k">            </span><span class="n">is_pandigital_int64</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-360" name="ln-360"></a>        <span class="k">else</span>
+<a id="ln-361" name="ln-361"></a><span class="k">            </span><span class="n">is_pandigital_int64</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-362" name="ln-362"></a>        <span class="k">end if</span>
+<a id="ln-363" name="ln-363"></a><span class="k">    end function </span><span class="n">is_pandigital_int64</span>
+<a id="ln-364" name="ln-364"></a>
+<a id="ln-365" name="ln-365"></a>    <span class="k">subroutine </span><span class="n">int_2_arr_int32</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
+<a id="ln-366" name="ln-366"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-367" name="ln-367"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(:)</span>
+<a id="ln-368" name="ln-368"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span>
+<a id="ln-369" name="ln-369"></a>
+<a id="ln-370" name="ln-370"></a>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">n</span>
+<a id="ln-371" name="ln-371"></a>        <span class="n">l</span> <span class="o">=</span> <span class="n">digs_of_int_int32</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+<a id="ln-372" name="ln-372"></a>
+<a id="ln-373" name="ln-373"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">l</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-374" name="ln-374"></a><span class="k">            allocate</span> <span class="p">(</span><span class="n">arr</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<a id="ln-375" name="ln-375"></a>            <span class="n">arr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span>
+<a id="ln-376" name="ln-376"></a>            <span class="k">return</span>
+<a id="ln-377" name="ln-377"></a><span class="k">        end if</span>
+<a id="ln-378" name="ln-378"></a>
+<a id="ln-379" name="ln-379"></a><span class="k">        allocate</span> <span class="p">(</span><span class="n">arr</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+<a id="ln-380" name="ln-380"></a>        <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+<a id="ln-381" name="ln-381"></a>            <span class="n">arr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">unit_digit_int32</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+<a id="ln-382" name="ln-382"></a>            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">/</span><span class="mi">10</span>
+<a id="ln-383" name="ln-383"></a>        <span class="k">end do</span>
+<a id="ln-384" name="ln-384"></a><span class="k">    end subroutine </span><span class="n">int_2_arr_int32</span>
+<a id="ln-385" name="ln-385"></a>
+<a id="ln-386" name="ln-386"></a>    <span class="k">subroutine </span><span class="n">int_2_arr_int64</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
+<a id="ln-387" name="ln-387"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-388" name="ln-388"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(:)</span>
+<a id="ln-389" name="ln-389"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp</span>
+<a id="ln-390" name="ln-390"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span>
+<a id="ln-391" name="ln-391"></a>
+<a id="ln-392" name="ln-392"></a>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">n</span>
+<a id="ln-393" name="ln-393"></a>        <span class="n">l</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">digs_of_int_int64</span><span class="p">(</span><span class="n">tmp</span><span class="p">))</span>
+<a id="ln-394" name="ln-394"></a>
+<a id="ln-395" name="ln-395"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">l</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">then</span>
+<a id="ln-396" name="ln-396"></a><span class="k">            allocate</span> <span class="p">(</span><span class="n">arr</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<a id="ln-397" name="ln-397"></a>            <span class="n">arr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a id="ln-398" name="ln-398"></a>            <span class="k">return</span>
+<a id="ln-399" name="ln-399"></a><span class="k">        end if</span>
+<a id="ln-400" name="ln-400"></a>
+<a id="ln-401" name="ln-401"></a><span class="k">        allocate</span> <span class="p">(</span><span class="n">arr</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+<a id="ln-402" name="ln-402"></a>        <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+<a id="ln-403" name="ln-403"></a>            <span class="n">arr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">unit_digit_int64</span><span class="p">(</span><span class="n">tmp</span><span class="p">))</span>
+<a id="ln-404" name="ln-404"></a>            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">/</span><span class="mi">10_int64</span>
+<a id="ln-405" name="ln-405"></a>        <span class="k">end do</span>
+<a id="ln-406" name="ln-406"></a><span class="k">    end subroutine </span><span class="n">int_2_arr_int64</span>
+<a id="ln-407" name="ln-407"></a>
+<a id="ln-408" name="ln-408"></a>    <span class="k">subroutine </span><span class="n">arr_2_int_int32</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<a id="ln-409" name="ln-409"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(:)</span>
+<a id="ln-410" name="ln-410"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-411" name="ln-411"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">l</span>
+<a id="ln-412" name="ln-412"></a>
+<a id="ln-413" name="ln-413"></a>        <span class="n">l</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<a id="ln-414" name="ln-414"></a>        <span class="n">tmp</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="ln-415" name="ln-415"></a>
+<a id="ln-416" name="ln-416"></a>        <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">l</span>
+<a id="ln-417" name="ln-417"></a>            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">*</span><span class="mi">10</span> <span class="o">+</span> <span class="n">arr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<a id="ln-418" name="ln-418"></a>        <span class="k">end do</span>
+<a id="ln-419" name="ln-419"></a>
+<a id="ln-420" name="ln-420"></a><span class="k">        </span><span class="n">n</span> <span class="o">=</span> <span class="n">tmp</span>
+<a id="ln-421" name="ln-421"></a>    <span class="k">end subroutine </span><span class="n">arr_2_int_int32</span>
+<a id="ln-422" name="ln-422"></a>
+<a id="ln-423" name="ln-423"></a>    <span class="k">subroutine </span><span class="n">arr_2_int_int64</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<a id="ln-424" name="ln-424"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(:)</span>
+<a id="ln-425" name="ln-425"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>
+<a id="ln-426" name="ln-426"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">l</span>
+<a id="ln-427" name="ln-427"></a>
+<a id="ln-428" name="ln-428"></a>        <span class="n">l</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<a id="ln-429" name="ln-429"></a>        <span class="n">tmp</span> <span class="o">=</span> <span class="mi">0_int64</span>
+<a id="ln-430" name="ln-430"></a>
+<a id="ln-431" name="ln-431"></a>        <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1_int64</span><span class="p">,</span> <span class="n">l</span>
+<a id="ln-432" name="ln-432"></a>            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">*</span><span class="mi">10_int64</span> <span class="o">+</span> <span class="n">arr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<a id="ln-433" name="ln-433"></a>        <span class="k">end do</span>
+<a id="ln-434" name="ln-434"></a>
+<a id="ln-435" name="ln-435"></a><span class="k">        </span><span class="n">n</span> <span class="o">=</span> <span class="n">tmp</span>
+<a id="ln-436" name="ln-436"></a>    <span class="k">end subroutine </span><span class="n">arr_2_int_int64</span>
+<a id="ln-437" name="ln-437"></a>
+<a id="ln-438" name="ln-438"></a>    <span class="k">subroutine </span><span class="n">append_sp</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<a id="ln-439" name="ln-439"></a>        <span class="kt">real</span><span class="p">(</span><span class="n">sp</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(:)</span>
+<a id="ln-440" name="ln-440"></a>        <span class="kt">real</span><span class="p">(</span><span class="n">sp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">e</span>
+<a id="ln-441" name="ln-441"></a>
+<a id="ln-442" name="ln-442"></a>        <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span> <span class="k">then</span>
+<a id="ln-443" name="ln-443"></a><span class="k">            </span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr</span><span class="p">,</span> <span class="p">[</span><span class="n">e</span><span class="p">]]</span>
+<a id="ln-444" name="ln-444"></a>        <span class="k">else</span>
+<a id="ln-445" name="ln-445"></a><span class="k">            </span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">]</span>
+<a id="ln-446" name="ln-446"></a>        <span class="k">end if</span>
+<a id="ln-447" name="ln-447"></a><span class="k">    end subroutine </span><span class="n">append_sp</span>
+<a id="ln-448" name="ln-448"></a>
+<a id="ln-449" name="ln-449"></a>    <span class="k">subroutine </span><span class="n">append_dp</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<a id="ln-450" name="ln-450"></a>        <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(:)</span>
+<a id="ln-451" name="ln-451"></a>        <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">e</span>
+<a id="ln-452" name="ln-452"></a>
+<a id="ln-453" name="ln-453"></a>        <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span> <span class="k">then</span>
+<a id="ln-454" name="ln-454"></a><span class="k">            </span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr</span><span class="p">,</span> <span class="p">[</span><span class="n">e</span><span class="p">]]</span>
+<a id="ln-455" name="ln-455"></a>        <span class="k">else</span>
+<a id="ln-456" name="ln-456"></a><span class="k">            </span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">]</span>
+<a id="ln-457" name="ln-457"></a>        <span class="k">end if</span>
+<a id="ln-458" name="ln-458"></a><span class="k">    end subroutine </span><span class="n">append_dp</span>
+<a id="ln-459" name="ln-459"></a>
+<a id="ln-460" name="ln-460"></a>    <span class="k">subroutine </span><span class="n">append_int32</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<a id="ln-461" name="ln-461"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(:)</span>
+<a id="ln-462" name="ln-462"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">e</span>
+<a id="ln-463" name="ln-463"></a>
+<a id="ln-464" name="ln-464"></a>        <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span> <span class="k">then</span>
+<a id="ln-465" name="ln-465"></a><span class="k">            </span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr</span><span class="p">,</span> <span class="p">[</span><span class="n">e</span><span class="p">]]</span>
+<a id="ln-466" name="ln-466"></a>        <span class="k">else</span>
+<a id="ln-467" name="ln-467"></a><span class="k">            </span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">]</span>
+<a id="ln-468" name="ln-468"></a>        <span class="k">end if</span>
+<a id="ln-469" name="ln-469"></a><span class="k">    end subroutine </span><span class="n">append_int32</span>
+<a id="ln-470" name="ln-470"></a>
+<a id="ln-471" name="ln-471"></a>    <span class="k">subroutine </span><span class="n">append_int64</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<a id="ln-472" name="ln-472"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(:)</span>
+<a id="ln-473" name="ln-473"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">e</span>
+<a id="ln-474" name="ln-474"></a>
+<a id="ln-475" name="ln-475"></a>        <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span> <span class="k">then</span>
+<a id="ln-476" name="ln-476"></a><span class="k">            </span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr</span><span class="p">,</span> <span class="p">[</span><span class="n">e</span><span class="p">]]</span>
+<a id="ln-477" name="ln-477"></a>        <span class="k">else</span>
+<a id="ln-478" name="ln-478"></a><span class="k">            </span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">]</span>
+<a id="ln-479" name="ln-479"></a>        <span class="k">end if</span>
+<a id="ln-480" name="ln-480"></a><span class="k">    end subroutine </span><span class="n">append_int64</span>
+<a id="ln-481" name="ln-481"></a>
+<a id="ln-482" name="ln-482"></a>    <span class="k">function </span><span class="n">next_permutation_int32</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<a id="ln-483" name="ln-483"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span>
+<a id="ln-484" name="ln-484"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">idx</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<a id="ln-485" name="ln-485"></a>        <span class="kt">logical</span> <span class="kd">::</span> <span class="n">ret</span><span class="p">,</span> <span class="n">carr</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<a id="ln-486" name="ln-486"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">end_arr</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<a id="ln-487" name="ln-487"></a>
+<a id="ln-488" name="ln-488"></a>        <span class="n">end_arr</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)]</span>
+<a id="ln-489" name="ln-489"></a>        <span class="n">ret</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-490" name="ln-490"></a>        <span class="k">if</span> <span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="n">end_arr</span><span class="p">))</span> <span class="k">then</span>
+<a id="ln-491" name="ln-491"></a><span class="k">            </span><span class="n">ret</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-492" name="ln-492"></a>            <span class="k">return</span>
+<a id="ln-493" name="ln-493"></a><span class="k">        end if</span>
+<a id="ln-494" name="ln-494"></a>
+<a id="ln-495" name="ln-495"></a><span class="k">        </span><span class="n">carr</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-496" name="ln-496"></a>        <span class="n">label_carry</span><span class="p">:</span> <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+<a id="ln-497" name="ln-497"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">idx</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span> <span class="o">-</span> <span class="n">k</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="n">carr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-498" name="ln-498"></a>        <span class="k">end do </span><span class="n">label_carry</span>
+<a id="ln-499" name="ln-499"></a>
+<a id="ln-500" name="ln-500"></a>        <span class="k">if</span> <span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">carr</span> <span class="p">.</span><span class="n">eqv</span><span class="p">.</span> <span class="p">.</span><span class="n">true</span><span class="p">.))</span> <span class="k">then</span>
+<a id="ln-501" name="ln-501"></a><span class="k">            </span><span class="n">idx</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="n">idx</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<a id="ln-502" name="ln-502"></a>        <span class="k">else</span>
+<a id="ln-503" name="ln-503"></a><span class="k">            </span><span class="n">x</span> <span class="o">=</span> <span class="nb">findloc</span><span class="p">(</span><span class="n">carr</span><span class="p">,</span> <span class="k">value</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.,</span> <span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<a id="ln-504" name="ln-504"></a>            <span class="n">idx</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="p">[(</span><span class="n">idx</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span> <span class="o">-</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<a id="ln-505" name="ln-505"></a>        <span class="k">end if</span>
+<a id="ln-506" name="ln-506"></a><span class="k">    end function </span><span class="n">next_permutation_int32</span>
+<a id="ln-507" name="ln-507"></a>
+<a id="ln-508" name="ln-508"></a>    <span class="k">function </span><span class="n">next_permutation_int64</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<a id="ln-509" name="ln-509"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span>
+<a id="ln-510" name="ln-510"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">idx</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<a id="ln-511" name="ln-511"></a>        <span class="kt">logical</span> <span class="kd">::</span> <span class="n">ret</span><span class="p">,</span> <span class="n">carr</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<a id="ln-512" name="ln-512"></a>        <span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">end_arr</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<a id="ln-513" name="ln-513"></a>
+<a id="ln-514" name="ln-514"></a>        <span class="n">end_arr</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)]</span>
+<a id="ln-515" name="ln-515"></a>        <span class="n">ret</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-516" name="ln-516"></a>        <span class="k">if</span> <span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="n">end_arr</span><span class="p">))</span> <span class="k">then</span>
+<a id="ln-517" name="ln-517"></a><span class="k">            </span><span class="n">ret</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-518" name="ln-518"></a>            <span class="k">return</span>
+<a id="ln-519" name="ln-519"></a><span class="k">        end if</span>
+<a id="ln-520" name="ln-520"></a>
+<a id="ln-521" name="ln-521"></a><span class="k">        </span><span class="n">carr</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-522" name="ln-522"></a>        <span class="n">label_carry</span><span class="p">:</span> <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+<a id="ln-523" name="ln-523"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">idx</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span> <span class="o">-</span> <span class="n">k</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="n">carr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-524" name="ln-524"></a>        <span class="k">end do </span><span class="n">label_carry</span>
+<a id="ln-525" name="ln-525"></a>
+<a id="ln-526" name="ln-526"></a>        <span class="k">if</span> <span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">carr</span> <span class="p">.</span><span class="n">eqv</span><span class="p">.</span> <span class="p">.</span><span class="n">true</span><span class="p">.))</span> <span class="k">then</span>
+<a id="ln-527" name="ln-527"></a><span class="k">            </span><span class="n">idx</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="n">idx</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<a id="ln-528" name="ln-528"></a>        <span class="k">else</span>
+<a id="ln-529" name="ln-529"></a><span class="k">            </span><span class="n">x</span> <span class="o">=</span> <span class="nb">findloc</span><span class="p">(</span><span class="n">carr</span><span class="p">,</span> <span class="k">value</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.,</span> <span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<a id="ln-530" name="ln-530"></a>            <span class="n">idx</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="p">[(</span><span class="n">idx</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span> <span class="o">-</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<a id="ln-531" name="ln-531"></a>        <span class="k">end if</span>
+<a id="ln-532" name="ln-532"></a><span class="k">    end function </span><span class="n">next_permutation_int64</span>
+<a id="ln-533" name="ln-533"></a>
+<a id="ln-534" name="ln-534"></a>    <span class="k">function </span><span class="n">next_permutation2_int32</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<a id="ln-535" name="ln-535"></a>        <span class="kt">integer</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(:)</span>
+<a id="ln-536" name="ln-536"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span>
+<a id="ln-537" name="ln-537"></a>        <span class="kt">logical</span> <span class="kd">::</span> <span class="n">ret</span>
+<a id="ln-538" name="ln-538"></a>
+<a id="ln-539" name="ln-539"></a>        <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="ln-540" name="ln-540"></a>        <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+<a id="ln-541" name="ln-541"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">arr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="k">then</span>
+<a id="ln-542" name="ln-542"></a><span class="k">                </span><span class="n">k</span> <span class="o">=</span> <span class="n">i</span>
+<a id="ln-543" name="ln-543"></a>                <span class="n">ret</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-544" name="ln-544"></a>                <span class="k">exit</span>
+<a id="ln-545" name="ln-545"></a><span class="k">            else</span>
+<a id="ln-546" name="ln-546"></a><span class="k">                </span><span class="n">ret</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-547" name="ln-547"></a>            <span class="k">end if</span>
+<a id="ln-548" name="ln-548"></a><span class="k">        end do</span>
+<a id="ln-549" name="ln-549"></a>
+<a id="ln-550" name="ln-550"></a><span class="k">        do </span><span class="n">i</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+<a id="ln-551" name="ln-551"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">arr</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">then</span>
+<a id="ln-552" name="ln-552"></a><span class="k">                </span><span class="n">l</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span> <span class="k">exit</span>
+<a id="ln-553" name="ln-553"></a><span class="k">            end if</span>
+<a id="ln-554" name="ln-554"></a><span class="k">        end do</span>
+<a id="ln-555" name="ln-555"></a>
+<a id="ln-556" name="ln-556"></a><span class="k">        call </span><span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">arr</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+<a id="ln-557" name="ln-557"></a>        <span class="n">arr</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span> <span class="o">=</span> <span class="n">arr</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a id="ln-558" name="ln-558"></a>    <span class="k">end function </span><span class="n">next_permutation2_int32</span>
+<a id="ln-559" name="ln-559"></a>
+<a id="ln-560" name="ln-560"></a><span class="k">end module </span><span class="n">euler_utils_m</span>
+</pre></div>
+
+    </section>
+    </div>
+  </div>
+
+  
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-6"><p>PE Fortran was developed by Han Tang<br>&copy; 2021 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+                                          </p>
+        </div>
+        <div class="col-xs-6 col-md-6">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            
+            
+          </p>
+        </div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+      });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+    
+  </body>
+</html>
