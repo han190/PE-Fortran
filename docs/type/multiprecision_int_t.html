@@ -249,7 +249,57 @@
     
     <div class="col-md-9" id='text'>
       <h2>type, public :: multiprecision_int_t</h2>
-    
+    <p>Muliple precision integer type for Project Euler</p>
+<h3>Usage</h3>
+<h4>Addition</h4>
+<div class="codehilite"><pre><span></span><code>  <span class="k">type</span><span class="p">(</span><span class="n">multiprecision_int_t</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
+  <span class="kt">integer</span><span class="p">(</span><span class="n">int32</span><span class="p">)</span> <span class="kd">::</span> <span class="n">d</span>
+  <span class="kt">integer</span><span class="p">(</span><span class="n">int32</span><span class="p">),</span> <span class="k">dimension</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="kd">::</span> <span class="n">e</span>
+
+  <span class="n">a</span> <span class="o">=</span> <span class="s1">&#39;29348579238475928347592345&#39;</span>
+  <span class="n">b</span> <span class="o">=</span> <span class="s1">&#39;49587394758345983423486928347&#39;</span>
+  <span class="c">! Add two multiprecision integer types together</span>
+  <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+  <span class="c">! Add a multiprecision integer type with an 32bit integer</span>
+  <span class="c">! (every time the assignment &#39;=&#39; appears the allocatable array</span>
+  <span class="c">! will be re-allocated)</span>
+  <span class="n">d</span> <span class="o">=</span> <span class="mi">2394</span>
+  <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">d</span>
+  <span class="c">! One could also do something like the following, the array</span>
+  <span class="c">! will be treated like an integer.</span>
+  <span class="n">e</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+  <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">e</span>
+</code></pre></div>
+
+<h4>Subtraction</h4>
+<div class="codehilite"><pre><span></span><code>  <span class="k">type</span><span class="p">(</span><span class="n">multiprecision_int_t</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
+  <span class="n">a</span> <span class="o">=</span> <span class="s1">&#39;29348579238475928347592345&#39;</span>
+  <span class="n">b</span> <span class="o">=</span> <span class="s1">&#39;49587394758345983423486928347&#39;</span>
+
+  <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+</code></pre></div>
+
+<h4>Multiplication</h4>
+<div class="codehilite"><pre><span></span><code>  <span class="k">type</span><span class="p">(</span><span class="n">multiprecision_int_t</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
+  <span class="n">a</span> <span class="o">=</span> <span class="s1">&#39;29348579238475928347592345&#39;</span>
+  <span class="n">b</span> <span class="o">=</span> <span class="s1">&#39;49587394758345983423486928347&#39;</span>
+
+  <span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span>
+</code></pre></div>
+
+<h4>Power</h4>
+<div class="codehilite"><pre><span></span><code>  <span class="k">type</span><span class="p">(</span><span class="n">multiprecision_int_t</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+
+  <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">**</span><span class="mi">2345</span>
+</code></pre></div>
+
+<h3>To-do list</h3>
+<ul>
+<li>Print the value</li>
+<li>Floor division</li>
+<li>Power (partially done)</li>
+<li>Factorial</li>
+</ul>
     
     
     

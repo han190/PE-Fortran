@@ -217,10 +217,16 @@
     
     <div class="col-md-9" id='text'>
       <h2>public interface to_long</h2>
-   
+   <p>A generic interface that converts an integer or a string 
+ into a multiple precision integer type.</p>
+<h3>Usage</h3>
+<div class="codehilite"><pre><span></span><code>  <span class="k">type</span><span class="p">(</span><span class="n">multiprecision_int_t</span><span class="p">)</span> <span class="kd">::</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+  <span class="n">a</span> <span class="o">=</span> <span class="s1">&#39;23405982034958034850495098430294850293485&#39;</span>
+  <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">to_long</span><span class="p">(</span><span class="s1">&#39;93845734958&#39;</span><span class="p">)</span>
+</code></pre></div>
      
      
-    
+    <br>
 
      <section class="visible-xs visible-sm hidden-md">
        

@@ -5,6 +5,60 @@ module euler_multiprecision_m
     private
 
     type, public :: multiprecision_int_t
+        !! Muliple precision integer type for Project Euler
+        !!
+        !!### Usage
+        !!#### Addition
+        !!``` fortran
+        !!  type(multiprecision_int_t) :: a, b, c
+        !!  integer(int32) :: d
+        !!  integer(int32), dimension(4) :: e
+        !!
+        !!  a = '29348579238475928347592345'
+        !!  b = '49587394758345983423486928347'
+        !!  ! Add two multiprecision integer types together
+        !!  c = a + b
+        !!  ! Add a multiprecision integer type with an 32bit integer
+        !!  ! (every time the assignment '=' appears the allocatable array
+        !!  ! will be re-allocated)
+        !!  d = 2394
+        !!  c = a + d
+        !!  ! One could also do something like the following, the array
+        !!  ! will be treated like an integer.
+        !!  e = [2, 3, 9, 4]
+        !!  c = a + e
+        !!```
+        !!
+        !!#### Subtraction
+        !!``` fortran
+        !!  type(multiprecision_int_t) :: a, b, c
+        !!  a = '29348579238475928347592345'
+        !!  b = '49587394758345983423486928347'
+        !!
+        !!  c = a - b
+        !!```
+        !!
+        !!#### Multiplication
+        !!``` fortran
+        !!  type(multiprecision_int_t) :: a, b, c
+        !!  a = '29348579238475928347592345'
+        !!  b = '49587394758345983423486928347'
+        !!
+        !!  c = a*b
+        !!```
+        !!
+        !!#### Power
+        !!``` fortran
+        !!  type(multiprecision_int_t) :: a, b
+        !!
+        !!  b = a**2345
+        !!```
+        !!
+        !!### To-do list
+        !! * Print the value
+        !! * Floor division
+        !! * Power (partially done)
+        !! * Factorial
         integer, allocatable :: arr(:)
         character(len=1) :: sgn
     contains
@@ -34,26 +88,34 @@ module euler_multiprecision_m
         ! procedure, private :: fac_func, fac_int_func, fac_char_func
         ! generic :: operator(.fac.) => fac_func, fac_int_func, fac_char_func
     end type multiprecision_int_t
-
+    
     public :: to_long
     interface to_long
+        !! A generic interface that converts an integer or a string 
+        !! into a multiple precision integer type.
+        !!
+        !!### Usage
+        !!```fortran
+        !!  type(multiprecision_int_t) :: a, b
+        !!  a = '23405982034958034850495098430294850293485'
+        !!  b = a + to_long('93845734958')
+        !!```
         module procedure to_long_char, to_long_int
     end interface
 
     public :: digits_of
     interface digits_of
+        !! A generic interface that returns the length(digits) of a multiple
+        !! precision integer, essentially that is
+        !!
+        !!### Usage
+        !!```fortran
+        !!  type(multiprecision_int_t) :: a
+        !!  a = '23405982034958034850495098430294850293485'
+        !!  print *, size(a%arr) == digits_of(a) ! T
+        !!```
         module procedure digits_of_func
     end interface digits_of
-
-    ! TODO-list
-    ! For a multiprecision_int_t, once the type is declared
-    ! type(multiprecision_int_t) :: val1, val2, val3
-    !
-    ! One should be able to:
-    ! 1. Print the value
-    ! 2. Floor division
-    ! 3. Power (partially done)
-    ! 4. Factorial
 
 contains
 

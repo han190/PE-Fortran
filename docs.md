@@ -1,6 +1,6 @@
 project: PE Fortran
 src_dir: ./src
-output_dir: ./doc
+output_dir: ./docs
 project_github: https://github.com/han190/PE-Fortran
 summary: Solutions to Project Euler problems written by modern Fortran
 author: Han Tang
