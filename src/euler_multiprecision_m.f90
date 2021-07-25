@@ -54,10 +54,19 @@ module euler_multiprecision_m
         !!  b = a**2345
         !!```
         !!
+        !!#### Comparison
+        !!``` fortran
+        !!  type(multiprecision_int_t) :: a, b, c
+        !!
+        !!  a = '29348579238475928347592345'
+        !!  b = '49587394758345983423486928347'
+        !!  print *, a >= b, a == b, a <= b
+        !!```
+        !!
         !!### To-do list
         !! * Print the value
-        !! * Floor division
-        !! * Power (partially done)
+        !! * Floor division (for Miller-rabin)
+        !! * Power (Partially done)
         !! * Factorial
         integer, allocatable :: arr(:)
         character(len=1) :: sgn
