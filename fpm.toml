@@ -11,6 +11,11 @@ homepage = "https://github.com/han190/PE-Fortran"
 [ library ]
 source-dir = "src"
 
+[[ test ]]
+name = "PE-Fortran-Test"
+source-dir = "test/test_euler_multiprecision_m"
+main = "test_euler_multiprecision_m.f90"
+
 [[ executable ]]
 name = "PE-Fortran"
 source-dir = "app"
