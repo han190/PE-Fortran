@@ -6,7 +6,7 @@ program main
     type(multiprecision_int_t) :: a, b, c
     integer :: p
 
-    print "(a)", "Test multiple precision integer type"
+    print "(a)", new_line("a")//"Test multiple precision integer type"
     test_addition: block
         a = "23459872394587023948572394857923457923458723455432"
         b = "23409587239485723489572934857293450234985723457632"
