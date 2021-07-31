@@ -20,7 +20,7 @@ contains
         logical, allocatable :: is_prime(:)
 
         call sieve_of_Eratosthenes(PRIME_END, is_prime)
-        prime = pack([(i, i=0, PRIME_END - 1)], is_prime)
+        prime = pack([(i, i=0, PRIME_END)], is_prime)
         prime = pack(prime, prime > PRIME_START)
 
         outer: do idx = 1, size(prime)

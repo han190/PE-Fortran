@@ -9,12 +9,30 @@ module euler_utils_m
 
     public :: unit_digit
     interface unit_digit
+        !! A generic interface that return the unit digit of an integer
+        !!
+        !!### Usage
+        !!```fortran
+        !!  print *, unit_digit(324) ! 4
+        !!```
         module procedure unit_digit_int32
         module procedure unit_digit_int64
     end interface unit_digit
 
     public :: swap
     interface swap
+        !! A generic interface that swap two elements (the two elements
+        !! have to be the same type. When swapping two character types,
+        !! the two character variables must have the same length.)
+        !!
+        !!### Usage
+        !!```fortran
+        !!  integer :: a, b
+        !!  a = 32; b = 23
+        !!  print *, a, b ! 32, 23
+        !!  call swap(a, b)
+        !!  print *, a, b ! 23, 32
+        !!```
         module procedure swap_sp, swap_dp
         module procedure swap_int32, swap_int64
         module procedure swap_equal_len_char
@@ -22,68 +40,189 @@ module euler_utils_m
 
     public :: digs_of_int
     interface digs_of_int
+        !! A generic interface that returns the length of an integer.
+        !!
+        !!### Usage
+        !!```fortran
+        !!  integer :: a = 32456
+        !!  print *, digs_of_int(a) ! 5
+        !!```
         module procedure digs_of_int_int32
         module procedure digs_of_int_int64
     end interface digs_of_int
 
     public :: fibonacci
     interface fibonacci
+        !! A generic interface that returns the n<sup>th</sup> fibonacci number
+        !!
+        !!### Usage
+        !!```fortran
+        !!  integer :: a = 12
+        !!  print *, fibonacci(12) ! 144
+        !!```
         module procedure fib32, fib64
     end interface fibonacci
 
     public :: reverse
     interface reverse
+        !! A generic interface that reverse the digits of an integer
+        !!
+        !!### Usage
+        !!```fortran
+        !!  integer :: a = 12345
+        !!  print *, reverse(a) ! 54321
+        !!```
         module procedure reverse_int32, reverse_int64
     end interface reverse
 
     public :: is_palindromic
     interface is_palindromic
+        !! A generic interface that tells if an integer is a palindromic
+        !! integer
+        !!
+        !!### Usage
+        !!```fortran
+        !!  integer :: a = 123454321, b = 1234
+        !!  print *, is_palindromic(a) ! T
+        !!  print *, is_palindromic(b) ! F
+        !!```
         module procedure is_palindromic_int32
         module procedure is_palindromic_int64
     end interface is_palindromic
 
     public :: gcd
     interface gcd
+        !! Greatest common divisor
+        !!
+        !!### Usage
+        !!```fortran
+        !!  print *, gcd(32, 24) ! 8
+        !!```
         module procedure gcd_int32, gcd_int64
     end interface gcd
 
     public :: lcm
     interface lcm
+        !! Least common multiple
+        !!
+        !!### Usage
+        !!```fortran
+        !!  print *, lcm(3, 4) ! 12
+        !!```
         module procedure lcm_int32, lcm_int64
     end interface lcm
 
     public :: factorial
     interface factorial
+        !! Factorial
+        !!
+        !!### Usage
+        !!```fortran
+        !!  print *, factorial(4) ! 24
+        !!```
         module procedure factorial_int32
         module procedure factorial_int64
     end interface factorial
 
     public :: is_pandigital
     interface is_pandigital
+        !! To judge whether an integer is a pandigital number
+        !!
+        !!### Usage
+        !!```fortran
+        !!  print *, is_pandigital(1023456789) ! T
+        !!```
         module procedure is_pandigital_int32
         module procedure is_pandigital_int64
     end interface is_pandigital
 
     public :: int_2_arr
     interface int_2_arr
+        !!  Convert integer to an integer array
+        !!
+        !!### Usage
+        !!```fortran
+        !!  integer :: a = 234
+        !!  integer, allocatable :: arr(:)
+        !!
+        !!  call int_2_arr(a, arr)
+        !!  print *, arr ! [2, 3, 4]
+        !!```
         module procedure int_2_arr_int32
         module procedure int_2_arr_int64
     end interface int_2_arr
 
     public :: arr_2_int
     interface arr_2_int
+        !! Convert an integer arr to an integer
+        !!
+        !!### Usage
+        !!```fortran
+        !!  integer :: arr(3) = [2, 3, 4]
+        !!  integer :: a
+        !!
+        !!  call arr_2_int(arr, a)
+        !!  print *, a ! 234
+        !!```
         module procedure arr_2_int_int32
         module procedure arr_2_int_int64
     end interface arr_2_int
 
     public :: append
     interface append
+        !! Append an element to the end of an array
+        !!
+        !!### Usage
+        !!```fortran
+        !!  integer, allocatable :: arr(:)
+        !!
+        !!  arr = [1, 2, 3]
+        !!  call append(arr, 4)
+        !!  print *, arr ! [1, 2, 3, 4]
+        !!```
         module procedure append_sp, append_dp
         module procedure append_int32, append_int64
     end interface append
 
     public :: next_permutation
     interface next_permutation
+        !! A interface of variant permutation functions
+        !!
+        !!### `next_permutation_int32/int64` k-permutation of n
+        !! Given the current k-permutation of n, print the next
+        !! k-permutation of n
+        !!```fortran
+        !! integer :: k, n
+        !! integer, dimesion(2) :: arr
+        !! logical :: next_permutation_available
+        !!
+        !! k = 2; n = 3
+        !! arr = [1, 2]
+        !! next_permutation_available = .true.
+        !!
+        !! do while (next_permutation_available)
+        !!     print *, arr
+        !!     next_permutation_available = permutation(k, n, arr)
+        !! end do
+        !!```
+        !!The output should be (1, 2), (1, 3), and (2, 3).
+        !!
+        !!### `next_permutation2_int32` permutation
+        !!  Given the current permutation, print the next permutation
+        !!```fortran
+        !!  integer :: arr(3)
+        !!  logical :: next_permutation_available
+        !!
+        !!  arr = [1, 2, 3]
+        !!  next_permutation_available = .true.
+        !!
+        !!  do while (next_permutation_available)
+        !!      print *, arr
+        !!      next_permutation_available = permutation(arr)
+        !!  end do
+        !!```
+        !!The output should be (1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), 
+        !!(3, 1, 2), and (3, 2, 1).
         module procedure next_permutation_int32
         module procedure next_permutation_int64
         module procedure next_permutation2_int32

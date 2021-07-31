@@ -32,7 +32,7 @@ program main
     test_multiplication: block
         a = "23459872394587023948572394857923457923458723455432"
         b = "23409587239485723489572934857293450234985723457632"
-        c = a * b
+        c = a*b
 
         print "(a)", "(c) multiplication"
         print "(a, a1, 50(i1))", "a         = ", a%sgn, a%arr

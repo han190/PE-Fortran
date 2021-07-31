@@ -8,7 +8,7 @@ contains
 
     function cut_leading_zeros(arr) result(ret)
         !! The core function to cut leading zeros of a contiguous array.
-        !! 
+        !!
         !! As the name of the function suggests, the function
         !! deletes all the leading zeros of a contiguous array.
         !! This procedure uses the intrinsic function `findloc`
@@ -43,9 +43,9 @@ contains
         !! equal to zero and less than or equal to nine. When two such arrays
         !! are "added", first of all, the shorter array will be extended to the
         !! length of the longer array and two arrays with the same dimension
-        !! are added. Then the function `carry` 
+        !! are added. Then the function `carry`
         !! "[carries](https://en.wikipedia.org/wiki/Carry_(arithmetic))" the
-        !! added array iteratively until all elements of the array are greater 
+        !! added array iteratively until all elements of the array are greater
         !! than or equal to zero and less than or equal to nine. Finally, the
         !! leading zeros are deleted by `cut_leading_zeros`.
         integer, contiguous, intent(in) :: arr1(:), arr2(:)

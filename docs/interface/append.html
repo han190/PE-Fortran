@@ -221,10 +221,17 @@
     
     <div class="col-md-9" id='text'>
       <h2>public interface append</h2>
-   
+   <p>Append an element to the end of an array</p>
+<h3>Usage</h3>
+<div class="codehilite"><pre><span></span><code>  <span class="kt">integer</span><span class="p">,</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(:)</span>
+
+  <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+  <span class="k">call </span><span class="n">append</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+  <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">arr</span> <span class="c">! [1, 2, 3, 4]</span>
+</code></pre></div>
      
      
-    
+    <br>
 
      <section class="visible-xs visible-sm hidden-md">
        

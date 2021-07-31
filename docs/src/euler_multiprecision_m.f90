@@ -97,10 +97,10 @@ module euler_multiprecision_m
         ! procedure, private :: fac_func, fac_int_func, fac_char_func
         ! generic :: operator(.fac.) => fac_func, fac_int_func, fac_char_func
     end type multiprecision_int_t
-    
+
     public :: to_long
     interface to_long
-        !! A generic interface that converts an integer or a string 
+        !! A generic interface that converts an integer or a string
         !! into a multiple precision integer type.
         !!
         !!### Usage

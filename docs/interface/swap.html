@@ -223,10 +223,19 @@
     
     <div class="col-md-9" id='text'>
       <h2>public interface swap</h2>
-   
+   <p>A generic interface that swap two elements (the two elements
+ have to be the same type. When swapping two character types,
+ the two character variables must have the same length.)</p>
+<h3>Usage</h3>
+<div class="codehilite"><pre><span></span><code>  <span class="kt">integer</span> <span class="kd">::</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+  <span class="n">a</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">23</span>
+  <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="c">! 32, 23</span>
+  <span class="k">call </span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+  <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="c">! 23, 32</span>
+</code></pre></div>
      
      
-    
+    <br>
 
      <section class="visible-xs visible-sm hidden-md">
        
