@@ -106,6 +106,13 @@ contains
                 end if
             end do inner
         end do outer
+
+        if (fancy_style) then
+            levels(maxloc(x)) = ":skull:"
+        else
+            levels(maxloc(x)) = "_MAX_"
+        end if
+
     end subroutine get_levels
 
     subroutine get_answers(problem_numbers, answer, time_span)
