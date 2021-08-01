@@ -219,8 +219,13 @@
       <h2>public interface digs_of_int</h2>
    <p>A generic interface that returns the length of an integer.</p>
 <h3>Usage</h3>
-<div class="codehilite"><pre><span></span><code>  <span class="kt">integer</span> <span class="kd">::</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">32456</span>
-  <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">digs_of_int</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c">! 5</span>
+<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span>
+    <span class="n">user</span> <span class="n">euler_utils_m</span>
+    <span class="k">implicit none</span>
+
+<span class="k">    print</span> <span class="o">*</span><span class="p">,</span> <span class="n">digs_of_int</span><span class="p">(</span><span class="mi">12345</span><span class="p">)</span> <span class="c">! 5</span>
+    <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">digs_of_int</span><span class="p">(</span><span class="mi">1234567890_int64</span><span class="p">)</span> <span class="c">! 10</span>
+<span class="k">end program </span><span class="n">main</span>
 </code></pre></div>
      
      
@@ -279,7 +284,7 @@
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-digs_of_int_int32"></span><h3>
-private function digs_of_int_int32(n)
+private pure function digs_of_int_int32(n)
     
     
    
@@ -339,7 +344,7 @@ private function digs_of_int_int32(n)
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-digs_of_int_int64"></span><h3>
-private function digs_of_int_int64(n)
+private pure function digs_of_int_int64(n)
     
     
    

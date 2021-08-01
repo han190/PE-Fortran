@@ -217,13 +217,18 @@
     
     <div class="col-md-9" id='text'>
       <h2>public interface arr_2_int</h2>
-   <p>Convert an integer arr to an integer</p>
+   <p>Convert an integer arr to an integer.</p>
 <h3>Usage</h3>
-<div class="codehilite"><pre><span></span><code>  <span class="kt">integer</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-  <span class="kt">integer</span> <span class="kd">::</span> <span class="n">a</span>
+<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span>
+    <span class="k">use </span><span class="n">euler_utils_m</span>
+    <span class="k">implicit none</span>
 
-  <span class="k">call </span><span class="n">arr_2_int</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-  <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">a</span> <span class="c">! 234</span>
+<span class="k">    </span><span class="kt">integer</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">a</span>
+
+    <span class="k">call </span><span class="n">arr_2_int</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">a</span> <span class="c">! 234</span>
+<span class="k">end program </span><span class="n">main</span>
 </code></pre></div>
      
      
@@ -282,7 +287,7 @@
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-arr_2_int_int32"></span><h3>
-private subroutine arr_2_int_int32(arr, n)
+private pure subroutine arr_2_int_int32(arr, n)
     
     
    
@@ -348,7 +353,7 @@ private subroutine arr_2_int_int32(arr, n)
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-arr_2_int_int64"></span><h3>
-private subroutine arr_2_int_int64(arr, n)
+private pure subroutine arr_2_int_int64(arr, n)
     
     
    

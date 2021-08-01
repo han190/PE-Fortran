@@ -7,222 +7,287 @@ module euler_utils_m
     real(sp), parameter, public :: tiny_sp = tiny(0._sp)
     real(dp), parameter, public :: tiny_dp = tiny(0._dp)
 
-    public :: unit_digit
+    public :: unit_digit, swap, digs_of_int, is_pandigital
+    public :: fibonacci, reverse, is_palindromic, gcd, lcm, factorial
+    public :: int_2_arr, arr_2_int, append, next_permutation
+
+    !> A generic interface that returns the unit digit of an integer.
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    print *, unit_digit(324) ! 4
+    !>    print *, unit_digit(543212345_int64) ! 5
+    !>end program main
+    !>```
     interface unit_digit
-        !! A generic interface that return the unit digit of an integer
-        !!
-        !!### Usage
-        !!```fortran
-        !!  print *, unit_digit(324) ! 4
-        !!```
         module procedure unit_digit_int32
         module procedure unit_digit_int64
     end interface unit_digit
 
-    public :: swap
+    !> A generic interface that swap two elements (the two elements
+    !> have to be the same type. When swapping two character types,
+    !> the two character variables must have the same length.).
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    integer :: a, b
+    !>    a = 32; b = 23
+    !>    print *, a, b ! 32, 23
+    !>    call swap(a, b)
+    !>    print *, a, b ! 23, 32
+    !>end program main
+    !>```
     interface swap
-        !! A generic interface that swap two elements (the two elements
-        !! have to be the same type. When swapping two character types,
-        !! the two character variables must have the same length.)
-        !!
-        !!### Usage
-        !!```fortran
-        !!  integer :: a, b
-        !!  a = 32; b = 23
-        !!  print *, a, b ! 32, 23
-        !!  call swap(a, b)
-        !!  print *, a, b ! 23, 32
-        !!```
         module procedure swap_sp, swap_dp
         module procedure swap_int32, swap_int64
         module procedure swap_equal_len_char
     end interface swap
 
-    public :: digs_of_int
+    !> A generic interface that returns the length of an integer.
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    user euler_utils_m
+    !>    implicit none
+    !>
+    !>    print *, digs_of_int(12345) ! 5
+    !>    print *, digs_of_int(1234567890_int64) ! 10
+    !>end program main
+    !>```
     interface digs_of_int
-        !! A generic interface that returns the length of an integer.
-        !!
-        !!### Usage
-        !!```fortran
-        !!  integer :: a = 32456
-        !!  print *, digs_of_int(a) ! 5
-        !!```
         module procedure digs_of_int_int32
         module procedure digs_of_int_int64
     end interface digs_of_int
 
-    public :: fibonacci
+    !> A generic interface that returns the n<sup>th</sup> fibonacci number.
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    print *, fibonacci(12) ! 144
+    !>    print *, fibonacci(12_int64) ! 144
+    !>end program main
+    !>```
     interface fibonacci
-        !! A generic interface that returns the n<sup>th</sup> fibonacci number
-        !!
-        !!### Usage
-        !!```fortran
-        !!  integer :: a = 12
-        !!  print *, fibonacci(12) ! 144
-        !!```
         module procedure fib32, fib64
     end interface fibonacci
 
-    public :: reverse
+    !> A generic interface that reverse the digits of an integer.
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    print *, reverse(12345) ! 54321
+    !>    print *, reverse(12345_int64) ! 54321
+    !>end program main
+    !>```
     interface reverse
-        !! A generic interface that reverse the digits of an integer
-        !!
-        !!### Usage
-        !!```fortran
-        !!  integer :: a = 12345
-        !!  print *, reverse(a) ! 54321
-        !!```
         module procedure reverse_int32, reverse_int64
     end interface reverse
 
-    public :: is_palindromic
+    !> A generic interface that tells if an integer is a palindromic integer.
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    integer :: a = 123454321, b = 1234
+    !>    print *, is_palindromic(a) ! T
+    !>    print *, is_palindromic(b) ! F
+    !>end program main
+    !>```
     interface is_palindromic
-        !! A generic interface that tells if an integer is a palindromic
-        !! integer
-        !!
-        !!### Usage
-        !!```fortran
-        !!  integer :: a = 123454321, b = 1234
-        !!  print *, is_palindromic(a) ! T
-        !!  print *, is_palindromic(b) ! F
-        !!```
         module procedure is_palindromic_int32
         module procedure is_palindromic_int64
     end interface is_palindromic
 
-    public :: gcd
+    !> Greatest common divisor.
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    print *, gcd(32, 24) ! 8
+    !>    print *, gcd(32_int64, 24_int64) ! 8
+    !>end program main
+    !>```
     interface gcd
-        !! Greatest common divisor
-        !!
-        !!### Usage
-        !!```fortran
-        !!  print *, gcd(32, 24) ! 8
-        !!```
         module procedure gcd_int32, gcd_int64
     end interface gcd
 
-    public :: lcm
+    !> Least common multiple.
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    print *, lcm(3, 4) ! 12
+    !>    print *, lcm(3_int64, 4_int64) ! 12
+    !>end program main
+    !>```
     interface lcm
-        !! Least common multiple
-        !!
-        !!### Usage
-        !!```fortran
-        !!  print *, lcm(3, 4) ! 12
-        !!```
         module procedure lcm_int32, lcm_int64
     end interface lcm
 
-    public :: factorial
+    !> Factorial.
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    print *, factorial(4) ! 24
+    !>    print *, factorial(4_int64) ! 24
+    !>end program main
+    !>```
     interface factorial
-        !! Factorial
-        !!
-        !!### Usage
-        !!```fortran
-        !!  print *, factorial(4) ! 24
-        !!```
         module procedure factorial_int32
         module procedure factorial_int64
     end interface factorial
 
-    public :: is_pandigital
+    !> To judge whether an integer is a pandigital number.
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    print *, is_pandigital(1023456789) ! T
+    !>end program main
+    !>```
     interface is_pandigital
-        !! To judge whether an integer is a pandigital number
-        !!
-        !!### Usage
-        !!```fortran
-        !!  print *, is_pandigital(1023456789) ! T
-        !!```
         module procedure is_pandigital_int32
         module procedure is_pandigital_int64
     end interface is_pandigital
 
-    public :: int_2_arr
+    !> Convert integer to an integer array.
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    integer :: a = 234
+    !>    integer, allocatable :: arr(:)
+    !>
+    !>    call int_2_arr(a, arr)
+    !>    print *, arr ! [2, 3, 4]
+    !>end program main
+    !>```
     interface int_2_arr
-        !!  Convert integer to an integer array
-        !!
-        !!### Usage
-        !!```fortran
-        !!  integer :: a = 234
-        !!  integer, allocatable :: arr(:)
-        !!
-        !!  call int_2_arr(a, arr)
-        !!  print *, arr ! [2, 3, 4]
-        !!```
         module procedure int_2_arr_int32
         module procedure int_2_arr_int64
     end interface int_2_arr
 
-    public :: arr_2_int
+    !> Convert an integer arr to an integer.
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    integer :: arr(3) = [2, 3, 4]
+    !>    integer :: a
+    !>
+    !>    call arr_2_int(arr, a)
+    !>    print *, a ! 234
+    !>end program main
+    !>```
     interface arr_2_int
-        !! Convert an integer arr to an integer
-        !!
-        !!### Usage
-        !!```fortran
-        !!  integer :: arr(3) = [2, 3, 4]
-        !!  integer :: a
-        !!
-        !!  call arr_2_int(arr, a)
-        !!  print *, a ! 234
-        !!```
         module procedure arr_2_int_int32
         module procedure arr_2_int_int64
     end interface arr_2_int
 
-    public :: append
+    !> Append an element to the end of an array
+    !>
+    !>### Usage
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    integer, allocatable :: arr(:)
+    !>
+    !>    arr = [1, 2, 3]
+    !>    call append(arr, 4)
+    !>    print *, arr ! [1, 2, 3, 4]
+    !>end program main
+    !>```
     interface append
-        !! Append an element to the end of an array
-        !!
-        !!### Usage
-        !!```fortran
-        !!  integer, allocatable :: arr(:)
-        !!
-        !!  arr = [1, 2, 3]
-        !!  call append(arr, 4)
-        !!  print *, arr ! [1, 2, 3, 4]
-        !!```
         module procedure append_sp, append_dp
         module procedure append_int32, append_int64
     end interface append
 
-    public :: next_permutation
+    !> An interface of variant permutation functions
+    !>
+    !>### `next_permutation_int32/int64` (k-permutation of n)
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    integer :: k, n
+    !>    integer, dimesion(2) :: arr
+    !>    logical :: next_permutation_available
+    !>
+    !>    k = 2; n = 3
+    !>    arr = [1, 2]
+    !>    next_permutation_available = .true.
+    !>
+    !>    do while (next_permutation_available)
+    !>        print *, arr
+    !>        next_permutation_available = permutation(k, n, arr)
+    !>    end do
+    !>    ! Output: (1, 2), (1, 3), and (2, 3).
+    !>end program main
+    !>```
+    !>
+    !>### `next_permutation2_int32` permutation
+    !>```fortran
+    !>program main
+    !>    use euler_utils_m
+    !>    implicit none
+    !>
+    !>    integer :: arr(3)
+    !>    logical :: next_permutation_available
+    !>
+    !>    arr = [1, 2, 3]
+    !>    next_permutation_available = .true.
+    !>
+    !>    do while (next_permutation_available)
+    !>        print *, arr
+    !>        next_permutation_available = permutation(arr)
+    !>    end do
+    !>    ! Output: (1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), 
+    !>    ! (3, 1, 2), and (3, 2, 1).
+    !>end program main
+    !>```
     interface next_permutation
-        !! A interface of variant permutation functions
-        !!
-        !!### `next_permutation_int32/int64` k-permutation of n
-        !! Given the current k-permutation of n, print the next
-        !! k-permutation of n
-        !!```fortran
-        !! integer :: k, n
-        !! integer, dimesion(2) :: arr
-        !! logical :: next_permutation_available
-        !!
-        !! k = 2; n = 3
-        !! arr = [1, 2]
-        !! next_permutation_available = .true.
-        !!
-        !! do while (next_permutation_available)
-        !!     print *, arr
-        !!     next_permutation_available = permutation(k, n, arr)
-        !! end do
-        !!```
-        !!The output should be (1, 2), (1, 3), and (2, 3).
-        !!
-        !!### `next_permutation2_int32` permutation
-        !!  Given the current permutation, print the next permutation
-        !!```fortran
-        !!  integer :: arr(3)
-        !!  logical :: next_permutation_available
-        !!
-        !!  arr = [1, 2, 3]
-        !!  next_permutation_available = .true.
-        !!
-        !!  do while (next_permutation_available)
-        !!      print *, arr
-        !!      next_permutation_available = permutation(arr)
-        !!  end do
-        !!```
-        !!The output should be (1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), 
-        !!(3, 1, 2), and (3, 2, 1).
         module procedure next_permutation_int32
         module procedure next_permutation_int64
         module procedure next_permutation2_int32
@@ -230,45 +295,45 @@ module euler_utils_m
 
 contains
 
-    integer function unit_digit_int32(n)
+    pure integer function unit_digit_int32(n)
         integer, intent(in) :: n
         unit_digit_int32 = mod(n, 10)
     end function unit_digit_int32
 
-    integer(int64) function unit_digit_int64(n)
+    pure integer(int64) function unit_digit_int64(n)
         integer(int64), intent(in) :: n
         unit_digit_int64 = mod(n, 10_int64)
     end function unit_digit_int64
 
-    subroutine swap_sp(a, b)
+    pure subroutine swap_sp(a, b)
         real(sp), intent(inout) :: a, b
         real(sp) :: tmp
 
         tmp = a; a = b; b = tmp
     end subroutine swap_sp
 
-    subroutine swap_dp(a, b)
+    pure subroutine swap_dp(a, b)
         real(dp), intent(inout) :: a, b
         real(dp) :: tmp
 
         tmp = a; a = b; b = tmp
     end subroutine swap_dp
 
-    subroutine swap_int32(a, b)
+    pure subroutine swap_int32(a, b)
         integer, intent(inout) :: a, b
         integer :: tmp
 
         tmp = a; a = b; b = tmp
     end subroutine swap_int32
 
-    subroutine swap_int64(a, b)
+    pure subroutine swap_int64(a, b)
         integer(int64), intent(inout) :: a, b
         integer(int64) :: tmp
 
         tmp = a; a = b; b = tmp
     end subroutine swap_int64
 
-    subroutine swap_equal_len_char(a, b)
+    pure subroutine swap_equal_len_char(a, b)
         character(len=*), intent(inout) :: a
         character(len=len(a)), intent(inout) :: b
         character(len=len(a)) :: tmp
@@ -278,19 +343,19 @@ contains
         b = tmp
     end subroutine swap_equal_len_char
 
-    integer function digs_of_int_int32(n)
+    pure integer function digs_of_int_int32(n)
         integer, intent(in) :: n
 
         digs_of_int_int32 = floor(log10(real(n, sp))) + 1
     end function digs_of_int_int32
 
-    integer(int64) function digs_of_int_int64(n)
+    pure integer(int64) function digs_of_int_int64(n)
         integer(int64), intent(in) :: n
 
         digs_of_int_int64 = floor(log10(real(n, sp))) + 1_int64
     end function digs_of_int_int64
 
-    recursive function fib32(n) result(ans)
+    pure recursive function fib32(n) result(ans)
         integer, intent(in) :: n
         integer :: k, ans
 
@@ -311,7 +376,7 @@ contains
         end if
     end function fib32
 
-    recursive function fib64(n) result(ans)
+    pure recursive function fib64(n) result(ans)
         integer(int64), intent(in) :: n
         integer(int64) :: k, ans
 
@@ -332,7 +397,7 @@ contains
         end if
     end function fib64
 
-    integer function reverse_int32(n)
+    pure integer function reverse_int32(n)
         integer, intent(in) :: n
         integer :: reversed, tmp
 
@@ -344,7 +409,7 @@ contains
         reverse_int32 = reversed
     end function reverse_int32
 
-    integer(int64) function reverse_int64(n)
+    pure integer(int64) function reverse_int64(n)
         integer(int64), intent(in) :: n
         integer(int64) :: reversed, tmp
         reversed = 0_int64; tmp = n
@@ -355,7 +420,7 @@ contains
         reverse_int64 = reversed
     end function reverse_int64
 
-    logical function is_palindromic_int32(n)
+    pure logical function is_palindromic_int32(n)
         integer, intent(in) :: n
 
         is_palindromic_int32 = .false.
@@ -364,7 +429,7 @@ contains
         end if
     end function is_palindromic_int32
 
-    logical function is_palindromic_int64(n)
+    pure logical function is_palindromic_int64(n)
         integer(int64), intent(in) :: n
 
         is_palindromic_int64 = .false.
@@ -373,7 +438,7 @@ contains
         end if
     end function is_palindromic_int64
 
-    recursive function gcd_int32(n1, n2) result(ans)
+    pure recursive function gcd_int32(n1, n2) result(ans)
         integer, intent(in) :: n1, n2
         integer :: ans
 
@@ -384,7 +449,7 @@ contains
         end if
     end function gcd_int32
 
-    recursive function gcd_int64(n1, n2) result(ans)
+    pure recursive function gcd_int64(n1, n2) result(ans)
         integer(int64), intent(in) :: n1, n2
         integer(int64) :: ans
 
@@ -395,19 +460,19 @@ contains
         end if
     end function gcd_int64
 
-    integer function lcm_int32(n1, n2)
+    pure integer function lcm_int32(n1, n2)
         integer, intent(in) :: n1, n2
 
         lcm_int32 = n1*n2/gcd_int32(n1, n2)
     end function lcm_int32
 
-    integer(int64) function lcm_int64(n1, n2)
+    pure integer(int64) function lcm_int64(n1, n2)
         integer(int64), intent(in) :: n1, n2
 
         lcm_int64 = n1*n2/gcd_int64(n1, n2)
     end function lcm_int64
 
-    integer function factorial_int32(n)
+    pure integer function factorial_int32(n)
         integer, intent(in) :: n
         integer :: i, tmp
 
@@ -422,7 +487,7 @@ contains
         factorial_int32 = tmp
     end function factorial_int32
 
-    integer(int64) function factorial_int64(n)
+    pure integer(int64) function factorial_int64(n)
         integer(int64), intent(in) :: n
         integer(int64) :: i, tmp
 
@@ -437,7 +502,7 @@ contains
         factorial_int64 = tmp
     end function factorial_int64
 
-    logical function is_pandigital_int32(n, digs)
+    pure logical function is_pandigital_int32(n, digs)
         integer, intent(in) :: n
         integer, intent(in), optional :: digs
         integer :: tmp, j, l
@@ -469,7 +534,7 @@ contains
         end if
     end function is_pandigital_int32
 
-    logical function is_pandigital_int64(n, digs)
+    pure logical function is_pandigital_int64(n, digs)
         integer(int64), intent(in) :: n
         integer(int64), intent(in), optional :: digs
         integer(int64) :: tmp, j, l
@@ -501,7 +566,7 @@ contains
         end if
     end function is_pandigital_int64
 
-    subroutine int_2_arr_int32(n, arr)
+    pure subroutine int_2_arr_int32(n, arr)
         integer, intent(in) :: n
         integer, allocatable, intent(out) :: arr(:)
         integer :: tmp, i, l
@@ -522,7 +587,7 @@ contains
         end do
     end subroutine int_2_arr_int32
 
-    subroutine int_2_arr_int64(n, arr)
+    pure subroutine int_2_arr_int64(n, arr)
         integer(int64), intent(in) :: n
         integer, allocatable, intent(out) :: arr(:)
         integer(int64) :: tmp
@@ -544,7 +609,7 @@ contains
         end do
     end subroutine int_2_arr_int64
 
-    subroutine arr_2_int_int32(arr, n)
+    pure subroutine arr_2_int_int32(arr, n)
         integer, intent(in) :: arr(:)
         integer, intent(out) :: n
         integer :: i, tmp, l
@@ -559,7 +624,7 @@ contains
         n = tmp
     end subroutine arr_2_int_int32
 
-    subroutine arr_2_int_int64(arr, n)
+    pure subroutine arr_2_int_int64(arr, n)
         integer(int64), intent(in) :: arr(:)
         integer(int64), intent(out) :: n
         integer(int64) :: i, tmp, l
@@ -574,7 +639,7 @@ contains
         n = tmp
     end subroutine arr_2_int_int64
 
-    subroutine append_sp(arr, e)
+    pure subroutine append_sp(arr, e)
         real(sp), allocatable, intent(inout) :: arr(:)
         real(sp), intent(in) :: e
 
@@ -585,7 +650,7 @@ contains
         end if
     end subroutine append_sp
 
-    subroutine append_dp(arr, e)
+    pure subroutine append_dp(arr, e)
         real(dp), allocatable, intent(inout) :: arr(:)
         real(dp), intent(in) :: e
 
@@ -596,7 +661,7 @@ contains
         end if
     end subroutine append_dp
 
-    subroutine append_int32(arr, e)
+    pure subroutine append_int32(arr, e)
         integer, allocatable, intent(inout) :: arr(:)
         integer, intent(in) :: e
 
@@ -607,7 +672,7 @@ contains
         end if
     end subroutine append_int32
 
-    subroutine append_int64(arr, e)
+    pure subroutine append_int64(arr, e)
         integer(int64), allocatable, intent(inout) :: arr(:)
         integer(int64), intent(in) :: e
 

@@ -225,13 +225,18 @@
       <h2>public interface swap</h2>
    <p>A generic interface that swap two elements (the two elements
  have to be the same type. When swapping two character types,
- the two character variables must have the same length.)</p>
+ the two character variables must have the same length.).</p>
 <h3>Usage</h3>
-<div class="codehilite"><pre><span></span><code>  <span class="kt">integer</span> <span class="kd">::</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
-  <span class="n">a</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">23</span>
-  <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="c">! 32, 23</span>
-  <span class="k">call </span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-  <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="c">! 23, 32</span>
+<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span>
+    <span class="k">use </span><span class="n">euler_utils_m</span>
+    <span class="k">implicit none</span>
+
+<span class="k">    </span><span class="kt">integer</span> <span class="kd">::</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">23</span>
+    <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="c">! 32, 23</span>
+    <span class="k">call </span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="c">! 23, 32</span>
+<span class="k">end program </span><span class="n">main</span>
 </code></pre></div>
      
      
@@ -296,7 +301,7 @@
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-swap_sp"></span><h3>
-private subroutine swap_sp(a, b)
+private pure subroutine swap_sp(a, b)
     
     
    
@@ -362,7 +367,7 @@ private subroutine swap_sp(a, b)
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-swap_dp"></span><h3>
-private subroutine swap_dp(a, b)
+private pure subroutine swap_dp(a, b)
     
     
    
@@ -428,7 +433,7 @@ private subroutine swap_dp(a, b)
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-swap_int32"></span><h3>
-private subroutine swap_int32(a, b)
+private pure subroutine swap_int32(a, b)
     
     
    
@@ -494,7 +499,7 @@ private subroutine swap_int32(a, b)
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-swap_int64"></span><h3>
-private subroutine swap_int64(a, b)
+private pure subroutine swap_int64(a, b)
     
     
    
@@ -560,7 +565,7 @@ private subroutine swap_int64(a, b)
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-swap_equal_len_char"></span><h3>
-private subroutine swap_equal_len_char(a, b)
+private pure subroutine swap_equal_len_char(a, b)
     
     
    

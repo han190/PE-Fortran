@@ -217,9 +217,14 @@
     
     <div class="col-md-9" id='text'>
       <h2>public interface is_pandigital</h2>
-   <p>To judge whether an integer is a pandigital number</p>
+   <p>To judge whether an integer is a pandigital number.</p>
 <h3>Usage</h3>
-<div class="codehilite"><pre><span></span><code>  <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_pandigital</span><span class="p">(</span><span class="mi">1023456789</span><span class="p">)</span> <span class="c">! T</span>
+<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span>
+    <span class="k">use </span><span class="n">euler_utils_m</span>
+    <span class="k">implicit none</span>
+
+<span class="k">    print</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_pandigital</span><span class="p">(</span><span class="mi">1023456789</span><span class="p">)</span> <span class="c">! T</span>
+<span class="k">end program </span><span class="n">main</span>
 </code></pre></div>
      
      
@@ -278,7 +283,7 @@
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-is_pandigital_int32"></span><h3>
-private function is_pandigital_int32(n, digs)
+private pure function is_pandigital_int32(n, digs)
     
     
    
@@ -353,7 +358,7 @@ private function is_pandigital_int32(n, digs)
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-is_pandigital_int64"></span><h3>
-private function is_pandigital_int64(n, digs)
+private pure function is_pandigital_int64(n, digs)
     
     
    

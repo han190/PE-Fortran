@@ -223,11 +223,16 @@
       <h2>public interface append</h2>
    <p>Append an element to the end of an array</p>
 <h3>Usage</h3>
-<div class="codehilite"><pre><span></span><code>  <span class="kt">integer</span><span class="p">,</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(:)</span>
+<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span>
+    <span class="k">use </span><span class="n">euler_utils_m</span>
+    <span class="k">implicit none</span>
 
-  <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-  <span class="k">call </span><span class="n">append</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-  <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">arr</span> <span class="c">! [1, 2, 3, 4]</span>
+<span class="k">    </span><span class="kt">integer</span><span class="p">,</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">arr</span><span class="p">(:)</span>
+
+    <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="k">call </span><span class="n">append</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">print</span> <span class="o">*</span><span class="p">,</span> <span class="n">arr</span> <span class="c">! [1, 2, 3, 4]</span>
+<span class="k">end program </span><span class="n">main</span>
 </code></pre></div>
      
      
@@ -290,7 +295,7 @@
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-append_sp"></span><h3>
-private subroutine append_sp(arr, e)
+private pure subroutine append_sp(arr, e)
     
     
    
@@ -356,7 +361,7 @@ private subroutine append_sp(arr, e)
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-append_dp"></span><h3>
-private subroutine append_dp(arr, e)
+private pure subroutine append_dp(arr, e)
     
     
    
@@ -422,7 +427,7 @@ private subroutine append_dp(arr, e)
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-append_int32"></span><h3>
-private subroutine append_int32(arr, e)
+private pure subroutine append_int32(arr, e)
     
     
    
@@ -488,7 +493,7 @@ private subroutine append_int32(arr, e)
     
   <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-append_int64"></span><h3>
-private subroutine append_int64(arr, e)
+private pure subroutine append_int64(arr, e)
     
     
    
