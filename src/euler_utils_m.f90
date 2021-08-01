@@ -245,7 +245,8 @@ module euler_utils_m
 
     !> An interface of variant permutation functions
     !>
-    !>### `next_permutation_int32/int64` (k-permutation of n)
+    !>### Usage
+    !>#### `next_permutation_int32/int64` (k-permutation of n)
     !>```fortran
     !>program main
     !>    use euler_utils_m
@@ -267,7 +268,7 @@ module euler_utils_m
     !>end program main
     !>```
     !>
-    !>### `next_permutation2_int32` permutation
+    !>#### `next_permutation2_int32` permutation
     !>```fortran
     !>program main
     !>    use euler_utils_m
