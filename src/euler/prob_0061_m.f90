@@ -32,7 +32,8 @@ contains
                 end associate
             end do
             deallocate (arr)
-            avail = next_permutation(idx)
+            ! avail = next_permutation(idx)
+            call next_permutation(idx, avail)
         end do
     end function answer
 

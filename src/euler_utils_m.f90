@@ -262,7 +262,7 @@ module euler_utils_m
     !>
     !>    do while (next_permutation_available)
     !>        print *, arr
-    !>        next_permutation_available = permutation(k, n, arr)
+    !>        call permutation(k, n, arr, next_permutation_available)
     !>    end do
     !>    ! Output: (1, 2), (1, 3), and (2, 3).
     !>end program main
@@ -282,7 +282,7 @@ module euler_utils_m
     !>
     !>    do while (next_permutation_available)
     !>        print *, arr
-    !>        next_permutation_available = permutation(arr)
+    !>        call permutation(arr, next_permutation_available)
     !>    end do
     !>    ! Output: (1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), 
     !>    ! (3, 1, 2), and (3, 2, 1).
@@ -684,16 +684,17 @@ contains
         end if
     end subroutine append_int64
 
-    function next_permutation_int32(k, n, idx) result(ret)
+    pure subroutine next_permutation_int32(k, n, idx, next_permutation_avail)
         integer, intent(in) :: k, n
         integer, intent(inout) :: idx(k)
-        logical :: ret, carr(k)
+        logical, intent(out) :: next_permutation_avail
+        logical :: carr(k)
         integer :: i, x, end_arr(k)
 
         end_arr = [(i, i=n - k + 1, n)]
-        ret = .true.
+        next_permutation_avail = .true.
         if (all(idx == end_arr)) then
-            ret = .false.
+            next_permutation_avail = .false.
             return
         end if
 
@@ -708,18 +709,19 @@ contains
             x = findloc(carr, value=.false., dim=1) - 1
             idx(x:k) = [(idx(x) + i, i=1, k - x + 1)]
         end if
-    end function next_permutation_int32
+    end subroutine next_permutation_int32
 
-    function next_permutation_int64(k, n, idx) result(ret)
+    pure subroutine next_permutation_int64(k, n, idx, next_permutation_avail)
         integer(int64), intent(in) :: k, n
         integer(int64), intent(inout) :: idx(k)
-        logical :: ret, carr(k)
+        logical, intent(out) :: next_permutation_avail
+        logical :: carr(k)
         integer(int64) :: i, x, end_arr(k)
 
         end_arr = [(i, i=n - k + 1, n)]
-        ret = .true.
+        next_permutation_avail = .true.
         if (all(idx == end_arr)) then
-            ret = .false.
+            next_permutation_avail = .false.
             return
         end if
 
@@ -734,21 +736,21 @@ contains
             x = findloc(carr, value=.false., dim=1) - 1
             idx(x:k) = [(idx(x) + i, i=1, k - x + 1)]
         end if
-    end function next_permutation_int64
+    end subroutine next_permutation_int64
 
-    function next_permutation2_int32(arr) result(ret)
+    pure subroutine next_permutation2_int32(arr, next_permutation_avail)
         integer, intent(inout) :: arr(:)
+        logical, intent(out) :: next_permutation_avail
         integer :: i, k, l
-        logical :: ret
 
         k = 0; l = 0
         do i = size(arr) - 1, 1, -1
             if (arr(i) < arr(i + 1)) then
                 k = i
-                ret = .true.
+                next_permutation_avail = .true.
                 exit
             else
-                ret = .false.
+                next_permutation_avail = .false.
             end if
         end do
 
@@ -760,6 +762,6 @@ contains
 
         call swap(arr(k), arr(l))
         arr(k + 1:size(arr)) = arr(size(arr):k + 1:-1)
-    end function next_permutation2_int32
+    end subroutine next_permutation2_int32
 
 end module euler_utils_m
