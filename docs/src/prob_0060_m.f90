@@ -89,7 +89,8 @@ contains
                     end if
                 end if
             end associate
-            next_avail = next_permutation(k, n, idx)
+            call next_permutation(k, n, idx, next_avail)
+            ! next_avail = next_permutation(k, n, idx)
         end do
     end function checked_before
 
@@ -116,7 +117,8 @@ contains
 
         flag = max(flags(1), flags(2))
         if (flag == k .or. flag == 0_int64) then
-            ret = next_permutation(k, n, idx)
+            ! ret = next_permutation(k, n, idx)
+            call next_permutation(k, n, idx, ret)
             return
         end if
 
@@ -128,7 +130,8 @@ contains
         end if
 
         if (idx(size(idx)) == n) then
-            ret = next_permutation(k, n, idx)
+            ! ret = next_permutation(k, n, idx)
+            call next_permutation(k, n, idx, ret)
         else
             idx(flag:k) = [(idx(flag) + i, i=1, k - flag + 1)]
         end if
@@ -182,7 +185,8 @@ contains
                         return
                     end if
                 end if
-                avail = next_permutation(k, n, idx)
+                call next_permutation(k, n, idx, avail)
+                ! avail = next_permutation(k, n, idx)
             end associate
         end do
     end function is_prime_pair

@@ -45,7 +45,7 @@ contains
                     return
                 end if
             end do inner
-            next_permutation_avail = next_permutation(k, n, idx)
+            call next_permutation(k, n, idx, next_permutation_avail)
         end do outer
     end function answer
 
