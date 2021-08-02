@@ -4,12 +4,14 @@ module euler_primes_m
     implicit none
     private
 
-    public :: is_prime
+    public :: is_prime, sieve_of_Eratosthenes
+
+    !> A generic interface that tells if an integer is prime
     interface is_prime
         module procedure is_prime_int32, is_prime_int64
     end interface is_prime
 
-    public :: sieve_of_Eratosthenes
+    !> An algorithm for finding all prime numbers within a limit
     interface sieve_of_Eratosthenes
         module procedure sieve_of_Eratosthenes_int32
         module procedure sieve_of_Eratosthenes_int64

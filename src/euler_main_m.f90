@@ -7,10 +7,11 @@ module euler_main_m
 
     character(len=20), parameter :: failed = repeat(' ', 19)//'x'
     character(len=:), allocatable :: help_messages(:), version_messages(:)
-    public :: get_arguments
+    public :: get_arguments, get_levels
 
 contains
 
+    !> Print an allocatable character array.
     subroutine print_allocatable_character_array(character_array)
         character(len=:), allocatable, intent(in) :: character_array(:)
         integer :: i
@@ -20,6 +21,7 @@ contains
         end do
     end subroutine print_allocatable_character_array
 
+    !> Get version messages.
     subroutine get_version_messages()
         version_messages = &
             [character(len=80) :: &
@@ -31,11 +33,13 @@ contains
              ' ']
     end subroutine get_version_messages
 
+    !> Print version messages.
     subroutine print_version_messages()
         call get_version_messages()
         call print_allocatable_character_array(version_messages)
     end subroutine print_version_messages
 
+    !> Get help messages.
     subroutine get_help_messages()
         help_messages = &
             [character(len=80) :: &
@@ -58,19 +62,32 @@ contains
              ' ']
     end subroutine get_help_messages
 
+    !> Print help messages.
     subroutine print_help_messages()
         call get_help_messages()
         call print_allocatable_character_array(help_messages)
     end subroutine print_help_messages
 
-    subroutine print_error_msg(msg)
+    !> Print error messages.
+    subroutine print_error_messages(msg)
         character(len=*), intent(in) :: msg
 
         print "(a)", "[SYNTAX ERROR] "//trim(msg)
         call print_help_messages()
         stop
-    end subroutine print_error_msg
+    end subroutine print_error_messages
 
+    !> Get 'levels' for all problems.
+    !>
+    !> Here we define a concept called __relative difficulty__
+    !>
+    !> * First of all we compute time span per problem and store them into
+    !> an array, for example `real, intent(in) :: x(:)`.
+    !> * Then we normalize each time span into a number between 0 and 1.
+    !> For example, `norm = (x(i) - minval(x))/(maxval(x) - minval(x))`.
+    !> * We catagorize the result into 5 different levels, 1 being the highest
+    !> level and 5 being the lowest level. If the argument 
+    !>`fancy_style = .true.`, the levels are expressed using emojis. 
     subroutine get_levels(x, levels, fancy_style)
         real, intent(in) :: x(:)
         character(len=25), intent(out) :: levels(size(x))
@@ -115,6 +132,7 @@ contains
 
     end subroutine get_levels
 
+    !> Get answers from problem 1 to problem x.
     subroutine get_answers(problem_numbers, answer, time_span)
         integer, intent(in) :: problem_numbers
         character(len=20), allocatable, intent(out) :: answer(:)
@@ -134,6 +152,7 @@ contains
         end do
     end subroutine get_answers
 
+    !> Get answer of problem x.
     subroutine get_answer(problem_number, answer, time_span)
         integer, intent(in) :: problem_number
         character(len=20), intent(out) :: answer
@@ -154,6 +173,7 @@ contains
         end if
     end subroutine get_answer
 
+    !> Print answers from problem 1 to x.
     subroutine print_answers(problem_numbers, ext, fancy_style)
         integer, intent(in) :: problem_numbers
         character(len=*), intent(in) :: ext
@@ -229,6 +249,7 @@ contains
         write (*, "('Time spent/problem (s):', t27, 1x, f20.2)") tsum/nslv
     end subroutine print_answers
 
+    !> Print answer of problem x.
     subroutine print_answer(problem_number, ext)
         integer, intent(in) :: problem_number
         character(len=*), intent(in) :: ext
@@ -243,6 +264,7 @@ contains
         write (*, "('Total time spent (s):', t27, 1x, f20.10)") time_span
     end subroutine print_answer
 
+    !> Get arguments from the command line and calculate problems.
     subroutine get_arguments()
         character(len=100), allocatable :: arguments(:)
         integer :: argument_count, idx, problem_number
@@ -250,7 +272,7 @@ contains
 
         argument_count = command_argument_count()
         if (argument_count >= 5 .or. argument_count < 1) then
-            call print_error_msg("Invalid argument count!")
+            call print_error_messages("Invalid argument count!")
         end if
 
         allocate (arguments(argument_count))
@@ -267,7 +289,7 @@ contains
                 call print_version_messages()
                 return
             case default
-                call print_error_msg("Invalid argument syntax!")
+                call print_error_messages("Invalid argument syntax!")
             end select
         else if (argument_count >= 2) then
             compute_single = .false.
@@ -289,11 +311,11 @@ contains
                     is_fancy = .true.
                     idx = idx + 1
                 case default
-                    call print_error_msg("Invalid argument syntax!")
+                    call print_error_messages("Invalid argument syntax!")
                 end select
             end do
         else
-            call print_error_msg("Invalid argument count!")
+            call print_error_messages("Invalid argument count!")
         end if
 
         if (compute_single) then
@@ -301,7 +323,7 @@ contains
         else if (compute_all) then
             call print_answers(problem_number, "markdown", is_fancy)
         else
-            call print_error_msg("Invalid argument syntax!")
+            call print_error_messages("Invalid argument syntax!")
         end if
     end subroutine get_arguments
 

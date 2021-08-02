@@ -6,24 +6,24 @@ module euler_multiprecision_util_m
 
 contains
 
-    function cut_leading_zeros(arr) result(ret)
-        !! The core function to cut leading zeros of a contiguous array.
-        !!
-        !! As the name of the function suggests, the function
-        !! deletes all the leading zeros of a contiguous array.
-        !! This procedure uses the intrinsic function `findloc`
-        !! that is only available with gfortran > 9.0.0
+    !> The core function to cut leading zeros of a contiguous array.
+    !>
+    !> As the name of the function suggests, the function
+    !> deletes all the leading zeros of a contiguous array.
+    !> This procedure uses the intrinsic function `findloc`
+    !> that is only available with gfortran > 9.0.0
+    pure function cut_leading_zeros(arr) result(ret)
         integer, contiguous, intent(in) :: arr(:)
         integer, allocatable :: ret(:)
 
         ret = arr(findloc(arr == 0, value=.false., dim=1):)
     end function cut_leading_zeros
 
-    function carry(arr) result(ret)
-        !! The core function to carry digits during add and multiplication.
-        !!
-        !! Each element of the input array is an 32bit integer greater than or
-        !! equal to zero and less than or equal to nine.
+    !> The core function to carry digits during add and multiplication.
+    !>
+    !> Each element of the input array is an 32bit integer greater than or
+    !> equal to zero and less than or equal to nine.
+    pure function carry(arr) result(ret)
         integer, contiguous, intent(in) :: arr(:)
         integer, dimension(size(arr) + 2) :: tmp1, tmp2, ret
 
@@ -36,18 +36,18 @@ contains
         end do
     end function carry
 
-    function add(arr1, arr2) result(ret)
-        !! The core function to provide the ability of addition.
-        !!
-        !! Each element of the input array is an 32bit integer greater than or
-        !! equal to zero and less than or equal to nine. When two such arrays
-        !! are "added", first of all, the shorter array will be extended to the
-        !! length of the longer array and two arrays with the same dimension
-        !! are added. Then the function `carry`
-        !! "[carries](https://en.wikipedia.org/wiki/Carry_(arithmetic))" the
-        !! added array iteratively until all elements of the array are greater
-        !! than or equal to zero and less than or equal to nine. Finally, the
-        !! leading zeros are deleted by `cut_leading_zeros`.
+    !> The core function to provide the ability of addition.
+    !>
+    !> Each element of the input array is an 32bit integer greater than or
+    !> equal to zero and less than or equal to nine. When two such arrays
+    !> are "added", first of all, the shorter array will be extended to the
+    !> length of the longer array and two arrays with the same dimension
+    !> are added. Then the function `carry`
+    !> "[carries](https://en.wikipedia.org/wiki/Carry_(arithmetic))" the
+    !> added array iteratively until all elements of the array are greater
+    !> than or equal to zero and less than or equal to nine. Finally, the
+    !> leading zeros are deleted by `cut_leading_zeros`.
+    pure function add(arr1, arr2) result(ret)
         integer, contiguous, intent(in) :: arr1(:), arr2(:)
         integer, allocatable, dimension(:) :: ret, tmp1, tmp2
 
@@ -59,11 +59,11 @@ contains
         ret = cut_leading_zeros(carry(tmp1 + tmp2))
     end function add
 
-    function sub(arr1, arr2) result(ret)
-        !! The core function to provide the ability of subtraction.
-        !!
-        !! Each element of the input array is an 32bit integer greater than or
-        !! equal to zero and less than or equal to nine.
+    !> The core function to provide the ability of subtraction.
+    !>
+    !> Each element of the input array is an 32bit integer greater than or
+    !> equal to zero and less than or equal to nine.
+    pure function sub(arr1, arr2) result(ret)
         integer, contiguous, intent(in) :: arr1(:), arr2(:)
         integer, allocatable, dimension(:) :: ret, tmp1, tmp2, tmp
         integer :: i
@@ -86,12 +86,15 @@ contains
         ret = cut_leading_zeros(tmp)
     end function sub
 
-    function compare(arr1, arr2) result(ret)
-        !! The core function to provide the ability of comparison.
-        !!
-        !! 1. `ret = 1`: arr1 > arr2
-        !! 2. `ret = 0`: arr1 = arr2
-        !! 3. `ret = -1`: arr1 < arr2
+    !> The core function to provide the ability of comparison.
+    !>
+    !>### Result
+    !> | return value | result |
+    !> |:------------:|:------:|
+    !> |`ret = 1`  |arr1 > arr2|
+    !> |`ret = 0`  |arr1 = arr2|
+    !> |`ret = -1` |arr1 < arr2|
+    pure function compare(arr1, arr2) result(ret)
         integer, contiguous, intent(in) :: arr1(:), arr2(:)
         integer :: ret, i
 
@@ -113,11 +116,11 @@ contains
         if (ret /= 0) error stop 'compare: invalid output.'
     end function compare
 
-    function mul(arr1, arr2) result(ret)
-        !! The core function to provide the ability of multiplication.
-        !!
-        !! Each element of the input array is an 32bit integer greater than or
-        !! equal to zero and less than or equal to nine.
+    !> The core function to provide the ability of multiplication.
+    !>
+    !> Each element of the input array is an 32bit integer greater than or
+    !> equal to zero and less than or equal to nine.
+    pure function mul(arr1, arr2) result(ret)
         integer, contiguous, intent(in) :: arr1(:), arr2(:)
         integer, allocatable :: tmp(:), tmp_row(:), ret(:)
         integer :: i
@@ -134,15 +137,15 @@ contains
         ret = cut_leading_zeros(carry(tmp))
     end function mul
 
-    recursive function pow2(arr, n) result(ret)
-        !! The core function to provide the ability of power.
-        !!
-        !! Each element of the input array is an 32bit integer greater than or
-        !! equal to zero and less than or equal to nine. The function uses
-        !! a very simple implementation of exponentiation
-        !! ([wiki links](https://en.wikipedia.org/wiki/
-        !!Exponentiation_by_squaring)). The function currently doesn't
-        !! support negative powers.
+    !> The core function to provide the ability of power.
+    !>
+    !> Each element of the input array is an 32bit integer greater than or
+    !> equal to zero and less than or equal to nine. The function uses
+    !> a very simple implementation of exponentiation
+    !> ([wiki links](https://en.wikipedia.org/wiki/
+    !>Exponentiation_by_squaring)). The function currently doesn't
+    !> support negative powers.
+    pure recursive function pow2(arr, n) result(ret)
         integer, contiguous, intent(in) :: arr(:)
         integer, intent(in) :: n
         integer, allocatable :: ret(:)

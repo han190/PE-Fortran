@@ -268,7 +268,7 @@ module euler_utils_m
     !>end program main
     !>```
     !>
-    !>#### `next_permutation2_int32` permutation
+    !>#### `next_permutation2_int32` (permutation)
     !>```fortran
     !>program main
     !>    use euler_utils_m

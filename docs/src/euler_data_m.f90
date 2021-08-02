@@ -4,7 +4,8 @@ module euler_data_m
 
 contains
 
-    subroutine get_euler_data_0008(euler_data)
+    !> Data required for problem 0008.
+    pure subroutine get_euler_data_0008(euler_data)
         character(len=:), allocatable, intent(out) :: euler_data(:)
 
         euler_data = &
@@ -31,7 +32,8 @@ contains
              "71636269561882670428252483600823257530420752963450"]
     end subroutine get_euler_data_0008
 
-    subroutine get_euler_data_0011(euler_data)
+    !> Data required for problem 0011.
+    pure subroutine get_euler_data_0011(euler_data)
         character(len=:), allocatable, intent(out) :: euler_data(:)
 
         euler_data = &
@@ -58,7 +60,8 @@ contains
              "01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"]
     end subroutine get_euler_data_0011
 
-    subroutine get_euler_data_0013(euler_data)
+    !> Data required for problem 0013.
+    pure subroutine get_euler_data_0013(euler_data)
         character(len=:), allocatable, intent(out) :: euler_data(:)
 
         euler_data = &
@@ -165,7 +168,8 @@ contains
              "53503534226472524250874054075591789781264330331690"]
     end subroutine get_euler_data_0013
 
-    subroutine get_euler_data_0018(euler_data)
+    !> Data required for problem 0018.
+    pure subroutine get_euler_data_0018(euler_data)
         character(len=:), allocatable, intent(out) :: euler_data(:)
 
         euler_data = &
@@ -187,7 +191,8 @@ contains
              "04 62 98 27 23 09 70 98 73 93 38 53 60 04 23"]
     end subroutine get_euler_data_0018
 
-    subroutine get_euler_data_0022(euler_data)
+    !> Data required for problem 0022.
+    pure subroutine get_euler_data_0022(euler_data)
         character(len=:), allocatable, intent(out) :: euler_data(:)
 
         euler_data = &
@@ -5357,7 +5362,8 @@ contains
              "ALONSO"]
     end subroutine get_euler_data_0022
 
-    subroutine get_euler_data_0042(euler_data)
+    !> Data required for problem 0042.
+    pure subroutine get_euler_data_0042(euler_data)
         character(len=:), allocatable, intent(out) :: euler_data(:)
 
         euler_data = &
@@ -7150,7 +7156,8 @@ contains
              "YOUTH"]
     end subroutine get_euler_data_0042
 
-    subroutine get_euler_data_0054(euler_data)
+    !> Data required for problem 0054.
+    pure subroutine get_euler_data_0054(euler_data)
         character(len=:), allocatable, intent(out) :: euler_data(:)
 
         euler_data = &
@@ -8157,7 +8164,8 @@ contains
              "AS KD 3D JD 8H 7C 8C 5C QD 6C"]
     end subroutine get_euler_data_0054
 
-    subroutine get_euler_data_0059(euler_data)
+    !> Data required for problem 0059.
+    pure subroutine get_euler_data_0059(euler_data)
         integer, allocatable, intent(out) :: euler_data(:)
 
         euler_data = &

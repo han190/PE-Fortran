@@ -7,5 +7,5 @@ author: Han Tang
 author_description: A Nanook studying and living in Fairbanks
 email: htang2@alaska.edu
 license: MIT
-graph: true
-coloured_edges: true
+graph: false
+coloured_edges: false
