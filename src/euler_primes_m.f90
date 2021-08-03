@@ -6,12 +6,12 @@ module euler_primes_m
 
     public :: is_prime, sieve_of_Eratosthenes
 
-    !> A generic interface that tells if an integer is prime
+    !> A generic interface that tells if an integer is prime.
     interface is_prime
         module procedure is_prime_int32, is_prime_int64
     end interface is_prime
 
-    !> An algorithm for finding all prime numbers within a limit
+    !> An algorithm for finding all prime numbers within a limit.
     interface sieve_of_Eratosthenes
         module procedure sieve_of_Eratosthenes_int32
         module procedure sieve_of_Eratosthenes_int64
@@ -19,7 +19,8 @@ module euler_primes_m
 
 contains
 
-    logical function is_prime_int32(n)
+    !> `is_prime` for 32 bit integer.
+    pure logical function is_prime_int32(n)
         integer, intent(in) :: n
         integer :: limit, i
 
@@ -43,7 +44,8 @@ contains
         end if
     end function is_prime_int32
 
-    logical function is_prime_int64(n)
+    !> `is_prime` for 64 bit integer.
+    pure logical function is_prime_int64(n)
         integer(int64), intent(in) :: n
         integer(int64) :: limit, i
 
@@ -67,9 +69,10 @@ contains
         end if
     end function is_prime_int64
 
-    subroutine sieve_of_Eratosthenes_int32(n, prime_arr)
+    !> sieve of Eratosthenes for 32 bit integer.
+    pure subroutine sieve_of_Eratosthenes_int32(n, prime_arr)
         integer, intent(in) :: n
-        logical, allocatable, dimension(:) :: prime_arr
+        logical, allocatable, intent(out) :: prime_arr(:)
         integer :: i, j
 
         allocate (prime_arr(0:n))
@@ -86,9 +89,10 @@ contains
         end do
     end subroutine sieve_of_Eratosthenes_int32
 
-    subroutine sieve_of_Eratosthenes_int64(n, prime_arr)
+    !> sieve of Eratosthenes for 64 bit integer.
+    pure subroutine sieve_of_Eratosthenes_int64(n, prime_arr)
         integer(int64), intent(in) :: n
-        logical, allocatable, dimension(:) :: prime_arr
+        logical, allocatable, intent(out) :: prime_arr(:)
         integer(int64) :: i, j
 
         allocate (prime_arr(0:n))
