@@ -160,7 +160,7 @@ module euler_multiprecision_m
 contains
 
     !> Reallocate a `multiprecision_int_t`.
-    subroutine re_alloc_sub(this, n)
+    pure subroutine re_alloc_sub(this, n)
         class(multiprecision_int_t), intent(inout) :: this
         integer, intent(in) :: n
 
@@ -169,7 +169,7 @@ contains
     end subroutine re_alloc_sub
 
     !> Initialize a character type to a `multiprecision_int_t`.
-    subroutine init_char_sub(this, chars)
+    pure subroutine init_char_sub(this, chars)
         class(multiprecision_int_t), intent(inout) :: this
         character(len=*), intent(in) :: chars
         integer :: i
@@ -197,7 +197,7 @@ contains
     end subroutine init_char_sub
 
     !> Initialize an integer array to a `multiprecision_int_t`.
-    subroutine init_arr_sub(this, arr)
+    pure subroutine init_arr_sub(this, arr)
         class(multiprecision_int_t), intent(inout) :: this
         integer, allocatable, intent(in) :: arr(:)
 
@@ -206,7 +206,7 @@ contains
     end subroutine init_arr_sub
 
     !> Initialize an integer to a `multiprecision_int_t`.
-    subroutine init_int_sub(this, val)
+    pure subroutine init_int_sub(this, val)
         class(multiprecision_int_t), intent(inout) :: this
         integer, intent(in) :: val
         integer :: tmp, i, digs
@@ -228,7 +228,7 @@ contains
     end subroutine init_int_sub
 
     !> Convert a character type to a `multiprecision_int_t`.
-    function to_long_char(chars) result(ret)
+    pure function to_long_char(chars) result(ret)
         character(len=*), intent(in) :: chars
         type(multiprecision_int_t) :: ret
 
@@ -236,7 +236,7 @@ contains
     end function to_long_char
 
     !> Convert an integer type to a `multiprecision_int_t`.
-    function to_long_int(val) result(ret)
+    pure function to_long_int(val) result(ret)
         integer, intent(in) :: val
         type(multiprecision_int_t) :: ret
 
@@ -244,7 +244,7 @@ contains
     end function to_long_int
 
     !> Return the length of a `multiprecision_int_t`.
-    function digits_of_func(val) result(ret)
+    pure function digits_of_func(val) result(ret)
         type(multiprecision_int_t), intent(in) :: val
         integer :: ret
 
@@ -252,7 +252,7 @@ contains
     end function digits_of_func
 
     !> To judge whether two `multiprecision_int_t`s are equal.
-    logical function eq_func(this, val)
+    pure logical function eq_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         type(multiprecision_int_t), intent(in) :: val
 
@@ -262,7 +262,7 @@ contains
     end function eq_func
 
     !> To judge whether a `multiprecision_int_t` and an integer are equal.
-    logical function eq_int_func(this, val)
+    pure logical function eq_int_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
 
@@ -270,7 +270,7 @@ contains
     end function eq_int_func
 
     !> To judge whether a `multiprecision_int_t` and an character are equal.
-    logical function eq_char_func(this, val)
+    pure logical function eq_char_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         character(len=*), intent(in) :: val
 
@@ -279,7 +279,7 @@ contains
 
     !> To judge whether a `multiprecision_int_t` is 
     !> greater than a `multiprecision_int_t`.
-    logical function gt_func(this, val)
+    pure logical function gt_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         type(multiprecision_int_t), intent(in) :: val
 
@@ -297,7 +297,7 @@ contains
 
     !> To judge whether a `multiprecision_int_t` is
     !> greater than an integer.
-    logical function gt_int_func(this, val)
+    pure logical function gt_int_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
 
@@ -306,7 +306,7 @@ contains
 
     !> To judge whether a `multiprecision_int_t` is
     !> greather than an character.
-    logical function gt_char_func(this, val)
+    pure logical function gt_char_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         character(len=*), intent(in) :: val
 
@@ -315,7 +315,7 @@ contains
 
     !> To judge whether a `multiprecision_int_t` is
     !> less than a `multiprecision_int_t`.
-    logical function lt_func(this, val)
+    pure logical function lt_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         type(multiprecision_int_t), intent(in) :: val
 
@@ -333,7 +333,7 @@ contains
 
     !> To judge whether a `multiprecision_int_t` is
     !> less than an integer.
-    logical function lt_int_func(this, val)
+    pure logical function lt_int_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
 
@@ -342,7 +342,7 @@ contains
 
     !> To judge whether a `multiprecision_int_t` is
     !> less than a character.
-    logical function lt_char_func(this, val)
+    pure logical function lt_char_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         character(len=*), intent(in) :: val
 
@@ -351,7 +351,7 @@ contains
 
     !> To judge whether a `multiprecision_int_t` is
     !> greater than or equal to a `multiprecision_int_t`.
-    logical function ge_func(this, val)
+    pure logical function ge_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         type(multiprecision_int_t), intent(in) :: val
 
@@ -361,7 +361,7 @@ contains
 
     !> To judge whether a `multiprecision_int_t` is
     !> greater than or equal to a `multiprecision_int_t`.
-    logical function ge_int_func(this, val)
+    pure logical function ge_int_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
 
@@ -370,7 +370,7 @@ contains
 
     !> To judge whether a `multiprecision_int_t` is
     !> greater than or equal to a character.
-    logical function ge_char_func(this, val)
+    pure logical function ge_char_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         character(len=*), intent(in) :: val
 
@@ -379,7 +379,7 @@ contains
 
     !> To judge whether a `multiprecision_int_t` is
     !> less than or equal to a `multiprecision_int_t`.
-    logical function le_func(this, val)
+    pure logical function le_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         type(multiprecision_int_t), intent(in) :: val
 
@@ -389,7 +389,7 @@ contains
 
     !> To judge whether a `multiprecision_int_t` is
     !> less than or equal to a integer.
-    logical function le_int_func(this, val)
+    pure logical function le_int_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
 
@@ -398,7 +398,7 @@ contains
 
     !> To judge whether a `multiprecision_int_t` is
     !> less than or equal to a character.
-    logical function le_char_func(this, val)
+    pure logical function le_char_func(this, val)
         class(multiprecision_int_t), intent(in) :: this
         character(len=*), intent(in) :: val
 
@@ -406,7 +406,7 @@ contains
     end function le_char_func
 
     !> Add two `multiprecision_int_t`s.
-    function add_func(this, val) result(ret)
+    pure function add_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         type(multiprecision_int_t), intent(in) :: val
         type(multiprecision_int_t) :: ret
@@ -440,7 +440,7 @@ contains
     end function
 
     !> Add a `multiprecision_int_t` and an integer.
-    function add_int_func(this, val) result(ret)
+    pure function add_int_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
         type(multiprecision_int_t) :: ret
@@ -449,7 +449,7 @@ contains
     end function add_int_func
 
     !> Add a `multiprecision_int_t` and a character.
-    function add_char_func(this, val) result(ret)
+    pure function add_char_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         character(len=*), intent(in) :: val
         type(multiprecision_int_t) :: ret
@@ -458,7 +458,7 @@ contains
     end function add_char_func
 
     !> Substract a `multiprecision_int_t` by a `multiprecision_int_t`.
-    function sub_func(this, val) result(ret)
+    pure function sub_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         type(multiprecision_int_t), intent(in) :: val
         type(multiprecision_int_t) :: ret
@@ -491,7 +491,7 @@ contains
     end function sub_func
 
     !> Substract a `multiprecision_int_t` by an integer.
-    function sub_int_func(this, val) result(ret)
+    pure function sub_int_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
         type(multiprecision_int_t) :: ret
@@ -500,7 +500,7 @@ contains
     end function sub_int_func
 
     !> Substract a `multiprecision_int_t` by an character.
-    function sub_char_func(this, val) result(ret)
+    pure function sub_char_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         character(len=*), intent(in) :: val
         type(multiprecision_int_t) :: ret
@@ -509,7 +509,7 @@ contains
     end function sub_char_func
 
     !> Multiply a `multiprecision_int_t` by a `multiprecision_int_t`.
-    function mul_func(this, val) result(ret)
+    pure function mul_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         type(multiprecision_int_t), intent(in) :: val
         type(multiprecision_int_t) :: ret
@@ -527,7 +527,7 @@ contains
     end function mul_func
 
     !> Multiply a `multiprecision_int_t` by an integer.
-    function mul_int_func(this, val) result(ret)
+    pure function mul_int_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
         type(multiprecision_int_t) :: ret
@@ -536,7 +536,7 @@ contains
     end function mul_int_func
 
     !> Multiply a `multiprecision_int_t` by a character.
-    function mul_char_func(this, val) result(ret)
+    pure function mul_char_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         character(len=*), intent(in) :: val
         type(multiprecision_int_t) :: ret
@@ -545,7 +545,7 @@ contains
     end function mul_char_func
 
     !> Power of an integer.
-    function pow_int_func(this, val) result(ret)
+    pure function pow_int_func(this, val) result(ret)
         class(multiprecision_int_t), intent(in) :: this
         integer, intent(in) :: val
         type(multiprecision_int_t) :: ret
