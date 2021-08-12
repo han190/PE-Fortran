@@ -86,8 +86,8 @@ contains
     !> * Then we normalize each time span into a number between 0 and 1.
     !> For example, `norm = (x(i) - minval(x))/(maxval(x) - minval(x))`.
     !> * We catagorize the result into 5 different levels, 1 being the highest
-    !> level and 5 being the lowest level. If the argument 
-    !>`fancy_style = .true.`, the levels are expressed using emojis. 
+    !> level and 5 being the lowest level. If the argument
+    !>`fancy_style = .true.`, the levels are expressed using emojis.
     subroutine get_levels(x, levels, fancy_style)
         real, intent(in) :: x(:)
         character(len=25), intent(out) :: levels(size(x))

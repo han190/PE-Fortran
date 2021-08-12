@@ -12,9 +12,9 @@ program main
         integer, allocatable :: primes_under_100(:)
         logical :: cond
 
-        primes_under_100 = [2,  3,  5,  7, 11, 13, 17, 19, 23, &
-                            29, 31, 37, 41, 43, 47, 53, 59, 61, &
-                            67, 71, 73, 79, 83, 89, 97]
+        primes_under_100 = [2, 3, 5, 7, 11, 13, 17, 19, 23, &
+                            29, 31, 37, 41, 43, 47, 53, 59, &
+                            61, 67, 71, 73, 79, 83, 89, 97]
         call sieve_of_Eratosthenes(PRIME_UPPER_BOUND, is_prime)
         prime = pack([(i, i=0, PRIME_UPPER_BOUND)], is_prime)
         cond = all(primes_under_100 == prime)

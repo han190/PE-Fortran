@@ -42,7 +42,7 @@ module euler_multiprecision_m
     !>program main
     !>    use euler_multiprecision_m
     !>    implicit none
-    !>    
+    !>
     !>    type(multiprecision_int_t) :: a, b, c
     !>    integer :: d
     !>
@@ -147,7 +147,7 @@ module euler_multiprecision_m
     !>program main
     !>    use euler_multiprecision_m
     !>    implicit none
-    !>    
+    !>
     !>    type(multiprecision_int_t) :: a
     !>    a = '23405982034958034850495098430294850293485'
     !>    print *, size(a%arr) == digits_of(a) ! T
@@ -277,7 +277,7 @@ contains
         eq_char_func = this%eq_func(to_long(val))
     end function eq_char_func
 
-    !> To judge whether a `multiprecision_int_t` is 
+    !> To judge whether a `multiprecision_int_t` is
     !> greater than a `multiprecision_int_t`.
     pure logical function gt_func(this, val)
         class(multiprecision_int_t), intent(in) :: this

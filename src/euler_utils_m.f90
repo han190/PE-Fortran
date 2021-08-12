@@ -284,7 +284,7 @@ module euler_utils_m
     !>        print *, arr
     !>        call permutation(arr, next_permutation_available)
     !>    end do
-    !>    ! Output: (1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), 
+    !>    ! Output: (1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1),
     !>    ! (3, 1, 2), and (3, 2, 1).
     !>end program main
     !>```
