@@ -1,4 +1,4 @@
-# Yet another Project Euler solutions...
+# Project Euler solutions written in Fortran
 
 [Project Euler](https://projecteuler.net/about) is a problem set. I solve PE problems to polish my Fortran skills, expand my math knowledge base and most importantly FOR FUN. If you are looking for the same things, check it out!
 
