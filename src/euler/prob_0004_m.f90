@@ -4,22 +4,17 @@ submodule(euler_interface_m) euler_prob_0004_m
 contains
 
     module character(len=20) function euler0004()
-        write (euler0004, "(i20)") ans(999)
+        write (euler0004, "(i20)") answer(999)
     end function euler0004
 
-    integer function ans(n)
+    integer function answer(n) result(ret)
         integer, intent(in) :: n
-        integer :: a, b, p_max
+        integer :: i, j, ret
 
-        p_max = 0
-        a = 100
-
-        do a = 100, n
-            do b = 100, n
-                if (is_palindromic(a*b) .and. a*b > p_max) p_max = a*b
-            end do
+        ret = 0
+        do concurrent (i = 100:n, j = 100:n)
+            if (is_palindromic(i*j) .and. i*j > ret) ret = i*j
         end do
-
-        ans = p_max
-    end function ans
+    end function answer
+    
 end submodule euler_prob_0004_m
