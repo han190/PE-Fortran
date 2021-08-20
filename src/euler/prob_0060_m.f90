@@ -117,7 +117,6 @@ contains
 
         flag = max(flags(1), flags(2))
         if (flag == k .or. flag == 0_int64) then
-            ! ret = next_permutation(k, n, idx)
             call next_permutation(k, n, idx, ret)
             return
         end if
@@ -130,7 +129,6 @@ contains
         end if
 
         if (idx(size(idx)) == n) then
-            ! ret = next_permutation(k, n, idx)
             call next_permutation(k, n, idx, ret)
         else
             idx(flag:k) = [(idx(flag) + i, i=1, k - flag + 1)]
@@ -186,7 +184,6 @@ contains
                     end if
                 end if
                 call next_permutation(k, n, idx, avail)
-                ! avail = next_permutation(k, n, idx)
             end associate
         end do
     end function is_prime_pair

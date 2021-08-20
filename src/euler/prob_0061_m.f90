@@ -32,7 +32,6 @@ contains
                 end associate
             end do
             deallocate (arr)
-            ! avail = next_permutation(idx)
             call next_permutation(idx, avail)
         end do
     end function answer
@@ -45,32 +44,30 @@ contains
 
         if (.not. allocated(arr)) then
             allocate (arr(size(arr2)))
-            do i = 1, size(arr)
+            do concurrent (i = 1:size(arr))
                 arr(i)%arr = [arr2(i)]
             end do
             return
         end if
 
         k = 0
-        do i = 1, 100
+        do concurrent (i = 1:100)
             tmp(i)%arr = [0]
         end do
 
-        do i = 1, size(arr)
-            do j = 1, size(arr2)
-                associate (x => arr(i)%arr, y => arr2(j))
-                    if (mod(x(size(x)), 100) == y/100) then
-                        k = k + 1
-                        tmp(k)%arr = [x, [y]]
-                    end if
-                end associate
-            end do
+        do concurrent (i = 1:size(arr), j = 1:size(arr2))
+            associate (x => arr(i)%arr, y => arr2(j))
+                if (mod(x(size(x)), 100) == y/100) then
+                    k = k + 1
+                    tmp(k)%arr = [x, [y]]
+                end if
+            end associate
         end do
 
         if (k /= 0) then
             deallocate (arr)
             allocate (arr(k))
-            do i = 1, k
+            do concurrent (i = 1:k)
                 arr(i)%arr = tmp(i)%arr
             end do
         end if
@@ -80,16 +77,14 @@ contains
         type(var_arr_t), intent(out) :: polygonals(3:8)
         integer :: i, j
 
-        do i = 3, 8
-            do j = 1000, 9999
-                if (is_polygonal(i, j)) then
-                    call append(polygonals(i)%arr, j)
-                end if
-            end do
+        do concurrent (i=3:8, j = 1000:9999)
+            if (is_polygonal(i, j)) then
+                call append(polygonals(i)%arr, j)
+            end if
         end do
     end subroutine get_polygonals
 
-    function is_polygonal(n, val) result(ret)
+    pure function is_polygonal(n, val) result(ret)
         integer, intent(in) :: n, val
         logical :: ret
 
@@ -111,7 +106,7 @@ contains
         end select
     end function is_polygonal
 
-    function is_triangle(val) result(ret)
+    pure function is_triangle(val) result(ret)
         integer, intent(in) :: val
         logical :: ret
 
@@ -119,7 +114,7 @@ contains
         if (is_int(.5*(sqrt(1.+8.*real(val)) - 1.))) ret = .true.
     end function is_triangle
 
-    function is_square(val) result(ret)
+    pure function is_square(val) result(ret)
         integer, intent(in) :: val
         logical :: ret
 
@@ -127,7 +122,7 @@ contains
         if (is_int(sqrt(real(val)))) ret = .true.
     end function is_square
 
-    function is_pentagonal(val) result(ret)
+    pure function is_pentagonal(val) result(ret)
         integer, intent(in) :: val
         logical :: ret
 
@@ -135,7 +130,7 @@ contains
         if (is_int((sqrt(1.+24.*real(val)) + 1.)/6.)) ret = .true.
     end function is_pentagonal
 
-    function is_hexaonal(val) result(ret)
+    pure function is_hexaonal(val) result(ret)
         integer, intent(in) :: val
         logical :: ret
 
@@ -143,7 +138,7 @@ contains
         if (is_int(.25*(sqrt(1.+8.*real(val)) + 1.))) ret = .true.
     end function is_hexaonal
 
-    function is_heptagonal(val) result(ret)
+    pure function is_heptagonal(val) result(ret)
         integer, intent(in) :: val
         logical :: ret
 
@@ -151,7 +146,7 @@ contains
         if (is_int((sqrt(9.+40.*real(val)) + 3.)/10.)) ret = .true.
     end function is_heptagonal
 
-    function is_octagonal(val) result(ret)
+    pure function is_octagonal(val) result(ret)
         integer, intent(in) :: val
         logical :: ret
 
@@ -159,7 +154,7 @@ contains
         if (is_int((sqrt(1.+3.*real(val)) + 1.)/3.)) ret = .true.
     end function is_octagonal
 
-    function is_int(val) result(ret)
+    pure function is_int(val) result(ret)
         real, intent(in) :: val
         logical :: ret
         real, parameter :: eps = tiny(0.)
