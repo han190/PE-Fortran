@@ -88,8 +88,10 @@ contains
     !> * We catagorize the result into 5 different levels, 1 being the highest
     !> level and 5 being the lowest level. If the argument
     !>`fancy_style = .true.`, the levels are expressed using emojis.
-    subroutine get_levels(x, levels, fancy_style)
+    !> The problems that are not finished will be labeled "UNFINISHED".
+    subroutine get_levels(x, xstr, levels, fancy_style)
         real, intent(in) :: x(:)
+        character(len=20), intent(in) :: xstr(:)
         character(len=25), intent(out) :: levels(size(x))
         logical, intent(in) :: fancy_style
         real :: norm, min_x, max_x
@@ -97,17 +99,21 @@ contains
         character(len=:), allocatable :: level_names(:)
 
         if (fancy_style) then
-            level_names = &
-                [character(len=25) :: &
-                 ":smiling_imp:", &
-                 ":frowning_face:", &
-                 ":slightly_frowning_face:", &
-                 ":confused:", &
-                 ":neutral_face:", ""]
+            level_names = [character(len=25) :: &
+                           ":smiling_imp:", &
+                           ":frowning_face:", &
+                           ":slightly_frowning_face:", &
+                           ":confused:", &
+                           ":neutral_face:", &
+                           ""]
         else
-            level_names = &
-                [character(len=25) :: &
-                 "_Lv1_", "_Lv2_", "_Lv3_", "_Lv4_", "_Lv5_", ""]
+            level_names = [character(len=25) :: &
+                           "_LEVEL1_", &
+                           "_LEVEL2_", &
+                           "_LEVEL3_", &
+                           "_LEVEL4_", &
+                           "_LEVEL5_", &
+                           ""]
         end if
 
         min_x = minval(x)
@@ -115,6 +121,15 @@ contains
         levels = "" ! Initilization
 
         outer: do i = 1, size(x)
+            if (xstr(i) == failed) then
+                if (fancy_style) then
+                    levels(i) = ":construction:"
+                else
+                    levels(i) = "_UNFINISHED_"
+                end if
+                cycle
+            end if
+
             norm = (x(i) - min_x)/(max_x - min_x)
             inner: do j = 5, 1, -1
                 if (norm >= 10.**(-j) .and. norm <= 10.**(-j + 1)) then
@@ -127,9 +142,8 @@ contains
         if (fancy_style) then
             levels(maxloc(x)) = ":skull:"
         else
-            levels(maxloc(x)) = "_MAX_"
+            levels(maxloc(x)) = "__MAX__"
         end if
-
     end subroutine get_levels
 
     !> Get answers from problem 1 to problem x.
@@ -198,7 +212,7 @@ contains
         tsum = sum(tspan, dim=1)
         nslv = real(count(answer /= failed, dim=1))
         allocate (levels(size(tspan)))
-        call get_levels(tspan/(tsum/size(tspan)), levels, fancy_style)
+        call get_levels(tspan/(tsum/size(tspan)), answer, levels, fancy_style)
 
         select case (ext)
         case ('markdown')
