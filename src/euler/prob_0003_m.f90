@@ -7,7 +7,7 @@ contains
         write (euler0003, "(i20)") answer(600851475143_int64)
     end function euler0003
 
-    function answer(n) result(ret)
+    pure function answer(n) result(ret)
         use euler_primes_m, only: sieve_of_Eratosthenes
         implicit none
 

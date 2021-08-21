@@ -7,7 +7,7 @@ contains
         write (euler0002, "(i20)") answer(4000000)
     end function euler0002
 
-    function answer(n) result(ret)
+    pure function answer(n) result(ret)
         integer, intent(in) :: n
         integer :: ret, i
 

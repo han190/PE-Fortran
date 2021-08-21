@@ -4,19 +4,19 @@ submodule(euler_interface_m) euler_prob_0001_m
 contains
 
     module character(len=20) function euler0001()
-        write (euler0001, "(i20)") ans(3, 5, 1000)
+        write (euler0001, "(i20)") answer(3, 5, 1000)
     end function euler0001
 
-    function ans(i, j, n) result(ret)
+    pure function answer(i, j, n) result(ret)
         integer, intent(in) :: i, j, n
         integer :: ret
 
         ret = sum_divisibly_by(i, n - 1) + &
               sum_divisibly_by(j, n - 1) - &
               sum_divisibly_by(i*j, n - 1)
-    end function ans
+    end function answer
 
-    function sum_divisibly_by(i, j) result(ret)
+    pure function sum_divisibly_by(i, j) result(ret)
         integer, intent(in) :: i, j
         integer :: ret
 

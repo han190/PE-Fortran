@@ -4,18 +4,17 @@ submodule(euler_interface_m) euler_prob_0005_m
 contains
 
     module character(len=20) function euler0005()
-        write (euler0005, "(i20)") ans(20_int64)
+        write (euler0005, "(i20)") answer(20_int64)
     end function euler0005
 
-    integer(int64) function ans(n)
+    pure function answer(n) result(ret)
         integer(int64), intent(in) :: n
-        integer(int64) :: i, tmp
+        integer(int64) :: i, ret
 
-        tmp = 1_int64
+        ret = 1_int64
         do i = 1_int64, n
-            tmp = lcm(tmp, i)
+            ret = lcm(ret, i)
         end do
-        ans = tmp
-    end function ans
+    end function answer
 
 end submodule euler_prob_0005_m

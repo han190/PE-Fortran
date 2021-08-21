@@ -4,33 +4,28 @@ submodule(euler_interface_m) euler_prob_0011_m
 contains
 
     module character(len=20) function euler0011()
-        write (euler0011, "(i20)") ans()
+        write (euler0011, "(i20)") answer()
     end function euler0011
 
-    integer function ans()
+    integer function answer() result(ret)
         use euler_data_m, only: get_euler_data_0011
         implicit none
 
-        integer :: int_arr(20, 20), the_box(4, 4)
-        integer :: i, j, prod_max
+        integer :: int_arr(20, 20), box(4, 4)
+        integer :: i, j, ret
         character(len=:), allocatable :: euler_data(:)
 
         call get_euler_data_0011(euler_data)
         read (euler_data, *) int_arr
 
-        prod_max = 0
-        outer: do i = 1, 17
-            inner: do j = 1, 17
-                the_box = int_arr(i:i + 3, j:j + 3)
-                if (max_block(the_box) > prod_max) then
-                    prod_max = max_block(the_box)
-                end if
-            end do inner
-        end do outer
-        ans = prod_max
-    end function ans
+        ret = 0
+        do concurrent (i = 1:17, j = 1:17)
+            box = int_arr(i:i + 3, j:j + 3)
+            if (max_of(box) > ret) ret = max_of(box)
+        end do
+    end function answer
 
-    integer function max_block(m)
+    pure integer function max_of(m)
         integer, intent(in) :: m(:, :)
         integer :: d1(4), d2(4)
         integer :: k
@@ -40,8 +35,8 @@ contains
             d2(k) = m(k, 5 - k)
         end do
 
-        max_block = max(product(m(1:4, 1)), product(m(1:4, 4)), &
-                        product(m(1, 1:4)), product(m(4, 1:4)), &
-                        product(d1(1:4)), product(d2(1:4)))
-    end function max_block
+        max_of = max(product(m(1:4, 1)), product(m(1:4, 4)), &
+                     product(m(1, 1:4)), product(m(4, 1:4)), &
+                     product(d1(1:4)), product(d2(1:4)))
+    end function max_of
 end submodule euler_prob_0011_m

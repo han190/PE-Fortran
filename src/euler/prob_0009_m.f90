@@ -4,23 +4,23 @@ submodule(euler_interface_m) euler_prob_0009_m
 contains
 
     module character(len=20) function euler0009()
-        write (euler0009, "(i20)") ans(1000)
+        write (euler0009, "(i20)") answer(1000)
     end function euler0009
 
-    integer function ans(n)
+    integer function answer(n)
         integer, intent(in) :: n
-        integer :: a, b, c
+        integer :: i, j, k
 
-        ans = 0
-        outer: do a = 1, n
-            inner: do b = a + 1, n
-                c = n - a - b
-                if (a**2 + b**2 == c**2) then
-                    ans = a*b*c
+        answer = 0
+        outer: do i = 1, n
+            inner: do j = i + 1, n
+                k = n - i - j
+                if (i**2 + j**2 == k**2) then
+                    answer = i*j*k
                     return
                 end if
             end do inner
         end do outer
-    end function ans
+    end function answer
 
 end submodule euler_prob_0009_m

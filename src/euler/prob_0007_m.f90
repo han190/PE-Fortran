@@ -4,10 +4,10 @@ submodule(euler_interface_m) euler_prob_0007_m
 contains
 
     module character(len=20) function euler0007()
-        write (euler0007, "(i20)") ans(10000)
+        write (euler0007, "(i20)") answer(10000)
     end function euler0007
 
-    integer function ans(n)
+    pure function answer(n) result(i)
         use euler_primes_m, only: is_prime
         implicit none
         integer, intent(in) :: n
@@ -23,6 +23,6 @@ contains
                 j = j + 1
             end if
         end do loop_1
-        ans = i
-    end function ans
+    end function answer
+
 end submodule euler_prob_0007_m
