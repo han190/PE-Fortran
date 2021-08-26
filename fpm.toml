@@ -13,15 +13,15 @@ source-dir = "src"
 
 [[ test ]]
 name = "PE-Fortran-Test-euler_multiprecision_m"
-source-dir = "test/test_euler_multiprecision_m"
+source-dir = "src/test/test_euler_multiprecision_m"
 main = "test_euler_multiprecision_m.f90"
 
 [[ test ]]
 name = "PE-Fortran-Test-euler_primes_m"
-source-dir = "test/test_euler_primes_m"
+source-dir = "src/test/test_euler_primes_m"
 main = "test_euler_primes_m.f90"
 
 [[ executable ]]
 name = "PE-Fortran"
-source-dir = "app"
+source-dir = "src/app"
 main = "euler_main.f90"
