@@ -6,28 +6,32 @@
 
 ### Prerequistes
 
-You will need a Fortran compiler ([gfortran](https://gcc.gnu.org/wiki/GFortran) or [ifort](https://software.intel.com/content/www/us/en/develop/documentation/fortran-compiler-oneapi-dev-guide-and-reference/top.html)) and the [Fortran Package Manager (fpm)](https://github.com/fortran-lang/fpm) to compile/run/test/install this project. 
+You will need a Fortran compiler and the [Fortran Package Manager (fpm)](https://github.com/fortran-lang/fpm) to compile/run/test/install this project. For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)!
 
-For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)!
+Currently tested compilers:
+
+| GNU Fortran | LLVM Flang |
+|:------:|:------:|
+|gfortran 11.2.1 | flang 12.0.1 |
 
 ### Build with fpm
 
 To build this project with fpm, navigate to the root directory of this repo and
 
 ```bash
-fpm build
+fpm build --compiler gfortran/flang --flag -O3
 ```
 
 and run the project with
 
 ```bash
-fpm run -- -a 50
+fpm run --compiler gfortran/flang --flag -O3 -- --fancy --all <num of problems>
 ```
 
 You could also install it by (the default `PREFIX` is `$HOME/.local/bin`)
 
 ```bash
-fpm install
+fpm install --compiler gfortran/flang --flag -O3
 ```
 
 ## Usage
@@ -50,35 +54,6 @@ Usage:
        PE-Fortran --fancy --all 50
    (3) Compute problem 50:
        PE-Fortran --problem 50
-```
-
-## Quick start
-
-```bash
-conda activate fpm
-module load compiler
-fpm build --profile release --compiler ifort
-fpm install --profile release --compiler ifort
-
-PE-Fortran --all 63 --fancy
-# -------------------------- --------------------
-# PE Fortran Solutions
-# Problems solved/tried:                0062/0063
-# Total time spent (s):                      1.37
-# Time spent/problem (s):                    0.02
-
-# Spec of my PC:
-#  OS: Ubuntu 20.04 focal
-#  Kernel: x86_64 Linux 5.4.72-microsoft-standard-WSL2
-#  Uptime: 2h 4m
-#  Packages: 1556
-#  Shell: zsh 5.8
-#  Resolution: 1920x1200
-#  WM: Weston WM
-#  GTK Theme: Adwaita [GTK3]
-#  Disk: 875G / 3.5T (25%)
-#  CPU: Intel Core i7-8700K @ 12x 3.696GHz
-#  RAM: 764MiB / 32040MiB
 ```
 
 ## A todo list
