@@ -12,9 +12,11 @@ contains
         integer :: i, j, ret
 
         ret = 0
-        do concurrent (i = 100:n, j = 100:n)
-            if (is_palindromic(i*j) .and. i*j > ret) ret = i*j
+        do i = 100, n
+            do j = 100, n
+                if (is_palindromic(i*j) .and. i*j > ret) ret = i*j
+            end do
         end do
     end function answer
-    
+
 end submodule euler_prob_0004_m

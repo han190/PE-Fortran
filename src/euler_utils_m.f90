@@ -360,10 +360,6 @@ contains
         integer, intent(in) :: n
         integer :: k, ans
 
-        if (n < 0 .or. n > 92) then
-            error stop "fib32: Invalid input number."
-        end if
-
         if (n == 0) then
             ans = 0
         else if (n == 1 .or. n == 2) then
@@ -380,10 +376,6 @@ contains
     pure recursive function fib64(n) result(ans)
         integer(int64), intent(in) :: n
         integer(int64) :: k, ans
-
-        if (n < 0_int64 .or. n > 92_int64) then
-            error stop "fib64: Invalid input number."
-        end if
 
         if (n == 0_int64) then
             ans = 0_int64
@@ -477,10 +469,6 @@ contains
         integer, intent(in) :: n
         integer :: i, tmp
 
-        if (n >= 13) then
-            error stop "FACTORIAL_INT32: n >= 13."
-        end if
-
         tmp = 1
         do i = 1, n
             tmp = tmp*i
@@ -491,10 +479,6 @@ contains
     pure integer(int64) function factorial_int64(n)
         integer(int64), intent(in) :: n
         integer(int64) :: i, tmp
-
-        if (n >= 13_int64) then
-            error stop "FACTORIAL_INT32: n >= 13."
-        end if
 
         tmp = 1_int64
         do i = 1_int64, n

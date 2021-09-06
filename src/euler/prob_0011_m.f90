@@ -7,7 +7,7 @@ contains
         write (euler0011, "(i20)") answer()
     end function euler0011
 
-    integer function answer() result(ret)
+    function answer() result(ret)
         use euler_data_m, only: get_euler_data_0011
         implicit none
 
@@ -19,9 +19,11 @@ contains
         read (euler_data, *) int_arr
 
         ret = 0
-        do concurrent (i = 1:17, j = 1:17)
-            box = int_arr(i:i + 3, j:j + 3)
-            if (max_of(box) > ret) ret = max_of(box)
+        do i = 1, 17
+            do j = 1, 17
+                box = int_arr(i:i + 3, j:j + 3)
+                if (max_of(box) > ret) ret = max_of(box)
+            end do
         end do
     end function answer
 

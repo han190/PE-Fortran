@@ -26,7 +26,7 @@ contains
 
         ret = 0
         x = int(sqrt(real(val)))
-        do concurrent (i = 1:x - 1)
+        do i = 1, x - 1
             if (mod(val, i) == 0) ret = ret + 2
         end do
         if (mod(val, x) == 0) ret = ret + 1

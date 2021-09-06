@@ -15,7 +15,7 @@ contains
         logical, allocatable :: is_prime(:)
 
         call sieve_of_Eratosthenes(n, is_prime)
-        do concurrent (i = 0_int64:n)
+        do i = 0_int64, n
             if (is_prime(i)) ret = ret + i
         end do
     end function answer

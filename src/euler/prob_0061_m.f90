@@ -44,30 +44,32 @@ contains
 
         if (.not. allocated(arr)) then
             allocate (arr(size(arr2)))
-            do concurrent (i = 1:size(arr))
+            do i = 1, size(arr)
                 arr(i)%arr = [arr2(i)]
             end do
             return
         end if
 
         k = 0
-        do concurrent (i = 1:100)
+        do i = 1, 100
             tmp(i)%arr = [0]
         end do
 
-        do concurrent (i = 1:size(arr), j = 1:size(arr2))
-            associate (x => arr(i)%arr, y => arr2(j))
-                if (mod(x(size(x)), 100) == y/100) then
-                    k = k + 1
-                    tmp(k)%arr = [x, [y]]
-                end if
-            end associate
+        do i = 1, size(arr)
+            do j = 1, size(arr2)
+                associate (x => arr(i)%arr, y => arr2(j))
+                    if (mod(x(size(x)), 100) == y/100) then
+                        k = k + 1
+                        tmp(k)%arr = [x, [y]]
+                    end if
+                end associate
+            end do
         end do
 
         if (k /= 0) then
             deallocate (arr)
             allocate (arr(k))
-            do concurrent (i = 1:k)
+            do i = 1, k
                 arr(i)%arr = tmp(i)%arr
             end do
         end if
@@ -77,10 +79,10 @@ contains
         type(var_arr_t), intent(out) :: polygonals(3:8)
         integer :: i, j
 
-        do concurrent (i=3:8, j = 1000:9999)
-            if (is_polygonal(i, j)) then
-                call append(polygonals(i)%arr, j)
-            end if
+        do i = 3, 8
+            do j = 1000, 9999
+                if (is_polygonal(i, j)) call append(polygonals(i)%arr, j)
+            end do
         end do
     end subroutine get_polygonals
 
@@ -101,8 +103,6 @@ contains
             ret = is_heptagonal(val)
         case (8)
             ret = is_octagonal(val)
-        case default
-            error stop "Not yet supported"
         end select
     end function is_polygonal
 
