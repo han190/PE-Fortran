@@ -257,10 +257,11 @@ contains
         character(len=100), allocatable :: arguments(:)
         integer :: argument_count, idx, problem_number
         logical :: compute_all, compute_single, is_fancy
+        character(len=:), parameter :: INVALID = "Invalid syntax!"
 
         argument_count = command_argument_count()
         if (argument_count >= 5 .or. argument_count < 1) then
-            call print_error_messages("Invalid argument count!")
+            call print_error_messages(INVALID)
         end if
 
         allocate (arguments(argument_count))
@@ -277,7 +278,7 @@ contains
                 call print_version_messages()
                 return
             case default
-                call print_error_messages("Invalid argument syntax!")
+                call print_error_messages(INVALID)
             end select
         else if (argument_count >= 2) then
             compute_single = .false.
@@ -299,11 +300,11 @@ contains
                     is_fancy = .true.
                     idx = idx + 1
                 case default
-                    call print_error_messages("Invalid argument syntax!")
+                    call print_error_messages(INVALID)
                 end select
             end do
         else
-            call print_error_messages("Invalid argument count!")
+            call print_error_messages(INVALID)
         end if
 
         if (compute_single) then
@@ -311,7 +312,7 @@ contains
         else if (compute_all) then
             call print_answers(problem_number, is_fancy)
         else
-            call print_error_messages("Invalid argument syntax!")
+            call print_error_messages(INVALID)
         end if
     end subroutine get_arguments
 
