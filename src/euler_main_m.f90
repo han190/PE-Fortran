@@ -188,9 +188,8 @@ contains
     end subroutine get_answer
 
     !> Print answers from problem 1 to x.
-    subroutine print_answers(problem_numbers, ext, fancy_style)
+    subroutine print_answers(problem_numbers, fancy_style)
         integer, intent(in) :: problem_numbers
-        character(len=*), intent(in) :: ext
         logical, optional, intent(in) :: fancy_style
         character(len=20), allocatable :: answer(:)
         real, allocatable :: tspan(:)
@@ -214,46 +213,22 @@ contains
         allocate (levels(size(tspan)))
         call get_levels(tspan/(tsum/size(tspan)), answer, levels, fancy_style)
 
-        select case (ext)
-        case ('markdown')
-            open (unit=iunit, file='ANSWER.md')
-            write (iunit, '(a)') '# Fortran PE Solutions'//new_line('a')
-            write (iunit, '(a)') '## Summary'//new_line('a')
-            write (iunit, '(a)') '|Benchmarks|Results|'
-            write (iunit, '(a)') repeat(md_table, 2)//'|'
-            write (iunit, "('|Problems solved|', i4, '|')") int(nslv)
-            write (iunit, "('|Time spent|', f9.2, '(s)|')") tsum
-            write (iunit, "('|Time spent/problem|', f9.2, '(s)|')") tsum/nslv
-            write (iunit, '(a)') new_line('a')//'## Answers'//new_line('a')
-            write (iunit, '(a)') '|Prob|Answer|Tspan(s)|Difficulty|'
-            write (iunit, '(a)') repeat(md_table, 4)//'|'
-
-            fmt = "('|', i6, '|', a20, '|', f10.6, '|', a25, '|')"
-            do i = 1, size(tspan)
-                write (iunit, trim(fmt)) i, answer(i), tspan(i), levels(i)
-            end do
-            close (iunit)
-        case ('text')
-            open (unit=iunit, file='ANSWER.txt')
-            write (iunit, '(a)') 'Fortran PE Solutions'
-            write (iunit, '(a)') new_line('a')//'Summary'
-            write (iunit, '(a)') '-------'
-            write (iunit, "('Problems solved   ', i9)") int(nslv)
-            write (iunit, "('Time spent        ', f9.2, '(s)')") tsum
-            write (iunit, "('Time spent/problem', f9.2, '(s)')") tsum/nslv
-            write (iunit, '(a)') new_line('a')//'Answers'
-            write (iunit, '(a)') '-------'
-            fmt = "(a6, a20, a10, a13)"
-            write (iunit, trim(fmt)) 'Prob', 'Answer', 'Tspan(s)', 'Difficulty'
-
-            fmt = "(i6, a20, f10.6, a13)"
-            do i = 1, size(tspan)
-                write (iunit, trim(fmt)) i, answer(i), tspan(i), trim(levels(i))
-            end do
-            close (iunit)
-        case default
-            error stop 'File extension not supported.'
-        end select
+        open (unit=iunit, file='ANSWER.md')
+        write (iunit, '(a)') '# Fortran PE Solutions'//new_line('a')
+        write (iunit, '(a)') '## Summary'//new_line('a')
+        write (iunit, '(a)') '|Benchmarks|Results|'
+        write (iunit, '(a)') repeat(md_table, 2)//'|'
+        write (iunit, "('|Problems solved|', i4, '|')") int(nslv)
+        write (iunit, "('|Time spent|', f9.2, '(s)|')") tsum
+        write (iunit, "('|Time spent/problem|', f9.2, '(s)|')") tsum/nslv
+        write (iunit, '(a)') new_line('a')//'## Answers'//new_line('a')
+        write (iunit, '(a)') '|Prob|Answer|Tspan(s)|Difficulty|'
+        write (iunit, '(a)') repeat(md_table, 4)//'|'
+        fmt = "('|', i6, '|', a20, '|', f10.6, '|', a25, '|')"
+        do i = 1, size(tspan)
+            write (iunit, trim(fmt)) i, answer(i), tspan(i), levels(i)
+        end do
+        close (iunit)
 
         write (*, "(26('-'), 1x, 20('-'))")
         write (*, "('PE Fortran Solutions')")
@@ -264,9 +239,8 @@ contains
     end subroutine print_answers
 
     !> Print answer of problem x.
-    subroutine print_answer(problem_number, ext)
+    subroutine print_answer(problem_number)
         integer, intent(in) :: problem_number
-        character(len=*), intent(in) :: ext
         character(len=20) :: answer
         real :: time_span
 
@@ -333,9 +307,9 @@ contains
         end if
 
         if (compute_single) then
-            call print_answer(problem_number, "markdown")
+            call print_answer(problem_number)
         else if (compute_all) then
-            call print_answers(problem_number, "markdown", is_fancy)
+            call print_answers(problem_number, is_fancy)
         else
             call print_error_messages("Invalid argument syntax!")
         end if
