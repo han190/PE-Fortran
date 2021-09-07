@@ -257,7 +257,7 @@ contains
         character(len=100), allocatable :: arguments(:)
         integer :: argument_count, idx, problem_number
         logical :: compute_all, compute_single, is_fancy
-        character(len=:), parameter :: INVALID = "Invalid syntax!"
+        character(len=*), parameter :: INVALID = "Invalid syntax!"
 
         argument_count = command_argument_count()
         if (argument_count >= 5 .or. argument_count < 1) then
