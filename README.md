@@ -6,32 +6,26 @@
 
 ### Prerequistes
 
-You will need a Fortran compiler and the [Fortran Package Manager (fpm)](https://github.com/fortran-lang/fpm) to compile/run/test/install this project. For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)!
-
-Currently tested compilers:
-
-| GNU Fortran | LLVM Flang |
-|:------:|:------:|
-|gfortran 11.2.1 | flang 12.0.1 |
+You will need a Fortran compiler (The tested ones are [gfortran](https://gcc.gnu.org/wiki/GFortran) and [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5).) and the [Fortran Package Manager (fpm)](https://github.com/fortran-lang/fpm) to compile/run/test/install this project. For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)!
 
 ### Build with fpm
 
 To build this project with fpm, navigate to the root directory of this repo and
 
 ```bash
-fpm build --compiler gfortran/flang --flag -O3
+fpm build
 ```
 
 and run the project with
 
 ```bash
-fpm run --compiler gfortran/flang --flag -O3 -- --fancy --all <num of problems>
+fpm run -- --fancy --all <number of problems>
 ```
 
 You could also install it by (the default `PREFIX` is `$HOME/.local/bin`)
 
 ```bash
-fpm install --compiler gfortran/flang --flag -O3
+fpm install
 ```
 
 ## Usage
@@ -67,3 +61,4 @@ Here is what I plan to do in the future. (Not likely to be done recently cuz I a
 - [x] Add version control.
 - [ ] When I finish 75 problems, write a command line interface. When I finish 100 problems (if that is possible), write a GUI.
 - [x] Use fpm to build, test, run and install the project.
+- [ ] Review exisiting code, rewrite/refactor code with (1) modern Fortran, (2) functional programming and (3) array-oriented styles.
