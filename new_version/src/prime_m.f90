@@ -4,7 +4,7 @@ module prime_m
     implicit none
     private
 
-    public :: is_prime, sieve_of_Eratosthenes, sieve_of_Sundaram
+    public :: is_prime, Sieve_of_Eratosthenes, Sieve_of_Sundaram
 
     !> A generic interface that tells if an integer is prime.
     interface is_prime
@@ -12,21 +12,23 @@ module prime_m
     end interface is_prime
 
     !> An algorithm for finding all prime numbers within a limit.
-    interface sieve_of_Eratosthenes
-        module procedure sieve_of_Eratosthenes_i32
-        module procedure sieve_of_Eratosthenes_i64
-    end interface sieve_of_Eratosthenes
+    interface Sieve_of_Eratosthenes
+        module procedure Sieve_of_Eratosthenes_i32
+        module procedure Sieve_of_Eratosthenes_i64
+    end interface Sieve_of_Eratosthenes
 
-    interface sieve_of_Sundaram
-        module procedure sieve_of_Sundaram_i32
-    end interface sieve_of_Sundaram
+    !> An algorithm for finding all odd primes within a limit.
+    interface Sieve_of_Sundaram
+        module procedure Sieve_of_Sundaram_i32
+        module procedure Sieve_of_Sundaram_i64
+    end interface Sieve_of_Sundaram
 
 contains
 
     !>  for 32 bit integer.
     pure logical function is_prime_i32(n)
-        integer, intent(in) :: n
-        integer :: limit, i
+        integer(i32), intent(in) :: n
+        integer(i32) :: limit, i
 
         is_prime_i32 = .false.
         limit = int(sqrt(real(n, sp)) + 1)
@@ -73,11 +75,11 @@ contains
         end if
     end function is_prime_i64
 
-    !> sieve of Eratosthenes for 32 bit integer.
-    pure subroutine sieve_of_Eratosthenes_i32(n, prime_arr)
-        integer, intent(in) :: n
+    !> Sieve of Eratosthenes for 32 bit integer.
+    pure subroutine Sieve_of_Eratosthenes_i32(n, prime_arr)
+        integer(i32), intent(in) :: n
         logical, allocatable, intent(out) :: prime_arr(:)
-        integer :: i, j
+        integer(i32) :: i
 
         allocate (prime_arr(n))
         prime_arr = .true.
@@ -85,13 +87,13 @@ contains
         do i = 2, floor(sqrt(real(n, dp)))
             if (prime_arr(i)) prime_arr(i*i:n:i) = .false.
         end do
-    end subroutine sieve_of_Eratosthenes_i32
+    end subroutine Sieve_of_Eratosthenes_i32
 
-    !> sieve of Eratosthenes for 64 bit integer.
-    pure subroutine sieve_of_Eratosthenes_i64(n, prime_arr)
+    !> Sieve of Eratosthenes for 64 bit integer.
+    pure subroutine Sieve_of_Eratosthenes_i64(n, prime_arr)
         integer(i64), intent(in) :: n
         logical, allocatable, intent(out) :: prime_arr(:)
-        integer(i64) :: i, j
+        integer(i64) :: i
 
         allocate (prime_arr(n))
         prime_arr = .true.
@@ -99,21 +101,42 @@ contains
         do i = 2_i64, floor(sqrt(real(n, dp)), i64)
             if (prime_arr(i)) prime_arr(i*i:n:i) = .false.
         end do
-    end subroutine sieve_of_Eratosthenes_i64
+    end subroutine Sieve_of_Eratosthenes_i64
 
-    pure subroutine sieve_of_Sundaram_i32(n, primes)
+    !> Sieve of Sundaram for 32 bit integer.
+    pure subroutine Sieve_of_Sundaram_i32(n, primes)
         integer(i32), intent(in) :: n
         logical, allocatable, intent(out) :: primes(:)
-        integer(i32) :: i, j, k
+        integer(i32) :: i
 
-        k = (n - 3)/2 + 1
-        allocate(primes(k)); primes = .true.
+        associate (k => (n - 3)/2 + 1)
+            allocate(primes(k))
+            primes = .true.
 
-        do i = 0, (int(sqrt(real(n))) - 3)/2
-            associate (p => 2*i + 3)
-                primes((p*p - 3)/2 + 1:k:p) = .false.
-            end associate
-        end do
-    end subroutine sieve_of_Sundaram_i32
+            do i = 0, (int(sqrt(real(n))) - 3)/2
+                associate (p => 2*i + 3)
+                    primes((p*p - 3)/2 + 1:k:p) = .false.
+                end associate
+            end do
+        end associate
+    end subroutine Sieve_of_Sundaram_i32
+
+    !> Sieve of Sundaram for 64 bit integer.
+    pure subroutine Sieve_of_Sundaram_i64(n, primes)
+        integer(i64), intent(in) :: n
+        logical, allocatable, intent(out) :: primes(:)
+        integer(i64) :: i
+
+        associate (k => (n - 3)/2 + 1)
+            allocate(primes(k))
+            primes = .true.
+
+            do i = 0, (int(sqrt(real(n))) - 3)/2
+                associate (p => 2*i + 3)
+                    primes((p*p - 3)/2 + 1:k:p) = .false.
+                end associate
+            end do
+        end associate
+    end subroutine Sieve_of_Sundaram_i64
 
 end module prime_m
