@@ -17,7 +17,7 @@ contains
     subroutine initialize_problems(problems)
         type(euler_problem_t), allocatable, intent(inout) :: problems(:)
 
-        allocate(problems(10))
+        allocate(problems(11))
         problems(1)%answer => euler0001
         problems(2)%answer => euler0002
         problems(3)%answer => euler0003
@@ -28,6 +28,7 @@ contains
         problems(8)%answer => euler0008
         problems(9)%answer => euler0009
         problems(10)%answer => euler0010
+        problems(11)%answer => euler0011
     end subroutine initialize_problems
 
 end module euler_problems_m
