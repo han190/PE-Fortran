@@ -1,4 +1,4 @@
-module euler_constant_m
+module constant_m
 
     use iso_fortran_env, only: int64, int32, real32, real64
     implicit none
@@ -9,4 +9,4 @@ module euler_constant_m
     real(sp), parameter, public :: tiny_sp = tiny(0._sp)
     real(dp), parameter, public :: tiny_dp = tiny(0._dp)
 
-end module euler_constant_m
+end module constant_m
