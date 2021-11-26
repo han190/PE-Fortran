@@ -134,6 +134,7 @@ module multiprecision_m
     !>    b = a + to_long(1234)
     !>end program main
     !>```
+    public :: to_long
     interface to_long
         module procedure to_long_char, to_long_int
     end interface
