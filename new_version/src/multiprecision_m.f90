@@ -93,8 +93,10 @@ module multiprecision_m
         character(len=1) :: sgn
     contains
         procedure :: re_alloc => re_alloc_sub
-        procedure, private :: init_char_sub, init_int_sub, init_arr_sub
-        generic :: assignment(=) => init_char_sub, init_int_sub, init_arr_sub
+        procedure, private :: init_sub, init_char_sub, &
+            init_int_sub, init_arr_sub
+        generic :: assignment(=) => init_sub, init_char_sub, &
+            init_int_sub, init_arr_sub
         procedure, private :: eq_func, eq_int_func, eq_char_func
         generic :: operator(==) => eq_func, eq_int_func, eq_char_func
         procedure, private :: gt_func, gt_int_func, gt_char_func
@@ -142,69 +144,87 @@ module multiprecision_m
 contains
 
     !> Reallocate a `multiprecision_t`.
-    pure subroutine re_alloc_sub(this, n)
-        class(multiprecision_t), intent(inout) :: this
+    !> This subroutine prevents unnecessary deallocations and re-allocations
+    !> of `self%arr`. This is particularly useful when `=` appears in a loop.
+    pure subroutine re_alloc_sub(self, n)
+        class(multiprecision_t), intent(inout) :: self
         integer(i32), intent(in) :: n
 
-        if (allocated(this%arr)) deallocate (this%arr)
-        allocate (this%arr(n))
+        if (allocated(self%arr)) then
+            if (size(self%arr) /= n) then
+                deallocate (self%arr)
+                allocate (self%arr(n))
+            end if
+        else
+            allocate (self%arr(n))
+        end if
     end subroutine re_alloc_sub
 
+    !> Initialize a `multiprecision_t` to a `multiprecision_t`
+    pure subroutine init_sub(self, val)
+        class(multiprecision_t), intent(inout) :: self
+        type(multiprecision_t), intent(in) :: val
+
+        call self%re_alloc(size(val%arr))
+        self%sgn = val%sgn
+        self%arr = val%arr
+    end subroutine init_sub
+
     !> Initialize a character type to a `multiprecision_t`.
-    pure subroutine init_char_sub(this, chars)
-        class(multiprecision_t), intent(inout) :: this
+    pure subroutine init_char_sub(self, chars)
+        class(multiprecision_t), intent(inout) :: self
         character(len=*), intent(in) :: chars
         integer(i32) :: i
 
         select case (chars(1:1))
         case ('+')
-            this%sgn = '+'
-            call this%re_alloc(len(chars) - 1)
+            self%sgn = '+'
+            call self%re_alloc(len(chars) - 1)
             do i = 2, len(chars)
-                read (chars(i:i), *) this%arr(i - 1)
+                read (chars(i:i), *) self%arr(i - 1)
             end do
         case ('-')
-            this%sgn = '-'
-            call this%re_alloc(len(chars) - 1)
+            self%sgn = '-'
+            call self%re_alloc(len(chars) - 1)
             do i = 2, len(chars)
-                read (chars(i:i), *) this%arr(i - 1)
+                read (chars(i:i), *) self%arr(i - 1)
             end do
         case default
-            this%sgn = '+'
-            call this%re_alloc(len(chars))
+            self%sgn = '+'
+            call self%re_alloc(len(chars))
             do i = 1, len(chars)
-                read (chars(i:i), *) this%arr(i)
+                read (chars(i:i), *) self%arr(i)
             end do
         end select
     end subroutine init_char_sub
 
     !> Initialize an integer array to a `multiprecision_t`.
-    pure subroutine init_arr_sub(this, arr)
-        class(multiprecision_t), intent(inout) :: this
+    pure subroutine init_arr_sub(self, arr)
+        class(multiprecision_t), intent(inout) :: self
         integer(i32), allocatable, intent(in) :: arr(:)
 
-        this%arr = arr(:)
-        this%sgn = '+'
+        self%arr = arr(:)
+        self%sgn = '+'
     end subroutine init_arr_sub
 
     !> Initialize an integer to a `multiprecision_t`.
-    pure subroutine init_int_sub(this, val)
-        class(multiprecision_t), intent(inout) :: this
+    pure subroutine init_int_sub(self, val)
+        class(multiprecision_t), intent(inout) :: self
         integer(i32), intent(in) :: val
         integer(i32) :: tmp, i, digs
 
         if (val >= 0) then
-            this%sgn = '+'
+            self%sgn = '+'
         else
-            this%sgn = '-'
+            self%sgn = '-'
         end if
 
         tmp = abs(val)
         digs = floor(log10(real(tmp))) + 1
-        call this%re_alloc(digs)
+        call self%re_alloc(digs)
 
         do i = digs, 1, -1
-            this%arr(i) = int(mod(tmp, 10))
+            self%arr(i) = int(mod(tmp, 10))
             tmp = tmp/10
         end do
     end subroutine init_int_sub
@@ -226,314 +246,314 @@ contains
     end function to_long_int
 
     !> To judge whether two `multiprecision_t`s are equal.
-    pure logical function eq_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function eq_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
 
         eq_func = .false.
-        if (compare(this%arr, val%arr) == 0 .and. &
-            this%sgn == val%sgn) eq_func = .true.
+        if (compare(self%arr, val%arr) == 0 .and. &
+            self%sgn == val%sgn) eq_func = .true.
     end function eq_func
 
     !> To judge whether a `multiprecision_t` and an integer are equal.
-    pure logical function eq_int_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function eq_int_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
 
-        eq_int_func = this%eq_func(to_long(val))
+        eq_int_func = self%eq_func(to_long(val))
     end function eq_int_func
 
     !> To judge whether a `multiprecision_t` and an character are equal.
-    pure logical function eq_char_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function eq_char_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
 
-        eq_char_func = this%eq_func(to_long(val))
+        eq_char_func = self%eq_func(to_long(val))
     end function eq_char_func
 
     !> To judge whether a `multiprecision_t` is
     !> greater than a `multiprecision_t`.
-    pure logical function gt_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function gt_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
 
         gt_func = .false.
-        if (this%sgn == '+' .and. val%sgn == '-') then
+        if (self%sgn == '+' .and. val%sgn == '-') then
             gt_func = .true.
-        else if (compare(this%arr, val%arr) == 1 .and. &
-                 this%sgn == '+' .and. val%sgn == '+') then
+        else if (compare(self%arr, val%arr) == 1 .and. &
+                 self%sgn == '+' .and. val%sgn == '+') then
             gt_func = .true.
-        else if (compare(this%arr, val%arr) == -1 .and. &
-                 this%sgn == '-' .and. val%sgn == '-') then
+        else if (compare(self%arr, val%arr) == -1 .and. &
+                 self%sgn == '-' .and. val%sgn == '-') then
             gt_func = .true.
         end if
     end function gt_func
 
     !> To judge whether a `multiprecision_t` is
     !> greater than an integer.
-    pure logical function gt_int_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function gt_int_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
 
-        gt_int_func = this%gt_func(to_long(val))
+        gt_int_func = self%gt_func(to_long(val))
     end function gt_int_func
 
     !> To judge whether a `multiprecision_t` is
     !> greather than an character.
-    pure logical function gt_char_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function gt_char_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
 
-        gt_char_func = this%gt_func(to_long(val))
+        gt_char_func = self%gt_func(to_long(val))
     end function gt_char_func
 
     !> To judge whether a `multiprecision_t` is
     !> less than a `multiprecision_t`.
-    pure logical function lt_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function lt_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
 
         lt_func = .false.
-        if (this%sgn == '-' .and. val%sgn == '+') then
+        if (self%sgn == '-' .and. val%sgn == '+') then
             lt_func = .true.
-        else if (compare(this%arr, val%arr) == -1 .and. &
-                 this%sgn == '+' .and. val%sgn == '+') then
+        else if (compare(self%arr, val%arr) == -1 .and. &
+                 self%sgn == '+' .and. val%sgn == '+') then
             lt_func = .true.
-        else if (compare(this%arr, val%arr) == 1 .and. &
-                 this%sgn == '-' .and. val%sgn == '-') then
+        else if (compare(self%arr, val%arr) == 1 .and. &
+                 self%sgn == '-' .and. val%sgn == '-') then
             lt_func = .true.
         end if
     end function lt_func
 
     !> To judge whether a `multiprecision_t` is
     !> less than an integer.
-    pure logical function lt_int_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function lt_int_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
 
-        lt_int_func = this%lt_func(to_long(val))
+        lt_int_func = self%lt_func(to_long(val))
     end function lt_int_func
 
     !> To judge whether a `multiprecision_t` is
     !> less than a character.
-    pure logical function lt_char_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function lt_char_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
 
-        lt_char_func = this%lt_func(to_long(val))
+        lt_char_func = self%lt_func(to_long(val))
     end function lt_char_func
 
     !> To judge whether a `multiprecision_t` is
     !> greater than or equal to a `multiprecision_t`.
-    pure logical function ge_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function ge_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
 
         ge_func = .false.
-        if (this%gt_func(val) .or. this%eq_func(val)) ge_func = .true.
+        if (self%gt_func(val) .or. self%eq_func(val)) ge_func = .true.
     end function ge_func
 
     !> To judge whether a `multiprecision_t` is
     !> greater than or equal to a `multiprecision_t`.
-    pure logical function ge_int_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function ge_int_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
 
-        ge_int_func = this%ge_func(to_long(val))
+        ge_int_func = self%ge_func(to_long(val))
     end function ge_int_func
 
     !> To judge whether a `multiprecision_t` is
     !> greater than or equal to a character.
-    pure logical function ge_char_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function ge_char_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
 
-        ge_char_func = this%ge_func(to_long(val))
+        ge_char_func = self%ge_func(to_long(val))
     end function ge_char_func
 
     !> To judge whether a `multiprecision_t` is
     !> less than or equal to a `multiprecision_t`.
-    pure logical function le_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function le_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
 
         le_func = .false.
-        if (this%lt_func(val) .or. this%eq_func(val)) le_func = .true.
+        if (self%lt_func(val) .or. self%eq_func(val)) le_func = .true.
     end function le_func
 
     !> To judge whether a `multiprecision_t` is
     !> less than or equal to a integer.
-    pure logical function le_int_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function le_int_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
 
-        le_int_func = this%le_func(to_long(val))
+        le_int_func = self%le_func(to_long(val))
     end function le_int_func
 
     !> To judge whether a `multiprecision_t` is
     !> less than or equal to a character.
-    pure logical function le_char_func(this, val)
-        class(multiprecision_t), intent(in) :: this
+    pure logical function le_char_func(self, val)
+        class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
 
-        le_char_func = this%le_func(to_long(val))
+        le_char_func = self%le_func(to_long(val))
     end function le_char_func
 
     !> Add two `multiprecision_t`s.
-    pure function add_func(this, val) result(ret)
-        class(multiprecision_t), intent(in) :: this
+    pure function add_func(self, val) result(ret)
+        class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        if (compare(this%arr, val%arr) == 0 .and. &
-            this%sgn /= val%sgn) then
+        if (compare(self%arr, val%arr) == 0 .and. &
+            self%sgn /= val%sgn) then
             ret = '0'
-        else if (this%sgn == '+' .and. val%sgn == '+') then
-            ret%arr = add(this%arr, val%arr)
+        else if (self%sgn == '+' .and. val%sgn == '+') then
+            ret%arr = add(self%arr, val%arr)
             ret%sgn = '+'
-        else if (this%sgn == '-' .and. val%sgn == '-') then
-            ret%arr = add(this%arr, val%arr)
+        else if (self%sgn == '-' .and. val%sgn == '-') then
+            ret%arr = add(self%arr, val%arr)
             ret%sgn = '-'
-        else if (this%sgn == '+' .and. val%sgn == '-') then
-            if (compare(this%arr, val%arr) == 1) then
-                ret%arr = sub(this%arr, val%arr)
+        else if (self%sgn == '+' .and. val%sgn == '-') then
+            if (compare(self%arr, val%arr) == 1) then
+                ret%arr = sub(self%arr, val%arr)
                 ret%sgn = '+'
             else
-                ret%arr = sub(val%arr, this%arr)
+                ret%arr = sub(val%arr, self%arr)
                 ret%sgn = '-'
             end if
-        else if (this%sgn == '-' .and. val%sgn == '+') then
-            if (compare(this%arr, val%arr) == 1) then
-                ret%arr = sub(this%arr, val%arr)
+        else if (self%sgn == '-' .and. val%sgn == '+') then
+            if (compare(self%arr, val%arr) == 1) then
+                ret%arr = sub(self%arr, val%arr)
                 ret%sgn = '-'
             else
-                ret%arr = sub(val%arr, this%arr)
+                ret%arr = sub(val%arr, self%arr)
                 ret%sgn = '+'
             end if
         end if
     end function
 
     !> Add a `multiprecision_t` and an integer.
-    pure function add_int_func(this, val) result(ret)
-        class(multiprecision_t), intent(in) :: this
+    pure function add_int_func(self, val) result(ret)
+        class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        ret = this%add_func(to_long(val))
+        ret = self%add_func(to_long(val))
     end function add_int_func
 
     !> Add a `multiprecision_t` and a character.
-    pure function add_char_func(this, val) result(ret)
-        class(multiprecision_t), intent(in) :: this
+    pure function add_char_func(self, val) result(ret)
+        class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        ret = this%add_func(to_long(val))
+        ret = self%add_func(to_long(val))
     end function add_char_func
 
     !> Substract a `multiprecision_t` by a `multiprecision_t`.
-    pure function sub_func(this, val) result(ret)
-        class(multiprecision_t), intent(in) :: this
+    pure function sub_func(self, val) result(ret)
+        class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        if (this == val) then
+        if (self == val) then
             ret = '0'
-        else if (this%sgn == '+' .and. val%sgn == '+') then
-            if (compare(this%arr, val%arr) == 1) then
-                ret%arr = sub(this%arr, val%arr)
+        else if (self%sgn == '+' .and. val%sgn == '+') then
+            if (compare(self%arr, val%arr) == 1) then
+                ret%arr = sub(self%arr, val%arr)
                 ret%sgn = '+'
             else
-                ret%arr = sub(val%arr, this%arr)
+                ret%arr = sub(val%arr, self%arr)
                 ret%sgn = '-'
             end if
-        else if (this%sgn == '+' .and. val%sgn == '-') then
-            ret%arr = add(this%arr, val%arr)
+        else if (self%sgn == '+' .and. val%sgn == '-') then
+            ret%arr = add(self%arr, val%arr)
             ret%sgn = '+'
-        else if (this%sgn == '-' .and. val%sgn == '+') then
-            ret%arr = add(this%arr, val%arr)
+        else if (self%sgn == '-' .and. val%sgn == '+') then
+            ret%arr = add(self%arr, val%arr)
             ret%sgn = '-'
-        else if (this%sgn == '-' .and. val%sgn == '-') then
-            if (compare(this%arr, val%arr) == 1) then
-                ret%arr = sub(this%arr, val%arr)
+        else if (self%sgn == '-' .and. val%sgn == '-') then
+            if (compare(self%arr, val%arr) == 1) then
+                ret%arr = sub(self%arr, val%arr)
                 ret%sgn = '-'
             else
-                ret%arr = sub(val%arr, this%arr)
+                ret%arr = sub(val%arr, self%arr)
                 ret%sgn = '+'
             end if
         end if
     end function sub_func
 
     !> Substract a `multiprecision_t` by an integer.
-    pure function sub_int_func(this, val) result(ret)
-        class(multiprecision_t), intent(in) :: this
+    pure function sub_int_func(self, val) result(ret)
+        class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        ret = this%sub_func(to_long(val))
+        ret = self%sub_func(to_long(val))
     end function sub_int_func
 
     !> Substract a `multiprecision_t` by an character.
-    pure function sub_char_func(this, val) result(ret)
-        class(multiprecision_t), intent(in) :: this
+    pure function sub_char_func(self, val) result(ret)
+        class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        ret = this%sub_func(to_long(val))
+        ret = self%sub_func(to_long(val))
     end function sub_char_func
 
     !> Multiply a `multiprecision_t` by a `multiprecision_t`.
-    pure function mul_func(this, val) result(ret)
-        class(multiprecision_t), intent(in) :: this
+    pure function mul_func(self, val) result(ret)
+        class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        if (this == 0 .or. val == 0) then
+        if (self == 0 .or. val == 0) then
             ret%sgn = '+'
             ret%arr = [0]
-        else if (this%sgn == val%sgn) then
+        else if (self%sgn == val%sgn) then
             ret%sgn = '+'
-            ret%arr = mul(this%arr, val%arr)
-        else if (this%sgn /= val%sgn) then
+            ret%arr = mul(self%arr, val%arr)
+        else if (self%sgn /= val%sgn) then
             ret%sgn = '-'
-            ret%arr = mul(this%arr, val%arr)
+            ret%arr = mul(self%arr, val%arr)
         end if
     end function mul_func
 
     !> Multiply a `multiprecision_t` by an integer.
-    pure function mul_int_func(this, val) result(ret)
-        class(multiprecision_t), intent(in) :: this
+    pure function mul_int_func(self, val) result(ret)
+        class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        ret = this%mul_func(to_long(val))
+        ret = self%mul_func(to_long(val))
     end function mul_int_func
 
     !> Multiply a `multiprecision_t` by a character.
-    pure function mul_char_func(this, val) result(ret)
-        class(multiprecision_t), intent(in) :: this
+    pure function mul_char_func(self, val) result(ret)
+        class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        ret = this%mul_func(to_long(val))
+        ret = self%mul_func(to_long(val))
     end function mul_char_func
 
     !> Power of an integer.
-    pure function pow_int_func(this, val) result(ret)
-        class(multiprecision_t), intent(in) :: this
+    pure function pow_int_func(self, val) result(ret)
+        class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        if (this%sgn == '+') then
+        if (self%sgn == '+') then
             ret%sgn = '+'
-            ret%arr = pow2(this%arr, val)
+            ret%arr = pow2(self%arr, val)
         else
             if (mod(val, 2) == 0) then
                 ret%sgn = '+'
             else if (mod(val, 2) /= 0) then
                 ret%sgn = '-'
             end if
-            ret%arr = pow2(this%arr, val)
+            ret%arr = pow2(self%arr, val)
         end if
     end function pow_int_func
 
