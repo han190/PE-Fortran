@@ -63,7 +63,7 @@ contains
         if (n == 0) ret = 0
     end function count_letters_2
 
-    pure integer(i32) function count_letters_1(n) result(ret)
+    pure function count_letters_1(n) result(ret)
         integer(i32), intent(in) :: n
         integer(i32) :: ret
 

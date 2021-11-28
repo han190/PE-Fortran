@@ -8,6 +8,7 @@ module utility_m
     public :: unit_digit, number_of_digits
     public :: to_array, to_integer
     public :: is_palindromic
+    public :: number_of_divisors
 
     !> Return unit digit of an integer.
     interface unit_digit
@@ -36,6 +37,16 @@ module utility_m
         module procedure is_palindromic_i32
         module procedure is_palindromic_i64
     end interface is_palindromic
+
+    !> Prime factorization.
+    interface prime_factorization
+        module procedure prime_factorization_i32
+    end interface prime_factorization
+
+    !> Number of divisors
+    interface number_of_divisors
+        module procedure number_of_divisors_i32
+    end interface number_of_divisors
 
     !> Variant length array
     type, public :: variant_array_t
@@ -155,5 +166,38 @@ contains
         is_palindromic_i64 = .false.
         if (n == reversed) is_palindromic_i64 = .true.
     end function is_palindromic_i64
+
+    !> Assuming an array of primes is already generated.
+    pure subroutine prime_factorization_i32(n, primes, powers)
+        integer(i32), intent(in) :: n, primes(:)
+        integer(i32), intent(out) :: powers(size(primes))
+        integer(i32) :: i, temp
+
+        temp = n; powers = 0
+        outer: do i = 1, size(primes)
+            inner: do
+                if (mod(temp, primes(i)) /= 0) then
+                    exit inner
+                else if (temp == 0) then
+                    exit outer
+                end if
+
+                powers(i) = powers(i) + 1
+                temp = temp/primes(i)
+            end do inner
+        end do outer
+    end subroutine prime_factorization_i32
+
+    !> Number of proper divisors.
+    !> Write an integer in a form of n = p1**e1 + p1**e2 + ...
+    !> where p_i are the primes and e_i are the number of existences.
+    !> Then, number of divisors is (e1 + 1)*(e2 + 1)*...
+    pure integer(i32) function number_of_divisors_i32(n, primes)
+        integer(i32), intent(in) :: n, primes(:)
+        integer(i32) :: powers(size(primes))
+
+        call prime_factorization(n, primes, powers)
+        number_of_divisors_i32 = product(powers + 1)
+    end function number_of_divisors_i32
 
 end module utility_m

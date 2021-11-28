@@ -69,6 +69,12 @@ module interface_m
         module pure character(len=20) function euler0021()
         end function euler0021
 
+        module pure character(len=20) function euler0022()
+        end function euler0022
+
+        module pure character(len=20) function euler0023()
+        end function euler0023
+
     end interface
 
 end module interface_m

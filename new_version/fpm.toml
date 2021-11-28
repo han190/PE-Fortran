@@ -26,6 +26,11 @@ name = "PE-Fortran-Test-euler_primes_m"
 source-dir = "src/test/"
 main = "test_prime_m.f90"
 
+[[ test ]]
+name = "PE-Fortran-Test-euler_utility_m"
+source-dir = "src/test/"
+main = "test_utility_m.f90"
+
 [[ executable ]]
 name = "PE-Fortran"
 source-dir = "src/app"
