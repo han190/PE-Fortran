@@ -8,20 +8,17 @@ contains
     end function euler0012
 
     pure integer(i32) function answer()
-        use prime_m, only: Sieve_of_Sundaram
+        use prime_m, only: get_primes
         implicit none
 
         integer(i32), parameter :: n = 500
         integer(i32), parameter :: limit = 20
         integer(i32), allocatable :: primes(:)
-        logical, allocatable :: is_prime(:)
         integer(i32) :: i
 
-        call Sieve_of_Sundaram(limit, is_prime)
-        primes = [2, pack([(i*2 + 1, i=1, size(is_prime))], is_prime)]
+        primes = get_primes(limit, algorithm="Sieve of Sundaram")
 
-        i = 0
-        answer = 0
+        i = 0; answer = 0
         do
             i = i + 1
             answer = answer + i

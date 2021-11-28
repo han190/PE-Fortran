@@ -5,6 +5,7 @@ module prime_m
     private
 
     public :: is_prime, Sieve_of_Eratosthenes, Sieve_of_Sundaram
+    public :: get_primes
 
     !> A generic interface that tells if an integer is prime.
     interface is_prime
@@ -22,6 +23,11 @@ module prime_m
         module procedure Sieve_of_Sundaram_i32
         module procedure Sieve_of_Sundaram_i64
     end interface Sieve_of_Sundaram
+
+    interface get_primes
+        module procedure get_primes_i32
+        module procedure get_primes_i64
+    end interface get_primes
 
 contains
 
@@ -110,7 +116,7 @@ contains
         integer(i32) :: i
 
         associate (k => (n - 3)/2 + 1)
-            allocate(primes(k))
+            allocate (primes(k))
             primes = .true.
 
             do i = 0, (int(sqrt(real(n))) - 3)/2
@@ -128,7 +134,7 @@ contains
         integer(i64) :: i
 
         associate (k => (n - 3)/2 + 1)
-            allocate(primes(k))
+            allocate (primes(k))
             primes = .true.
 
             do i = 0, (int(sqrt(real(n))) - 3)/2
@@ -138,5 +144,45 @@ contains
             end do
         end associate
     end subroutine Sieve_of_Sundaram_i64
+
+    !> Wrapper for 32-bit integer.
+    pure function get_primes_i32(n, algorithm) result(primes)
+        integer(i32), intent(in) :: n
+        integer(i32), allocatable :: primes(:)
+        character(*), intent(in) :: algorithm
+        logical, allocatable :: primes_l(:)
+        integer(i32) :: i
+
+        select case (algorithm)
+        case ("Sieve of Sundaram")
+            call Sieve_of_Sundaram_i32(n, primes_l)
+            primes = [2_i32, pack([(i*2 + 1, i=1, size(primes_l))], primes_l)]
+        case ("Sieve of Eratosthenes")
+            call Sieve_of_Eratosthenes_i32(n, primes_l)
+            primes = pack([(i, i=1, size(primes_l))], primes_l)
+        case default
+            error stop "Invalid options."
+        end select
+    end function get_primes_i32
+
+    !> Wrapper for 64-bit integer.
+    pure function get_primes_i64(n, algorithm) result(primes)
+        integer(i64), intent(in) :: n
+        integer(i64), allocatable :: primes(:)
+        character(*), intent(in) :: algorithm
+        logical, allocatable :: primes_l(:)
+        integer(i64) :: i
+
+        select case (algorithm)
+        case ("Sieve of Sundaram")
+            call Sieve_of_Sundaram_i64(n, primes_l)
+            primes = [2_i64, pack([(i*2 + 1, i=1, size(primes_l))], primes_l)]
+        case ("Sieve of Eratosthenes")
+            call Sieve_of_Eratosthenes_i64(n, primes_l)
+            primes = pack([(i, i=1, size(primes_l))], primes_l)
+        case default
+            error stop "Invalid options."
+        end select
+    end function get_primes_i64
 
 end module prime_m
