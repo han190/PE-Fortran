@@ -12,22 +12,17 @@ homepage = "https://github.com/han190/PE-Fortran"
 source-dir = "src"
 
 [[ test ]]
-name = "test_linked_list_m"
-source-dir = "src/test/"
-main = "test_linked_list_m.f90"
-
-[[ test ]]
-name = "PE-Fortran-Test-euler_multiprecision_m"
+name = "PE-Fortran-Test-multiprecision_m"
 source-dir = "src/test/"
 main = "test_multiprecision_m.f90"
 
 [[ test ]]
-name = "PE-Fortran-Test-euler_primes_m"
+name = "PE-Fortran-Test-primes_m"
 source-dir = "src/test/"
 main = "test_prime_m.f90"
 
 [[ test ]]
-name = "PE-Fortran-Test-euler_utility_m"
+name = "PE-Fortran-Test-utility_m"
 source-dir = "src/test/"
 main = "test_utility_m.f90"
 
