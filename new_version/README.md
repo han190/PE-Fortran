@@ -6,31 +6,17 @@
 
 ### Prerequistes
 
-You will need a Fortran compiler (The tested ones are [gfortran](https://gcc.gnu.org/wiki/GFortran) and [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5).) and the [Fortran Package Manager (fpm)](https://github.com/fortran-lang/fpm) to compile/run/test/install this project. For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190).
+You will need a Fortran compiler (The tested ones are [gfortran](https://gcc.gnu.org/wiki/GFortran) and [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5).) and the [Meson](https://mesonbuild.com/index.html) to compile/run/test/install this project. For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190).
 
-### Build with fpm
-
-To build this project with fpm, navigate to the root directory of this repo and
-
+### Build with meson
 ```bash
-fpm build
-```
-
-and run the project with
-
-```bash
-fpm run -- --fancy --all <number of problems>
-```
-
-You could also install it by (the default `PREFIX` is `$HOME/.local/bin`)
-
-```bash
-fpm install
+meson build
+meson test -C build
 ```
 
 ## Usage
 
-```
+```bash
 $ PE-Fortran --help
 PE Fortran Solution
 Arguments:
@@ -48,6 +34,13 @@ Usage:
        PE-Fortran --fancy --all 50
    (3) Compute problem 50:
        PE-Fortran --problem 50
+```
+
+## Misc
+
+To count LOC:
+```bash
+cloc --force-lang="Fortran 90",fpp src
 ```
 
 ## A todo list
