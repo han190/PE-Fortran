@@ -62,6 +62,12 @@ app_src = [
     app_dir/'project_euler.f90'
 ]
 
+test_src = [
+    test_dir/'test_multiprecision_m.f90',
+    test_dir/'test_prime_m.f90',
+    test_dir/'test_utility_m.f90'
+]
+
 # Meson doesn't have wildcards, instead one has to use extra commands if 
 # they have many sources files. For more details, consult:
 # https://github.com/mesonbuild/meson/blob/master/docs/markdown/FAQ.md
@@ -74,9 +80,16 @@ foreach prob : prob_num
     prob_src += euler_dir/'problem_' + prob + '_m.f90'
 endforeach
 
-src = [util_src, fypp_src, prob_src, app_src]
-exec = executable('PE-Fortran', sources: src)
+src = [util_src, fypp_src, prob_src]
+exec = executable('PE-Fortran', sources: [src, app_src])
+test_multiprecision_m = executable('Test-multiprecision_m',  sources: [src, test_src[0]])
+test_prime_m = executable('Test-prime_m', sources: [src, test_src[1]])
+test_utility_m = executable('Test-utility_m', sources: [src, test_src[2]])
+
+test('Test multiprecision module', test_multiprecision_m)
+test('Test prime module', test_prime_m)
+test('Test utility module', test_utility_m)
 test(
-    'Compute all problems available', 
-    exec, args : ['--fancy', '--all', num_probs.to_string()]
+    'Test all problems available', exec, 
+    args : ['--fancy', '--all', num_probs.to_string()]
 )
