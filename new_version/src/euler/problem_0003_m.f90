@@ -20,7 +20,7 @@ contains
         end associate
 
         do i = size(is_prime), 1, -1
-            if (is_prime(i) .and. mod(n, i*2 + 1) == 0) then
+            if (is_prime(i) .and. mod(n, i*2 + 1_i64) == 0) then
                 answer = i*2 + 1
                 exit
             end if

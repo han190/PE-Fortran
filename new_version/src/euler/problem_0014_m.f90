@@ -23,7 +23,7 @@ contains
 
             if (array(i) == -1) then
                 do while (temp /= 1)
-                    if (mod(temp, 2) == 0) then
+                    if (mod(temp, 2_i64) == 0) then
                         temp = temp/2
                         length = length + 1
                     else

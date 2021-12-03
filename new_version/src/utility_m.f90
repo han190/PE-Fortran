@@ -159,7 +159,7 @@ contains
         reversed = 0
         temp = n
         do while (temp > 0)
-            reversed = reversed*10 + mod(temp, 10)
+            reversed = reversed*10 + mod(temp, 10_i64)
             temp = temp/10
         end do
 
