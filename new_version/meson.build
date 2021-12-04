@@ -3,13 +3,21 @@ project('PE-Fortran', 'fortran',
     meson_version: '>=0.51',
     license: 'MIT',
     default_options: [
-        'buildtype=release', 
+        'buildtype=debug', 
         'fortran_std=f2018'
     ]
 )
 
+# Meson doesn't have wildcards, instead one has to use extra commands if 
+# they have many sources files. For more details, consult:
+# https://github.com/mesonbuild/meson/blob/master/docs/markdown/FAQ.md
+
+result = run_command('python', 'problem_ID.py')
+problem_numbers = result.stdout().split()
+
 # Number of problems
-num_probs = 26
+nproblems = problem_numbers[-1].to_int()
+message('Total number of problems available: @0@'.format(nproblems))
 
 # Directories
 src_dir = 'src'
@@ -36,7 +44,7 @@ add_global_arguments(dialect, language: 'fortran')
 
 # Fortran preprocessor
 fypp = find_program('fypp')
-fypp_flag = '-DNUM_PROB=@0@'.format(num_probs)
+fypp_flag = '-DNUM_PROB=@0@'.format(nproblems)
 message('fypp_flag = @0@'.format(fypp_flag))
 gen_f90 = generator(
     fypp, output: '@BASENAME@.f90',
@@ -68,15 +76,8 @@ test_src = [
     test_dir/'test_utility_m.f90'
 ]
 
-# Meson doesn't have wildcards, instead one has to use extra commands if 
-# they have many sources files. For more details, consult:
-# https://github.com/mesonbuild/meson/blob/master/docs/markdown/FAQ.md
-
-r = run_command('python', 'problem_ID.py', num_probs.to_string())
-prob_num = r.stdout().split()
-
 prob_src = []
-foreach prob : prob_num
+foreach prob : problem_numbers
     prob_src += euler_dir/'problem_' + prob + '_m.f90'
 endforeach
 
@@ -91,5 +92,5 @@ test('Test prime module', test_prime_m)
 test('Test utility module', test_utility_m)
 test(
     'Test all problems available', exec, 
-    args : ['--fancy', '--all', num_probs.to_string()]
+    args : ['--fancy', '--all', nproblems.to_string()]
 )
