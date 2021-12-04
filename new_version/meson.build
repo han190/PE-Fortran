@@ -81,7 +81,7 @@ foreach prob : problem_numbers
     prob_src += euler_dir/'problem_' + prob + '_m.f90'
 endforeach
 
-# Tests and executables
+# Tests and executables.
 src = [util_src, fypp_src, prob_src]
 exec = executable('PE-Fortran', sources: [src, app_src])
 test_multiprecision_m = executable('Test-multiprecision_m',  sources: [src, test_src[0]])
