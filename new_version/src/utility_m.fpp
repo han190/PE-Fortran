@@ -8,6 +8,7 @@ module utility_m
     public :: unit_digit, number_of_digits
     public :: to_array, to_integer
     public :: is_palindromic
+    public :: prime_factorization
     public :: number_of_divisors
 
     #:set integer_kinds = ['i32', 'i64']
