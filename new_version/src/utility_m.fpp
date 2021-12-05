@@ -7,7 +7,7 @@ module utility_m
 
     public :: unit_digit, number_of_digits
     public :: to_array, to_integer
-    public :: is_palindromic
+    public :: is_palindromic, is_pandigital
     public :: prime_factorization
     public :: number_of_divisors
 
@@ -63,6 +63,13 @@ module utility_m
         module procedure number_of_divisors_${T}$
         #: endfor
     end interface number_of_divisors
+
+    !> Is pandigital
+    interface is_pandigital
+        #: for T in integer_kinds
+        module procedure is_pandigital_${T}$
+        #: endfor
+    end interface is_pandigital
 
     !> Variant length array
     type, public :: variant_array_t
@@ -179,6 +186,33 @@ contains
         call prime_factorization(n, primes, powers)
         number_of_divisors_${T}$ = product(powers + 1)
     end function number_of_divisors_${T}$
+    #: endfor
+
+    !> To tell if a number is pandigital
+    #: for T in integer_kinds
+    pure logical function is_pandigital_${T}$ (n)
+        integer(${T}$), intent(in) :: n
+        integer(${T}$) :: digits, temp, l
+        logical, allocatable :: array(:)
+
+        l = number_of_digits(n)
+        if (l > 9_${T}$) l = 9_${T}$
+        allocate (array(l))
+
+        is_pandigital_${T}$ = .false.
+        array = .false.
+        temp = n
+
+        do
+            associate (u => unit_digit(temp))
+                if (u == 0_${T}$ .or. u > l) exit
+                array(u) = .true.
+            end associate
+            temp = temp/10
+        end do
+
+        if (count(array) == l) is_pandigital_${T}$ = .true.
+    end function is_pandigital_${T}$
     #: endfor
 
 end module utility_m
