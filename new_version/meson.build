@@ -21,7 +21,6 @@ message('Total number of problems available: @0@'.format(nproblems))
 
 # Directories
 src_dir = 'src'
-app_dir = 'src/app'
 euler_dir = 'src/euler'
 test_dir = 'src/test'
 
@@ -67,7 +66,7 @@ util_src = [
 ]
 
 app_src = [
-    app_dir/'project_euler.f90'
+    src_dir/'project_euler.f90'
 ]
 
 test_src = [
