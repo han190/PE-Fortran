@@ -77,8 +77,8 @@ test_src = [
 ]
 
 prob_src = []
-foreach prob : problem_numbers
-    prob_src += euler_dir/'problem_' + prob + '_m.f90'
+foreach problem_number : problem_numbers
+    prob_src += euler_dir/'problem_' + problem_number + '.f90'
 endforeach
 
 # Tests and executables.
