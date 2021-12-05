@@ -93,4 +93,5 @@ test('Test prime module', test_prime_m)
 test('Test utility module', test_utility_m)
 
 argument_list = ['--fancy', '--all', nproblems.to_string()]
-test('Test all problems available', exec, args : argument_list)
+test_name = 'Test all problems available '
+test(test_name + '(@0@ problems)'.format(nproblems), exec, args : argument_list)
