@@ -16,8 +16,9 @@ contains
         integer(i32), parameter :: limit = upper*6 ! 2**7 > 100
         integer(i32) :: i, j, temp(2)
         integer(i32), allocatable :: primes(:)
-        logical :: array(limit, limit)
+        logical, allocatable :: array(:, :)
 
+        allocate (array(limit, limit))
         primes = get_primes(upper, "Sieve of Sundaram")
         array = .false.
         do concurrent(i=lower:upper, j=lower:upper)
