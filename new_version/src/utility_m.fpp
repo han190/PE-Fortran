@@ -32,16 +32,16 @@ module utility_m
     !> Convert an intger to an array.
     interface to_array
         #: for T in integer_kinds
-        module procedure ${T}$_to_array
+        module procedure to_array_${T}$
         #: endfor
     end interface to_array
 
     !> Convert an array to an integer.
     interface to_integer
         #: for T in integer_kinds
-        module procedure array_to_${T}$
+        module procedure to_integer_${T}$
         #: endfor
-    end interface
+    end interface to_integer
 
     !> To tell if an integer is palindromic.
     interface is_palindromic
@@ -105,25 +105,25 @@ contains
 
     !> Convert an integer into an integer array.
     #: for T in integer_kinds
-    pure function ${T}$_to_array(n) result(ret)
+    pure function to_array_${T}$ (n) result(ret)
         integer(${T}$), intent(in) :: n
         integer(${T}$), allocatable :: ret(:)
         integer(${T}$) :: i
 
         if (n < 0) error stop "to_array: n must be non-negative."
         ret = [(unit_digit(n/10**(i - 1)), i=number_of_digits(n), 1, -1)]
-    end function ${T}$_to_array
+    end function to_array_${T}$
     #: endfor
 
     !> Convert an integer array into an integer.
     #: for T in integer_kinds
-    pure integer(${T}$) function array_to_${T}$ (arr)
+    pure integer(${T}$) function to_integer_${T}$ (arr)
         integer(${T}$), intent(in) :: arr(:)
         integer(${T}$) :: i
 
         if (any(arr < 0)) error stop "to_integer: arr must be non-negative."
-        array_to_${T}$ = sum([(arr(i)*10**(size(arr) - i), i=1, size(arr))])
-    end function array_to_${T}$
+        to_integer_${T}$ = sum([(arr(i)*10**(size(arr) - i), i=1, size(arr))])
+    end function to_integer_${T}$
     #: endfor
 
     !> To tell if an integer is palindromic.
@@ -168,7 +168,7 @@ contains
     #: endfor
 
     !> Number of proper divisors.
-    !> Write an integer in a form of n = p1**e1 + p1**e2 + ...
+    !> Write an integer in a form of n = p1**e1 + p2**e2 + ...,
     !> where p_i are the primes and e_i are the number of existences.
     !> Then, number of divisors is (e1 + 1)*(e2 + 1)*...
     #: for T in integer_kinds
