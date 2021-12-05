@@ -17,22 +17,4 @@ contains
         end do
     end function answer
 
-    pure integer(i64) function lcm(n1, n2)
-        integer(i64), intent(in) :: n1, n2
-
-        lcm = n1*n2/gcd(n1, n2)
-    end function lcm
-
-    pure recursive function gcd(n1, n2) result(ret)
-        integer(i64), intent(in) :: n1, n2
-        integer(i64) :: ret
-
-        select case (n2)
-        case (0)
-            ret = n1
-        case default
-            ret = gcd(n2, mod(n1, n2))
-        end select
-    end function gcd
-
 end submodule euler_problem_0005_m

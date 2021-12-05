@@ -8,8 +8,8 @@ module utility_m
     public :: unit_digit, number_of_digits
     public :: to_array, to_integer
     public :: is_palindromic, is_pandigital
-    public :: prime_factorization
-    public :: number_of_divisors
+    public :: prime_factorization, number_of_divisors
+    public :: lcm, gcd
 
     #:set integer_kinds = ['i32', 'i64']
 
@@ -70,6 +70,20 @@ module utility_m
         module procedure is_pandigital_${T}$
         #: endfor
     end interface is_pandigital
+
+    !> Least common multiple
+    interface lcm
+        #: for T in integer_kinds
+        module procedure lcm_${T}$
+        #: endfor
+    end interface lcm
+
+    !> Greatest common divisor
+    interface gcd
+        #: for T in integer_kinds
+        module procedure gcd_${T}$
+        #: endfor
+    end interface gcd
 
     !> Variant length array
     type, public :: variant_array_t
@@ -213,6 +227,30 @@ contains
 
         if (count(array) == l) is_pandigital_${T}$ = .true.
     end function is_pandigital_${T}$
+    #: endfor
+
+    !> Greatest common divisor
+    #: for T in integer_kinds
+    pure recursive function gcd_${T}$ (a, b) result(ret)
+        integer(${T}$), intent(in) :: a, b
+        integer(${T}$) :: ret
+
+        select case (b)
+        case (0_${T}$)
+            ret = a
+        case default
+            ret = gcd_${T}$ (b, mod(a, b))
+        end select
+    end function gcd_${T}$
+    #: endfor
+
+    !> Least common multiple
+    #: for T in integer_kinds
+    pure integer(${T}$) function lcm_${T}$ (a, b)
+        integer(${T}$), intent(in) :: a, b
+
+        lcm_${T}$ = abs(a*b)/gcd_${T}$ (a, b)
+    end function lcm_${T}$
     #: endfor
 
 end module utility_m
