@@ -51,19 +51,19 @@ gen_f90 = generator(
     arguments: ['@INPUT@', '@EXTRA_ARGS@', '@OUTPUT@']
 )
 fypp_files = [
-    src_dir/'prime_m.fpp',
-    src_dir/'interface_m.fpp', 
-    src_dir/'euler_problems_m.fpp',
-    src_dir/'utility_m.fpp'
+    src_dir/'prime.fpp',
+    src_dir/'interface.fpp', 
+    src_dir/'euler_problems.fpp',
+    src_dir/'utility.fpp'
 ]
 fypp_src = gen_f90.process(fypp_files, extra_args: fypp_flag)
 
 # Source files
 util_src = [
-    src_dir/'constant_m.f90',
-    src_dir/'multiprecision_m.f90',
-    src_dir/'data_m.f90',
-    src_dir/'driver_m.f90'
+    src_dir/'constant.f90',
+    src_dir/'multiprecision.f90',
+    src_dir/'data.f90',
+    src_dir/'driver.f90'
 ]
 
 app_src = [
@@ -71,9 +71,9 @@ app_src = [
 ]
 
 test_src = [
-    test_dir/'test_multiprecision_m.f90',
-    test_dir/'test_prime_m.f90',
-    test_dir/'test_utility_m.f90'
+    test_dir/'test_multiprecision.f90',
+    test_dir/'test_prime.f90',
+    test_dir/'test_utility.f90'
 ]
 
 prob_src = []
