@@ -3,7 +3,7 @@ project('PE-Fortran', 'fortran',
     meson_version: '>=0.51',
     license: 'MIT',
     default_options: [
-        'buildtype=debug', 
+        'buildtype=release', 
         'fortran_std=f2018'
     ]
 )
@@ -12,7 +12,7 @@ project('PE-Fortran', 'fortran',
 # they have many sources files. For more details, consult:
 # https://github.com/mesonbuild/meson/blob/master/docs/markdown/FAQ.md
 
-result = run_command('python', 'problem_ID.py')
+result = run_command('python', 'problem_id.py')
 problem_numbers = result.stdout().split()
 
 # Number of problems
@@ -61,7 +61,6 @@ fypp_src = gen_f90.process(fypp_files, extra_args: fypp_flag)
 util_src = [
     src_dir/'constant.f90',
     src_dir/'multiprecision.f90',
-    src_dir/'data.f90',
     src_dir/'driver.f90'
 ]
 
@@ -80,9 +79,21 @@ foreach problem_number : problem_numbers
     prob_src += euler_dir/'problem_' + problem_number + '.f90'
 endforeach
 
+data_dir = 'data'
+data_src = [
+    'data_0008.txt', 'data_0011.txt', 'data_0013.txt', 'data_0018.txt',
+    'data_0022.txt', 'data_0042.txt', 'data_0054.txt', 'data_0059.txt'
+]
+foreach data_file : data_src
+    configure_file(copy:true, input: data_dir/data_file, output: data_file)
+endforeach
+
+
+inc_dir = include_directories('./data')
+# message(inc_dir)
 # Tests and executables.
 src = [util_src, fypp_src, prob_src]
-exec = executable('PE-Fortran', sources: [src, app_src])
+exec = executable('PE-Fortran', sources: [src, app_src], include_directories: inc_dir)
 test_multiprecision_m = executable('Test-multiprecision_m',  sources: [src, test_src[0]])
 test_prime_m = executable('Test-prime_m', sources: [src, test_src[1]])
 test_utility_m = executable('Test-utility_m', sources: [src, test_src[2]])

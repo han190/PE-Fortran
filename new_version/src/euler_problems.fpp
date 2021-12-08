@@ -8,7 +8,7 @@ module euler_problems_m
     end type euler_problem_t
 
     abstract interface
-        pure character(len=20) function euler_problem_x()
+        character(len=20) function euler_problem_x()
         end function euler_problem_x
     end interface
 

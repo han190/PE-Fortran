@@ -3,7 +3,7 @@ submodule(interface_m) euler_problem_0007_m
 
 contains
 
-    module pure character(len=20) function euler0007()
+    module character(len=20) function euler0007()
         write (euler0007, "(i20)") answer()
     end function euler0007
 

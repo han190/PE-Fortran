@@ -3,23 +3,19 @@ submodule(interface_m) euler_problem_0008_m
 
 contains
 
-    module pure character(len=20) function euler0008()
+    module character(len=20) function euler0008()
         write (euler0008, "(i20)") answer()
     end function euler0008
 
-    pure integer(i64) function answer()
-        use data_m, only: get_euler_data_0008
-        implicit none
+    integer(i64) function answer()
+        integer(i64) :: array(1000), i, iunit
 
-        integer(i64) :: array(1000), i
-        character(len=:), allocatable :: euler_data(:)
-
-        call get_euler_data_0008(euler_data)
+        open (newunit=iunit, file='data_0008.txt', &
+              status='old', action='read')
         do i = 1, 20
-            associate (sum_ => (i - 1)*50 + 1)
-                read (euler_data(i), "(50(i1))") array(sum_:sum_ + 49)
-            end associate
+            read (iunit, "(50(i1))") array((i - 1)*50 + 1:i*50)
         end do
+        close (iunit)
 
         answer = 0
         do i = 1, 988

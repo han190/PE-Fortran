@@ -7,7 +7,7 @@ module interface_m
     interface
 
         #: for i in range(1, NUM_PROB + 1)
-        module pure character(len=20) function euler${"%4.4d" % (i,)}$ ()
+        module character(len=20) function euler${"%4.4d" % (i,)}$ ()
         end function euler${"%4.4d" % (i,)}$
         #: endfor
 

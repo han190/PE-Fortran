@@ -3,25 +3,25 @@ submodule(interface_m) euler_problem_0018_m
 
 contains
 
-    module pure character(len=20) function euler0018()
+    module character(len=20) function euler0018()
         write (euler0018, "(i20)") answer()
     end function euler0018
 
-    pure integer(i32) function answer()
-        use data_m, only: get_euler_data_0018
-        implicit none
-
+    integer(i32) function answer()
         integer(i32), parameter :: n = 15
         type(variant_array_t), allocatable :: variant_array(:)
-        integer(i32) :: i, j, x
+        integer(i32) :: i, j, x, iunit
         character(len=:), allocatable :: euler_data(:)
 
-        call get_euler_data_0018(euler_data)
+        open (newunit=iunit, file="data_0018.txt", &
+              status="old", action="read")
+
         allocate (variant_array(n))
         do i = 1, n
             allocate (variant_array(i)%array(i))
-            read (euler_data(i), *) variant_array(i)%array
+            read (iunit, *) variant_array(i)%array
         end do
+        close (iunit)
 
         do j = n - 1, 1, -1
             do i = 1, j
