@@ -89,7 +89,7 @@ foreach data_file : data_src
 endforeach
 
 src = [util_src, fypp_src, prob_src]
-exec = executable('PE-Fortran', sources: [src, app_src], include_directories: inc_dir)
+exec = executable('PE-Fortran', sources: [src, app_src])
 test_multiprecision_m = executable('Test-multiprecision_m',  sources: [src, test_src[0]])
 test_prime_m = executable('Test-prime_m', sources: [src, test_src[1]])
 test_utility_m = executable('Test-utility_m', sources: [src, test_src[2]])

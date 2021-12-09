@@ -12,47 +12,39 @@ contains
         implicit none
 
         integer(i32), parameter :: n = 1000000
-        logical :: is_circular, is_circulars(n)
+        logical :: is_circular(n)
         integer(i32), allocatable :: array(:)
         logical, allocatable :: is_prime(:)
         integer(i32) :: i
 
         call Sieve_of_Eratosthenes(n, is_prime)
-        is_circulars = .false.
+        is_circular = .false.
 
         do i = 100, n
-            if (is_circulars(i)) cycle
-            call is_circular_prime(i, is_prime, array, is_circular)
-            if (is_circular) is_circulars(array) = .true.
+            if (is_circular(i)) cycle
+            call is_circular_prime(i, is_prime, array)
+            if (allocated(array)) is_circular(array) = .true.
         end do
-        answer = count(is_circulars) + 13
+        answer = count(is_circular) + 13
     end function answer
 
-    pure subroutine is_circular_prime(n, is_prime, array, is_circular)
+    pure subroutine is_circular_prime(n, is_prime, array)
         integer(i32), intent(in) :: n
         logical, intent(in) :: is_prime(:)
         integer(i32), allocatable, intent(out) :: array(:)
-        logical, intent(out) :: is_circular
-        integer(i32) :: temp
+        integer(i32) :: temp, i
 
-        is_circular = .true.
-        if (.not. is_prime(n)) then
-            is_circular = .false.
-            return
-        end if
+        if (allocated(array)) deallocate (array)
+        associate (x => number_of_digits(n))
+            temp = n
+            do i = 1, x
+                if (.not. is_prime(temp)) return
+                temp = rotate(temp)
+            end do
 
-        temp = rotate(n)
-        do
-            if (temp == n) exit
-            if (.not. is_prime(temp)) then
-                is_circular = .false.
-                return
-            end if
-            temp = rotate(temp)
-        end do
-
-        allocate (array(number_of_digits(n)))
-        call circular_array(n, array)
+            allocate (array(x))
+            call circular_array(n, array)
+        end associate
     end subroutine is_circular_prime
 
     pure subroutine circular_array(n, array)
