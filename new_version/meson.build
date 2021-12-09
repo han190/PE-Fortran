@@ -88,10 +88,6 @@ foreach data_file : data_src
     configure_file(copy:true, input: data_dir/data_file, output: data_file)
 endforeach
 
-
-inc_dir = include_directories('./data')
-# message(inc_dir)
-# Tests and executables.
 src = [util_src, fypp_src, prob_src]
 exec = executable('PE-Fortran', sources: [src, app_src], include_directories: inc_dir)
 test_multiprecision_m = executable('Test-multiprecision_m',  sources: [src, test_src[0]])
