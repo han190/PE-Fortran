@@ -129,10 +129,16 @@ contains
     pure function to_array_${T}$ (n) result(ret)
         integer(${T}$), intent(in) :: n
         integer(${T}$), allocatable :: ret(:)
-        integer(${T}$) :: i
+        integer(${T}$) :: i, temp
 
-        if (n < 0) error stop "to_array: n must be non-negative."
-        ret = [(unit_digit(n/10**(i - 1)), i=number_of_digits(n), 1, -1)]
+        temp = n
+        associate (l => number_of_digits(temp))
+            allocate(ret(l))
+            do i = l, 1, -1
+                ret(i) = unit_digit(temp)
+                temp = temp/10_${T}$
+            end do
+        end associate
     end function to_array_${T}$
     #: endfor
 
@@ -140,10 +146,13 @@ contains
     #: for T in integer_kinds
     pure integer(${T}$) function to_integer_${T}$ (arr)
         integer(${T}$), intent(in) :: arr(:)
-        integer(${T}$) :: i
+        integer(${T}$) :: i, temp
 
-        if (any(arr < 0)) error stop "to_integer: arr must be non-negative."
-        to_integer_${T}$ = sum([(arr(i)*10**(size(arr) - i), i=1, size(arr))])
+        temp = 0_${T}$
+        do i = 1, size(arr)
+            temp = temp*10_${T}$ + arr(i)
+        end do
+        to_integer_${T}$ = temp
     end function to_integer_${T}$
     #: endfor
 
