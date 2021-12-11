@@ -21,9 +21,12 @@ contains
         allocate (array(limit, limit))
         primes = get_primes(upper, "Sieve of Sundaram")
         array = .false.
-        do concurrent(i=lower:upper, j=lower:upper)
-            temp = convert_base_power([i, j], primes)
-            array(temp(1), temp(2)) = .true.
+
+        do i = lower, upper
+            do j = lower, upper
+                temp = convert_base_power([i, j], primes)
+                array(temp(1), temp(2)) = .true.
+            end do
         end do
         answer = count(array)
     end function answer

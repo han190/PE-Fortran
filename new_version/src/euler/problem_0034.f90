@@ -11,31 +11,19 @@ contains
         integer(i32), parameter :: n = 40585
         integer(i32) :: i
 
-        answer = 0
-        do i = 1, n
-            if (is_curious(i)) answer = answer + i
-        end do
+        answer = sum([(i, i=1, n)], mask=[(is_curious(i), i=1, n)]) - 3
     end function answer
 
     pure logical function is_curious(n)
         integer(i32), intent(in) :: n
-        integer(i32), allocatable :: array(:)
-        integer(i32) :: i, temp
+        integer(i32) :: i
 
-        if (any(n == [1, 2])) then
-            is_curious = .false.
-            return
-        end if
-
+        is_curious = .false.
         associate (x => to_array(n))
-            temp = sum([(factorial(x(i)), i=1, size(x))])
+            associate (temp => sum([(factorial(x(i)), i=1, size(x))]))
+                if (temp == n) is_curious = .true.
+            end associate
         end associate
-
-        if (temp == n) then
-            is_curious = .true.
-        else
-            is_curious = .false.
-        end if
     end function is_curious
 
     pure integer(i32) function factorial(n)

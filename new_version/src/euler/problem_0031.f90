@@ -15,11 +15,13 @@ contains
         coins = [1, 2, 5, 10, 20, 50, 100, 200]
         array(1:7, :) = 0; array(0, :) = 1
 
-        do concurrent(j=0:n, i=1:7)
-            associate (next => array(i, j), prev => array(i - 1, j))
-                next = prev
-                if (j >= coins(i)) next = next + array(i, j - coins(i))
-            end associate
+        do j = 0, n
+            do i = 1, 7
+                associate (next => array(i, j), prev => array(i - 1, j))
+                    next = prev
+                    if (j >= coins(i)) next = next + array(i, j - coins(i))
+                end associate
+            end do
         end do
         answer = array(7, n)
     end function answer

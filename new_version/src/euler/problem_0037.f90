@@ -46,7 +46,7 @@ contains
         integer(i64) :: temp
 
         temp = 10_i64
-        do while (temp < n)
+        do while (temp < n .and. mod(n, temp) >= 1)
             if (.not. is_prime(mod(n, temp))) then
                 is_left_truncatable = .false.
                 return

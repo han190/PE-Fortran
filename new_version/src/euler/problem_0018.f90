@@ -11,7 +11,6 @@ contains
         integer(i32), parameter :: n = 15
         type(variant_array_t), allocatable :: variant_array(:)
         integer(i32) :: i, j, x, iunit
-        character(len=:), allocatable :: euler_data(:)
 
         open (newunit=iunit, file="data_0018.txt", &
               status="old", action="read")
@@ -25,8 +24,9 @@ contains
 
         do j = n - 1, 1, -1
             do i = 1, j
-                x = max(variant_array(j + 1)%array(i), &
-                        variant_array(j + 1)%array(i + 1))
+                associate (a => variant_array(j + 1))
+                    x = max(a%array(i), a%array(i + 1))
+                end associate
                 variant_array(j)%array(i) = x + variant_array(j)%array(i)
             end do
         end do

@@ -12,12 +12,13 @@ contains
         implicit none
 
         integer(i32), parameter :: n = 1000000
-        logical :: is_circular(n)
+        logical, allocatable :: is_circular(:)
         integer(i32), allocatable :: array(:)
         logical, allocatable :: is_prime(:)
         integer(i32) :: i
 
         call Sieve_of_Eratosthenes(n, is_prime)
+        allocate (is_circular(n))
         is_circular = .false.
 
         do i = 100, n

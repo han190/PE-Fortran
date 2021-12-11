@@ -36,7 +36,7 @@ elif fc.get_id() == 'intel'
     if get_option('buildtype') == 'release'
         dialect = ['-xHost', '-ipo']
     elif get_option('buildtype') == 'debug'
-        dialect = ['-warn', '-debug extended', '-fpe0']
+        dialect = ['-traceback', '-warn', '-debug all', '-fpe0']
     endif
 endif
 add_global_arguments(dialect, language: 'fortran')
@@ -50,10 +50,10 @@ gen_f90 = generator(
     arguments: ['@INPUT@', '@EXTRA_ARGS@', '@OUTPUT@']
 )
 fypp_files = [
-    src_dir/'prime.fpp',
-    src_dir/'interface.fpp', 
-    src_dir/'euler_problems.fpp',
-    src_dir/'utility.fpp'
+    src_dir/'prime.fypp',
+    src_dir/'interface.fypp', 
+    src_dir/'euler_problems.fypp',
+    src_dir/'utility.fypp'
 ]
 fypp_src = gen_f90.process(fypp_files, extra_args: fypp_flag)
 
@@ -81,8 +81,14 @@ endforeach
 
 data_dir = 'data'
 data_src = [
-    'data_0008.txt', 'data_0011.txt', 'data_0013.txt', 'data_0018.txt',
-    'data_0022.txt', 'data_0042.txt', 'data_0054.txt', 'data_0059.txt'
+    'data_0008.txt', 
+    'data_0011.txt', 
+    'data_0013.txt', 
+    'data_0018.txt',
+    'data_0022.txt',
+    'data_0042.txt',
+    'data_0054.txt',
+    'data_0059.txt'
 ]
 foreach data_file : data_src
     configure_file(copy:true, input: data_dir/data_file, output: data_file)

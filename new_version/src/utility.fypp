@@ -215,7 +215,7 @@ contains
     #: for T in integer_kinds
     pure logical function is_pandigital_${T}$ (n)
         integer(${T}$), intent(in) :: n
-        integer(${T}$) :: digits, temp, l
+        integer(${T}$) :: temp, l
         logical, allocatable :: array(:)
 
         l = number_of_digits(n)
