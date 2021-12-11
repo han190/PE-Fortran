@@ -307,7 +307,7 @@ module multiprecision_m
     !>```
     public :: to_long
     interface to_long
-        module procedure to_long_char, to_long_int
+        module procedure to_long_char, to_long_int, to_long_arr
     end interface
 
 contains
@@ -370,8 +370,9 @@ contains
     !> Initialize an integer array to a `multiprecision_t`.
     pure subroutine init_arr_sub(self, arr)
         class(multiprecision_t), intent(inout) :: self
-        integer(i32), allocatable, intent(in) :: arr(:)
+        integer(i32), intent(in) :: arr(:)
 
+        call self%re_alloc(size(arr))
         self%arr = arr(:)
         self%sgn = '+'
     end subroutine init_arr_sub
@@ -413,6 +414,14 @@ contains
 
         ret = val
     end function to_long_int
+
+    !> Convert an integer array to a `multiprecision_t`.
+    pure function to_long_arr(val) result(ret)
+        integer(i32), intent(in) :: val(:)
+        type(multiprecision_t) :: ret
+
+        ret = val
+    end function to_long_arr
 
     !> To judge whether two `multiprecision_t`s are equal.
     pure logical function eq_func(self, val)
