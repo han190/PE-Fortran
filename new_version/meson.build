@@ -51,6 +51,7 @@ gen_f90 = generator(
 )
 fypp_files = [
     src_dir/'prime.fypp',
+    src_dir/'multiprecision.fypp',
     src_dir/'interface.fypp', 
     src_dir/'euler_problems.fypp',
     src_dir/'utility.fypp'
@@ -60,7 +61,6 @@ fypp_src = gen_f90.process(fypp_files, extra_args: fypp_flag)
 # Source files
 util_src = [
     src_dir/'constant.f90',
-    src_dir/'multiprecision.f90',
     src_dir/'driver.f90'
 ]
 

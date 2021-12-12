@@ -1,3 +1,10 @@
+#: set names = ['char', 'i32', 'i32_arr']
+#: set types = ['character(*)', 'integer(i32)', 'integer(i32), dimension(:)']
+#: set names_types = list(zip(names, types))
+#: set operators = ['==', '>', '<', '>=', '<=', '+', '-', '*']
+#: set heads = ['eq', 'gt', 'lt', 'ge', 'le', 'add', 'sub', 'mul']
+#: set operators_heads = list(zip(operators, heads))
+
 module multiprecision_utility_m
 
     use constant_m, only: i32
@@ -176,82 +183,6 @@ module multiprecision_m
 
     !> Muliple precision integer type for Project Euler
     !>
-    !>### Usage
-    !>#### Addition/Subtraction
-    !>``` fortran
-    !>program main
-    !>    use euler_multiprecision_m
-    !>    implicit none
-    !>
-    !>    type(multiprecision_t) :: a, b, c
-    !>    integer :: d
-    !>    integer :: e(4)
-    !>
-    !>    ! Initialization
-    !>    ! a = [2, 3, 4, 5, 6, 7, 8]
-    !>    a = '29348579238475928347592345'
-    !>    b = '49587394758345983423486928347'
-    !>    ! Add two multiprecision integer types together
-    !>    c = a + b ! or c = a - b
-    !>    ! Add a multiprecision integer type with an 32bit integer
-    !>    ! (every time the assignment '=' appears the allocatable array
-    !>    ! will be re-allocated)
-    !>    d = 2394
-    !>    c = a + d ! or c = a - d
-    !>    ! One could also do something like the following, the array
-    !>    ! will be treated like an integer.
-    !>    e = [2, 3, 9, 4]
-    !>    c = a + e
-    !>end program main
-    !>```
-    !>
-    !>#### Multiplication
-    !>``` fortran
-    !>program main
-    !>    use euler_multiprecision_m
-    !>    implicit none
-    !>
-    !>    type(multiprecision_t) :: a, b, c
-    !>    integer :: d
-    !>
-    !>    a = '29348579238475928347592345'
-    !>    b = '49587394758345983423486928347'
-    !>    d = 40
-    !>
-    !>    c = a*b
-    !>    c = a*d
-    !>end program main
-    !>```
-    !>
-    !>#### Power
-    !>``` fortran
-    !>program main
-    !>    use euler_multiprecision_m
-    !>    implicit none
-    !>
-    !>    type(multiprecision_t) :: a, b
-    !>
-    !>    b = a**2345
-    !>end program main
-    !>```
-    !>
-    !>#### Comparison
-    !>``` fortran
-    !>program main
-    !>    use euler_multiprecision_m
-    !>    implicit none
-    !>
-    !>    type(multiprecision_t) :: a, b
-    !>    integer :: c
-    !>
-    !>    a = '29348579238475928347592345'
-    !>    b = '49587394758345983423486928347'
-    !>    c = 34567
-    !>    print *, a >= b, a == b, a <= b
-    !>    print *, a >= c, a == c, a <= c
-    !>end program main
-    !>```
-    !>
     !>### To-do list
     !> * Print the value
     !> * Floor division (for Miller-rabin)
@@ -262,26 +193,12 @@ module multiprecision_m
         character(len=1) :: sgn
     contains
         procedure, private :: re_alloc
-        procedure, private :: init, init_char, init_int, init_arr
-        generic :: assignment(=) => init, init_char, init_int, init_arr
-        procedure, private :: eq, eq_int, eq_char
-        generic :: operator(==) => eq, eq_int, eq_char
-        procedure, private :: gt, gt_int, gt_char
-        generic :: operator(>) => gt, gt_int, gt_char
-        procedure, private :: lt, lt_int, lt_char
-        generic :: operator(<) => lt, lt_int, lt_char
-        procedure, private :: ge, ge_int, ge_char
-        generic :: operator(>=) => ge, ge_int, ge_char
-        procedure, private :: le, le_int, le_char
-        generic :: operator(<=) => le, le_int, le_char
-        procedure, private :: add, add_int, add_char
-        generic :: operator(+) => add, add_int, add_char
-        procedure, private :: sub, sub_int, sub_char
-        generic :: operator(-) => sub, sub_int, sub_char
-        procedure, private :: mul, mul_int, mul_char
-        generic :: operator(*) => mul, mul_int, mul_char
-        ! procedure, private :: div, div_int, div_char
-        ! generic :: operator(/) => div, div_int, div_char
+        procedure, private :: init#{for n in names}#,init_${n}$#{endfor}#
+        generic :: assignment(=) => init#{for n in names}#,init_${n}$#{endfor}#
+        #: for o, h in operators_heads
+        procedure, private :: ${h}$#{for n in names}#,${h}$_${n}$#{endfor}#
+        generic :: operator(${o}$) => ${h}$#{for n in names}#,${h}$_${n}$#{endfor}#
+        #: endfor
         procedure, private :: pow_int
         generic :: operator(**) => pow_int
         ! procedure, private :: fac, fac_int, fac_char
@@ -290,22 +207,11 @@ module multiprecision_m
 
     !> A generic interface that converts an integer or a string
     !> into a multiple precision integer type.
-    !>
-    !>### Usage
-    !>```fortran
-    !>program main
-    !>    use euler_multiprecision_m
-    !>    implicit none
-    !>
-    !>    type(multiprecision_t) :: a, b
-    !>    a = '23405982034958034850495098430294850293485'
-    !>    b = a + to_long('93845734958')
-    !>    b = a + to_long(1234)
-    !>end program main
-    !>```
     public :: to_long
     interface to_long
-        module procedure to_long_char, to_long_int, to_long_arr
+        #: for name in names
+        module procedure to_long_${name}$
+        #: endfor
     end interface
 
 contains
@@ -355,18 +261,8 @@ contains
         end select
     end subroutine init_char
 
-    !> Initialize an integer array to a `multiprecision_t`.
-    pure subroutine init_arr(self, arr)
-        class(multiprecision_t), intent(inout) :: self
-        integer(i32), intent(in) :: arr(:)
-
-        call self%re_alloc(size(arr))
-        self%arr = arr(:)
-        self%sgn = '+'
-    end subroutine init_arr
-
     !> Initialize an integer to a `multiprecision_t`.
-    pure subroutine init_int(self, val)
+    pure subroutine init_i32(self, val)
         class(multiprecision_t), intent(inout) :: self
         integer(i32), intent(in) :: val
         integer(i32) :: tmp, i, digs
@@ -385,31 +281,25 @@ contains
             self%arr(i) = int(mod(tmp, 10))
             tmp = tmp/10
         end do
-    end subroutine init_int
+    end subroutine init_i32
 
-    !> Convert a character type to a `multiprecision_t`.
-    pure function to_long_char(chars) result(ret)
-        character(len=*), intent(in) :: chars
-        type(multiprecision_t) :: ret
+    !> Initialize an integer array to a `multiprecision_t`.
+    pure subroutine init_i32_arr(self, arr)
+        class(multiprecision_t), intent(inout) :: self
+        integer(i32), intent(in) :: arr(:)
 
-        ret = chars
-    end function to_long_char
+        call self%re_alloc(size(arr))
+        self%arr = arr(:)
+        self%sgn = '+'
+    end subroutine init_i32_arr
 
-    !> Convert an integer type to a `multiprecision_t`.
-    pure function to_long_int(val) result(ret)
-        integer(i32), intent(in) :: val
-        type(multiprecision_t) :: ret
+    #: for name, T in names_types
+    pure type(multiprecision_t) function to_long_${name}$ (val)
+        ${T}$, intent(in) :: val
 
-        ret = val
-    end function to_long_int
-
-    !> Convert an integer array to a `multiprecision_t`.
-    pure function to_long_arr(val) result(ret)
-        integer(i32), intent(in) :: val(:)
-        type(multiprecision_t) :: ret
-
-        ret = val
-    end function to_long_arr
+        to_long_${name}$ = val
+    end function to_long_${name}$
+    #: endfor
 
     !> To judge whether two `multiprecision_t`s are equal.
     pure logical function eq(self, val)
@@ -421,21 +311,14 @@ contains
             self%sgn == val%sgn) eq = .true.
     end function eq
 
-    !> To judge whether a `multiprecision_t` and an integer are equal.
-    pure logical function eq_int(self, val)
+    #: for name, T in names_types
+    pure logical function eq_${name}$ (self, val)
         class(multiprecision_t), intent(in) :: self
-        integer(i32), intent(in) :: val
+        ${T}$, intent(in) :: val
 
-        eq_int = self%eq(to_long(val))
-    end function eq_int
-
-    !> To judge whether a `multiprecision_t` and an character are equal.
-    pure logical function eq_char(self, val)
-        class(multiprecision_t), intent(in) :: self
-        character(len=*), intent(in) :: val
-
-        eq_char = self%eq(to_long(val))
-    end function eq_char
+        eq_${name}$ = self%eq(to_long(val))
+    end function eq_${name}$
+    #: endfor
 
     !> To judge whether a `multiprecision_t` is
     !> greater than a `multiprecision_t`.
@@ -455,23 +338,14 @@ contains
         end if
     end function gt
 
-    !> To judge whether a `multiprecision_t` is
-    !> greater than an integer.
-    pure logical function gt_int(self, val)
+    #: for name, T in names_types
+    pure logical function gt_${name}$ (self, val)
         class(multiprecision_t), intent(in) :: self
-        integer(i32), intent(in) :: val
+        ${T}$, intent(in) :: val
 
-        gt_int = self%gt(to_long(val))
-    end function gt_int
-
-    !> To judge whether a `multiprecision_t` is
-    !> greather than an character.
-    pure logical function gt_char(self, val)
-        class(multiprecision_t), intent(in) :: self
-        character(len=*), intent(in) :: val
-
-        gt_char = self%gt(to_long(val))
-    end function gt_char
+        gt_${name}$ = self%gt(to_long(val))
+    end function gt_${name}$
+    #: endfor
 
     !> To judge whether a `multiprecision_t` is
     !> less than a `multiprecision_t`.
@@ -491,23 +365,14 @@ contains
         end if
     end function lt
 
-    !> To judge whether a `multiprecision_t` is
-    !> less than an integer.
-    pure logical function lt_int(self, val)
+    #: for name, T in names_types
+    pure logical function lt_${name}$ (self, val)
         class(multiprecision_t), intent(in) :: self
-        integer(i32), intent(in) :: val
+        ${T}$, intent(in) :: val
 
-        lt_int = self%lt(to_long(val))
-    end function lt_int
-
-    !> To judge whether a `multiprecision_t` is
-    !> less than a character.
-    pure logical function lt_char(self, val)
-        class(multiprecision_t), intent(in) :: self
-        character(len=*), intent(in) :: val
-
-        lt_char = self%lt(to_long(val))
-    end function lt_char
+        lt_${name}$ = self%lt(to_long(val))
+    end function lt_${name}$
+    #: endfor
 
     !> To judge whether a `multiprecision_t` is
     !> greater than or equal to a `multiprecision_t`.
@@ -519,23 +384,14 @@ contains
         if (self%gt(val) .or. self%eq(val)) ge = .true.
     end function ge
 
-    !> To judge whether a `multiprecision_t` is
-    !> greater than or equal to a `multiprecision_t`.
-    pure logical function ge_int(self, val)
+    #: for name, T in names_types
+    pure logical function ge_${name}$ (self, val)
         class(multiprecision_t), intent(in) :: self
-        integer(i32), intent(in) :: val
+        ${T}$, intent(in) :: val
 
-        ge_int = self%ge(to_long(val))
-    end function ge_int
-
-    !> To judge whether a `multiprecision_t` is
-    !> greater than or equal to a character.
-    pure logical function ge_char(self, val)
-        class(multiprecision_t), intent(in) :: self
-        character(len=*), intent(in) :: val
-
-        ge_char = self%ge(to_long(val))
-    end function ge_char
+        ge_${name}$ = self%ge(to_long(val))
+    end function ge_${name}$
+    #: endfor
 
     !> To judge whether a `multiprecision_t` is
     !> less than or equal to a `multiprecision_t`.
@@ -547,23 +403,14 @@ contains
         if (self%lt(val) .or. self%eq(val)) le = .true.
     end function le
 
-    !> To judge whether a `multiprecision_t` is
-    !> less than or equal to a integer.
-    pure logical function le_int(self, val)
+    #: for name, T in names_types
+    pure logical function le_${name}$ (self, val)
         class(multiprecision_t), intent(in) :: self
-        integer(i32), intent(in) :: val
+        ${T}$, intent(in) :: val
 
-        le_int = self%le(to_long(val))
-    end function le_int
-
-    !> To judge whether a `multiprecision_t` is
-    !> less than or equal to a character.
-    pure logical function le_char(self, val)
-        class(multiprecision_t), intent(in) :: self
-        character(len=*), intent(in) :: val
-
-        le_char = self%le(to_long(val))
-    end function le_char
+        le_${name}$ = self%le(to_long(val))
+    end function le_${name}$
+    #: endfor
 
     !> Add two `multiprecision_t`s.
     pure function add(self, val) result(ret)
@@ -597,25 +444,17 @@ contains
                 ret%sgn = '+'
             end if
         end if
-    end function
+    end function add
 
-    !> Add a `multiprecision_t` and an integer.
-    pure function add_int(self, val) result(ret)
+    #: for name, T in names_types
+    pure function add_${name}$ (self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
-        integer(i32), intent(in) :: val
+        ${T}$, intent(in) :: val
         type(multiprecision_t) :: ret
 
         ret = self%add(to_long(val))
-    end function add_int
-
-    !> Add a `multiprecision_t` and a character.
-    pure function add_char(self, val) result(ret)
-        class(multiprecision_t), intent(in) :: self
-        character(len=*), intent(in) :: val
-        type(multiprecision_t) :: ret
-
-        ret = self%add(to_long(val))
-    end function add_char
+    end function add_${name}$
+    #: endfor
 
     !> Substract a `multiprecision_t` by a `multiprecision_t`.
     pure function sub(self, val) result(ret)
@@ -650,23 +489,15 @@ contains
         end if
     end function sub
 
-    !> Substract a `multiprecision_t` by an integer.
-    pure function sub_int(self, val) result(ret)
+    #: for name, T in names_types
+    pure function sub_${name}$ (self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
-        integer(i32), intent(in) :: val
+        ${T}$, intent(in) :: val
         type(multiprecision_t) :: ret
 
         ret = self%sub(to_long(val))
-    end function sub_int
-
-    !> Substract a `multiprecision_t` by an character.
-    pure function sub_char(self, val) result(ret)
-        class(multiprecision_t), intent(in) :: self
-        character(len=*), intent(in) :: val
-        type(multiprecision_t) :: ret
-
-        ret = self%sub(to_long(val))
-    end function sub_char
+    end function sub_${name}$
+    #: endfor
 
     !> Multiply a `multiprecision_t` by a `multiprecision_t`.
     pure function mul(self, val) result(ret)
@@ -686,23 +517,15 @@ contains
         end if
     end function mul
 
-    !> Multiply a `multiprecision_t` by an integer.
-    pure function mul_int(self, val) result(ret)
+    #: for name, T in names_types
+    pure function mul_${name}$ (self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
-        integer(i32), intent(in) :: val
+        ${T}$, intent(in) :: val
         type(multiprecision_t) :: ret
 
         ret = self%mul(to_long(val))
-    end function mul_int
-
-    !> Multiply a `multiprecision_t` by a character.
-    pure function mul_char(self, val) result(ret)
-        class(multiprecision_t), intent(in) :: self
-        character(len=*), intent(in) :: val
-        type(multiprecision_t) :: ret
-
-        ret = self%mul(to_long(val))
-    end function mul_char
+    end function mul_${name}$
+    #: endfor
 
     !> Power of an integer.
     pure function pow_int(self, val) result(ret)
