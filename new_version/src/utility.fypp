@@ -85,6 +85,13 @@ module utility_m
         #: endfor
     end interface gcd
 
+    !> Next permutation
+    interface next_permutation
+        #: for T in integer_kinds
+        module procedure next_permutation_${T}$
+        #: endfor
+    end interface next_permutation
+
     !> Variant length array
     type, public :: variant_array_t
         integer(i32), allocatable :: array(:)
@@ -133,7 +140,7 @@ contains
 
         temp = n
         associate (l => number_of_digits(temp))
-            allocate(ret(l))
+            allocate (ret(l))
             do i = l, 1, -1
                 ret(i) = unit_digit(temp)
                 temp = temp/10_${T}$
@@ -150,7 +157,7 @@ contains
 
         temp = 0_${T}$
         do i = 1, size(arr)
-            temp = temp*10_${T}$ + arr(i)
+            temp = temp*10_${T}$+arr(i)
         end do
         to_integer_${T}$ = temp
     end function to_integer_${T}$
@@ -260,6 +267,38 @@ contains
 
         lcm_${T}$ = abs(a*b)/gcd_${T}$ (a, b)
     end function lcm_${T}$
+    #: endfor
+
+    !> Next permutation (k, n)
+    #: for T in integer_kinds
+    pure subroutine next_permutation_${T}$ (k, n, idx, next_available)
+        integer(${T}$), intent(in) :: k, n
+        integer(${T}$), intent(inout) :: idx(k)
+        logical, intent(out) :: next_available
+        logical :: carried(k)
+        integer(${T}$) :: i
+
+        next_available = .true.
+        associate (end => [(i, i=n - k + 1, n)])
+            if (all(idx == end)) then
+                next_available = .false.
+                return
+            end if
+        end associate
+
+        carried = .true.
+        label_carried_array: do i = k, 1, -1
+            if (idx(i) == n - k + i) carried(i) = .false.
+        end do label_carried_array
+
+        if (all(carried)) then
+            idx(k) = idx(k) + 1
+        else
+            associate (x => findloc(carried, value=.false., dim=1) - 1)
+                idx(x:k) = [(idx(x) + i, i=1, k - x + 1)]
+            end associate
+        end if
+    end subroutine next_permutation_${T}$
     #: endfor
 
 end module utility_m

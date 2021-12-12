@@ -8,7 +8,7 @@ contains
     end function euler0054
 
     integer(i32) function answer()
-        character(len=2) :: string_array(10)
+        character(len=2) :: cards(10)
         integer(i32) :: i, iunit
 
         open (newunit=iunit, file="data_0054.txt", &
@@ -16,8 +16,8 @@ contains
 
         answer = 0
         do i = 1, 1000
-            read (iunit, *) string_array
-            if (player_one_win(string_array)) answer = answer + 1
+            read (iunit, *) cards
+            if (player_one_win(cards)) answer = answer + 1
         end do
         close (iunit)
     end function answer
@@ -39,7 +39,6 @@ contains
                 return
             end if
         end do
-
         error stop "There is no tie."
     end function player_one_win
 
