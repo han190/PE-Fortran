@@ -40,7 +40,7 @@ Usage:
 
 To count LOC:
 ```bash
-cloc --force-lang="Fortran 90",fpp src
+cloc --force-lang="Fortran 90",fypp src
 ```
 
 ## A todo list
