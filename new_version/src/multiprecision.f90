@@ -3,7 +3,7 @@ module multiprecision_utility_m
     use constant_m, only: i32
     implicit none
     private
-    public :: add, sub, compare, mul, pow2
+    public :: add_, sub_, comp_, mul_, pow_
 
 contains
 
@@ -20,7 +20,7 @@ contains
         ret = arr(findloc(arr == 0, value=.false., dim=1):)
     end function cut_leading_zeros
 
-    !> The core function to carry digits during add and multiplication.
+    !> The core function to carry digits during add_ and multiplication.
     !>
     !> Each element of the input array is an 32bit integer greater than or
     !> equal to zero and less than or equal to nine.
@@ -48,7 +48,7 @@ contains
     !> added array iteratively until all elements of the array are greater
     !> than or equal to zero and less than or equal to nine. Finally, the
     !> leading zeros are deleted by `cut_leading_zeros`.
-    pure function add(arr1, arr2) result(ret)
+    pure function add_(arr1, arr2) result(ret)
         integer(i32), contiguous, intent(in) :: arr1(:), arr2(:)
         integer(i32), allocatable, dimension(:) :: ret, tmp1, tmp2
 
@@ -58,13 +58,13 @@ contains
             tmp2 = 0; tmp2(x - size(arr2) + 1:x) = arr2(:)
         end associate
         ret = cut_leading_zeros(carry(tmp1 + tmp2))
-    end function add
+    end function add_
 
     !> The core function to provide the ability of subtraction.
     !>
     !> Each element of the input array is an 32bit integer greater than or
     !> equal to zero and less than or equal to nine.
-    pure function sub(arr1, arr2) result(ret)
+    pure function sub_(arr1, arr2) result(ret)
         integer(i32), contiguous, intent(in) :: arr1(:), arr2(:)
         integer(i32), allocatable, dimension(:) :: ret, tmp1, tmp2, tmp
         integer(i32) :: i
@@ -85,7 +85,7 @@ contains
             end if
         end do
         ret = cut_leading_zeros(tmp)
-    end function sub
+    end function sub_
 
     !> The core function to provide the ability of comparison.
     !>
@@ -95,7 +95,7 @@ contains
     !> |`ret = 1`  |arr1 > arr2|
     !> |`ret = 0`  |arr1 = arr2|
     !> |`ret = -1` |arr1 < arr2|
-    pure function compare(arr1, arr2) result(ret)
+    pure function comp_(arr1, arr2) result(ret)
         integer(i32), contiguous, intent(in) :: arr1(:), arr2(:)
         integer(i32) :: ret, i
 
@@ -114,14 +114,14 @@ contains
                 ret = 0
             end if
         end do
-        if (ret /= 0) error stop 'compare: invalid output.'
-    end function compare
+        if (ret /= 0) error stop 'comp_: invalid output.'
+    end function comp_
 
     !> The core function to provide the ability of multiplication.
     !>
     !> Each element of the input array is an 32bit integer greater than or
     !> equal to zero and less than or equal to nine.
-    pure function mul(arr1, arr2) result(ret)
+    pure function mul_(arr1, arr2) result(ret)
         integer(i32), contiguous, intent(in) :: arr1(:), arr2(:)
         integer(i32), allocatable :: tmp(:), tmp_row(:), ret(:)
         integer(i32) :: i
@@ -136,7 +136,7 @@ contains
             end do
         end associate
         ret = cut_leading_zeros(carry(tmp))
-    end function mul
+    end function mul_
 
     !> The core function to provide the ability of power.
     !>
@@ -146,24 +146,24 @@ contains
     !> ([wiki links](https://en.wikipedia.org/wiki/
     !>Exponentiation_by_squaring)). The function currently doesn't
     !> support negative powers.
-    pure recursive function pow2(arr, n) result(ret)
+    pure recursive function pow_(arr, n) result(ret)
         integer(i32), contiguous, intent(in) :: arr(:)
         integer(i32), intent(in) :: n
         integer(i32), allocatable :: ret(:)
 
-        if (n < 0) error stop 'pow2: n is nonnegative.'
+        if (n < 0) error stop 'pow_: n is nonnegative.'
 
         if (n == 0) then
             ret = [1]
         else if (n == 1) then
             ret = arr
         else if (mod(n, 2) == 0) then
-            ret = pow2(mul(arr, arr), n/2)
+            ret = pow_(mul_(arr, arr), n/2)
         else if (mod(n, 2) /= 0) then
-            ret = pow2(mul(arr, arr), (n - 1)/2)
-            ret = mul(arr, ret)
+            ret = pow_(mul_(arr, arr), (n - 1)/2)
+            ret = mul_(arr, ret)
         end if
-    end function pow2
+    end function pow_
 
 end module multiprecision_utility_m
 
@@ -261,33 +261,31 @@ module multiprecision_m
         integer(i32), allocatable :: arr(:)
         character(len=1) :: sgn
     contains
-        procedure :: re_alloc => re_alloc_sub
-        procedure, private :: init_sub, init_char_sub, &
-            init_int_sub, init_arr_sub
-        generic :: assignment(=) => init_sub, init_char_sub, &
-            init_int_sub, init_arr_sub
-        procedure, private :: eq_func, eq_int_func, eq_char_func
-        generic :: operator(==) => eq_func, eq_int_func, eq_char_func
-        procedure, private :: gt_func, gt_int_func, gt_char_func
-        generic :: operator(>) => gt_func, gt_int_func, gt_char_func
-        procedure, private :: lt_func, lt_int_func, lt_char_func
-        generic :: operator(<) => lt_func, lt_int_func, lt_char_func
-        procedure, private :: ge_func, ge_int_func, ge_char_func
-        generic :: operator(>=) => ge_func, ge_int_func, ge_char_func
-        procedure, private :: le_func, le_int_func, le_char_func
-        generic :: operator(<=) => le_func, le_int_func, le_char_func
-        procedure, private :: add_func, add_int_func, add_char_func
-        generic :: operator(+) => add_func, add_int_func, add_char_func
-        procedure, private :: sub_func, sub_int_func, sub_char_func
-        generic :: operator(-) => sub_func, sub_int_func, sub_char_func
-        procedure, private :: mul_func, mul_int_func, mul_char_func
-        generic :: operator(*) => mul_func, mul_int_func, mul_char_func
-        ! procedure, private :: div_func, div_int_func, div_char_func
-        ! generic :: operator(/) => div_func, div_int_func, div_char_func
-        procedure, private :: pow_int_func
-        generic :: operator(**) => pow_int_func
-        ! procedure, private :: fac_func, fac_int_func, fac_char_func
-        ! generic :: operator(.fac.) => fac_func, fac_int_func, fac_char_func
+        procedure, private :: re_alloc
+        procedure, private :: init, init_char, init_int, init_arr
+        generic :: assignment(=) => init, init_char, init_int, init_arr
+        procedure, private :: eq, eq_int, eq_char
+        generic :: operator(==) => eq, eq_int, eq_char
+        procedure, private :: gt, gt_int, gt_char
+        generic :: operator(>) => gt, gt_int, gt_char
+        procedure, private :: lt, lt_int, lt_char
+        generic :: operator(<) => lt, lt_int, lt_char
+        procedure, private :: ge, ge_int, ge_char
+        generic :: operator(>=) => ge, ge_int, ge_char
+        procedure, private :: le, le_int, le_char
+        generic :: operator(<=) => le, le_int, le_char
+        procedure, private :: add, add_int, add_char
+        generic :: operator(+) => add, add_int, add_char
+        procedure, private :: sub, sub_int, sub_char
+        generic :: operator(-) => sub, sub_int, sub_char
+        procedure, private :: mul, mul_int, mul_char
+        generic :: operator(*) => mul, mul_int, mul_char
+        ! procedure, private :: div, div_int, div_char
+        ! generic :: operator(/) => div, div_int, div_char
+        procedure, private :: pow_int
+        generic :: operator(**) => pow_int
+        ! procedure, private :: fac, fac_int, fac_char
+        ! generic :: operator(.fac.) => fac, fac_int, fac_char
     end type multiprecision_t
 
     !> A generic interface that converts an integer or a string
@@ -315,7 +313,7 @@ contains
     !> Reallocate a `multiprecision_t`.
     !> This subroutine prevents unnecessary deallocations and re-allocations
     !> of `self%arr`. This is particularly useful when `=` appears in a loop.
-    pure subroutine re_alloc_sub(self, n)
+    pure subroutine re_alloc(self, n)
         class(multiprecision_t), intent(inout) :: self
         integer(i32), intent(in) :: n
 
@@ -327,58 +325,48 @@ contains
         else
             allocate (self%arr(n))
         end if
-    end subroutine re_alloc_sub
+    end subroutine re_alloc
 
     !> Initialize a `multiprecision_t` to a `multiprecision_t`
-    pure subroutine init_sub(self, val)
+    pure subroutine init(self, val)
         class(multiprecision_t), intent(inout) :: self
         type(multiprecision_t), intent(in) :: val
 
         call self%re_alloc(size(val%arr))
         self%sgn = val%sgn
         self%arr = val%arr
-    end subroutine init_sub
+    end subroutine init
 
     !> Initialize a character type to a `multiprecision_t`.
-    pure subroutine init_char_sub(self, chars)
+    pure subroutine init_char(self, chars)
         class(multiprecision_t), intent(inout) :: self
         character(len=*), intent(in) :: chars
         integer(i32) :: i
 
         select case (chars(1:1))
-        case ('+')
-            self%sgn = '+'
+        case ('+', '-')
+            self%sgn = chars(1:1)
             call self%re_alloc(len(chars) - 1)
-            do i = 2, len(chars)
-                read (chars(i:i), *) self%arr(i - 1)
-            end do
-        case ('-')
-            self%sgn = '-'
-            call self%re_alloc(len(chars) - 1)
-            do i = 2, len(chars)
-                read (chars(i:i), *) self%arr(i - 1)
-            end do
+            read (chars(2:len(chars)), "(*(i1))") self%arr
         case default
             self%sgn = '+'
             call self%re_alloc(len(chars))
-            do i = 1, len(chars)
-                read (chars(i:i), *) self%arr(i)
-            end do
+            read (chars(1:len(chars)), "(*(i1))") self%arr
         end select
-    end subroutine init_char_sub
+    end subroutine init_char
 
     !> Initialize an integer array to a `multiprecision_t`.
-    pure subroutine init_arr_sub(self, arr)
+    pure subroutine init_arr(self, arr)
         class(multiprecision_t), intent(inout) :: self
         integer(i32), intent(in) :: arr(:)
 
         call self%re_alloc(size(arr))
         self%arr = arr(:)
         self%sgn = '+'
-    end subroutine init_arr_sub
+    end subroutine init_arr
 
     !> Initialize an integer to a `multiprecision_t`.
-    pure subroutine init_int_sub(self, val)
+    pure subroutine init_int(self, val)
         class(multiprecision_t), intent(inout) :: self
         integer(i32), intent(in) :: val
         integer(i32) :: tmp, i, digs
@@ -397,7 +385,7 @@ contains
             self%arr(i) = int(mod(tmp, 10))
             tmp = tmp/10
         end do
-    end subroutine init_int_sub
+    end subroutine init_int
 
     !> Convert a character type to a `multiprecision_t`.
     pure function to_long_char(chars) result(ret)
@@ -424,213 +412,213 @@ contains
     end function to_long_arr
 
     !> To judge whether two `multiprecision_t`s are equal.
-    pure logical function eq_func(self, val)
+    pure logical function eq(self, val)
         class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
 
-        eq_func = .false.
-        if (compare(self%arr, val%arr) == 0 .and. &
-            self%sgn == val%sgn) eq_func = .true.
-    end function eq_func
+        eq = .false.
+        if (comp_(self%arr, val%arr) == 0 .and. &
+            self%sgn == val%sgn) eq = .true.
+    end function eq
 
     !> To judge whether a `multiprecision_t` and an integer are equal.
-    pure logical function eq_int_func(self, val)
+    pure logical function eq_int(self, val)
         class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
 
-        eq_int_func = self%eq_func(to_long(val))
-    end function eq_int_func
+        eq_int = self%eq(to_long(val))
+    end function eq_int
 
     !> To judge whether a `multiprecision_t` and an character are equal.
-    pure logical function eq_char_func(self, val)
+    pure logical function eq_char(self, val)
         class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
 
-        eq_char_func = self%eq_func(to_long(val))
-    end function eq_char_func
+        eq_char = self%eq(to_long(val))
+    end function eq_char
 
     !> To judge whether a `multiprecision_t` is
     !> greater than a `multiprecision_t`.
-    pure logical function gt_func(self, val)
+    pure logical function gt(self, val)
         class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
 
-        gt_func = .false.
+        gt = .false.
         if (self%sgn == '+' .and. val%sgn == '-') then
-            gt_func = .true.
-        else if (compare(self%arr, val%arr) == 1 .and. &
+            gt = .true.
+        else if (comp_(self%arr, val%arr) == 1 .and. &
                  self%sgn == '+' .and. val%sgn == '+') then
-            gt_func = .true.
-        else if (compare(self%arr, val%arr) == -1 .and. &
+            gt = .true.
+        else if (comp_(self%arr, val%arr) == -1 .and. &
                  self%sgn == '-' .and. val%sgn == '-') then
-            gt_func = .true.
+            gt = .true.
         end if
-    end function gt_func
+    end function gt
 
     !> To judge whether a `multiprecision_t` is
     !> greater than an integer.
-    pure logical function gt_int_func(self, val)
+    pure logical function gt_int(self, val)
         class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
 
-        gt_int_func = self%gt_func(to_long(val))
-    end function gt_int_func
+        gt_int = self%gt(to_long(val))
+    end function gt_int
 
     !> To judge whether a `multiprecision_t` is
     !> greather than an character.
-    pure logical function gt_char_func(self, val)
+    pure logical function gt_char(self, val)
         class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
 
-        gt_char_func = self%gt_func(to_long(val))
-    end function gt_char_func
+        gt_char = self%gt(to_long(val))
+    end function gt_char
 
     !> To judge whether a `multiprecision_t` is
     !> less than a `multiprecision_t`.
-    pure logical function lt_func(self, val)
+    pure logical function lt(self, val)
         class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
 
-        lt_func = .false.
+        lt = .false.
         if (self%sgn == '-' .and. val%sgn == '+') then
-            lt_func = .true.
-        else if (compare(self%arr, val%arr) == -1 .and. &
+            lt = .true.
+        else if (comp_(self%arr, val%arr) == -1 .and. &
                  self%sgn == '+' .and. val%sgn == '+') then
-            lt_func = .true.
-        else if (compare(self%arr, val%arr) == 1 .and. &
+            lt = .true.
+        else if (comp_(self%arr, val%arr) == 1 .and. &
                  self%sgn == '-' .and. val%sgn == '-') then
-            lt_func = .true.
+            lt = .true.
         end if
-    end function lt_func
+    end function lt
 
     !> To judge whether a `multiprecision_t` is
     !> less than an integer.
-    pure logical function lt_int_func(self, val)
+    pure logical function lt_int(self, val)
         class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
 
-        lt_int_func = self%lt_func(to_long(val))
-    end function lt_int_func
+        lt_int = self%lt(to_long(val))
+    end function lt_int
 
     !> To judge whether a `multiprecision_t` is
     !> less than a character.
-    pure logical function lt_char_func(self, val)
+    pure logical function lt_char(self, val)
         class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
 
-        lt_char_func = self%lt_func(to_long(val))
-    end function lt_char_func
+        lt_char = self%lt(to_long(val))
+    end function lt_char
 
     !> To judge whether a `multiprecision_t` is
     !> greater than or equal to a `multiprecision_t`.
-    pure logical function ge_func(self, val)
+    pure logical function ge(self, val)
         class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
 
-        ge_func = .false.
-        if (self%gt_func(val) .or. self%eq_func(val)) ge_func = .true.
-    end function ge_func
+        ge = .false.
+        if (self%gt(val) .or. self%eq(val)) ge = .true.
+    end function ge
 
     !> To judge whether a `multiprecision_t` is
     !> greater than or equal to a `multiprecision_t`.
-    pure logical function ge_int_func(self, val)
+    pure logical function ge_int(self, val)
         class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
 
-        ge_int_func = self%ge_func(to_long(val))
-    end function ge_int_func
+        ge_int = self%ge(to_long(val))
+    end function ge_int
 
     !> To judge whether a `multiprecision_t` is
     !> greater than or equal to a character.
-    pure logical function ge_char_func(self, val)
+    pure logical function ge_char(self, val)
         class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
 
-        ge_char_func = self%ge_func(to_long(val))
-    end function ge_char_func
+        ge_char = self%ge(to_long(val))
+    end function ge_char
 
     !> To judge whether a `multiprecision_t` is
     !> less than or equal to a `multiprecision_t`.
-    pure logical function le_func(self, val)
+    pure logical function le(self, val)
         class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
 
-        le_func = .false.
-        if (self%lt_func(val) .or. self%eq_func(val)) le_func = .true.
-    end function le_func
+        le = .false.
+        if (self%lt(val) .or. self%eq(val)) le = .true.
+    end function le
 
     !> To judge whether a `multiprecision_t` is
     !> less than or equal to a integer.
-    pure logical function le_int_func(self, val)
+    pure logical function le_int(self, val)
         class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
 
-        le_int_func = self%le_func(to_long(val))
-    end function le_int_func
+        le_int = self%le(to_long(val))
+    end function le_int
 
     !> To judge whether a `multiprecision_t` is
     !> less than or equal to a character.
-    pure logical function le_char_func(self, val)
+    pure logical function le_char(self, val)
         class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
 
-        le_char_func = self%le_func(to_long(val))
-    end function le_char_func
+        le_char = self%le(to_long(val))
+    end function le_char
 
     !> Add two `multiprecision_t`s.
-    pure function add_func(self, val) result(ret)
+    pure function add(self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        if (compare(self%arr, val%arr) == 0 .and. &
+        if (comp_(self%arr, val%arr) == 0 .and. &
             self%sgn /= val%sgn) then
             ret = '0'
         else if (self%sgn == '+' .and. val%sgn == '+') then
-            ret%arr = add(self%arr, val%arr)
+            ret%arr = add_(self%arr, val%arr)
             ret%sgn = '+'
         else if (self%sgn == '-' .and. val%sgn == '-') then
-            ret%arr = add(self%arr, val%arr)
+            ret%arr = add_(self%arr, val%arr)
             ret%sgn = '-'
         else if (self%sgn == '+' .and. val%sgn == '-') then
-            if (compare(self%arr, val%arr) == 1) then
-                ret%arr = sub(self%arr, val%arr)
+            if (comp_(self%arr, val%arr) == 1) then
+                ret%arr = sub_(self%arr, val%arr)
                 ret%sgn = '+'
             else
-                ret%arr = sub(val%arr, self%arr)
+                ret%arr = sub_(val%arr, self%arr)
                 ret%sgn = '-'
             end if
         else if (self%sgn == '-' .and. val%sgn == '+') then
-            if (compare(self%arr, val%arr) == 1) then
-                ret%arr = sub(self%arr, val%arr)
+            if (comp_(self%arr, val%arr) == 1) then
+                ret%arr = sub_(self%arr, val%arr)
                 ret%sgn = '-'
             else
-                ret%arr = sub(val%arr, self%arr)
+                ret%arr = sub_(val%arr, self%arr)
                 ret%sgn = '+'
             end if
         end if
     end function
 
     !> Add a `multiprecision_t` and an integer.
-    pure function add_int_func(self, val) result(ret)
+    pure function add_int(self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        ret = self%add_func(to_long(val))
-    end function add_int_func
+        ret = self%add(to_long(val))
+    end function add_int
 
     !> Add a `multiprecision_t` and a character.
-    pure function add_char_func(self, val) result(ret)
+    pure function add_char(self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        ret = self%add_func(to_long(val))
-    end function add_char_func
+        ret = self%add(to_long(val))
+    end function add_char
 
     !> Substract a `multiprecision_t` by a `multiprecision_t`.
-    pure function sub_func(self, val) result(ret)
+    pure function sub(self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
         type(multiprecision_t) :: ret
@@ -638,50 +626,50 @@ contains
         if (self == val) then
             ret = '0'
         else if (self%sgn == '+' .and. val%sgn == '+') then
-            if (compare(self%arr, val%arr) == 1) then
-                ret%arr = sub(self%arr, val%arr)
+            if (comp_(self%arr, val%arr) == 1) then
+                ret%arr = sub_(self%arr, val%arr)
                 ret%sgn = '+'
             else
-                ret%arr = sub(val%arr, self%arr)
+                ret%arr = sub_(val%arr, self%arr)
                 ret%sgn = '-'
             end if
         else if (self%sgn == '+' .and. val%sgn == '-') then
-            ret%arr = add(self%arr, val%arr)
+            ret%arr = add_(self%arr, val%arr)
             ret%sgn = '+'
         else if (self%sgn == '-' .and. val%sgn == '+') then
-            ret%arr = add(self%arr, val%arr)
+            ret%arr = add_(self%arr, val%arr)
             ret%sgn = '-'
         else if (self%sgn == '-' .and. val%sgn == '-') then
-            if (compare(self%arr, val%arr) == 1) then
-                ret%arr = sub(self%arr, val%arr)
+            if (comp_(self%arr, val%arr) == 1) then
+                ret%arr = sub_(self%arr, val%arr)
                 ret%sgn = '-'
             else
-                ret%arr = sub(val%arr, self%arr)
+                ret%arr = sub_(val%arr, self%arr)
                 ret%sgn = '+'
             end if
         end if
-    end function sub_func
+    end function sub
 
     !> Substract a `multiprecision_t` by an integer.
-    pure function sub_int_func(self, val) result(ret)
+    pure function sub_int(self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        ret = self%sub_func(to_long(val))
-    end function sub_int_func
+        ret = self%sub(to_long(val))
+    end function sub_int
 
     !> Substract a `multiprecision_t` by an character.
-    pure function sub_char_func(self, val) result(ret)
+    pure function sub_char(self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        ret = self%sub_func(to_long(val))
-    end function sub_char_func
+        ret = self%sub(to_long(val))
+    end function sub_char
 
     !> Multiply a `multiprecision_t` by a `multiprecision_t`.
-    pure function mul_func(self, val) result(ret)
+    pure function mul(self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
         type(multiprecision_t), intent(in) :: val
         type(multiprecision_t) :: ret
@@ -691,48 +679,48 @@ contains
             ret%arr = [0]
         else if (self%sgn == val%sgn) then
             ret%sgn = '+'
-            ret%arr = mul(self%arr, val%arr)
+            ret%arr = mul_(self%arr, val%arr)
         else if (self%sgn /= val%sgn) then
             ret%sgn = '-'
-            ret%arr = mul(self%arr, val%arr)
+            ret%arr = mul_(self%arr, val%arr)
         end if
-    end function mul_func
+    end function mul
 
     !> Multiply a `multiprecision_t` by an integer.
-    pure function mul_int_func(self, val) result(ret)
+    pure function mul_int(self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        ret = self%mul_func(to_long(val))
-    end function mul_int_func
+        ret = self%mul(to_long(val))
+    end function mul_int
 
     !> Multiply a `multiprecision_t` by a character.
-    pure function mul_char_func(self, val) result(ret)
+    pure function mul_char(self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
         character(len=*), intent(in) :: val
         type(multiprecision_t) :: ret
 
-        ret = self%mul_func(to_long(val))
-    end function mul_char_func
+        ret = self%mul(to_long(val))
+    end function mul_char
 
     !> Power of an integer.
-    pure function pow_int_func(self, val) result(ret)
+    pure function pow_int(self, val) result(ret)
         class(multiprecision_t), intent(in) :: self
         integer(i32), intent(in) :: val
         type(multiprecision_t) :: ret
 
         if (self%sgn == '+') then
             ret%sgn = '+'
-            ret%arr = pow2(self%arr, val)
+            ret%arr = pow_(self%arr, val)
         else
             if (mod(val, 2) == 0) then
                 ret%sgn = '+'
             else if (mod(val, 2) /= 0) then
                 ret%sgn = '-'
             end if
-            ret%arr = pow2(self%arr, val)
+            ret%arr = pow_(self%arr, val)
         end if
-    end function pow_int_func
+    end function pow_int
 
 end module multiprecision_m
