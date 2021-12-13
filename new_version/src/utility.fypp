@@ -280,23 +280,22 @@ contains
         integer(${T}$) :: i, j, temp
 
         if (k == n) then
-            j = 0
+            next_available = .false.
             do i = size(idx) - 1, 1, -1
                 if (idx(i) < idx(i + 1)) then
                     j = i
                     next_available = .true.
                     exit
-                else
-                    next_available = .false.
                 end if
             end do
+            if (.not. next_available) return
 
             do i = size(idx), 1, -1
                 if (idx(j) < idx(i)) exit
             end do
 
             temp = idx(j); idx(j) = idx(i); idx(i) = temp
-            idx(j + 1:size(idx)) = idx(size(idx):k + 1:-1)
+            idx(j + 1:size(idx)) = idx(size(idx):j + 1:-1)
             return
         end if
 

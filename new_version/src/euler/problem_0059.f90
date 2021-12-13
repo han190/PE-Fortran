@@ -10,11 +10,11 @@ contains
     integer(i32) function answer()
         integer(i32), parameter :: n = 26, k = 3
         integer(i32), allocatable :: encrypted(:), decrypted(:)
-        integer(i32) :: letters(n), idx(k), idx2(k), i, j
+        integer(i32) :: letters(n), idx(k), idx2(k), i
         logical :: available, available2
         integer(i32) :: iunit, istat
 
-        encrypted = [(-1, i=1, 2000)]
+        allocate(encrypted(2000)); encrypted = -1
         open (newunit=iunit, file="data_0059.txt", &
               action="read", status="old")
         read (iunit, *, iostat=istat) encrypted

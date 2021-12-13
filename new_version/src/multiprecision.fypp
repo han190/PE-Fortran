@@ -247,7 +247,6 @@ contains
     pure subroutine init_char(self, chars)
         class(multiprecision_t), intent(inout) :: self
         character(len=*), intent(in) :: chars
-        integer(i32) :: i
 
         select case (chars(1:1))
         case ('+', '-')

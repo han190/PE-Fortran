@@ -30,13 +30,16 @@ if fc.get_id() == 'gcc'
     if get_option('buildtype') == 'release'
         dialect = ['-Ofast']
     elif get_option('buildtype') == 'debug'
-        dialect = ['-fcheck=all', '-fbacktrace']
+        dialect = [
+            '-fcheck=all', '-fbacktrace', '-fdump-core',
+            '-fdump-core', '-pedantic', '-fcheck=all', '-fimplicit-none'
+        ]
     endif
 elif fc.get_id() == 'intel'
     if get_option('buildtype') == 'release'
-        dialect = ['-xHost', '-ipo']
+        dialect = ['-xHost', '-Ofast']
     elif get_option('buildtype') == 'debug'
-        dialect = ['-traceback', '-warn', '-debug all', '-fpe0']
+        dialect = ['-traceback', '-check', '-fpe0', '-O0']
     endif
 endif
 add_global_arguments(dialect, language: 'fortran')
