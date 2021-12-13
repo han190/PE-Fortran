@@ -28,11 +28,21 @@ test_dir = 'src/test'
 fc = meson.get_compiler('fortran')
 if fc.get_id() == 'gcc'
     if get_option('buildtype') == 'release'
-        dialect = ['-Ofast']
+        dialect = [
+            '-ffast-math', 
+            '-fallow-store-data-races', 
+            '-fstack-arrays',
+            '-fno-protect-parens'
+        ]
     elif get_option('buildtype') == 'debug'
         dialect = [
-            '-fcheck=all', '-fbacktrace', '-fdump-core',
-            '-fdump-core', '-pedantic', '-fcheck=all', '-fimplicit-none'
+            '-fcheck=all', 
+            '-fbacktrace', 
+            '-fdump-core',
+            '-fdump-core', 
+            '-pedantic', 
+            '-fcheck=all', 
+            '-fimplicit-none'
         ]
     endif
 elif fc.get_id() == 'intel'
