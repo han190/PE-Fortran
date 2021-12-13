@@ -10,6 +10,7 @@ module utility_m
     public :: is_palindromic, is_pandigital
     public :: prime_factorization, number_of_divisors
     public :: lcm, gcd
+    public :: permute
 
     #:set integer_kinds = ['i32', 'i64']
 
@@ -86,11 +87,11 @@ module utility_m
     end interface gcd
 
     !> Next permutation
-    interface next_permutation
+    interface permute
         #: for T in integer_kinds
-        module procedure next_permutation_${T}$
+        module procedure permute_${T}$
         #: endfor
-    end interface next_permutation
+    end interface permute
 
     !> Variant length array
     type, public :: variant_array_t
@@ -271,12 +272,36 @@ contains
 
     !> Next permutation (k, n)
     #: for T in integer_kinds
-    pure subroutine next_permutation_${T}$ (k, n, idx, next_available)
+    pure subroutine permute_${T}$ (k, n, idx, next_available)
         integer(${T}$), intent(in) :: k, n
         integer(${T}$), intent(inout) :: idx(k)
         logical, intent(out) :: next_available
         logical :: carried(k)
-        integer(${T}$) :: i
+        integer(${T}$) :: i, j, l, temp
+
+        if (k == n) then
+            j = 0
+            do i = size(idx) - 1, 1, -1
+                if (idx(i) < idx(i + 1)) then
+                    j = i
+                    next_available = .true.
+                    exit
+                else
+                    next_available = .false.
+                end if
+            end do
+
+            do i = size(idx), 1, -1
+                if (idx(j) < idx(i)) then
+                    l = i
+                    exit
+                end if
+            end do
+
+            temp = idx(j); idx(j) = idx(l); idx(l) = temp
+            idx(j + 1:size(idx)) = idx(size(idx):k + 1:-1)
+            return
+        end if
 
         next_available = .true.
         associate (end => [(i, i=n - k + 1, n)])
@@ -298,7 +323,7 @@ contains
                 idx(x:k) = [(idx(x) + i, i=1, k - x + 1)]
             end associate
         end if
-    end subroutine next_permutation_${T}$
+    end subroutine permute_${T}$
     #: endfor
 
 end module utility_m

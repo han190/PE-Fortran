@@ -12,11 +12,11 @@ contains
         integer(i64) :: i, array(10)
 
         array = [(i, i=0, 9)]
-        call permute(array, 1_i64, 10_i64)
+        call permute_(array, 1_i64, 10_i64)
         answer = sum_
     end function answer
 
-    recursive subroutine permute(a, l, r)
+    recursive subroutine permute_(a, l, r)
         integer(i64), intent(inout) :: a(:)
         integer(i64), intent(in) :: l, r
         integer(i64) :: i
@@ -29,11 +29,11 @@ contains
         else
             do i = l, r
                 call swap(a(i), a(l))
-                call permute(a, l + 1, r)
+                call permute_(a, l + 1, r)
                 call swap(a(i), a(l))
             end do
         end if
-    end subroutine permute
+    end subroutine permute_
 
     pure logical function is_divisible(n)
         integer(i64), intent(in) :: n
