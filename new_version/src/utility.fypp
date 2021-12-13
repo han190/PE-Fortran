@@ -277,7 +277,7 @@ contains
         integer(${T}$), intent(inout) :: idx(k)
         logical, intent(out) :: next_available
         logical :: carried(k)
-        integer(${T}$) :: i, j, l, temp
+        integer(${T}$) :: i, j, temp
 
         if (k == n) then
             j = 0
@@ -292,13 +292,10 @@ contains
             end do
 
             do i = size(idx), 1, -1
-                if (idx(j) < idx(i)) then
-                    l = i
-                    exit
-                end if
+                if (idx(j) < idx(i)) exit
             end do
 
-            temp = idx(j); idx(j) = idx(l); idx(l) = temp
+            temp = idx(j); idx(j) = idx(i); idx(i) = temp
             idx(j + 1:size(idx)) = idx(size(idx):k + 1:-1)
             return
         end if
