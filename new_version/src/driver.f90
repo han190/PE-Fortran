@@ -1,7 +1,7 @@
 module driver_m
 
     use iso_fortran_env, only: compiler_options, compiler_version
-    use euler_problems_m
+    use problems_m
     implicit none
     private
 
@@ -151,16 +151,16 @@ contains
         integer, intent(in) :: problem_numbers
         character(len=20), allocatable, intent(out) :: answer(:)
         real, allocatable, intent(out) :: time_span(:)
-        type(euler_problem_t), allocatable :: euler_problem(:)
+        type(problem_t), allocatable :: problem(:)
         real :: t_f, t_i
         integer :: i
 
-        call initialize_problems(euler_problem)
+        call initialize_problems(problem)
         allocate (answer(problem_numbers), time_span(problem_numbers))
         time_span = 0.
         do i = 1, problem_numbers
             call cpu_time(t_i)
-            answer(i) = euler_problem(i)%answer()
+            answer(i) = problem(i)%answer()
             call cpu_time(t_f)
             if (answer(i) /= failed) time_span(i) = t_f - t_i
         end do
@@ -171,13 +171,13 @@ contains
         integer, intent(in) :: problem_number
         character(len=20), intent(out) :: answer
         real, intent(out) :: time_span
-        type(euler_problem_t), allocatable :: euler_problem(:)
+        type(problem_t), allocatable :: problem(:)
         real :: time_final, time_initial
 
-        call initialize_problems(euler_problem)
+        call initialize_problems(problem)
         time_span = 0.
         call cpu_time(time_initial)
-        answer = euler_problem(problem_number)%answer()
+        answer = problem(problem_number)%answer()
         call cpu_time(time_final)
         if (answer /= failed) then
             time_span = time_final - time_initial

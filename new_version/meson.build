@@ -67,7 +67,7 @@ fypp_files = [
     src_dir/'multiprecision.fpp',
     src_dir/'utility.fpp',
     src_dir/'interface.fpp', 
-    src_dir/'euler_problems.fpp'
+    src_dir/'problem.fpp'
 ]
 
 fypp_src = []
