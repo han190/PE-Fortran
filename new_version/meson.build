@@ -63,13 +63,17 @@ gen_f90 = generator(
     arguments: ['@INPUT@', '@EXTRA_ARGS@', '@OUTPUT@']
 )
 fypp_files = [
-    src_dir/'prime.fypp',
-    src_dir/'multiprecision.fypp',
-    src_dir/'interface.fypp', 
-    src_dir/'euler_problems.fypp',
-    src_dir/'utility.fypp'
+    src_dir/'prime.fpp',
+    src_dir/'multiprecision.fpp',
+    src_dir/'utility.fpp',
+    src_dir/'interface.fpp', 
+    src_dir/'euler_problems.fpp'
 ]
-fypp_src = gen_f90.process(fypp_files, extra_args: fypp_flag)
+
+fypp_src = []
+foreach fypp_file: fypp_files
+    fypp_src += gen_f90.process(fypp_file, extra_args: fypp_flag)
+endforeach
 
 # Source files
 util_src = [
@@ -82,8 +86,8 @@ app_src = [
 ]
 
 test_src = [
-    test_dir/'test_multiprecision.f90',
     test_dir/'test_prime.f90',
+    test_dir/'test_multiprecision.f90',
     test_dir/'test_utility.f90'
 ]
 
@@ -92,6 +96,7 @@ foreach problem_number : problem_numbers
     prob_src += euler_dir/'problem_' + problem_number + '.f90'
 endforeach
 
+# Data
 data_dir = 'data'
 data_src = [
     'data_0008.txt', 
@@ -107,11 +112,25 @@ foreach data_file : data_src
     configure_file(copy:true, input: data_dir/data_file, output: data_file)
 endforeach
 
-src = [util_src, fypp_src, prob_src]
-exec = executable('PE-Fortran', sources: [src, app_src])
-test_multiprecision_m = executable('Test-multiprecision_m',  sources: [src, test_src[0]])
-test_prime_m = executable('Test-prime_m', sources: [src, test_src[1]])
-test_utility_m = executable('Test-utility_m', sources: [src, test_src[2]])
+# Executables
+pe_fortran = executable(
+    'PE-Fortran', 
+    sources: [util_src, fypp_src, prob_src, app_src])
+
+test_prime_m = executable(
+    'Test-prime_m', 
+    sources: [util_src[0], fypp_src[0], test_src[0]]
+)
+
+test_multiprecision_m = executable(
+    'Test-multiprecision_m',  
+    sources: [util_src[0], fypp_src[1], test_src[1]]
+)
+
+test_utility_m = executable(
+    'Test-utility_m', 
+    sources: [util_src[0], fypp_src[1], fypp_src[2], test_src[2]]
+)
 
 test('Test multiprecision module', test_multiprecision_m)
 test('Test prime module', test_prime_m)
@@ -119,4 +138,7 @@ test('Test utility module', test_utility_m)
 
 argument_list = ['--fancy', '--all', nproblems.to_string()]
 test_name = 'Test all problems available '
-test(test_name + '(@0@ problems)'.format(nproblems), exec, args : argument_list)
+test(
+    test_name + '(@0@ problems)'.format(nproblems), 
+    pe_fortran, args : argument_list
+)

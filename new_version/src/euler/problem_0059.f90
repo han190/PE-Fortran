@@ -14,7 +14,7 @@ contains
         logical :: available, available2
         integer(i32) :: iunit, istat
 
-        allocate(encrypted(2000)); encrypted = -1
+        allocate (encrypted(2000)); encrypted = -1
         open (newunit=iunit, file="data_0059.txt", &
               action="read", status="old")
         read (iunit, *, iostat=istat) encrypted
