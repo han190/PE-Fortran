@@ -1,3 +1,5 @@
+#:set integer_kinds = ['i32', 'i64']
+
 module prime_m
 
     use constant_m
@@ -6,10 +8,6 @@ module prime_m
 
     public :: is_prime
     public :: Sieve_of_Eratosthenes
-    public :: Sieve_of_Sundaram
-    public :: get_primes
-
-    #:set integer_kinds = ['i32', 'i64']
 
     !> A generic interface that tells if an integer is prime.
     interface is_prime
@@ -21,23 +19,10 @@ module prime_m
     !> An algorithm for finding all prime numbers within a limit.
     interface Sieve_of_Eratosthenes
         #: for T in integer_kinds
+        module procedure Sieve_of_Eratosthenes_l${T}$
         module procedure Sieve_of_Eratosthenes_${T}$
         #: endfor
     end interface Sieve_of_Eratosthenes
-
-    !> An algorithm for finding all odd primes within a limit.
-    interface Sieve_of_Sundaram
-        #: for T in integer_kinds
-        module procedure Sieve_of_Sundaram_${T}$
-        #: endfor
-    end interface Sieve_of_Sundaram
-
-    !> Wrappers
-    interface get_primes
-        #: for T in integer_kinds
-        module procedure get_primes_${T}$
-        #: endfor
-    end interface get_primes
 
 contains
 
@@ -70,60 +55,32 @@ contains
 
     !> Sieve of Eratosthenes
     #: for T in integer_kinds
-    pure subroutine Sieve_of_Eratosthenes_${T}$ (n, prime_arr)
-        integer(${T}$), intent(in) :: n
-        logical, allocatable, intent(out) :: prime_arr(:)
-        integer(${T}$) :: i
-
-        allocate (prime_arr(n))
-        prime_arr = .true.
-        prime_arr(1) = .false.
-        do i = 2, floor(sqrt(real(n, dp)))
-            if (prime_arr(i)) prime_arr(i*i:n:i) = .false.
-        end do
-    end subroutine Sieve_of_Eratosthenes_${T}$
-    #: endfor
-
-    !> Sieve of Sundaram
-    #: for T in integer_kinds
-    pure subroutine Sieve_of_Sundaram_${T}$ (n, primes)
+    pure subroutine Sieve_of_Eratosthenes_l${T}$ (n, primes)
         integer(${T}$), intent(in) :: n
         logical, allocatable, intent(out) :: primes(:)
         integer(${T}$) :: i
 
-        associate (k => (n - 3)/2 + 1)
-            allocate (primes(k))
-            primes = .true.
+        allocate (primes(n))
+        primes = .true. ! Initialization.
+        primes(1) = .false.
+        primes(4:size(primes):2) = .false.
 
-            do i = 0, (int(sqrt(real(n))) - 3)/2
-                associate (p => 2*i + 3)
-                    primes((p*p - 3)/2 + 1:k:p) = .false.
-                end associate
-            end do
-        end associate
-    end subroutine Sieve_of_Sundaram_${T}$
+        do i = 2, floor(sqrt(real(n, dp)))
+            if (primes(i)) primes(i*i:n:i) = .false.
+        end do
+    end subroutine Sieve_of_Eratosthenes_l${T}$
     #: endfor
 
-    !> Wrapper
     #: for T in integer_kinds
-    pure function get_primes_${T}$ (n, algorithm) result(primes)
+    pure subroutine Sieve_of_Eratosthenes_${T}$ (n, primes)
         integer(${T}$), intent(in) :: n
-        integer(${T}$), allocatable :: primes(:)
-        character(*), intent(in) :: algorithm
-        logical, allocatable :: primes_l(:)
+        integer(${T}$), allocatable, intent(out) :: primes(:)
+        logical, allocatable :: logicals(:)
         integer(${T}$) :: i
 
-        select case (algorithm)
-        case ("Sieve of Sundaram")
-            call Sieve_of_Sundaram_${T}$ (n, primes_l)
-            primes = [2_${T}$, pack([(i*2 + 1, i=1, size(primes_l))], primes_l)]
-        case ("Sieve of Eratosthenes")
-            call Sieve_of_Eratosthenes_${T}$ (n, primes_l)
-            primes = pack([(i, i=1, size(primes_l))], primes_l)
-        case default
-            error stop "Invalid options."
-        end select
-    end function get_primes_${T}$
+        call Sieve_of_Eratosthenes_l${T}$ (n, logicals)
+        primes = pack([(i, i=1, n)], logicals)
+    end subroutine Sieve_of_Eratosthenes_${T}$
     #: endfor
 
 end module prime_m

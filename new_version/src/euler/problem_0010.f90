@@ -8,15 +8,14 @@ contains
     end function euler0010
 
     pure integer(i64) function answer()
-        use prime_m, only: sieve_of_Sundaram
+        use prime_m, only: Sieve_of_Eratosthenes
         implicit none
 
         integer(i32), parameter :: n = 2000000_i32
-        logical, allocatable :: is_prime(:)
-        integer(i64) :: i
-
-        call sieve_of_Sundaram(n, is_prime)
-        answer = sum([(i*2 + 1, i=1, size(is_prime))], is_prime) + 2
+        integer(i32), allocatable :: primes(:)
+        
+        call Sieve_of_Eratosthenes(n, primes)
+        answer = sum(primes)
     end function answer
 
 end submodule euler_problem_0010_m

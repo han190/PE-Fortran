@@ -9,7 +9,7 @@ contains
     end function euler0029
 
     pure integer(i32) function answer()
-        use prime_m, only: get_primes
+        use prime_m, only: Sieve_of_Eratosthenes
         implicit none
 
         integer(i32), parameter :: upper = 100, lower = 2
@@ -19,7 +19,7 @@ contains
         logical, allocatable :: array(:, :)
 
         allocate (array(limit, limit))
-        primes = get_primes(upper, "Sieve of Sundaram")
+        call Sieve_of_Eratosthenes(upper, primes)
         array = .false.
 
         do i = lower, upper

@@ -8,23 +8,21 @@ contains
     end function euler0003
 
     pure integer(i64) function answer()
-        use prime_m, only: Sieve_of_Sundaram
+        use prime_m, only: Sieve_of_Eratosthenes
         implicit none
 
         integer(i64), parameter :: n = 600851475143_i64
-        logical, allocatable :: is_prime(:)
+        integer(i64), allocatable :: primes(:)
         integer(i32) :: i
 
-        associate (upper_bound => int(sqrt(real(n, sp)) + 1._sp, i64))
-            call Sieve_of_Sundaram(upper_bound, is_prime)
+        associate (upper_ => (int(sqrt(real(n, sp)) + 1._sp, i64)))
+            call Sieve_of_Eratosthenes(upper_, primes)
         end associate
 
-        do i = size(is_prime), 1, -1
-            if (is_prime(i) .and. mod(n, i*2 + 1_i64) == 0) then
-                answer = i*2 + 1
-                exit
-            end if
+        do i = size(primes), 1, -1
+            if (mod(n, primes(i)) == 0) exit
         end do
+        answer = primes(i)
     end function answer
 
 end submodule euler_problem_0003_m

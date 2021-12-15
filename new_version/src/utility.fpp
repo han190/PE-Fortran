@@ -1,3 +1,5 @@
+#:set integer_kinds = ['i32', 'i64']
+
 module utility_m
 
     use constant_m, only: sp, i32, i64
@@ -11,8 +13,6 @@ module utility_m
     public :: prime_factorization, number_of_divisors
     public :: lcm, gcd
     public :: permute
-
-    #:set integer_kinds = ['i32', 'i64']
 
     !> Return unit digit of an integer.
     interface unit_digit

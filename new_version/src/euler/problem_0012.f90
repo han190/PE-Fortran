@@ -8,16 +8,15 @@ contains
     end function euler0012
 
     pure integer(i32) function answer()
-        use prime_m, only: get_primes
+        use prime_m, only: Sieve_of_Eratosthenes
         implicit none
 
         integer(i32), parameter :: n = 500
-        integer(i32), parameter :: limit = 20
+        integer(i32), parameter :: upper_ = 20
         integer(i32), allocatable :: primes(:)
         integer(i32) :: i
 
-        primes = get_primes(limit, algorithm="Sieve of Sundaram")
-
+        call Sieve_of_Eratosthenes(upper_, primes)
         i = 0; answer = 0
         do
             i = i + 1

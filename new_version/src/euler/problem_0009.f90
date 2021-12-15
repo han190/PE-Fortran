@@ -14,7 +14,7 @@ contains
         answer = 0
         do i = 1, n
             do j = i + 1, n
-                associate (k => n - i - j)
+                associate (k => (n - i - j))
                     if (.not. j < k) cycle
                     if (i**2 + j**2 == k**2) then
                         answer = i*j*k

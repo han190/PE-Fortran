@@ -19,7 +19,7 @@ contains
 
         answer = 0
         do i = 1, 988
-            associate (prod => product(array(i:i + 12)))
+            associate (prod => (product(array(i:i + 12))))
                 if (prod > answer) answer = prod
             end associate
         end do
