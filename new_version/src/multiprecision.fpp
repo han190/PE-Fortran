@@ -153,23 +153,32 @@ contains
     !> ([wiki links](https://en.wikipedia.org/wiki/
     !>Exponentiation_by_squaring)). The function currently doesn't
     !> support negative powers.
-    pure recursive function pow_(arr, n) result(ret)
+    pure function pow_(arr, p) result(ret)
         integer(i32), contiguous, intent(in) :: arr(:)
-        integer(i32), intent(in) :: n
+        integer(i32), intent(in) :: p
         integer(i32), allocatable :: ret(:)
+        integer(i32) :: n
+        integer(i32), allocatable :: x(:), y(:)
 
-        if (n < 0) error stop 'pow_: n is nonnegative.'
-
-        if (n == 0) then
-            ret = [1]
+        n = p
+        if (n < 0) then
+            error stop 'pow_: n is nonnegative.'
         else if (n == 1) then
-            ret = arr
-        else if (mod(n, 2) == 0) then
-            ret = pow_(mul_(arr, arr), n/2)
-        else if (mod(n, 2) /= 0) then
-            ret = pow_(mul_(arr, arr), (n - 1)/2)
-            ret = mul_(arr, ret)
+            ret = [1]
+        else
+            x = arr; y = [1]
+            do while (n > 1)
+                if (mod(n, 2) == 0) then
+                    x = mul_(x, x)
+                    n = n/2
+                else
+                    y = mul_(x, y)
+                    x = mul_(x, x)
+                    n = (n - 1)/2
+                end if
+            end do
         end if
+        ret = mul_(x, y)
     end function pow_
 
 end module multiprecision_utility_m
