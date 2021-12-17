@@ -3,7 +3,6 @@
 module utility_m
 
     use constant_m, only: sp, i32, i64
-    use multiprecision_m, only: multiprecision_t
     implicit none
     private
 
@@ -19,7 +18,6 @@ module utility_m
         #: for T in integer_kinds
         module procedure unit_digit_${T}$
         #: endfor
-        module procedure unit_digit_multiprecision_t
     end interface unit_digit
 
     !> Return number of digits in an integer.
@@ -27,7 +25,6 @@ module utility_m
         #: for T in integer_kinds
         module procedure number_of_digits_${T}$
         #: endfor
-        module procedure number_of_digits_multiprecision_t
     end interface number_of_digits
 
     !> Convert an intger to an array.
@@ -109,13 +106,6 @@ contains
     end function unit_digit_${T}$
     #: endfor
 
-    !> Return unit digit of a multiprecision_t integer
-    elemental integer(i32) function unit_digit_multiprecision_t(n)
-        type(multiprecision_t), intent(in) :: n
-
-        unit_digit_multiprecision_t = n%arr(size(n%arr))
-    end function unit_digit_multiprecision_t
-
     !> Return number of digits in an integer.
     #: for T in integer_kinds
     elemental integer(${T}$) function number_of_digits_${T}$ (n)
@@ -124,13 +114,6 @@ contains
         number_of_digits_${T}$ = floor(log10(real(n, sp))) + 1_${T}$
     end function number_of_digits_${T}$
     #: endfor
-
-    !> Return number of digits in a multiprecsion_t integer.
-    elemental integer(i32) function number_of_digits_multiprecision_t(n)
-        type(multiprecision_t), intent(in) :: n
-
-        number_of_digits_multiprecision_t = size(n%arr)
-    end function number_of_digits_multiprecision_t
 
     !> Convert an integer into an integer array.
     #: for T in integer_kinds

@@ -1,5 +1,5 @@
 submodule(interface_m) euler_problem_0055_m
-    use multiprecision_m
+    use big_integer_m
     implicit none
 
 contains
@@ -14,13 +14,13 @@ contains
 
         answer = 0
         do i = 1, upper_
-            if (is_lychrel(to_long(i))) answer = answer + 1
+            if (is_lychrel(big_(i))) answer = answer + 1
         end do
     end function answer
 
     pure logical function is_lychrel(n)
-        type(multiprecision_t), intent(in) :: n
-        type(multiprecision_t) :: temp, temp2
+        type(big_integer), intent(in) :: n
+        type(big_integer) :: temp, temp2
         integer(i32) :: i
 
         i = 0; temp = n
@@ -38,7 +38,7 @@ contains
     end function is_lychrel
 
     pure logical function is_palindromic_(val)
-        type(multiprecision_t), intent(in) :: val
+        type(big_integer), intent(in) :: val
 
         if (reverse(val) == val) then
             is_palindromic_ = .true.
@@ -48,8 +48,8 @@ contains
     end function is_palindromic_
 
     pure function reverse(val) result(ret)
-        type(multiprecision_t), intent(in) :: val
-        type(multiprecision_t) :: ret
+        type(big_integer), intent(in) :: val
+        type(big_integer) :: ret
 
         allocate (ret%arr(size(val%arr)))
         ret%arr(1:size(val%arr)) = val%arr(size(val%arr):1:-1)

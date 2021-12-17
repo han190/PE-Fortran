@@ -1,5 +1,5 @@
 submodule(interface_m) euler_problem_0048_m
-    use multiprecision_m
+    ! use multiprecision_m
     implicit none
 
 contains

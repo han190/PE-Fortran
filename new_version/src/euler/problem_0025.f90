@@ -7,19 +7,19 @@ contains
     end function euler0025
 
     pure integer(i32) function answer()
-        use multiprecision_m
+        use big_integer_m
         implicit none
 
-        type(multiprecision_t) :: fibonacci_seq(2)
+        type(big_integer) :: fibo_seq(2)
         integer(i32) :: i
 
         answer = 2
-        fibonacci_seq(1) = 1; fibonacci_seq(2) = 1
+        fibo_seq(1) = 1; fibo_seq(2) = 1
         outer: do
             inner: do i = 1, 2
-                fibonacci_seq(i) = fibonacci_seq(1) + fibonacci_seq(2)
+                fibo_seq(i) = fibo_seq(1) + fibo_seq(2)
                 answer = answer + 1
-                if (number_of_digits(fibonacci_seq(i)) >= 1000) exit outer
+                if (size(fibo_seq(i)%arr) >= 1000) exit outer
             end do inner
         end do outer
     end function answer

@@ -1,9 +1,9 @@
 program main
 
-    use multiprecision_m
+    use big_integer_m
     implicit none
 
-    type(multiprecision_t) :: a, b, c
+    type(big_integer) :: a, b, c
     integer :: p
     logical :: cond
 

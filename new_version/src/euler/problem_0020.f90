@@ -8,10 +8,10 @@ contains
     end function euler0020
 
     pure integer(i32) function answer()
-        use multiprecision_m, only: multiprecision_t, to_long
+        use big_integer_m
         implicit none
 
-        type(multiprecision_t) :: n
+        type(big_integer) :: n
         integer(i32) :: i
 
         n = 1

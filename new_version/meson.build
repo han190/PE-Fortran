@@ -64,7 +64,7 @@ gen_f90 = generator(
 )
 fypp_files = [
     src_dir/'prime.fpp',
-    src_dir/'multiprecision.fpp',
+    src_dir/'big_integer.fpp',
     src_dir/'utility.fpp',
     src_dir/'interface.fpp', 
     src_dir/'problem.fpp'

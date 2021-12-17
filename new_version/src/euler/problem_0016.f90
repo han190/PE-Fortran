@@ -11,12 +11,12 @@ contains
     !> implemented multiprecision integer library, this is
     !> the most cost-efficient way.
     pure integer(i32) function answer()
-        use multiprecision_m, only: multiprecision_t, to_long
+        use big_integer_m
         implicit none
-        type(multiprecision_t) :: long_integer
+        type(big_integer) :: x
 
-        long_integer = to_long(2)**1000
-        answer = sum(long_integer%arr)
+        x = big_(2)**1000
+        answer = sum(x%arr)
     end function answer
 
 end submodule euler_problem_0016_m
