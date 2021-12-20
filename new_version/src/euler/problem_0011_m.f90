@@ -11,7 +11,7 @@ contains
         integer(i32) :: array(20, 20), selected(4, 4)
         integer(i32) :: i, j, iunit
 
-        open (newunit=iunit, file="data_0011.txt", &
+        open (newunit=iunit, file=data_path//"/"//"data_0011.txt", &
               status="old", action="read")
         read (iunit, *) array
         close (iunit)

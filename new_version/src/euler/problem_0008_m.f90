@@ -10,7 +10,7 @@ contains
     integer(i64) function answer()
         integer(i64) :: array(1000), i, iunit
 
-        open (newunit=iunit, file='data_0008.txt', &
+        open (newunit=iunit, file=data_path//"/"//'data_0008.txt', &
               status='old', action='read')
         do i = 1, 20
             read (iunit, "(50(i1))") array((i - 1)*50 + 1:i*50)

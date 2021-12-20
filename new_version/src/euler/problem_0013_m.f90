@@ -14,7 +14,7 @@ contains
         integer(i32) :: i, iunit
         type(big_integer) :: temp
 
-        open (newunit=iunit, file="data_0013.txt", &
+        open (newunit=iunit, file=data_path//"/"//"data_0013.txt", &
               status="old", action="read")
 
         temp%sgn = .true.; allocate (temp%arr(50))

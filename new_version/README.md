@@ -14,6 +14,18 @@ meson build
 meson test -C build
 ```
 
+### Build with fpm
+The [fpm](https://github.com/fortran-lang/fpm) doesn't support fypp currently, I wrote a simple bash script to generate all fortran source files.
+```bash
+./src-fpm.sh
+```
+and a folder named `src-fpm` will be generated, then
+```bash
+fpm build --profile release
+fpm test --profile release # if necessary
+fpm run --profile release -- -f -a 60 -d $(realpath ./data)
+```
+
 ## Usage
 
 ```bash

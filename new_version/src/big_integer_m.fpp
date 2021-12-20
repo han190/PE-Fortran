@@ -246,8 +246,8 @@ contains
         type(big_integer), intent(in) :: value_1, value_2
 
         eq = .false.
-        if (all(value_1%arr == value_2%arr) .and. &
-            all([value_1%sgn, value_2%sgn])) eq = .true.
+        if (comp_(value_1%arr, value_2%arr) == 0 .and. &
+            (value_1%sgn .eqv. value_2%sgn)) eq = .true.
     end function eq
 
     #: for name, T in names_types

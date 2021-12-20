@@ -23,6 +23,7 @@ message('Total number of problems available: @0@'.format(nproblems))
 src_dir = 'src'
 euler_dir = 'src/euler'
 test_dir = 'src/test'
+app_dir = 'src/app'
 
 # Check compiler
 fc = meson.get_compiler('fortran')
@@ -63,11 +64,11 @@ gen_f90 = generator(
     arguments: ['@INPUT@', '@EXTRA_ARGS@', '@OUTPUT@']
 )
 fypp_files = [
-    src_dir/'prime.fpp',
-    src_dir/'big_integer.fpp',
-    src_dir/'utility.fpp',
-    src_dir/'interface.fpp', 
-    src_dir/'problem.fpp'
+    src_dir/'prime_m.fpp',
+    src_dir/'big_integer_m.fpp',
+    src_dir/'utility_m.fpp',
+    src_dir/'interface_m.fpp', 
+    src_dir/'problem_m.fpp'
 ]
 
 fypp_src = []
@@ -77,12 +78,12 @@ endforeach
 
 # Source files
 util_src = [
-    src_dir/'constant.f90',
-    src_dir/'driver.f90'
+    src_dir/'constant_m.f90',
+    src_dir/'driver_m.f90'
 ]
 
 app_src = [
-    src_dir/'project_euler.f90'
+    app_dir/'project_euler.f90'
 ]
 
 test_src = [
@@ -93,7 +94,7 @@ test_src = [
 
 prob_src = []
 foreach problem_number : problem_numbers
-    prob_src += euler_dir/'problem_' + problem_number + '.f90'
+    prob_src += euler_dir/'problem_' + problem_number + '_m.f90'
 endforeach
 
 # Data

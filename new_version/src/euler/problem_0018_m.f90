@@ -12,7 +12,7 @@ contains
         type(variant_array_t), allocatable :: variant_array(:)
         integer(i32) :: i, j, x, iunit
 
-        open (newunit=iunit, file="data_0018.txt", &
+        open (newunit=iunit, file=data_path//"/"//"data_0018.txt", &
               status="old", action="read")
 
         allocate (variant_array(n))

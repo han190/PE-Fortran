@@ -13,7 +13,7 @@ contains
         character(len=:), allocatable :: names(:)
         integer(i32) :: iunit, istat, i
 
-        open (newunit=iunit, file="data_0042.txt", &
+        open (newunit=iunit, file=data_path//"/"//"data_0042.txt", &
               action="read", status="old")
         allocate (character(len=50) :: names(2000))
         names = "n/a"

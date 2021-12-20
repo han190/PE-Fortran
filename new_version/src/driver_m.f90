@@ -254,13 +254,16 @@ contains
 
     !> Get arguments from the command line and calculate problems.
     subroutine get_arguments()
-        character(len=100), allocatable :: arguments(:)
+        character(len=500), allocatable :: arguments(:)
         integer :: argument_count, idx, problem_number
         logical :: compute_all, compute_single, is_fancy
+        character(len=500) :: path_
         character(len=*), parameter :: INVALID = "Invalid syntax!"
 
+        path_ = ""
+
         argument_count = command_argument_count()
-        if (argument_count >= 5 .or. argument_count < 1) then
+        if (argument_count >= 7 .or. argument_count < 1) then
             call print_error_messages(INVALID)
         end if
 
@@ -299,12 +302,23 @@ contains
                 case ("-f", "--fancy")
                     is_fancy = .true.
                     idx = idx + 1
+                case ("-d", "--data-directory")
+                    path_ = arguments(idx + 1)
+                    idx = idx + 2
                 case default
                     call print_error_messages(INVALID)
                 end select
             end do
         else
             call print_error_messages(INVALID)
+        end if
+
+        if (len_trim(path_) == 0) then
+            allocate (character(len=1) :: data_path)
+            data_path = "."
+        else
+            allocate (character(len=len_trim(path_)) :: data_path)
+            data_path = trim(path_)
         end if
 
         if (compute_single) then

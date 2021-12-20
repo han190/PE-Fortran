@@ -9,4 +9,7 @@ module constant_m
     real(sp), parameter, public :: tiny_sp = tiny(0._sp)
     real(dp), parameter, public :: tiny_dp = tiny(0._dp)
 
+    !> Path to data.
+    character(len=:), allocatable, public :: data_path
+
 end module constant_m

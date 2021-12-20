@@ -11,7 +11,7 @@ contains
         character(len=2) :: cards(10)
         integer(i32) :: i, iunit
 
-        open (newunit=iunit, file="data_0054.txt", &
+        open (newunit=iunit, file=data_path//"/"//"data_0054.txt", &
               action="read", status="old")
 
         answer = 0
