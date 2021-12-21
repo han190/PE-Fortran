@@ -175,6 +175,7 @@ contains
         ret = mul_(x, y)
     end function pow_
 
+    !> Re-allocate a big_integer with length n.
     pure subroutine re_alloc(value_, n)
         type(big_integer), intent(inout) :: value_
         integer(i32), intent(in) :: n
@@ -189,6 +190,7 @@ contains
         end if
     end subroutine re_alloc
 
+    !> Initialize a big_integer with an integer.
     pure subroutine init_i32(value_, int_)
         type(big_integer), intent(inout) :: value_
         integer(i32), intent(in) :: int_
@@ -209,6 +211,7 @@ contains
         end associate
     end subroutine init_i32
 
+    !> Initialize a big_integer with a character.
     pure subroutine init_char(value_, char_)
         type(big_integer), intent(inout) :: value_
         character(len=*), intent(in) :: char_
@@ -225,6 +228,7 @@ contains
         end select
     end subroutine init_char
 
+    !> Initialize a big_integer with 
     pure subroutine init_i32_arr(value_, arr_)
         type(big_integer), intent(inout) :: value_
         integer(i32), intent(in) :: arr_(:)
@@ -235,13 +239,16 @@ contains
     end subroutine init_i32_arr
 
     #: for name, T in names_types
+    !> Convert ${name}$ to big_integer
     pure type(big_integer) function big_${name}$ (val)
         ${T}$, intent(in) :: val
 
         big_${name}$ = val
     end function big_${name}$
+
     #: endfor
 
+    !> Equal.
     pure logical function eq(value_1, value_2)
         type(big_integer), intent(in) :: value_1, value_2
 
@@ -250,15 +257,7 @@ contains
             (value_1%sgn .eqv. value_2%sgn)) eq = .true.
     end function eq
 
-    #: for name, T in names_types
-    pure logical function eq_${name}$ (value_1, value_2)
-        type(big_integer), intent(in) :: value_1
-        ${T}$, intent(in) :: value_2
-
-        eq_${name}$ = eq(value_1, big_(value_2))
-    end function eq_${name}$
-    #: endfor
-
+    !> Greater than.
     pure logical function gt(value_1, value_2)
         type(big_integer), intent(in) :: value_1, value_2
         logical :: condition_satisfied(3), all_positive, all_negative
@@ -278,15 +277,7 @@ contains
         end if
     end function gt
 
-    #: for name, T in names_types
-    pure logical function gt_${name}$ (value_1, value_2)
-        type(big_integer), intent(in) :: value_1
-        ${T}$, intent(in) :: value_2
-
-        gt_${name}$ = gt(value_1, big_(value_2))
-    end function gt_${name}$
-    #: endfor
-
+    !> Less than.
     pure logical function lt(value_1, value_2)
         type(big_integer), intent(in) :: value_1, value_2
         logical :: condition_satisfied(3), all_positive, all_negative
@@ -306,15 +297,7 @@ contains
         end if
     end function lt
 
-    #: for name, T in names_types
-    pure logical function lt_${name}$ (value_1, value_2)
-        type(big_integer), intent(in) :: value_1
-        ${T}$, intent(in) :: value_2
-
-        lt_${name}$ = lt(value_1, big_(value_2))
-    end function lt_${name}$
-    #: endfor
-
+    !> Greater than or equal to.
     pure logical function ge(value_1, value_2)
         type(big_integer), intent(in) :: value_1, value_2
 
@@ -322,15 +305,7 @@ contains
         if (gt(value_1, value_2) .or. eq(value_1, value_2)) ge = .true.
     end function ge
 
-    #: for name, T in names_types
-    pure logical function ge_${name}$ (value_1, value_2)
-        type(big_integer), intent(in) :: value_1
-        ${T}$, intent(in) :: value_2
-
-        ge_${name}$ = ge(value_1, big_(value_2))
-    end function ge_${name}$
-    #: endfor
-
+    !> Less than or equal to.
     pure logical function le(value_1, value_2)
         type(big_integer), intent(in) :: value_1, value_2
 
@@ -338,15 +313,7 @@ contains
         if (lt(value_1, value_2) .or. eq(value_1, value_2)) le = .true.
     end function le
 
-    #: for name, T in names_types
-    pure logical function le_${name}$ (value_1, value_2)
-        type(big_integer), intent(in) :: value_1
-        ${T}$, intent(in) :: value_2
-
-        le_${name}$ = le(value_1, big_(value_2))
-    end function le_${name}$
-    #: endfor
-
+    !> Addition.
     pure function add(value_1, value_2) result(ret)
         type(big_integer), intent(in) :: value_1, value_2
         type(big_integer) :: ret
@@ -379,16 +346,7 @@ contains
         end if
     end function add
 
-    #: for name, T in names_types
-    pure function add_${name}$ (value_1, value_2) result(ret)
-        type(big_integer), intent(in) :: value_1
-        ${T}$, intent(in) :: value_2
-        type(big_integer) :: ret
-
-        ret = add(value_1, big_(value_2))
-    end function add_${name}$
-    #: endfor
-
+    !> Subtraction.
     pure function sub(value_1, value_2) result(ret)
         type(big_integer), intent(in) :: value_1, value_2
         type(big_integer) :: ret
@@ -421,21 +379,12 @@ contains
         end if
     end function sub
 
-    #: for name, T in names_types
-    pure function sub_${name}$ (value_1, value_2) result(ret)
-        type(big_integer), intent(in) :: value_1
-        ${T}$, intent(in) :: value_2
-        type(big_integer) :: ret
-
-        ret = sub(value_1, big_(value_2))
-    end function sub_${name}$
-    #: endfor
-
+    !> Multiplication.
     pure function mul(value_1, value_2) result(ret)
         type(big_integer), intent(in) :: value_1, value_2
         type(big_integer) :: ret
 
-        if (value_1 == 0 .or. value_2 == 0) then
+        if (value_1 == big_(0) .or. value_2 == big_(0)) then
             ret%sgn = .true.
             ret%arr = [0]
         else if (value_1%sgn .eqv. value_2%sgn) then
@@ -447,16 +396,35 @@ contains
         end if
     end function mul
 
-    #: for name, T in names_types
-    pure function mul_${name}$ (value_1, value_2) result(ret)
-        type(big_integer), intent(in) :: value_1
-        ${T}$, intent(in) :: value_2
-        type(big_integer) :: ret
+    #: for f in ['eq', 'gt', 'lt', 'ge', 'le']
+        #: for name, T in names_types
+        !> Wrapper of function '${f}$' for type ${T}$.
+        pure function ${f}$_${name}$ (value_1, value_2) result(ret)
+            type(big_integer), intent(in) :: value_1
+            ${T}$, intent(in) :: value_2
+            logical :: ret
 
-        ret = mul(value_1, big_(value_2))
-    end function mul_${name}$
+            ret = ${f}$ (value_1, big_(value_2))
+        end function ${f}$_${name}$
+
+        #: endfor
     #: endfor
 
+    #: for f in ['add', 'sub', 'mul']
+        #: for name, T in names_types
+        !> Wrapper of function '${f}$' for type ${T}$.
+        pure function ${f}$_${name}$ (value_1, value_2) result(ret)
+            type(big_integer), intent(in) :: value_1
+            ${T}$, intent(in) :: value_2
+            type(big_integer) :: ret
+
+            ret = ${f}$ (value_1, big_(value_2))
+        end function ${f}$_${name}$
+
+        #: endfor
+    #: endfor
+
+    !> Power.
     pure function pow_i32(value_1, value_2) result(ret)
         type(big_integer), intent(in) :: value_1
         integer(i32), intent(in) :: value_2

@@ -26,9 +26,9 @@ contains
         version_messages = &
             [character(len=80) :: &
              'Project Name: PE-Fortran', &
-             'Version: 0.0.1', &
+             'Version: 0.0.2', &
              'License: MIT', &
-             'Copyright: Copyright 2019 - 2021, Han Tang', &
+             'Copyright: Copyright 2019 - 2022, Han Tang', &
              'Homepage: https://github.com/han190/PE-Fortran', &
              ' ']
     end subroutine get_version_messages
@@ -47,18 +47,22 @@ contains
              'Arguments:', &
              '   -v, --version          Print version.', &
              '   -h, --help             Pop up this message.', &
+             '   -a N, --all N          Compute problem 1 through N.', &
+             '   -p N, --problem N      Compute problem N. ', &
              '   -f, --fancy            (optional) Use emojis to express ', &
              '                          relative difficulties.', &
-             '   -a N, --all N          Compute problem 1 through N.', &
-             '   -p N, --problem N      Compute problem N.', &
+             '   -d, --data-directory   (optional) Directory of input data, ', &
+             '                          default is ".".', &
              ' ', &
              'Usage:', &
              '   (1) Compute problem 1 through 50:', &
-             '       PE-Fortran --all 50', &
+             '       PE-Fortran -a 50', &
              '   (2) Compute problem 1 through 50 with emoji output:', &
-             '       PE-Fortran --fancy --all 50', &
+             '       PE-Fortran -f -a 50', &
              '   (3) Compute problem 50:', &
-             '       PE-Fortran --problem 50', &
+             '       PE-Fortran -p 50', &
+             '   (4) Compute problem 1 to 50 with specified data path:', &
+             '       PE-Fortran -f -a 50 -d $(realpath your/data/path)', &
              ' ']
     end subroutine get_help_messages
 

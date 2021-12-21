@@ -43,7 +43,12 @@ if fc.get_id() == 'gcc'
             '-fdump-core', 
             '-pedantic', 
             '-fcheck=all', 
-            '-fimplicit-none'
+            '-fimplicit-none',
+            '-fPIC',
+            '-fmax-errors=1',
+            '-fcheck=bounds',
+            '-fcheck=array-temps',
+            '-fcoarray=single'
         ]
     endif
 elif fc.get_id() == 'intel'

@@ -1,58 +1,72 @@
 # Project Euler solutions written in Fortran
 
-[Project Euler](https://projecteuler.net/about) is a problem set. I solve PE problems to polish my Fortran skills, expand my math knowledge base and most importantly FOR FUN. If you are looking for the same things, check it out!
+[Project Euler](https://projecteuler.net/about) is a problem set. I occasionally solve PE problems for fun. If you are looking for the same things, check it out!
 
 ## Getting Started
 
-### Prerequistes
-
-You will need a Fortran compiler (The tested ones are [gfortran](https://gcc.gnu.org/wiki/GFortran) and [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5).) and the [Meson](https://mesonbuild.com/index.html) to compile/run/test/install this project. For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190).
-
 ### Build with meson
+
+Dependencies:
+* [Meson](https://mesonbuild.com/)
+* [Ninja](https://ninja-build.org/)
+* Fortran compiler ([gfortran](https://gcc.gnu.org/wiki/GFortran) or [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5))
+
 ```bash
 meson build
 meson test -C build
 ```
 
 ### Build with fpm
-The [fpm](https://github.com/fortran-lang/fpm) doesn't support fypp currently, I wrote a simple bash script to generate all fortran source files.
+
+Dependencies:
+* [fpm](https://github.com/fortran-lang/fpm)
+* [fypp](https://github.com/aradi/fypp)
+* [fprettify](https://github.com/pseewald/fprettify)
+* Fortran compiler ([gfortran](https://gcc.gnu.org/wiki/GFortran) or [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5))
+
+The [fpm](https://github.com/fortran-lang/fpm) doesn't support fypp currently, I wrote a simple bash script to generate all fortran source files. Navigate to the source directory and type
 ```bash
 ./src-fpm.sh
 ```
-and a folder named `src-fpm` will be generated, then
+and a folder named `src-fpm` will be generated, then we could use the `fpm` command
 ```bash
-fpm build --profile release
-fpm test --profile release # if necessary
-fpm run --profile release -- -f -a 60 -d $(realpath ./data)
+fpm build
+fpm test # if necessary
+fpm run -- -f -a 60 -d $(realpath ./data)
 ```
+* _For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)._
+
 
 ## Usage
 
 ```bash
-$ PE-Fortran --help
 PE Fortran Solution
 Arguments:
    -v, --version          Print version.
    -h, --help             Pop up this message.
-   -f, --fancy            (optional) Use emojis to express
-                          relative difficulties.
    -a N, --all N          Compute problem 1 through N.
    -p N, --problem N      Compute problem N.
+   -f, --fancy            (optional) Use emojis to express
+                          relative difficulties.
+   -d, --data-directory   (optional) Directory of input data,
+                          default is ".".
 
 Usage:
    (1) Compute problem 1 through 50:
-       PE-Fortran --all 50
+       PE-Fortran -a 50
    (2) Compute problem 1 through 50 with emoji output:
-       PE-Fortran --fancy --all 50
+       PE-Fortran -f -a 50
    (3) Compute problem 50:
-       PE-Fortran --problem 50
+       PE-Fortran -p 50
+   (4) Compute problem 1 to 50 with specified data path:
+       PE-Fortran -f -a 50 -d $(realpath your/data/path)
 ```
 
 ## Misc
 
 To count LOC:
 ```bash
-cloc --force-lang="Fortran 90",fpp src
+cloc --force-lang="Fortran 90",fpp .
 ```
 
 To format all source files:

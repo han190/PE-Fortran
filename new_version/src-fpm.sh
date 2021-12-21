@@ -34,4 +34,7 @@ if [ -d "src" ]; then
         cp -rf $srcdir/$foldername $srcfpmdir/$foldername
     done
 
+    echo "Formatting source codes..."
+    fprettify -i=4 -r $srcfpmdir
+
 fi
