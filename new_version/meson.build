@@ -125,7 +125,7 @@ pe_fortran = executable(
 
 test_prime_m = executable(
     'Test-prime_m', 
-    sources: [util_src[0], fypp_src[0], test_src[0]]
+    sources: [util_src[0], fypp_src[0], fypp_src[2], test_src[0]]
 )
 
 test_multiprecision_m = executable(

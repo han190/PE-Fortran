@@ -397,31 +397,31 @@ contains
     end function mul
 
     #: for f in ['eq', 'gt', 'lt', 'ge', 'le']
-        #: for name, T in names_types
-        !> Wrapper of function '${f}$' for type ${T}$.
-        pure function ${f}$_${name}$ (value_1, value_2) result(ret)
-            type(big_integer), intent(in) :: value_1
-            ${T}$, intent(in) :: value_2
-            logical :: ret
+    #: for name, T in names_types
+    !> Wrapper of function '${f}$' for type ${T}$.
+    pure function ${f}$_${name}$ (value_1, value_2) result(ret)
+        type(big_integer), intent(in) :: value_1
+        ${T}$, intent(in) :: value_2
+        logical :: ret
 
-            ret = ${f}$ (value_1, big_(value_2))
-        end function ${f}$_${name}$
+        ret = ${f}$ (value_1, big_(value_2))
+    end function ${f}$_${name}$
 
-        #: endfor
+    #: endfor
     #: endfor
 
     #: for f in ['add', 'sub', 'mul']
-        #: for name, T in names_types
-        !> Wrapper of function '${f}$' for type ${T}$.
-        pure function ${f}$_${name}$ (value_1, value_2) result(ret)
-            type(big_integer), intent(in) :: value_1
-            ${T}$, intent(in) :: value_2
-            type(big_integer) :: ret
+    #: for name, T in names_types
+    !> Wrapper of function '${f}$' for type ${T}$.
+    pure function ${f}$_${name}$ (value_1, value_2) result(ret)
+        type(big_integer), intent(in) :: value_1
+        ${T}$, intent(in) :: value_2
+        type(big_integer) :: ret
 
-            ret = ${f}$ (value_1, big_(value_2))
-        end function ${f}$_${name}$
+        ret = ${f}$ (value_1, big_(value_2))
+    end function ${f}$_${name}$
 
-        #: endfor
+    #: endfor
     #: endfor
 
     !> Power.
