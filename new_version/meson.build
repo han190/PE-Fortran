@@ -69,11 +69,11 @@ gen_f90 = generator(
     arguments: ['@INPUT@', '@EXTRA_ARGS@', '@OUTPUT@']
 )
 fypp_files = [
-    src_dir/'prime_m.fpp',
-    src_dir/'big_integer_m.fpp',
-    src_dir/'utility_m.fpp',
-    src_dir/'interface_m.fpp', 
-    src_dir/'problem_m.fpp'
+    src_dir/'prime.fpp',
+    src_dir/'multiprecision.fpp',
+    src_dir/'utility.fpp',
+    src_dir/'interface.fpp', 
+    src_dir/'problems.fpp'
 ]
 
 fypp_src = []
@@ -83,8 +83,8 @@ endforeach
 
 # Source files
 util_src = [
-    src_dir/'constant_m.f90',
-    src_dir/'driver_m.f90'
+    src_dir/'constant.f90',
+    src_dir/'driver.f90'
 ]
 
 app_src = [
@@ -99,7 +99,7 @@ test_src = [
 
 prob_src = []
 foreach problem_number : problem_numbers
-    prob_src += euler_dir/'problem_' + problem_number + '_m.f90'
+    prob_src += euler_dir/'problem_' + problem_number + '.f90'
 endforeach
 
 # Data
@@ -124,17 +124,17 @@ pe_fortran = executable(
     sources: [util_src, fypp_src, prob_src, app_src])
 
 test_prime_m = executable(
-    'Test-prime_m', 
+    'Test-prime', 
     sources: [util_src[0], fypp_src[0], fypp_src[2], test_src[0]]
 )
 
 test_multiprecision_m = executable(
-    'Test-multiprecision_m',  
+    'Test-multiprecision',  
     sources: [util_src[0], fypp_src[1], test_src[1]]
 )
 
 test_utility_m = executable(
-    'Test-utility_m', 
+    'Test-utility', 
     sources: [util_src[0], fypp_src[1], fypp_src[2], test_src[2]]
 )
 
