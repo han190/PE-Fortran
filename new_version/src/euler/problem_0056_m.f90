@@ -8,7 +8,7 @@ contains
         write (euler0056, "(i20)") answer()
     end function euler0056
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         integer(i32), parameter :: const = 89, max_ = 10
         type(big_integer) :: integers(max_)
         integer(i32) :: i, j, sum_(max_, max_)

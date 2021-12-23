@@ -7,7 +7,7 @@ contains
         write (euler0001, "(i20)") answer()
     end function euler0001
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         integer(i32), parameter :: i = 3, j = 5, n = 1000
 
         answer = sdb(i, n - 1) + sdb(j, n - 1) - sdb(i*j, n - 1)

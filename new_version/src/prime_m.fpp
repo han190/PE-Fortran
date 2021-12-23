@@ -3,6 +3,7 @@
 module prime_m
 
     use constant_m
+    use utility_m, only: sqrt
     implicit none
     private
 
@@ -19,16 +20,16 @@ module prime_m
     !> An algorithm for finding all prime numbers within a limit.
     interface Sieve_of_Eratosthenes
         #: for T in integer_kinds
-        module procedure Sieve_of_Eratosthenes_l${T}$
+        module procedure Sieve_of_Eratosthenes_logical_${T}$
         module procedure Sieve_of_Eratosthenes_${T}$
         #: endfor
     end interface Sieve_of_Eratosthenes
 
 contains
 
-    !> A generic interface that tells if an integer is prime.
     #: for T in integer_kinds
-    pure logical function is_prime_${T}$ (n)
+    !> A generic interface that tells if an integer is prime.
+    elemental logical function is_prime_${T}$ (n)
         integer(${T}$), intent(in) :: n
         integer(${T}$) :: limit, i
 
@@ -51,36 +52,40 @@ contains
             end do loop_1
         end if
     end function is_prime_${T}$
+
     #: endfor
 
-    !> Sieve of Eratosthenes
     #: for T in integer_kinds
-    pure subroutine Sieve_of_Eratosthenes_l${T}$ (n, primes)
+    !> Sieve of Eratosthenes for kind: ${T}$.
+    pure subroutine Sieve_of_Eratosthenes_logical_${T}$ (n, primes)
         integer(${T}$), intent(in) :: n
-        logical, allocatable, intent(out) :: primes(:)
+        logical, intent(out) :: primes(:)
         integer(${T}$) :: i
 
-        allocate (primes(n))
-        primes = .true. ! Initialization.
-        primes(1) = .false.
-        primes(4:size(primes):2) = .false.
+        primes(1:2) = [.false., .true.]
+        primes(3:n:2) = .true.
+        primes(4:n:2) = .false.
 
-        do i = 2, floor(sqrt(real(n, dp)))
+        do i = 2, sqrt(n)
             if (primes(i)) primes(i*i:n:i) = .false.
         end do
-    end subroutine Sieve_of_Eratosthenes_l${T}$
+    end subroutine Sieve_of_Eratosthenes_logical_${T}$
+
     #: endfor
 
     #: for T in integer_kinds
+    !> Sieve of Eratosthenes for kind: ${T}$.
     pure subroutine Sieve_of_Eratosthenes_${T}$ (n, primes)
         integer(${T}$), intent(in) :: n
         integer(${T}$), allocatable, intent(out) :: primes(:)
-        logical, allocatable :: logicals(:)
+        logical, allocatable :: prime_l(:)
         integer(${T}$) :: i
 
-        call Sieve_of_Eratosthenes_l${T}$ (n, logicals)
-        primes = pack([(i, i=1, n)], logicals)
+        allocate (prime_l(n))
+        call Sieve_of_Eratosthenes_logical_${T}$ (n, prime_l)
+        primes = pack([(i, i=1, n)], prime_l)
     end subroutine Sieve_of_Eratosthenes_${T}$
+
     #: endfor
 
 end module prime_m

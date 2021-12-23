@@ -6,7 +6,7 @@ contains
         write (euler0025, "(i20)") answer()
     end function euler0025
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         use big_integer_m
         implicit none
 

@@ -7,7 +7,7 @@ contains
         write (euler0047, "(i20)") answer()
     end function euler0047
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         integer(i32), parameter :: n = 1000000 - 1
         integer(i32) :: i, goal(4)
         integer(i32), allocatable :: n_factor(:)

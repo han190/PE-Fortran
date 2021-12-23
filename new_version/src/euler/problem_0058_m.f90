@@ -37,7 +37,7 @@ contains
         ret = (n*2 - 1)**2 - [(i*2*(n - 1), i=3, 0, -1)]
     end function diagonal
 
-    pure integer(i64) function side_length(n)
+    elemental integer(i64) function side_length(n)
         integer(i64), intent(in) :: n
 
         side_length = n*2 - 1

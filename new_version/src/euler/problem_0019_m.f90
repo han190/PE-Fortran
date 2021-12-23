@@ -7,7 +7,7 @@ contains
         write (euler0019, "(i20)") answer()
     end function euler0019
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         integer(i32), parameter :: start_year = 1901, end_year = 2000
         integer(i32) :: day_of_month(12), day_of_week
         integer(i32) :: year, month
@@ -26,7 +26,7 @@ contains
         end do outer
     end function answer
 
-    pure logical function is_leap(year)
+    elemental logical function is_leap(year)
         integer(i32), intent(in) :: year
 
         is_leap = .false.

@@ -7,13 +7,14 @@ contains
         write (euler0041, "(i20)") answer()
     end function euler0041
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         use prime_m, only: Sieve_of_Eratosthenes
         implicit none
 
         integer(i32), parameter :: n = 7654321
         logical, allocatable :: is_prime(:)
 
+        allocate (is_prime(n))
         call Sieve_of_Eratosthenes(n, is_prime)
         do answer = n, 1, -1
             if (is_prime(answer) .and. is_pandigital(answer)) exit

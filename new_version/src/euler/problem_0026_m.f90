@@ -11,13 +11,15 @@ contains
         use prime_m, only: Sieve_of_Eratosthenes
         implicit none
 
-        integer(i64), parameter :: limit = 1000
+        integer(i64), parameter :: n = 1000
         logical, allocatable :: is_prime(:)
         integer(i64) :: temp, k, i
 
-        call Sieve_of_Eratosthenes(limit, is_prime)
+
+        allocate (is_prime(n))
+        call Sieve_of_Eratosthenes(n, is_prime)
         temp = 0; k = 1; answer = 0
-        do i = 7, limit
+        do i = 7, n
             if (is_prime(i)) then
                 temp = multiplicative_order(i, 10_i64)
                 if (temp > k) then

@@ -17,6 +17,7 @@ contains
         integer(i64), allocatable :: primes(:), idx(:)
         logical :: avail
 
+        allocate (is_prime(n(1)))
         call Sieve_of_Eratosthenes(n(1), is_prime)
         associate (upper_ => (count(is_prime)))
             primes = pack([(i, i=1, upper_)], [(is_prime(i), i=1, upper_)])

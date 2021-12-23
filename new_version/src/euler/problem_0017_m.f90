@@ -7,13 +7,13 @@ contains
         write (euler0017, "(i20)") answer()
     end function euler0017
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         integer(i32) :: i
 
         answer = sum([(count_letters(i), i=1, 1000)])
     end function answer
 
-    pure function count_letters(n) result(ret)
+    elemental function count_letters(n) result(ret)
         integer(i32), intent(in) :: n
         integer(i32) :: ret
 
@@ -31,7 +31,7 @@ contains
         end select
     end function count_letters
 
-    pure function count_letters_3(n) result(ret)
+    elemental function count_letters_3(n) result(ret)
         integer(i32), intent(in) :: n
         integer(i32) :: ret
         integer(i32) :: d1, d2
@@ -46,7 +46,7 @@ contains
         end associate
     end function count_letters_3
 
-    pure function count_letters_2(n) result(ret)
+    elemental function count_letters_2(n) result(ret)
         integer(i32), intent(in) :: n
         integer(i32) :: ret
         integer(i32) :: d1, d2
@@ -63,7 +63,7 @@ contains
         if (n == 0) ret = 0
     end function count_letters_2
 
-    pure function count_letters_1(n) result(ret)
+    elemental function count_letters_1(n) result(ret)
         integer(i32), intent(in) :: n
         integer(i32) :: ret
 

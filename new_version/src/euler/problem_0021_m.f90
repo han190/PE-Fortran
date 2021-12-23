@@ -7,7 +7,7 @@ contains
         write (euler0021, "(i20)") answer()
     end function euler0021
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         integer(i32), parameter :: n = 10000
         integer(i32) :: i
 
@@ -17,7 +17,7 @@ contains
         end do
     end function answer
 
-    pure integer(i32) function spd(n)
+    elemental integer(i32) function spd(n)
         integer(i32), intent(in) :: n
         integer(i32) :: i
 

@@ -7,7 +7,7 @@ contains
         write (euler0007, "(i20)") answer()
     end function euler0007
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         use prime_m, only: is_prime
         implicit none
 

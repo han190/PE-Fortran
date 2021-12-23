@@ -7,7 +7,7 @@ contains
         write (euler0033, "(i20)") answer()
     end function euler0033
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         integer(i32) :: denominator, numerator
         integer(i32) :: counter
         integer(i32) :: denominator_product, numerator_product

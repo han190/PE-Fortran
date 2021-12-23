@@ -7,14 +7,14 @@ contains
         write (euler0034, "(i20)") answer()
     end function euler0034
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         integer(i32), parameter :: n = 40585
         integer(i32) :: i
 
         answer = sum([(i, i=1, n)], mask=[(is_curious(i), i=1, n)]) - 3
     end function answer
 
-    pure logical function is_curious(n)
+    elemental logical function is_curious(n)
         integer(i32), intent(in) :: n
         integer(i32) :: i
 
@@ -26,7 +26,7 @@ contains
         end associate
     end function is_curious
 
-    pure integer(i32) function factorial(n)
+    elemental integer(i32) function factorial(n)
         integer(i32), intent(in) :: n
         integer(i32) :: i
 

@@ -17,6 +17,7 @@ contains
         logical, allocatable :: is_prime(:)
         integer(i32) :: i
 
+        allocate (is_prime(n))
         call Sieve_of_Eratosthenes(n, is_prime)
         allocate (is_circular(n))
         is_circular = .false.
@@ -60,7 +61,7 @@ contains
         end do
     end subroutine circular_array
 
-    pure integer(i32) function rotate(n)
+    elemental integer(i32) function rotate(n)
         integer(i32), intent(in) :: n
 
         rotate = unit_digit(n)*10**(number_of_digits(n) - 1) + n/10

@@ -7,7 +7,7 @@ contains
         write (euler0023, "(i20)") answer()
     end function euler0023
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         integer(i32), allocatable :: abundant(:)
         integer(i32), parameter :: min_ = 12, max_ = 28123
         integer(i32) :: i, j
@@ -28,7 +28,7 @@ contains
         answer = sum([(i, i=1, max_)], mask=.not. sum_of_abundants)
     end function answer
 
-    pure logical function is_abundant(val)
+    elemental logical function is_abundant(val)
         integer(i32), intent(in) :: val
 
         is_abundant = .false.
@@ -36,7 +36,7 @@ contains
     end function is_abundant
 
     !> Sum of proper divisors.
-    pure integer(i32) function spd(n)
+    elemental integer(i32) function spd(n)
         integer(i32), intent(in) :: n
         integer(i32) :: i
 

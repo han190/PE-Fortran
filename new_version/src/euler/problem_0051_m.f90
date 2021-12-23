@@ -7,7 +7,7 @@ contains
         write (euler0051, "(i20)") answer()
     end function euler0051
 
-    pure function answer() result(ret)
+    elemental function answer() result(ret)
         use prime_m, only: Sieve_of_Eratosthenes
         implicit none
 
@@ -16,6 +16,7 @@ contains
         integer(i32), allocatable :: prime(:), arr(:)
         logical, allocatable :: is_prime(:)
 
+        allocate (is_prime(PRIME_END))
         call Sieve_of_Eratosthenes(PRIME_END, is_prime)
         prime = pack([(i, i=1, PRIME_END)], is_prime)
         prime = pack(prime, prime > PRIME_START)

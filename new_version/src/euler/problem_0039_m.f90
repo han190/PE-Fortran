@@ -14,7 +14,7 @@ contains
         answer = maxloc([(right_triangle(i), i=1, n)], dim=1)
     end function answer
 
-    pure integer(i32) function right_triangle(p)
+    elemental integer(i32) function right_triangle(p)
         integer(i32), intent(in) :: p
         integer(i32) :: i, j, k
 

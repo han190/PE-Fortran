@@ -8,7 +8,7 @@ contains
         write (euler0055, "(i20)") answer()
     end function euler0055
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         integer(i32), parameter :: upper_ = 10000
         integer(i32) :: i
 
@@ -18,7 +18,7 @@ contains
         end do
     end function answer
 
-    pure logical function is_lychrel(n)
+    elemental logical function is_lychrel(n)
         type(big_integer), intent(in) :: n
         type(big_integer) :: temp, temp2
         integer(i32) :: i
@@ -37,7 +37,7 @@ contains
         end do
     end function is_lychrel
 
-    pure logical function is_palindromic_(val)
+    elemental logical function is_palindromic_(val)
         type(big_integer), intent(in) :: val
 
         if (reverse(val) == val) then
@@ -47,7 +47,7 @@ contains
         end if
     end function is_palindromic_
 
-    pure function reverse(val) result(ret)
+    elemental function reverse(val) result(ret)
         type(big_integer), intent(in) :: val
         type(big_integer) :: ret
 

@@ -44,7 +44,7 @@ contains
         end associate
     end function is_pentagonal_pair
 
-    pure logical function is_pentagonal(p)
+    elemental logical function is_pentagonal(p)
         integer(i64), intent(in) :: p
 
         associate (x => sqrt(24.*real(p) + 1.))
@@ -56,7 +56,7 @@ contains
         end associate
     end function is_pentagonal
 
-    pure logical function is_integer(n)
+    elemental logical function is_integer(n)
         real(sp), intent(in) :: n
 
         if (n - floor(n) <= tiny_sp) then

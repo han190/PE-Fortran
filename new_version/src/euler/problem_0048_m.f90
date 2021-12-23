@@ -9,7 +9,7 @@ contains
     end function euler0048
 
     pure character(len=20) function answer()
-        integer :: sum_(10), i, array(10)
+        integer(i32) :: sum_(10), i, array(10)
 
         sum_ = 0
         do i = 1, 1000
@@ -20,9 +20,9 @@ contains
     end function answer
 
     pure subroutine add10(a, b)
-        integer, intent(inout) :: a(:)
-        integer, intent(in) :: b(:)
-        integer :: i
+        integer(i32), intent(inout) :: a(:)
+        integer(i32), intent(in) :: b(:)
+        integer(i32) :: i
 
         a = a + b
         do i = 10, 2, -1
@@ -32,9 +32,9 @@ contains
     end subroutine add10
 
     pure subroutine self_pow10(n, array)
-        integer, intent(in) :: n
-        integer, intent(out) :: array(:)
-        integer :: i, j
+        integer(i32), intent(in) :: n
+        integer(i32), intent(out) :: array(:)
+        integer(i32) :: i, j
 
         array = 0; array(10) = n
         do i = 1, n - 1

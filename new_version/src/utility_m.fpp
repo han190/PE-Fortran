@@ -6,7 +6,7 @@ module utility_m
     implicit none
     private
 
-    public :: unit_digit, number_of_digits
+    public :: unit_digit, number_of_digits, sqrt
     public :: to_array, to_integer
     public :: is_palindromic, is_pandigital
     public :: prime_factorization, number_of_divisors
@@ -26,6 +26,13 @@ module utility_m
         module procedure number_of_digits_${T}$
         #: endfor
     end interface number_of_digits
+
+    !> Square root for integers.
+    interface sqrt
+        #: for T in integer_kinds
+        module procedure sqrt_${T}$
+        #: endfor
+    end interface sqrt
 
     !> Convert an intger to an array.
     interface to_array
@@ -55,35 +62,35 @@ module utility_m
         #: endfor
     end interface prime_factorization
 
-    !> Number of divisors
+    !> Number of divisors.
     interface number_of_divisors
         #: for T in integer_kinds
         module procedure number_of_divisors_${T}$
         #: endfor
     end interface number_of_divisors
 
-    !> Is pandigital
+    !> Is pandigital.
     interface is_pandigital
         #: for T in integer_kinds
         module procedure is_pandigital_${T}$
         #: endfor
     end interface is_pandigital
 
-    !> Least common multiple
+    !> Least common multiple.
     interface lcm
         #: for T in integer_kinds
         module procedure lcm_${T}$
         #: endfor
     end interface lcm
 
-    !> Greatest common divisor
+    !> Greatest common divisor.
     interface gcd
         #: for T in integer_kinds
         module procedure gcd_${T}$
         #: endfor
     end interface gcd
 
-    !> Next permutation
+    !> Next permutation.
     interface permute
         #: for T in integer_kinds
         module procedure permute_${T}$
@@ -104,6 +111,7 @@ contains
 
         unit_digit_${T}$ = mod(n, 10_${T}$)
     end function unit_digit_${T}$
+
     #: endfor
 
     !> Return number of digits in an integer.
@@ -113,6 +121,17 @@ contains
 
         number_of_digits_${T}$ = floor(log10(real(n, sp))) + 1_${T}$
     end function number_of_digits_${T}$
+
+    #: endfor
+
+    !> Next permutation (k, n).
+    #: for T in integer_kinds
+    elemental integer(${T}$) function sqrt_${T}$ (n)
+        integer(${T}$), intent(in) :: n
+
+        sqrt_${T}$ = floor(sqrt(real(n, sp)), ${T}$)
+    end function sqrt_${T}$
+
     #: endfor
 
     !> Convert an integer into an integer array.
@@ -131,6 +150,7 @@ contains
             end do
         end associate
     end function to_array_${T}$
+
     #: endfor
 
     !> Convert an integer array into an integer.
@@ -145,11 +165,12 @@ contains
         end do
         to_integer_${T}$ = temp
     end function to_integer_${T}$
+
     #: endfor
 
     !> To tell if an integer is palindromic.
     #: for T in integer_kinds
-    pure logical function is_palindromic_${T}$ (n)
+    elemental logical function is_palindromic_${T}$ (n)
         integer(${T}$), intent(in) :: n
         integer(${T}$) :: reversed, temp
 
@@ -163,6 +184,7 @@ contains
         is_palindromic_${T}$ = .false.
         if (n == reversed) is_palindromic_${T}$ = .true.
     end function is_palindromic_${T}$
+
     #: endfor
 
     !> Assuming an array of primes is already generated.
@@ -186,6 +208,7 @@ contains
             end do inner
         end do outer
     end subroutine prime_factorization_${T}$
+
     #: endfor
 
     !> Number of proper divisors.
@@ -200,6 +223,7 @@ contains
         call prime_factorization(n, primes, powers)
         number_of_divisors_${T}$ = product(powers + 1)
     end function number_of_divisors_${T}$
+
     #: endfor
 
     !> To tell if a number is pandigital
@@ -227,6 +251,7 @@ contains
 
         if (count(array) == l) is_pandigital_${T}$ = .true.
     end function is_pandigital_${T}$
+
     #: endfor
 
     !> Greatest common divisor
@@ -242,6 +267,7 @@ contains
             ret = gcd_${T}$ (b, mod(a, b))
         end select
     end function gcd_${T}$
+
     #: endfor
 
     !> Least common multiple
@@ -251,9 +277,10 @@ contains
 
         lcm_${T}$ = abs(a*b)/gcd_${T}$ (a, b)
     end function lcm_${T}$
+
     #: endfor
 
-    !> Next permutation (k, n)
+    !> Next permutation (k, n).
     #: for T in integer_kinds
     pure subroutine permute_${T}$ (k, n, idx, next_available)
         integer(${T}$), intent(in) :: k, n
@@ -303,6 +330,7 @@ contains
             end associate
         end if
     end subroutine permute_${T}$
+
     #: endfor
 
 end module utility_m

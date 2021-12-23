@@ -16,6 +16,7 @@ contains
         logical :: not_found
         logical, allocatable :: is_prime(:)
 
+        allocate (is_prime(n))
         call sieve_of_Eratosthenes(n, is_prime)
         res = 1; not_found = .true.
 
@@ -36,7 +37,7 @@ contains
         answer = res
     end function answer
 
-    pure logical function is_twice_square(n)
+    elemental logical function is_twice_square(n)
         integer, intent(in) :: n
         real(dp) :: sqrt_nover2
 

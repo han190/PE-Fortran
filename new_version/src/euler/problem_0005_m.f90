@@ -7,7 +7,7 @@ contains
         write (euler0005, "(i20)") answer()
     end function euler0005
 
-    pure integer(i64) function answer()
+    elemental integer(i64) function answer()
         integer(i64), parameter :: n = 20
         integer(i64) :: i
 

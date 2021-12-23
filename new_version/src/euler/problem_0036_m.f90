@@ -46,7 +46,7 @@ contains
         end associate
     end function to_binary
 
-    pure real(sp) function log2(n)
+    elemental real(sp) function log2(n)
         integer(i32), intent(in) :: n
 
         log2 = log(real(n, sp))/log(2._sp)

@@ -13,12 +13,9 @@ contains
 
         integer(i64), parameter :: n = 600851475143_i64
         integer(i64), allocatable :: primes(:)
-        integer(i32) :: i
+        integer(i64) :: i
 
-        associate (upper_ => (int(sqrt(real(n, sp)) + 1._sp, i64)))
-            call Sieve_of_Eratosthenes(upper_, primes)
-        end associate
-
+        call Sieve_of_Eratosthenes(sqrt(n), primes)
         do i = size(primes), 1, -1
             if (mod(n, primes(i)) == 0) exit
         end do

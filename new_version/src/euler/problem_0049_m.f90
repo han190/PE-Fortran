@@ -11,10 +11,12 @@ contains
         use prime_m, only: Sieve_of_Eratosthenes
         implicit none
 
-        integer :: i
+        integer(i32), parameter :: n = 10000
+        integer(i32) :: i
         logical, allocatable :: is_prime(:)
 
-        call Sieve_of_Eratosthenes(10000, is_prime)
+        allocate (is_prime(n))
+        call Sieve_of_Eratosthenes(n, is_prime)
         do i = 9973, 7661, -1
             associate (a => i, b => i - 3330, c => i - 6660)
                 if (.not. all([is_prime(a), is_prime(b), is_prime(c)])) cycle

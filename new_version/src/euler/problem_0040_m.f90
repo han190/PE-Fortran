@@ -7,7 +7,7 @@ contains
         write (euler0040, "(i20)") answer()
     end function euler0040
 
-    pure integer(i32) function answer()
+    elemental integer(i32) function answer()
         integer(i32) :: digit_array(6), digit(6)
         integer(i32) :: i
 

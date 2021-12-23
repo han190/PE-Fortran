@@ -7,7 +7,7 @@ contains
         write (euler0015, "(i20)") answer()
     end function euler0015
 
-    pure integer(i64) function answer()
+    elemental integer(i64) function answer()
         integer(i32) :: i
 
         associate (n => 20_i32)
