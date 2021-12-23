@@ -142,7 +142,7 @@ contains
         integer(${T}$) :: i, temp
 
         temp = n
-        associate (l => number_of_digits(temp))
+        associate (l => (number_of_digits(temp)))
             allocate (ret(l))
             do i = l, 1, -1
                 ret(i) = unit_digit(temp)
@@ -242,7 +242,7 @@ contains
         temp = n
 
         do
-            associate (u => unit_digit(temp))
+            associate (u => (unit_digit(temp)))
                 if (u == 0_${T}$ .or. u > l) exit
                 array(u) = .true.
             end associate
@@ -310,7 +310,7 @@ contains
         end if
 
         next_available = .true.
-        associate (end => [(i, i=n - k + 1, n)])
+        associate (end => ([(i, i=n - k + 1, n)]))
             if (all(idx == end)) then
                 next_available = .false.
                 return
@@ -325,7 +325,7 @@ contains
         if (all(carried)) then
             idx(k) = idx(k) + 1
         else
-            associate (x => findloc(carried, value=.false., dim=1) - 1)
+            associate (x => (findloc(carried, value=.false., dim=1) - 1))
                 idx(x:k) = [(idx(x) + i, i=1, k - x + 1)]
             end associate
         end if
