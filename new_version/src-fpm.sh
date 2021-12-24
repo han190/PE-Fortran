@@ -2,7 +2,7 @@
 
 srcdir=src
 srcfpmdir=src-fpm
-nproblem=60
+nproblem=$(ls ./$srcdir/euler/*.f90 | wc -l)
 fypp_flag=-DNUM_PROB=$nproblem
 
 if [ -d "src" ]; then
@@ -34,7 +34,13 @@ if [ -d "src" ]; then
         cp -rf $srcdir/$foldername $srcfpmdir/$foldername
     done
 
-    echo "Formatting source codes..."
-    fprettify -i=4 -r $srcfpmdir
+    if command -v fypp &> /dev/null; then
+        echo "Found fypp, formatting source codes..."
+        fprettify -i=4 -r $srcfpmdir
+    fi
 
+fi
+
+if [ $? -eq 0 ]; then
+    echo "Source codes generated successfully."
 fi

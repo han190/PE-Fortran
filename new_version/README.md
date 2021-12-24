@@ -1,45 +1,43 @@
 # Project Euler solutions written in Fortran
 
-[Project Euler](https://projecteuler.net/about) is a problem set. I occasionally solve PE problems for fun. If you are looking for the same things, check it out!
+[Project Euler](https://projecteuler.net/about) is a problem set and I occasionally solve PE problems for fun. If you are looking for the same things, check it out!
 
 ## Getting Started
 
 ### Build with meson
 
-Dependencies:
-* [Meson](https://mesonbuild.com/)
-* [Ninja](https://ninja-build.org/)
-* Fortran compiler ([gfortran](https://gcc.gnu.org/wiki/GFortran) or [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5))
+* Dependencies: [Meson](https://mesonbuild.com/), [Ninja](https://ninja-build.org/), and a Fortran compiler ([gfortran](https://gcc.gnu.org/wiki/GFortran) and [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5) are tested.)
 
-```bash
+```
 meson build
 meson test -C build
 ```
 
 ### Build with fpm
 
-Dependencies:
-* [fpm](https://github.com/fortran-lang/fpm)
-* [fypp](https://github.com/aradi/fypp)
-* [fprettify](https://github.com/pseewald/fprettify)
-* Fortran compiler ([gfortran](https://gcc.gnu.org/wiki/GFortran) or [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5))
+* Dependencies: [fpm](https://github.com/fortran-lang/fpm), [fypp](https://github.com/aradi/fypp), [fprettify](https://github.com/pseewald/fprettify) and a Fortran compiler ([gfortran](https://gcc.gnu.org/wiki/GFortran) and [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5) are tested.)
 
-The [fpm](https://github.com/fortran-lang/fpm) doesn't support fypp currently, I wrote a simple bash script to generate all fortran source files. Navigate to the source directory and type
-```bash
+The [fpm](https://github.com/fortran-lang/fpm) does not support fypp currently, so in order to use `fpm` I wrote a simple bash script to generate all fortran source files. Navigate to the source directory and type
+
+```
 ./src-fpm.sh
 ```
-and a folder named `src-fpm` will be generated, then we could use the `fpm` command
-```bash
+
+and a folder named `src-fpm` will be generated. The generated source files will also be formatted by `fypp`. Then one could simply use all the fpm commands,
+
+```
 fpm build
 fpm test # if necessary
 fpm run -- -f -a 60 -d $(realpath ./data)
 ```
+
 * _For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)._
 
 
 ## Usage
 
-```bash
+```
+$ ./PE-Fortran --help
 PE Fortran Solution
 Arguments:
    -v, --version          Print version.
@@ -65,12 +63,12 @@ Usage:
 ## Misc
 
 To count LOC:
-```bash
+```
 cloc --force-lang="Fortran 90",fpp .
 ```
 
 To format all source files:
-```bash
+```
 fprettify -i=4 -r src
 ```
 
