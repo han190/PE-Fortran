@@ -9,19 +9,24 @@ keywords = ["fortran", "modern-fortran", "project-euler-solutions"]
 homepage = "https://github.com/han190/PE-Fortran"
 
 [ library ]
-source-dir = "src"
+source-dir = "src-fpm"
 
 [[ test ]]
-name = "PE-Fortran-Test-euler_multiprecision_m"
-source-dir = "src/test/test_euler_multiprecision_m"
-main = "test_euler_multiprecision_m.f90"
+name = "Test-big_integer_m"
+source-dir = "src-fpm/test"
+main = "test_multiprecision.f90"
 
 [[ test ]]
-name = "PE-Fortran-Test-euler_primes_m"
-source-dir = "src/test/test_euler_primes_m"
-main = "test_euler_primes_m.f90"
+name = "Test-prime_m"
+source-dir = "src-fpm/test"
+main = "test_prime.f90"
+
+[[ test ]]
+name = "Test-utility_m"
+source-dir = "src-fpm/test"
+main = "test_utility.f90"
 
 [[ executable ]]
 name = "PE-Fortran"
-source-dir = "src/app"
-main = "euler_main.f90"
+source-dir = "src-fpm/app"
+main = "project_euler.f90"

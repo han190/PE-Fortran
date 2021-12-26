@@ -5,6 +5,11 @@ srcfpmdir=src-fpm
 nproblem=$(ls ./$srcdir/euler/*.f90 | wc -l)
 fypp_flag=-DNUM_PROB=$nproblem
 
+if ! command -v fypp &> /dev/null; then
+    echo "Fypp not found, try conda install fypp."
+    exit 0
+fi
+
 if [ -d "src" ]; then
 
     if [ -d "src-fpm" ]; then
@@ -34,8 +39,8 @@ if [ -d "src" ]; then
         cp -rf $srcdir/$foldername $srcfpmdir/$foldername
     done
 
-    if command -v fypp &> /dev/null; then
-        echo "Found fypp, formatting source codes..."
+    if command -v fprettify &> /dev/null; then
+        echo "Found fprettify, formatting source codes..."
         fprettify -i=4 -r $srcfpmdir
     fi
 
