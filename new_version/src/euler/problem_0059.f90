@@ -33,7 +33,7 @@ contains
             inner: do while (available2)
                 call decrypt(encrypted, letters(idx(idx2)), decrypted)
                 if (is_english(decrypted)) exit outer
-                call permute(3, 3, idx2, available2)
+                call permute(idx2, available2)
             end do inner
 
             call permute(k, n, idx, available)

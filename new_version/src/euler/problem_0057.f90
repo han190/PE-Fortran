@@ -16,20 +16,20 @@ contains
         i = 1; answer = 0; a = 1; b = 2
         do while (i < max_)
             a = a + b*2
-            call swap(a, b)
+            call swap_(a, b)
             a = a + b
             if (size(a%arr) > size(b%arr)) answer = answer + 1
             i = i + 1
         end do
     end function answer
 
-    pure subroutine swap(a, b)
+    pure subroutine swap_(a, b)
         type(big_integer), intent(inout) :: a, b
         type(big_integer) :: t
 
         call move_alloc(a%arr, t%arr)
         call move_alloc(b%arr, a%arr)
         call move_alloc(t%arr, b%arr)
-    end subroutine swap
+    end subroutine swap_
 
 end submodule euler_problem_0057_m

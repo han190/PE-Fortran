@@ -41,11 +41,4 @@ contains
         sort = to_integer(array)
     end function sort
 
-    pure subroutine swap(a, b)
-        integer(i32), intent(inout) :: a, b
-        integer(i32) :: temp
-
-        temp = a; a = b; b = temp
-    end subroutine swap
-
 end submodule euler_problem_0049_m

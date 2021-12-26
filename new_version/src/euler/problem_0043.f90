@@ -1,6 +1,5 @@
 submodule(interface_m) euler_problem_0043_m
     implicit none
-    integer(i64) :: sum_
 
 contains
 
@@ -8,32 +7,20 @@ contains
         write (euler0043, "(i20)") answer()
     end function euler0043
 
-    integer(i64) function answer()
+    pure integer(i64) function answer()
         integer(i64) :: i, array(10)
+        logical :: next_avail
 
         array = [(i, i=0, 9)]
-        call permute_(array, 1_i64, 10_i64)
-        answer = sum_
-    end function answer
+        answer = 0
 
-    recursive subroutine permute_(a, l, r)
-        integer(i64), intent(inout) :: a(:)
-        integer(i64), intent(in) :: l, r
-        integer(i64) :: i
-
-        if (l == r) then
-            associate (temp => to_integer(a))
-                if (is_divisible(temp)) sum_ = sum_ + temp
+        do while (next_avail)
+            associate (temp => (to_integer(array)))
+                if (is_divisible(temp)) answer = answer + temp
             end associate
-            return
-        else
-            do i = l, r
-                call swap(a(i), a(l))
-                call permute_(a, l + 1, r)
-                call swap(a(i), a(l))
-            end do
-        end if
-    end subroutine permute_
+            call permute(array, next_avail)
+        end do
+    end function answer
 
     pure logical function is_divisible(n)
         integer(i64), intent(in) :: n
@@ -52,12 +39,5 @@ contains
             temp = temp/10
         end do
     end function is_divisible
-
-    pure subroutine swap(a, b)
-        integer(i64), intent(inout) :: a, b
-        integer(i64) :: temp
-
-        temp = a; a = b; b = temp
-    end subroutine swap
 
 end submodule euler_problem_0043_m

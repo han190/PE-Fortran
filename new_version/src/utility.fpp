@@ -11,7 +11,7 @@ module utility_m
     public :: is_palindromic, is_pandigital
     public :: prime_factorization, number_of_divisors
     public :: lcm, gcd
-    public :: permute
+    public :: swap, permute
 
     !> Return unit digit of an integer.
     interface unit_digit
@@ -90,10 +90,19 @@ module utility_m
         #: endfor
     end interface gcd
 
+    !> Swap.
+    interface swap
+        #: for T in integer_kinds
+        module procedure swap_${T}$
+        #: endfor
+        module procedure swap_char
+    end interface swap
+
     !> Next permutation.
     interface permute
         #: for T in integer_kinds
         module procedure permute_${T}$
+        module procedure permute_kn_${T}$
         #: endfor
     end interface permute
 
@@ -104,8 +113,8 @@ module utility_m
 
 contains
 
-    !> Return unit digit of an integer.
     #: for T in integer_kinds
+    !> Unit digit of an ${T}$ integer.
     elemental integer(${T}$) function unit_digit_${T}$ (n)
         integer(${T}$), intent(in) :: n
 
@@ -114,8 +123,8 @@ contains
 
     #: endfor
 
-    !> Return number of digits in an integer.
     #: for T in integer_kinds
+    !> Number of digits in an ${T}$ integer.
     elemental integer(${T}$) function number_of_digits_${T}$ (n)
         integer(${T}$), intent(in) :: n
 
@@ -124,8 +133,8 @@ contains
 
     #: endfor
 
-    !> Next permutation (k, n).
     #: for T in integer_kinds
+    !> Next permutation (k, n) for ${T}$.
     elemental integer(${T}$) function sqrt_${T}$ (n)
         integer(${T}$), intent(in) :: n
 
@@ -134,8 +143,8 @@ contains
 
     #: endfor
 
-    !> Convert an integer into an integer array.
     #: for T in integer_kinds
+    !> Convert an integer into an ${T}$ array.
     pure function to_array_${T}$ (n) result(ret)
         integer(${T}$), intent(in) :: n
         integer(${T}$), allocatable :: ret(:)
@@ -153,8 +162,8 @@ contains
 
     #: endfor
 
-    !> Convert an integer array into an integer.
     #: for T in integer_kinds
+    !> Convert an ${T}$ integer array into an ${T}$ integer.
     pure integer(${T}$) function to_integer_${T}$ (arr)
         integer(${T}$), intent(in) :: arr(:)
         integer(${T}$) :: i, temp
@@ -168,8 +177,8 @@ contains
 
     #: endfor
 
-    !> To tell if an integer is palindromic.
     #: for T in integer_kinds
+    !> To tell if an ${T}$ integer is palindromic.
     elemental logical function is_palindromic_${T}$ (n)
         integer(${T}$), intent(in) :: n
         integer(${T}$) :: reversed, temp
@@ -187,8 +196,8 @@ contains
 
     #: endfor
 
-    !> Assuming an array of primes is already generated.
     #: for T in integer_kinds
+    !> Prime factorization of an ${T}$ integer.
     pure subroutine prime_factorization_${T}$ (n, primes, powers)
         integer(${T}$), intent(in) :: n, primes(:)
         integer(${T}$), intent(out) :: powers(size(primes))
@@ -211,11 +220,8 @@ contains
 
     #: endfor
 
-    !> Number of proper divisors.
-    !> Write an integer in a form of n = p1**e1 + p2**e2 + ...,
-    !> where p_i are the primes and e_i are the number of existences.
-    !> Then, number of divisors is (e1 + 1)*(e2 + 1)*...
     #: for T in integer_kinds
+    !> Number of proper divisors of an ${T}$ integer.
     pure integer(${T}$) function number_of_divisors_${T}$ (n, primes)
         integer(${T}$), intent(in) :: n, primes(:)
         integer(${T}$) :: powers(size(primes))
@@ -226,8 +232,8 @@ contains
 
     #: endfor
 
-    !> To tell if a number is pandigital
     #: for T in integer_kinds
+    !> To tell if an ${T}$ integer is pandigital.
     pure logical function is_pandigital_${T}$ (n)
         integer(${T}$), intent(in) :: n
         integer(${T}$) :: temp, l
@@ -254,8 +260,8 @@ contains
 
     #: endfor
 
-    !> Greatest common divisor
     #: for T in integer_kinds
+    !> Greatest common divisor of two ${T}$ integers.
     pure recursive function gcd_${T}$ (a, b) result(ret)
         integer(${T}$), intent(in) :: a, b
         integer(${T}$) :: ret
@@ -270,8 +276,8 @@ contains
 
     #: endfor
 
-    !> Least common multiple
     #: for T in integer_kinds
+    !> Least common multiple of two ${T}$ integers.
     pure integer(${T}$) function lcm_${T}$ (a, b)
         integer(${T}$), intent(in) :: a, b
 
@@ -280,39 +286,65 @@ contains
 
     #: endfor
 
-    !> Next permutation (k, n).
     #: for T in integer_kinds
-    pure subroutine permute_${T}$ (k, n, idx, next_available)
+    !> Swap for ${T}$.
+    pure subroutine swap_${T}$ (a, b)
+        integer(${T}$), intent(inout) :: a, b
+        integer(${T}$) :: temp
+
+        temp = a; a = b; b = temp
+    end subroutine swap_${T}$
+
+    #: endfor
+
+    pure subroutine swap_char(a, b)
+        character(len=*), intent(inout) :: a
+        character(len=len(a)), intent(inout) :: b
+        character(len=len(a)) :: temp
+
+        temp = a; a = b; b = temp
+    end subroutine swap_char
+
+    #: for T in integer_kinds
+    !> Next permutation of an ${T}$ array.
+    pure subroutine permute_${T}$ (idx, next_avail)
+        integer(${T}$), intent(inout) :: idx(:)
+        logical, intent(out) :: next_avail
+        integer(${T}$) :: i, j, temp
+
+        next_avail = .false.
+        do i = size(idx) - 1, 1, -1
+            if (idx(i) < idx(i + 1)) then
+                j = i
+                next_avail = .true.
+                exit
+            end if
+        end do
+        if (.not. next_avail) return
+
+        do i = size(idx), 1, -1
+            if (idx(j) < idx(i)) exit
+        end do
+
+        call swap_${T}$ (idx(i), idx(j))
+        idx(j + 1:size(idx)) = idx(size(idx):j + 1:-1)
+    end subroutine permute_${T}$
+
+    #: endfor
+
+    #: for T in integer_kinds
+    !> Next permutation (k, n) of an ${T}$ array.
+    pure subroutine permute_kn_${T}$ (k, n, idx, next_avail)
         integer(${T}$), intent(in) :: k, n
         integer(${T}$), intent(inout) :: idx(k)
-        logical, intent(out) :: next_available
+        logical, intent(out) :: next_avail
         logical :: carried(k)
         integer(${T}$) :: i, j, temp
 
-        if (k == n) then
-            next_available = .false.
-            do i = size(idx) - 1, 1, -1
-                if (idx(i) < idx(i + 1)) then
-                    j = i
-                    next_available = .true.
-                    exit
-                end if
-            end do
-            if (.not. next_available) return
-
-            do i = size(idx), 1, -1
-                if (idx(j) < idx(i)) exit
-            end do
-
-            temp = idx(j); idx(j) = idx(i); idx(i) = temp
-            idx(j + 1:size(idx)) = idx(size(idx):j + 1:-1)
-            return
-        end if
-
-        next_available = .true.
+        next_avail = .true.
         associate (end => ([(i, i=n - k + 1, n)]))
             if (all(idx == end)) then
-                next_available = .false.
+                next_avail = .false.
                 return
             end if
         end associate
@@ -329,7 +361,7 @@ contains
                 idx(x:k) = [(idx(x) + i, i=1, k - x + 1)]
             end associate
         end if
-    end subroutine permute_${T}$
+    end subroutine permute_kn_${T}$
 
     #: endfor
 

@@ -68,12 +68,4 @@ contains
         call swap(a(i), a(high))
     end subroutine partition
 
-    pure subroutine swap(a, b)
-        character(len=*), intent(inout) :: a
-        character(len=len(a)), intent(inout) :: b
-        character(len=len(a)) :: temp
-
-        temp = a; a = b; b = temp
-    end subroutine swap
-
 end submodule euler_problem_0022_m
