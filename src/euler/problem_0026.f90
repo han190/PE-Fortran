@@ -15,7 +15,6 @@ contains
         logical, allocatable :: is_prime(:)
         integer(i64) :: temp, k, i
 
-
         allocate (is_prime(n))
         call Sieve_of_Eratosthenes(n, is_prime)
         temp = 0; k = 1; answer = 0

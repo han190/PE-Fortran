@@ -14,8 +14,8 @@ contains
         integer(i64), parameter :: n = 2000000_i64
         logical, allocatable :: is_prime(:)
         integer(i64) :: i
-        
-        allocate(is_prime(n))
+
+        allocate (is_prime(n))
         call Sieve_of_Eratosthenes(n, is_prime)
         answer = 0
         do i = 1, n
