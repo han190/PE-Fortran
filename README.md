@@ -48,16 +48,12 @@ Arguments:
                           relative difficulties.
    -d, --data-directory   (optional) Directory of input data,
                           default is ".".
-
-Usage:
-   (1) Compute problem 1 through 50:
-       PE-Fortran -a 50
-   (2) Compute problem 1 through 50 with emoji output:
-       PE-Fortran -f -a 50
-   (3) Compute problem 50:
-       PE-Fortran -p 50
-   (4) Compute problem 1 to 50 with specified data path:
-       PE-Fortran -f -a 50 -d $(realpath your/data/path)
+   -n, --number-of-trails (optional) Number of trails,
+                          default is 1.
+Example:
+   (1) Compute problem 1 to 50, 10 trails per problem, with
+       fancy style (emojis) and a specified data directory.
+     $ PE-Fortran -f -a 50 -d $(realpath ./data) -n 10
 ```
 
 ## Misc

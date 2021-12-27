@@ -53,16 +53,12 @@ contains
              '                          relative difficulties.', &
              '   -d, --data-directory   (optional) Directory of input data, ', &
              '                          default is ".".', &
-             ' ', &
-             'Usage:', &
-             '   (1) Compute problem 1 through 50:', &
-             '       PE-Fortran -a 50', &
-             '   (2) Compute problem 1 through 50 with emoji output:', &
-             '       PE-Fortran -f -a 50', &
-             '   (3) Compute problem 50:', &
-             '       PE-Fortran -p 50', &
-             '   (4) Compute problem 1 to 50 with specified data path:', &
-             '       PE-Fortran -f -a 50 -d $(realpath your/data/path)', &
+             '   -n, --number-of-trails (optional) Number of trails, ', &
+             '                          default is 1.', &
+             'Example:', &
+             '   (1) Compute problem 1 to 50, 10 trails per problem, with', &
+             '       fancy style (emojis) and a specified data directory.', &
+             '     $ PE-Fortran -f -a 50 -d $(realpath ./data) -n 10', &
              ' ']
     end subroutine get_help_messages
 
@@ -82,17 +78,6 @@ contains
     end subroutine print_error_messages
 
     !> Get 'levels' for all problems.
-    !>
-    !> Here we define a concept called __relative difficulty__
-    !>
-    !> * First of all we compute time span per problem and store them into
-    !> an array, for example `real, intent(in) :: x(:)`.
-    !> * Then we normalize each time span into a number between 0 and 1.
-    !> For example, `norm = (x(i) - minval(x))/(maxval(x) - minval(x))`.
-    !> * We catagorize the result into 5 different levels, 1 being the highest
-    !> level and 5 being the lowest level. If the argument
-    !>`fancy_style = .true.`, the levels are expressed using emojis.
-    !> The problems that are not finished will be labeled "UNFINISHED".
     subroutine get_levels(x, xstr, levels, fancy_style)
         real, intent(in) :: x(:)
         character(len=20), intent(in) :: xstr(:)
@@ -103,21 +88,12 @@ contains
         character(len=:), allocatable :: level_names(:)
 
         if (fancy_style) then
-            level_names = [character(len=25) :: &
-                           ":smiling_imp:", &
-                           ":frowning_face:", &
-                           ":slightly_frowning_face:", &
-                           ":confused:", &
-                           ":neutral_face:", &
-                           ""]
+            level_names = [character(len=25) :: ":smiling_imp:", &
+                           ":frowning_face:", ":slightly_frowning_face:", &
+                           ":confused:", ":neutral_face:", ""]
         else
-            level_names = [character(len=25) :: &
-                           "_LEVEL1_", &
-                           "_LEVEL2_", &
-                           "_LEVEL3_", &
-                           "_LEVEL4_", &
-                           "_LEVEL5_", &
-                           ""]
+            level_names = [character(len=25) :: "_LEVEL1_", "_LEVEL2_", &
+                           "_LEVEL3_", "_LEVEL4_", "_LEVEL5_", ""]
         end if
 
         min_x = minval(x)
@@ -151,23 +127,29 @@ contains
     end subroutine get_levels
 
     !> Get answers from problem 1 to problem x.
-    subroutine get_answers(problem_numbers, answer, time_span)
-        integer, intent(in) :: problem_numbers
+    subroutine get_answers(number_of_problems, number_of_trails, answer, tspan)
+        integer(i32), intent(in) :: number_of_problems, number_of_trails
         character(len=20), allocatable, intent(out) :: answer(:)
-        real, allocatable, intent(out) :: time_span(:)
+        real(sp), allocatable, intent(out) :: tspan(:)
         type(problem_t), allocatable :: problem(:)
-        real :: t_f, t_i
-        integer :: i
+        real(sp) :: t_f, t_i
+        integer(i32) :: i, j
 
         call initialize_problems(problem)
-        allocate (answer(problem_numbers), time_span(problem_numbers))
-        time_span = 0.
-        do i = 1, problem_numbers
-            call cpu_time(t_i)
-            answer(i) = problem(i)%answer()
-            call cpu_time(t_f)
-            if (answer(i) /= failed) time_span(i) = t_f - t_i
+        allocate (answer(number_of_problems), tspan(number_of_problems))
+        tspan = 0.
+
+        do j = 1, number_of_trails
+            do i = 1, number_of_problems
+                call cpu_time(t_i)
+                answer(i) = problem(i)%answer()
+                call cpu_time(t_f)
+                if (answer(i) == failed) cycle
+                tspan(i) = tspan(i) + (t_f - t_i)
+            end do
         end do
+
+        tspan = tspan/number_of_trails
     end subroutine get_answers
 
     !> Get answer of problem x.
@@ -192,9 +174,9 @@ contains
     end subroutine get_answer
 
     !> Print answers from problem 1 to x.
-    subroutine print_answers(problem_numbers, fancy_style)
-        integer, intent(in) :: problem_numbers
-        logical, optional, intent(in) :: fancy_style
+    subroutine print_answers(number_of_problems, number_of_trails, fancy_style)
+        integer, intent(in) :: number_of_problems, number_of_trails
+        logical, intent(in) :: fancy_style
         character(len=20), allocatable :: answer(:)
         real, allocatable :: tspan(:)
         real :: tsum, nslv
@@ -203,15 +185,8 @@ contains
         integer, parameter :: iunit = 1120
         character(len=25), allocatable :: levels(:)
         integer :: i
-        logical :: is_fancy
 
-        if (present(fancy_style)) then
-            is_fancy = fancy_style
-        else
-            is_fancy = .false.
-        end if
-
-        call get_answers(problem_numbers, answer, tspan)
+        call get_answers(number_of_problems, number_of_trails, answer, tspan)
         tsum = sum(tspan, dim=1)
         nslv = real(count(answer /= failed, dim=1))
         allocate (levels(size(tspan)))
@@ -223,8 +198,10 @@ contains
         write (iunit, '(a)') '|Benchmarks|Results|'
         write (iunit, '(a)') repeat(md_table, 2)//'|'
         write (iunit, "('|Problems solved|', i4, '|')") int(nslv)
-        write (iunit, "('|Time spent|', f9.2, '(s)|')") tsum
-        write (iunit, "('|Time spent/problem|', f9.2, '(s)|')") tsum/nslv
+        write (iunit, "('|Total time|', f9.2, '(s)|')") tsum*number_of_trails
+        write (iunit, "('|Trails per problem|', i4, '|')") number_of_trails
+        write (iunit, "('|Time spent per trail|', f9.2, '(s)|')") tsum
+        write (iunit, "('|Time spent per problem|', f9.2, '(s)|')") tsum/nslv
         write (iunit, '(a)') new_line('a')//'## Answers'//new_line('a')
         write (iunit, '(a)') '|Prob|Answer|Tspan(s)|Difficulty|'
         write (iunit, '(a)') repeat(md_table, 4)//'|'
@@ -234,12 +211,14 @@ contains
         end do
         close (iunit)
 
-        write (*, "(26('-'), 1x, 20('-'))")
         write (*, "('PE Fortran Solutions')")
+        write (*, "(26('-'), 1x, 20('-'))")
         fmt = "('Problems solved/tried:', t27, 1x, i15.4, '/', i4.4)"
         write (*, fmt) int(nslv), size(tspan)
-        write (*, "('Total time spent (s):', t27, 1x, f20.2)") tsum
-        write (*, "('Time spent/problem (s):', t27, 1x, f20.2)") tsum/nslv
+        write (*, "('Trails:', t27, 1x, i20)") number_of_trails
+        write (*, "('Total time (s):', t27, 1x, f20.2)") tsum*number_of_trails
+        write (*, "('Time per trail (s):', t27, 1x, f20.2)") tsum
+        write (*, "('Time per problem (s):', t27, 1x, f20.2)") tsum/nslv
     end subroutine print_answers
 
     !> Print answer of problem x.
@@ -259,15 +238,15 @@ contains
     !> Get arguments from the command line and calculate problems.
     subroutine get_arguments()
         character(len=500), allocatable :: arguments(:)
-        integer :: argument_count, idx, problem_number
-        logical :: compute_all, compute_single, is_fancy
+        integer :: argument_count, idx, number_of_problems, number_of_trails
+        logical :: compute_all, compute_single, fancy
         character(len=500) :: path_
         character(len=*), parameter :: INVALID = "Invalid syntax!"
 
         path_ = ""
 
         argument_count = command_argument_count()
-        if (argument_count >= 7 .or. argument_count < 1) then
+        if (argument_count >= 9 .or. argument_count < 1) then
             call print_error_messages(INVALID)
         end if
 
@@ -290,24 +269,28 @@ contains
         else if (argument_count >= 2) then
             compute_single = .false.
             compute_all = .false.
-            is_fancy = .false.
+            fancy = .false.
+            number_of_trails = 1
 
             idx = 1
             do while (idx <= argument_count)
                 select case (trim(arguments(idx)))
                 case ("-a", "--all")
-                    read (arguments(idx + 1), *) problem_number
+                    read (arguments(idx + 1), *) number_of_problems
                     compute_all = .true.
                     idx = idx + 2
                 case ("-p", "--problem")
-                    read (arguments(idx + 1), *) problem_number
+                    read (arguments(idx + 1), *) number_of_problems
                     compute_single = .true.
                     idx = idx + 2
                 case ("-f", "--fancy")
-                    is_fancy = .true.
+                    fancy = .true.
                     idx = idx + 1
                 case ("-d", "--data-directory")
                     path_ = arguments(idx + 1)
+                    idx = idx + 2
+                case ("-n", "--number-of-trails")
+                    read (arguments(idx + 1), *) number_of_trails
                     idx = idx + 2
                 case default
                     call print_error_messages(INVALID)
@@ -326,9 +309,9 @@ contains
         end if
 
         if (compute_single) then
-            call print_answer(problem_number)
+            call print_answer(number_of_problems)
         else if (compute_all) then
-            call print_answers(problem_number, is_fancy)
+            call print_answers(number_of_problems, number_of_trails, fancy)
         else
             call print_error_messages(INVALID)
         end if
