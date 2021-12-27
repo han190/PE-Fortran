@@ -23,7 +23,7 @@ The [fpm](https://github.com/fortran-lang/fpm) does not support fypp currently, 
 ./src-fpm.sh
 ```
 
-and a folder named `src-fpm` will be generated. The generated source files will also be formatted by `fypp`. Then one could simply use all the fpm commands,
+and a folder named `src-fpm` will be generated. The generated source files will also be formatted by `fprettify`. Then one could simply use all the fpm commands,
 
 ```
 fpm build
