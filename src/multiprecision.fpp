@@ -11,8 +11,13 @@ module big_integer_m
     implicit none
     private
 
-    public :: assignment(=), big_, big_integer
-    public :: #{for o in operators}#operator(${o}$), #{endfor}#operator(**)
+    public :: big_
+    public :: big_integer
+    public :: assignment(=)
+    #: for o in operators
+    public :: operator(${o}$)
+    #: endfor
+    public :: operator(**)
 
     !> Type big integer
     type :: big_integer
