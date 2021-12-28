@@ -1,4 +1,9 @@
 #:set integer_kinds = ['i32', 'i64']
+#:set digit_funcs = ['unit_digit', 'number_of_digits', 'sqrt']
+#:set array_funcs = ['to_array', 'to_integer']
+#:set spec_funcs = ['is_palindromic', 'is_pandigital', 'lcm', 'gcd']
+#:set prime_funcs = ['prime_factorization', 'number_of_divisors']
+#:set funcs = digit_funcs + array_funcs + spec_funcs + prime_funcs
 
 module utility_m
 
@@ -6,89 +11,20 @@ module utility_m
     implicit none
     private
 
-    public :: unit_digit, number_of_digits, sqrt
-    public :: to_array, to_integer
-    public :: is_palindromic, is_pandigital
-    public :: prime_factorization, number_of_divisors
-    public :: lcm, gcd
+    #: for F in funcs
+    public :: ${F}$
+    #: endfor
     public :: swap, permute
 
-    !> Return unit digit of an integer.
-    interface unit_digit
+    #: for F in funcs
+    !> Function: ${F}$
+    interface ${F}$
         #: for T in integer_kinds
-        module procedure unit_digit_${T}$
+        module procedure ${F}$_${T}$
         #: endfor
-    end interface unit_digit
+    end interface ${F}$
 
-    !> Return number of digits in an integer.
-    interface number_of_digits
-        #: for T in integer_kinds
-        module procedure number_of_digits_${T}$
-        #: endfor
-    end interface number_of_digits
-
-    !> Square root for integers.
-    interface sqrt
-        #: for T in integer_kinds
-        module procedure sqrt_${T}$
-        #: endfor
-    end interface sqrt
-
-    !> Convert an intger to an array.
-    interface to_array
-        #: for T in integer_kinds
-        module procedure to_array_${T}$
-        #: endfor
-    end interface to_array
-
-    !> Convert an array to an integer.
-    interface to_integer
-        #: for T in integer_kinds
-        module procedure to_integer_${T}$
-        #: endfor
-    end interface to_integer
-
-    !> To tell if an integer is palindromic.
-    interface is_palindromic
-        #: for T in integer_kinds
-        module procedure is_palindromic_${T}$
-        #: endfor
-    end interface is_palindromic
-
-    !> Prime factorization.
-    interface prime_factorization
-        #: for T in integer_kinds
-        module procedure prime_factorization_${T}$
-        #: endfor
-    end interface prime_factorization
-
-    !> Number of divisors.
-    interface number_of_divisors
-        #: for T in integer_kinds
-        module procedure number_of_divisors_${T}$
-        #: endfor
-    end interface number_of_divisors
-
-    !> Is pandigital.
-    interface is_pandigital
-        #: for T in integer_kinds
-        module procedure is_pandigital_${T}$
-        #: endfor
-    end interface is_pandigital
-
-    !> Least common multiple.
-    interface lcm
-        #: for T in integer_kinds
-        module procedure lcm_${T}$
-        #: endfor
-    end interface lcm
-
-    !> Greatest common divisor.
-    interface gcd
-        #: for T in integer_kinds
-        module procedure gcd_${T}$
-        #: endfor
-    end interface gcd
+    #: endfor
 
     !> Swap.
     interface swap
@@ -310,7 +246,7 @@ contains
     pure subroutine permute_${T}$ (idx, next_avail)
         integer(${T}$), intent(inout) :: idx(:)
         logical, intent(out) :: next_avail
-        integer(${T}$) :: i, j, temp
+        integer(${T}$) :: i, j
 
         next_avail = .false.
         do i = size(idx) - 1, 1, -1
@@ -339,7 +275,7 @@ contains
         integer(${T}$), intent(inout) :: idx(k)
         logical, intent(out) :: next_avail
         logical :: carried(k)
-        integer(${T}$) :: i, j, temp
+        integer(${T}$) :: i
 
         next_avail = .true.
         associate (end => ([(i, i=n - k + 1, n)]))
@@ -350,9 +286,9 @@ contains
         end associate
 
         carried = .true.
-        label_carried_array: do i = k, 1, -1
+        do i = k, 1, -1
             if (idx(i) == n - k + i) carried(i) = .false.
-        end do label_carried_array
+        end do
 
         if (all(carried)) then
             idx(k) = idx(k) + 1
