@@ -14,7 +14,7 @@ contains
     !> Print an allocatable character array.
     subroutine print_allocatable_character_array(character_array)
         character(len=:), allocatable, intent(in) :: character_array(:)
-        integer :: i
+        integer(i32) :: i
 
         do i = 1, size(character_array)
             print '(a)', character_array(i)
@@ -154,11 +154,11 @@ contains
 
     !> Get answer of problem x.
     subroutine get_answer(problem_number, answer, time_span)
-        integer, intent(in) :: problem_number
+        integer(i32), intent(in) :: problem_number
         character(len=20), intent(out) :: answer
-        real, intent(out) :: time_span
+        real(sp), intent(out) :: time_span
         type(problem_t), allocatable :: problem(:)
-        real :: time_final, time_initial
+        real(sp) :: time_final, time_initial
 
         call initialize_problems(problem)
         time_span = 0.
@@ -175,16 +175,16 @@ contains
 
     !> Print answers from problem 1 to x.
     subroutine print_answers(number_of_problems, number_of_trails, fancy_style)
-        integer, intent(in) :: number_of_problems, number_of_trails
+        integer(i32), intent(in) :: number_of_problems, number_of_trails
         logical, intent(in) :: fancy_style
         character(len=20), allocatable :: answer(:)
-        real, allocatable :: tspan(:)
-        real :: tsum, nslv
+        real(sp), allocatable :: tspan(:)
+        real(sp) :: tsum, nslv
         character(len=7), parameter :: md_table = "|:"//repeat('-', 4)//":"
         character(len=100) :: fmt
-        integer, parameter :: iunit = 1120
+        integer(i32), parameter :: iunit = 1120
         character(len=25), allocatable :: levels(:)
-        integer :: i
+        integer(i32) :: i
 
         call get_answers(number_of_problems, number_of_trails, answer, tspan)
         tsum = sum(tspan, dim=1)
@@ -223,9 +223,9 @@ contains
 
     !> Print answer of problem x.
     subroutine print_answer(problem_number)
-        integer, intent(in) :: problem_number
+        integer(i32), intent(in) :: problem_number
         character(len=20) :: answer
-        real :: time_span
+        real(sp) :: time_span
 
         call get_answer(problem_number, answer, time_span)
         write (*, "(26('-'), 1x, 20('-'))")
@@ -238,12 +238,11 @@ contains
     !> Get arguments from the command line and calculate problems.
     subroutine get_arguments()
         character(len=500), allocatable :: arguments(:)
-        integer :: argument_count, idx, number_of_problems, number_of_trails
-        logical :: compute_all, compute_single, fancy
+        integer(i32) :: argument_count, idx, compute_style
+        integer(i32) :: number_of_problems, number_of_trails
+        logical :: fancy
         character(len=500) :: path_
         character(len=*), parameter :: INVALID = "Invalid syntax!"
-
-        path_ = ""
 
         argument_count = command_argument_count()
         if (argument_count >= 9 .or. argument_count < 1) then
@@ -255,66 +254,51 @@ contains
             call get_command_argument(idx, arguments(idx))
         end do
 
-        if (argument_count == 1) then
-            select case (trim(arguments(1)))
+        compute_style = 0
+        fancy = .false.
+        number_of_trails = 1
+        data_path = "." ! declared in constant_m
+        idx = 1
+
+        do while (idx <= argument_count)
+            select case (trim(arguments(idx)))
             case ("-h", "--help")
                 call print_help_messages()
                 return
             case ("-v", "--version")
                 call print_version_messages()
                 return
+            case ("-a", "--all")
+                read (arguments(idx + 1), *) number_of_problems
+                compute_style = 2
+                idx = idx + 2
+            case ("-p", "--problem")
+                read (arguments(idx + 1), *) number_of_problems
+                compute_style = 1
+                idx = idx + 2
+            case ("-f", "--fancy")
+                fancy = .true.
+                idx = idx + 1
+            case ("-d", "--data-directory")
+                path_ = arguments(idx + 1)
+                data_path = trim(path_)
+                idx = idx + 2
+            case ("-n", "--number-of-trails")
+                read (arguments(idx + 1), *) number_of_trails
+                idx = idx + 2
             case default
                 call print_error_messages(INVALID)
             end select
-        else if (argument_count >= 2) then
-            compute_single = .false.
-            compute_all = .false.
-            fancy = .false.
-            number_of_trails = 1
+        end do
 
-            idx = 1
-            do while (idx <= argument_count)
-                select case (trim(arguments(idx)))
-                case ("-a", "--all")
-                    read (arguments(idx + 1), *) number_of_problems
-                    compute_all = .true.
-                    idx = idx + 2
-                case ("-p", "--problem")
-                    read (arguments(idx + 1), *) number_of_problems
-                    compute_single = .true.
-                    idx = idx + 2
-                case ("-f", "--fancy")
-                    fancy = .true.
-                    idx = idx + 1
-                case ("-d", "--data-directory")
-                    path_ = arguments(idx + 1)
-                    idx = idx + 2
-                case ("-n", "--number-of-trails")
-                    read (arguments(idx + 1), *) number_of_trails
-                    idx = idx + 2
-                case default
-                    call print_error_messages(INVALID)
-                end select
-            end do
-        else
-            call print_error_messages(INVALID)
-        end if
-
-        if (len_trim(path_) == 0) then
-            allocate (character(len=1) :: data_path)
-            data_path = "."
-        else
-            allocate (character(len=len_trim(path_)) :: data_path)
-            data_path = trim(path_)
-        end if
-
-        if (compute_single) then
+        select case (compute_style)
+        case (1)
             call print_answer(number_of_problems)
-        else if (compute_all) then
+        case (2)
             call print_answers(number_of_problems, number_of_trails, fancy)
-        else
+        case default
             call print_error_messages(INVALID)
-        end if
+        end select    
     end subroutine get_arguments
 
 end module driver_m
