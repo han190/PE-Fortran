@@ -7,12 +7,13 @@ contains
         write (euler0043, "(i20)") answer()
     end function euler0043
 
-    pure integer(i64) function answer()
+    integer(i64) function answer()
         integer(i64) :: i, array(10)
         logical :: next_avail
 
         array = [(i, i=0, 9)]
         answer = 0
+        next_avail = .true.
 
         do while (next_avail)
             associate (temp => (to_integer(array)))

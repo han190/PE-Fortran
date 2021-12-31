@@ -64,7 +64,7 @@ if [ -d "src" ]; then
     echo "Running PE-Fortran with '--profile debug'..."
     fpm run --profile debug -- -f -a $nproblem -n $ntrails -d $(realpath ./data)
     echo "Installing..."
-    fpm install --profile release
+    fpm install --flag -Ofast
 
 fi
 
