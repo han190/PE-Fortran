@@ -17,18 +17,10 @@ meson test -C build
 
 * Dependencies: [fpm](https://github.com/fortran-lang/fpm), [fypp](https://github.com/aradi/fypp), [fprettify](https://github.com/pseewald/fprettify) and a Fortran compiler ([gfortran](https://gcc.gnu.org/wiki/GFortran) and [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5) are tested.)
 
-The [fpm](https://github.com/fortran-lang/fpm) does not support fypp currently, so in order to use `fpm` I wrote a simple bash script to generate all fortran source files. Navigate to the source directory and type
+The [fpm](https://github.com/fortran-lang/fpm) does not support fypp currently, so in order to use `fpm` I wrote a simple bash script to generate all fortran source files and build the project with `--profile debug`. Navigate to the source directory and type
 
 ```
-./src-fpm.sh
-```
-
-and a folder named `src-fpm` will be generated. The generated source files will also be formatted by `fprettify`. Then one could simply use all the fpm commands,
-
-```
-fpm build
-fpm test # if necessary
-fpm run -- -f -a 60 -d $(realpath ./data)
+./install.sh
 ```
 
 * _For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)._
@@ -75,7 +67,7 @@ Here is what I plan to do in the future. (Not likely to be done recently cuz I a
 - [x] Organize folders, use Shell scripts to compile codes.
 - [x] Use a build tool, for example Meson to wrap all the codes. 
 - [x] Use a Fortran preprocessor to simplify my code.
-- [ ] Write a documentation to clearly explain the algorithms, Fortran features, or anything that is interesting for each question. (A temporary one is available here [https://han190.github.io/PE-Fortran/](https://han190.github.io/PE-Fortran/).)
+- [ ] Write a documentation to clearly explain the algorithms, Fortran features, or anything that is interesting for each question.
 - [x] Add version control.
 - [ ] When I finish 75 problems, write a command line interface. When I finish 100 problems (if that is possible), write a GUI.
 - [x] Use fpm to build, test, run and install the project.
