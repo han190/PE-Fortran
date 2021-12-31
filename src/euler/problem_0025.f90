@@ -19,7 +19,7 @@ contains
             inner: do i = 1, 2
                 fibo_seq(i) = fibo_seq(1) + fibo_seq(2)
                 answer = answer + 1
-                if (size(fibo_seq(i)%arr) >= 1000) exit outer
+                if (len(fibo_seq(i)) >= 1000) exit outer
             end do inner
         end do outer
     end function answer

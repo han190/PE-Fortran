@@ -13,6 +13,7 @@ module big_integer_m
 
     public :: big_
     public :: big_integer
+    public :: len, swap
     public :: assignment(=)
     #: for o in operators
     public :: operator(${o}$)
@@ -36,6 +37,14 @@ module big_integer_m
         module procedure big_${name}$
         #: endfor
     end interface big_
+
+    interface len
+        module procedure len_big
+    end interface len
+
+    interface swap
+        module procedure swap_big
+    end interface swap
 
     #: for o, f in operators_funcs
     !> Operator(${o}$)
@@ -252,6 +261,21 @@ contains
     end function big_${name}$
 
     #: endfor
+
+    !> Number of digits of a big integer.
+    pure integer(i32) function len_big(val)
+        type(big_integer), intent(in) :: val
+
+        len_big = size(val%arr)
+    end function len_big
+
+    !> Swap
+    pure subroutine swap_big(a, b)
+        type(big_integer), intent(inout) :: a, b
+        type(big_integer) :: temp
+
+        temp = a; a = b; b = temp
+    end subroutine swap_big
 
     !> Equal.
     pure logical function eq(value_1, value_2)

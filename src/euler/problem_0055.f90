@@ -51,8 +51,8 @@ contains
         type(big_integer), intent(in) :: val
         type(big_integer) :: ret
 
-        allocate (ret%arr(size(val%arr)))
-        ret%arr(1:size(val%arr)) = val%arr(size(val%arr):1:-1)
+        allocate (ret%arr(len(val)))
+        ret%arr(1:len(val)) = val%arr(len(val):1:-1)
         ret%sgn = val%sgn
     end function reverse
 

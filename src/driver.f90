@@ -8,6 +8,7 @@ module driver_m
     character(len=20), parameter :: failed = repeat(' ', 19)//'x'
     character(len=:), allocatable :: help_messages(:), version_messages(:)
     public :: get_arguments, get_levels
+    character(len=:), allocatable :: level_name(:)
 
 contains
 
@@ -77,53 +78,60 @@ contains
         stop
     end subroutine print_error_messages
 
+    !> Compute relative difficulty level.
+    pure function level(x, xstr, x_min, x_max) result(ret)
+        real, intent(in) :: x, x_min, x_max
+        character(len=20), intent(in) :: xstr
+        integer :: ret
+        real :: norm
+        integer :: i
+
+        if (xstr == failed) then
+            ret = 7
+            return
+        end if
+
+        norm = (x - x_min)/(x_max - x_min)
+        do i = 1, 5
+            if (norm >= 10.**(-i)) then
+                ret = i
+                return
+            end if
+        end do
+        ret = 6
+    end function level
+
+    !> Get difficulty names.
+    subroutine get_level_names(fancy)
+        logical, intent(in) :: fancy
+
+        if (fancy) then
+            level_name = &
+                [character(len=25) :: ":smiling_imp:", ":frowning_face:", &
+                 ":slightly_frowning_face:", ":confused:", ":neutral_face:", &
+                 ":slightly_smiling_face:", ":construction:"]
+        else
+            level_name = &
+                [character(len=25) :: "_lvl1_", "_lvl2_", "_lvl3_", &
+                 "_lvl4_", "_lvl5_", "_lvl6_", "_unfinished_"]
+        end if
+    end subroutine get_level_names
+
     !> Get 'levels' for all problems.
-    subroutine get_levels(x, xstr, levels, fancy_style)
+    subroutine get_levels(x, xstr, levels, fancy)
         real, intent(in) :: x(:)
         character(len=20), intent(in) :: xstr(:)
         character(len=25), intent(out) :: levels(size(x))
-        logical, intent(in) :: fancy_style
-        real :: norm, min_x, max_x
-        integer :: i, j
-        character(len=:), allocatable :: level_names(:)
+        logical, intent(in) :: fancy
+        integer :: i
 
-        if (fancy_style) then
-            level_names = [character(len=25) :: ":smiling_imp:", &
-                           ":frowning_face:", ":slightly_frowning_face:", &
-                           ":confused:", ":neutral_face:", ""]
-        else
-            level_names = [character(len=25) :: "_LEVEL1_", "_LEVEL2_", &
-                           "_LEVEL3_", "_LEVEL4_", "_LEVEL5_", ""]
-        end if
-
-        min_x = minval(x)
-        max_x = maxval(x)
-        levels = "" ! Initilization
-
-        outer: do i = 1, size(x)
-            if (xstr(i) == failed) then
-                if (fancy_style) then
-                    levels(i) = ":construction:"
-                else
-                    levels(i) = "_UNFINISHED_"
-                end if
-                cycle
-            end if
-
-            norm = (x(i) - min_x)/(max_x - min_x)
-            inner: do j = 5, 1, -1
-                if (norm >= 10.**(-j) .and. norm <= 10.**(-j + 1)) then
-                    levels(i) = trim(level_names(j))
-                    exit inner
-                end if
-            end do inner
-        end do outer
-
-        if (fancy_style) then
-            levels(maxloc(x)) = ":skull:"
-        else
-            levels(maxloc(x)) = "__MAX__"
-        end if
+        call get_level_names(fancy)
+        associate (min_ => (minval(x)), max_ => (maxval(x)))
+            levels = "" ! Initilization
+            do i = 1, size(x)
+                levels(i) = level_name(level(x(i), xstr(i), min_, max_))
+            end do
+        end associate
     end subroutine get_levels
 
     !> Get answers from problem 1 to problem x.

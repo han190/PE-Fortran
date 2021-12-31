@@ -11,25 +11,14 @@ contains
     pure integer(i32) function answer()
         integer(i32), parameter :: max_ = 1000
         integer(i32) :: i
-        type(big_integer) :: a, b
+        type(big_integer) :: n, d ! numerator, denominator
 
-        i = 1; answer = 0; a = 1; b = 2
-        do while (i < max_)
-            a = a + b*2
-            call swap_(a, b)
-            a = a + b
-            if (size(a%arr) > size(b%arr)) answer = answer + 1
-            i = i + 1
+        answer = 0; n = 1; d = 2
+        do i = 1, max_
+            n = n + d*2
+            call swap(n, d)
+            if (len(n + d) > len(d)) answer = answer + 1
         end do
     end function answer
-
-    pure subroutine swap_(a, b)
-        type(big_integer), intent(inout) :: a, b
-        type(big_integer) :: t
-
-        call move_alloc(a%arr, t%arr)
-        call move_alloc(b%arr, a%arr)
-        call move_alloc(t%arr, b%arr)
-    end subroutine swap_
 
 end submodule euler_problem_0057_m

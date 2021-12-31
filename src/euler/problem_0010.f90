@@ -19,7 +19,7 @@ contains
         call Sieve_of_Eratosthenes(n, is_prime)
         answer = 0
         do i = 1, n
-            if (is_prime(i)) answer = answer + 1
+            if (is_prime(i)) answer = answer + i
         end do
     end function answer
 
