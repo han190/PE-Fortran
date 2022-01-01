@@ -38,12 +38,12 @@ if [ -d "src" ]; then
         cp $srcdir/$filename $srcfpmdir/$filename
     done
 
-    for f in $srcdir/*.fpp; do
+    for f in $srcdir/*.fypp; do
         filename=$(basename -- "$f")
         extension="${filename##*.}"
         filename="${filename%.*}"
         echo "Generating ${filename} through fypp..."
-        fypp "${srcdir}/${filename}.fpp" "${srcfpmdir}/${filename}.f90" $fypp_flag
+        fypp "${srcdir}/${filename}.fypp" "${srcfpmdir}/${filename}.f90" $fypp_flag
     done
 
     for d in $srcdir/*/; do

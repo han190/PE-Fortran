@@ -28,13 +28,15 @@ module big_integer_m
 
     !> Assignment(=)
     interface assignment(=)
-        module procedure init_char, init_i32, init_i32_arr
+        #: for n in names
+        module procedure init_${n}$
+        #: endfor
     end interface assignment(=)
 
     !> Convert to big_integer
     interface big_
-        #: for name in names
-        module procedure big_${name}$
+        #: for n in names
+        module procedure big_${n}$
         #: endfor
     end interface big_
 
@@ -49,10 +51,14 @@ module big_integer_m
     #: for o, f in operators_funcs
     !> Operator(${o}$)
     interface operator(${o}$)
-        module procedure ${f}$#{for n in names}#, ${f}$_${n}$#{endfor}#
+        module procedure ${f}$
+        #: for n in names
+        module procedure ${f}$_${n}$
+        #: endfor
     end interface operator(${o}$)
 
     #: endfor
+
     !> Operator(**)
     interface operator(**)
         module procedure pow_i32

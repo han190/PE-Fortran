@@ -69,11 +69,11 @@ gen_f90 = generator(
     arguments: ['@INPUT@', '@EXTRA_ARGS@', '@OUTPUT@']
 )
 fypp_files = [
-    src_dir/'prime.fpp',
-    src_dir/'multiprecision.fpp',
-    src_dir/'utility.fpp',
-    src_dir/'interface.fpp', 
-    src_dir/'problems.fpp'
+    src_dir/'prime.fypp',
+    src_dir/'multiprecision.fypp',
+    src_dir/'utility.fypp',
+    src_dir/'interface.fypp', 
+    src_dir/'problems.fypp'
 ]
 
 fypp_src = []
