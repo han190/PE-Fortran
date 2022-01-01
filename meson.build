@@ -30,10 +30,7 @@ fc = meson.get_compiler('fortran')
 if fc.get_id() == 'gcc'
     if get_option('buildtype') == 'release'
         dialect = [
-            '-ffast-math', 
-            '-fallow-store-data-races', 
-            '-fstack-arrays',
-            '-fno-protect-parens'
+            '-ffast-math'
         ]
     elif get_option('buildtype') == 'debug'
         dialect = [
