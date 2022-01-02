@@ -17,18 +17,15 @@ contains
         integer(i64), parameter :: upper_ = 10000
 
         allocate (list(upper_), count_(upper_))
-        list = ""; count_ = 0
+        list = ""; count_ = 1
         do i = 1, upper_
             write (list(i), "(*(i1))") sort(to_array(i**3))
             x = findloc(list(:i - 1), value=list(i), dim=1)
 
-            select case (x)
-            case (0)
-                count_(i) = 1
-            case default
+            if (x /= 0) then
                 count_(x) = count_(x) + 1
                 if (count_(x) == 5) exit
-            end select
+            end if
         end do
         answer = x**3
     end function answer
