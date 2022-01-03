@@ -1,27 +1,34 @@
 # Project Euler solutions written in Fortran
 
-[Project Euler](https://projecteuler.net/about) is a problem set and I occasionally solve PE problems for fun. If you are looking for the same things, check it out!
+[Project Euler](https://projecteuler.net/about) is a math problem set. I occasionally solve PE problems for fun. Welcome!
 
 ## Getting Started
 
+### Build with fpm
+
+The [fpm](https://github.com/fortran-lang/fpm) does not support [fypp](https://github.com/aradi/fypp) currently ([#78](https://github.com/fortran-lang/fpm/issues/78)), so in order to use fpm I wrote a simple installation script. If you have fpm, fypp and [fprettify](https://github.com/pseewald/fprettify) (optional) installed this would be the easist way to play with my project. For a quick start, navigate to the source directory and type, 
+
+```
+./install.sh
+```
+
+Further information can be found through `./install.sh --help`.
+
 ### Build with meson
 
-* Dependencies: [Meson](https://mesonbuild.com/), [Ninja](https://ninja-build.org/), and a Fortran compiler ([gfortran](https://gcc.gnu.org/wiki/GFortran) and [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5) are tested.)
+[Meson](https://mesonbuild.com/) is a user friendly and fast build tool. To build my project with Meson, 
 
 ```
 meson build
 meson test -C build
 ```
 
-### Build with fpm
+### Tested compilers
 
-* Dependencies: [fpm](https://github.com/fortran-lang/fpm), [fypp](https://github.com/aradi/fypp), [fprettify](https://github.com/pseewald/fprettify) and a Fortran compiler ([gfortran](https://gcc.gnu.org/wiki/GFortran) and [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.g8q0a5) are tested.)
-
-The [fpm](https://github.com/fortran-lang/fpm) does not support fypp currently, so in order to use `fpm` I wrote a simple bash script to generate all fortran source files and build the project with `--profile debug`. Navigate to the source directory and type
-
-```
-./install.sh
-```
+| Compiler |
+|:----|
+| ifort (IFORT) 2021.5.0 20211109 |
+| GNU Fortran (Ubuntu 11.2.0-7ubuntu2) 11.2.0 |
 
 * _For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)._
 
@@ -69,6 +76,8 @@ Here is what I plan to do in the future. (Not likely to be done recently cuz I a
 - [x] Use a Fortran preprocessor to simplify my code.
 - [ ] Write a documentation to clearly explain the algorithms, Fortran features, or anything that is interesting for each question.
 - [x] Add version control.
-- [ ] When I finish 75 problems, write a command line interface. When I finish 100 problems (if that is possible), write a GUI.
+- [x] Add a command line interface.
+- [x] Add an installation script.
+- [ ] Add GUI!
 - [x] Use fpm to build, test, run and install the project.
-- [ ] Review exisiting code, rewrite/refactor code with (1) modern Fortran, (2) functional programming and (3) array-oriented styles.
+- [x] Review exisiting code, rewrite/refactor code with (1) modern Fortran, (2) functional programming and (3) array-oriented styles.
