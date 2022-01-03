@@ -25,6 +25,16 @@ help_message() {
     echo "                                  '--profile release'."
 }
 
+check_dependency() {
+    executable=$1
+    if ! command -v $executable &>/dev/null; then
+        msg = "[ERROR] $executable not found, \
+            try: conda install $executable."
+        echo $msg 
+        exit 0
+    fi
+}
+
 while true; do
     case "$1" in
     -h | --help)
@@ -61,15 +71,8 @@ while true; do
     esac
 done
 
-if ! command -v fypp &>/dev/null; then
-    echo "Fypp not found, try conda install fypp."
-    exit 0
-fi
-
-if ! command -v fpm &>/dev/null; then
-    echo "Fpm not found, try conda install fpm."
-    exit 0
-fi
+check_dependency fypp
+check_dependency fpm
 
 if [ -d "src" ]; then
 
@@ -111,6 +114,8 @@ if [ -d "src" ]; then
     if command -v fprettify &>/dev/null; then
         echo "Found fprettify, formatting source codes..."
         fprettify -i=4 -r $srcfpmdir
+    else
+        echo "fprettify not found."
     fi
 
     echo "Building PE-Fortran with '$fpm_flag'..."
