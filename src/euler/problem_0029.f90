@@ -24,7 +24,9 @@ contains
 
         do i = lower, upper
             do j = lower, upper
-                temp = convert_base_power([i, j], primes)
+                associate (value_ => ([i, j])) ! To avoid temp array.
+                    temp = convert_base_power(value_, primes)
+                end associate
                 array(temp(1), temp(2)) = .true.
             end do
         end do

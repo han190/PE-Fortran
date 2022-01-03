@@ -61,11 +61,12 @@ contains
     !> Sieve of Eratosthenes for kind: ${T}$.
     pure subroutine Sieve_of_Eratosthenes_logical_${T}$ (n, primes)
         integer(${T}$), intent(in) :: n
-        logical, intent(out) :: primes(:)
+        logical, intent(out) :: primes(n)
         integer(${T}$) :: i
 
-        primes([[2_${T}$], [(i, i=3, n, 2)]]) = .true.
-        primes([[1_${T}$], [(i, i=4, n, 2)]]) = .false.
+        primes(1:2) = [.false., .true.]
+        primes(3:n:2) = .true.
+        primes(4:n:2) = .false.
 
         do i = 2, sqrt(n)
             if (primes(i)) primes(i*i:n:i) = .false.
@@ -79,12 +80,18 @@ contains
     pure subroutine Sieve_of_Eratosthenes_${T}$ (n, primes)
         integer(${T}$), intent(in) :: n
         integer(${T}$), allocatable, intent(out) :: primes(:)
-        logical, allocatable :: prime_l(:)
-        integer(${T}$) :: i
+        logical :: is_prime_(n)
+        integer(${T}$) :: i, k
 
-        allocate (prime_l(n))
-        call Sieve_of_Eratosthenes_logical_${T}$ (n, prime_l)
-        primes = pack([(i, i=1, n)], prime_l)
+        call Sieve_of_Eratosthenes(n, is_prime_)
+        allocate(primes(count(is_prime_)))
+        k = 1
+        do i = 1, n
+            if (is_prime_(i)) then
+                primes(k) = i
+                k = k + 1
+            end if 
+        end do
     end subroutine Sieve_of_Eratosthenes_${T}$
 
     #: endfor

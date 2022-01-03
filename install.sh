@@ -5,7 +5,9 @@ srcfpmdir=src-fpm
 nproblem=$(ls ./$srcdir/euler/*.f90 | wc -l)
 ntrails=1
 fypp_flag=-DNUM_PROB=$nproblem
-fpm_flag="--profile release"
+profile=release
+FC=gfortran
+GSO=false
 
 help_message() {
     echo "PE-Fortran Installation Script"
@@ -14,15 +16,18 @@ help_message() {
     echo
     echo "(2) Available Arguments:"
     echo "    -h,    --help                  Pop up help message."
+    echo "    -c,    --compiler              Fortran compiler, default is gfortran."
+    echo "    -g,    --generate-source-only  Generate source code using fypp, if the"
+    echo "                                   flag is applied, -c, -p, are ignored."
     echo "    -sd,   --src-dir               Source directory, default is 'src'."
     echo "    -sfd,  --src-fpm-dir           FPM directory, default is 'src-fpm'."
     echo "    -np,   --number-of-problems    Number of problems, default is the"
     echo "                                   number of files in src/euler/."
     echo "    -nt,   --number-of-trails      Number of trails, default is 1."
-    echo "    -fypp, --fypp-flag             Fypp flags, default is"
-    echo "                                  '-DNUM_PROB=\$-np'"
+    echo "    -p, --profile                  Fypp flags, default is"
+    echo "                                   '-DNUM_PROB=\$-np'"
     echo "    -fpm,  --fpm-flag              FPM flags, default is "
-    echo "                                  '--profile release'."
+    echo "                                   '--profile release'."
 }
 
 check_dependency() {
@@ -41,6 +46,14 @@ while true; do
         help_message
         exit 1
         ;;
+    -c | --compiler)
+        FC=$2
+        shift 2
+        ;;
+    -g | --generate-source-only)
+        GSO=true
+        shift 1
+        ;;
     -sd | --src-dir)
         srcdir=$2
         shift 2
@@ -57,12 +70,8 @@ while true; do
         ntrails=$2
         shift 2
         ;;
-    -fypp | --fypp-flag)
+    -p | --profile)
         fypp_flag="-DNUM_PROB=$nproblem"
-        shift 2
-        ;;
-    -fpm | --fpm-flag)
-        fpm_flag="--profile release"
         shift 2
         ;;
     *)
@@ -118,19 +127,23 @@ if [ -d "src" ]; then
         echo "fprettify not found."
     fi
 
-    echo "Building PE-Fortran with '$fpm_flag'..."
-    fpm build $fpm_flag
-    echo "Testing modules with '$fpm_flag'..."
-    fpm test $fpm_flag
-    echo "Running PE-Fortran with '$fpm_flag'..."
+    if [ $GSO == true ]; then
+        exit 0
+    fi
+
+    echo "Building PE-Fortran with '--profile $profile'..."
+    fpm build --compiler $FC --profile $profile
+    echo "Testing modules with '--profile $profile'..."
+    fpm test --compiler $FC --profile $profile
+    echo "Testing PE-Fortran with '--profile $profile'..."
     echo
-    fpm run $fpm_flag -- --version
-    fpm run $fpm_flag -- \
+    fpm run --compiler $FC --profile $profile -- --version
+    fpm run --compiler $FC --profile $profile -- \
         --fancy --all $nproblem \
         --number-of-trails $ntrails \
         --data-directory $(realpath ./data)
     echo "Installing..."
-    fpm install $fpm_flag
+    fpm install --compiler $FC --profile $profile
 
 fi
 
