@@ -31,26 +31,28 @@ contains
     !> A generic interface that tells if an integer is prime.
     elemental logical function is_prime_${T}$ (n)
         integer(${T}$), intent(in) :: n
-        integer(${T}$) :: limit, i
+        integer(${T}$) :: i
 
-        is_prime_${T}$ = .false.
-        limit = int(sqrt(real(n, sp)) + 1_${T}$)
-        if (n <= 1_${T}$) then
+        is_prime_${T}$ = .true.
+        select case (n)
+        case (0_${T}$, 1_${T}$)
             is_prime_${T}$ = .false.
-        else if (n <= 3_${T}$) then
-            is_prime_${T}$ = .true.
-        else if (mod(n, 2_${T}$) == 0_${T}$) then
+            return
+        case (2_${T}$, 3_${T}$)
+            return
+        end select
+
+        if (mod(n, 2_${T}$) == 0_${T}$) then
             is_prime_${T}$ = .false.
-        else
-            loop_1: do i = 3_${T}$, limit, 2_${T}$
-                if (mod(n, i) == 0_${T}$) then
-                    is_prime_${T}$ = .false.
-                    exit loop_1
-                else
-                    is_prime_${T}$ = .true.
-                end if
-            end do loop_1
+            return
         end if
+
+        do i = 3_${T}$, sqrt(n) + 1_${T}$, 2_${T}$
+            if (mod(n, i) == 0_${T}$) then
+                is_prime_${T}$ = .false.
+                return
+            end if
+        end do
     end function is_prime_${T}$
 
     #: endfor
@@ -62,9 +64,8 @@ contains
         logical, intent(out) :: primes(:)
         integer(${T}$) :: i
 
-        primes(1:2) = [.false., .true.]
-        primes(3:n:2) = .true.
-        primes(4:n:2) = .false.
+        primes([[2_${T}$], [(i, i=3, n, 2)]]) = .true.
+        primes([[1_${T}$], [(i, i=4, n, 2)]]) = .false.
 
         do i = 2, sqrt(n)
             if (primes(i)) primes(i*i:n:i) = .false.
