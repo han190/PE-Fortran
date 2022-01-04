@@ -84,13 +84,13 @@ contains
         integer(${T}$) :: i, k
 
         call Sieve_of_Eratosthenes(n, is_prime_)
-        allocate(primes(count(is_prime_)))
+        allocate (primes(count(is_prime_)))
         k = 1
         do i = 1, n
             if (is_prime_(i)) then
                 primes(k) = i
                 k = k + 1
-            end if 
+            end if
         end do
     end subroutine Sieve_of_Eratosthenes_${T}$
 

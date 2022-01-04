@@ -250,7 +250,7 @@ contains
         end select
     end subroutine init_char
 
-    !> Initialize a big_integer with 
+    !> Initialize a big_integer with
     pure subroutine init_i32_arr(value_, arr_)
         type(big_integer), intent(inout) :: value_
         integer(i32), intent(in) :: arr_(:)

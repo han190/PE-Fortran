@@ -306,7 +306,7 @@ contains
             call print_answers(number_of_problems, number_of_trails, fancy)
         case default
             call print_error_messages(INVALID)
-        end select    
+        end select
     end subroutine get_arguments
 
 end module driver_m

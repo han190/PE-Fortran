@@ -30,14 +30,17 @@ fc = meson.get_compiler('fortran')
 if fc.get_id() == 'gcc'
     if get_option('buildtype') == 'release'
         dialect = [
-            '-ffast-math'
+            '-funroll-loops',
+            '-Wimplicit-interface',
+            '-fPIC',
+            '-fmax-errors=1',
+            '-fcoarray=single'
         ]
     elif get_option('buildtype') == 'debug'
         dialect = [
             '-fcheck=all', 
             '-fbacktrace', 
             '-fdump-core',
-            '-fdump-core', 
             '-pedantic', 
             '-fcheck=all', 
             '-fimplicit-none',
@@ -117,8 +120,8 @@ endforeach
 
 # Executables
 pe_fortran = executable(
-    'PE-Fortran', 
-    sources: [util_src, fypp_src, prob_src, app_src])
+    'PE-Fortran', sources: [util_src, fypp_src, prob_src, app_src], install: true
+)
 
 test_prime_m = executable(
     'Test-prime', 

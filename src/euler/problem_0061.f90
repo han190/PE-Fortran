@@ -39,11 +39,11 @@ contains
 
         pure logical function ouroboric(x)
             integer(i32), intent(in) :: x(:)
-            
+
             ouroboric = .false.
             if (x(1)/100 == mod(x(size(x)), 100)) ouroboric = .true.
         end function ouroboric
-                
+
     end function answer
 
     pure subroutine get_cyclic(x, y)

@@ -4,9 +4,21 @@
 
 ## Getting Started
 
+### Dependencies
+
+All dependencies are available on conda and can be installed with:
+
+```
+conda config --add channels conda-forge
+conda create -n fpm fpm
+conda activate fpm
+conda install fypp fprettify # if build with fpm
+# conda install fypp meson ninja # if build with meson
+```
+
 ### Build with fpm
 
-The [fpm](https://github.com/fortran-lang/fpm) does not support [fypp](https://github.com/aradi/fypp) currently ([#78](https://github.com/fortran-lang/fpm/issues/78)), so in order to use fpm I wrote a simple installation script. If you have fpm, fypp and [fprettify](https://github.com/pseewald/fprettify) (optional) installed this would be the easist way to play with my project. For a quick start, navigate to the source directory and type, 
+The [fpm](https://github.com/fortran-lang/fpm) does not support [fypp](https://github.com/aradi/fypp) currently ([#78](https://github.com/fortran-lang/fpm/issues/78)), so in order to use fpm I wrote a simple installation script. If you have fpm, fypp and [fprettify](https://github.com/pseewald/fprettify) (optional) installed this would be the easist way to play with my project. For a quick start, navigate to the source directory and type:
 
 ```
 ./install.sh
@@ -16,11 +28,10 @@ Further information can be found through `./install.sh --help`.
 
 ### Build with meson
 
-[Meson](https://mesonbuild.com/) is a user friendly and fast build tool. To build my project with Meson, 
+[Meson](https://mesonbuild.com/) is a user friendly and fast build tool. To build with Meson:
 
 ```
-meson build
-meson test -C build
+./install.sh --build-tool meson
 ```
 
 ### Tested compilers
@@ -59,7 +70,7 @@ Example:
 
 To count LOC:
 ```
-cloc --force-lang="Fortran 90",fpp .
+cloc --force-lang="Fortran 90",fypp .
 ```
 
 To format all source files:
