@@ -1,7 +1,7 @@
 #:set integer_kinds = ['i32', 'i64']
 #:set digit_funcs = ['unit_digit', 'number_of_digits', 'sqrt']
 #:set array_funcs = ['to_array', 'to_integer']
-#:set spec_funcs = ['is_palindromic', 'is_pandigital', 'lcm', 'gcd']
+#:set spec_funcs = ['is_palindromic', 'is_pandigital', 'lcm']
 #:set prime_funcs = ['prime_factorization', 'number_of_divisors']
 #:set funcs = digit_funcs + array_funcs + spec_funcs + prime_funcs
 
@@ -197,27 +197,13 @@ contains
     #: endfor
 
     #: for T in integer_kinds
-    !> Greatest common divisor of two ${T}$ integers.
-    pure recursive function gcd_${T}$ (a, b) result(ret)
-        integer(${T}$), intent(in) :: a, b
-        integer(${T}$) :: ret
-
-        select case (b)
-        case (0_${T}$)
-            ret = a
-        case default
-            ret = gcd_${T}$ (b, mod(a, b))
-        end select
-    end function gcd_${T}$
-
-    #: endfor
-
-    #: for T in integer_kinds
     !> Least common multiple of two ${T}$ integers.
     pure integer(${T}$) function lcm_${T}$ (a, b)
+        use stdlib_math, only: gcd
+        implicit none
         integer(${T}$), intent(in) :: a, b
 
-        lcm_${T}$ = abs(a*b)/gcd_${T}$ (a, b)
+        lcm_${T}$ = abs(a*b)/gcd(a, b)
     end function lcm_${T}$
 
     #: endfor

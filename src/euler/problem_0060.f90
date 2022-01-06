@@ -61,7 +61,7 @@ contains
         succeed = .true.
 
         do while (avail)
-            arr = [concatenate(pair(idx)), concatenate(pair(idx(2:1:-1)))]
+            arr = [concat(pair(idx)), concat(pair(idx(2:1:-1)))]
             do i = 1, 2
                 if (arr(i) <= size(is_prime_)) then
                     succeed = is_prime_(arr(i))
@@ -129,10 +129,10 @@ contains
         end associate
     end subroutine label
 
-    pure integer(i64) function concatenate(arr)
+    pure integer(i64) function concat(arr)
         integer(i64), intent(in) :: arr(:)
 
-        concatenate = arr(1)*10**number_of_digits(arr(2)) + arr(2)
-    end function concatenate
+        concat = arr(1)*10**number_of_digits(arr(2)) + arr(2)
+    end function concat
 
 end submodule euler_problem_0060_m

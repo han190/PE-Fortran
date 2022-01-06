@@ -8,25 +8,28 @@ contains
     end function euler0033
 
     elemental integer(i32) function answer()
-        integer(i32) :: denominator, numerator
-        integer(i32) :: counter
-        integer(i32) :: denominator_product, numerator_product
+        use stdlib_math, only: gcd
+        implicit none
 
-        denominator = 1; numerator = 1
-        denominator_product = 1; numerator_product = 1
+        integer(i32) :: denom, numer
+        integer(i32) :: counter
+        integer(i32) :: denom_prod, numer_prod
+
+        denom = 1; numer = 1
+        denom_prod = 1; numer_prod = 1
 
         do counter = 1, 9
-            do denominator = 1, counter - 1
-                do numerator = 1, denominator - 1
-                    if ((numerator*10 + counter)*denominator == &
-                        (counter*10 + denominator)*numerator) then
-                        denominator_product = denominator_product*denominator
-                        numerator_product = numerator_product*numerator
+            do denom = 1, counter - 1
+                do numer = 1, denom - 1
+                    if ((numer*10 + counter)*denom == &
+                        (counter*10 + denom)*numer) then
+                        denom_prod = denom_prod*denom
+                        numer_prod = numer_prod*numer
                     end if
                 end do
             end do
         end do
-        answer = denominator_product/gcd(numerator_product, denominator_product)
+        answer = denom_prod/gcd(numer_prod, denom_prod)
     end function answer
 
 end submodule euler_problem_0033_m

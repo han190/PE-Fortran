@@ -11,7 +11,7 @@ contains
         integer(i32), parameter :: n = 26, k = 3
         integer(i32), allocatable :: encrypted(:), decrypted(:)
         integer(i32) :: letters(n), idx(k), idx2(k), i
-        logical :: available, available2
+        logical :: avail, avail2
         integer(i32) :: iunit, istat
 
         allocate (encrypted(2000)); encrypted = -1
@@ -25,18 +25,20 @@ contains
         allocate (decrypted(size(encrypted)))
 
         idx = [1, 2, 3]
-        available = .true.
-        outer: do while (available)
+        avail = .true.
+        outer: do while (avail)
 
             idx2 = [1, 2, 3]
-            available2 = .true.
-            inner: do while (available2)
-                call decrypt(encrypted, letters(idx(idx2)), decrypted)
+            avail2 = .true.
+            inner: do while (avail2)
+                associate (key => (letters(idx(idx2))))
+                    call decrypt(encrypted, key, decrypted)
+                end associate
                 if (is_english(decrypted)) exit outer
-                call permute(idx2, available2)
+                call permute(idx2, avail2)
             end do inner
 
-            call permute(k, n, idx, available)
+            call permute(k, n, idx, avail)
         end do outer
         answer = sum(decrypted)
     end function answer

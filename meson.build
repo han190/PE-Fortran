@@ -8,6 +8,9 @@ project('PE-Fortran', 'fortran',
     ]
 )
 
+# fortran stdlib
+fortran_stdlib = dependency('fortran_stdlib', version: '>=0.1.0')
+
 # Meson doesn't have wildcards, instead one has to use extra commands if 
 # they have many sources files. For more details, consult:
 # https://github.com/mesonbuild/meson/blob/master/docs/markdown/FAQ.md
@@ -119,23 +122,30 @@ foreach data_file : data_src
 endforeach
 
 # Executables
+src_codes = [util_src, fypp_src, prob_src, app_src]
 pe_fortran = executable(
-    'PE-Fortran', sources: [util_src, fypp_src, prob_src, app_src], install: true
+    'PE-Fortran', 
+    sources: src_codes, 
+    install: true,
+    dependencies: fortran_stdlib
 )
 
 test_prime_m = executable(
     'Test-prime', 
-    sources: [util_src[0], fypp_src[0], fypp_src[2], test_src[0]]
+    sources: [util_src[0], fypp_src[0], fypp_src[2], test_src[0]],
+    dependencies: fortran_stdlib
 )
 
 test_multiprecision_m = executable(
     'Test-multiprecision',  
-    sources: [util_src[0], fypp_src[1], test_src[1]]
+    sources: [util_src[0], fypp_src[1], test_src[1]],
+    dependencies: fortran_stdlib
 )
 
 test_utility_m = executable(
     'Test-utility', 
-    sources: [util_src[0], fypp_src[1], fypp_src[2], test_src[2]]
+    sources: [util_src[0], fypp_src[1], fypp_src[2], test_src[2]],
+    dependencies: fortran_stdlib
 )
 
 test('Test multiprecision module', test_multiprecision_m)

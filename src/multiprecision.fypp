@@ -288,10 +288,12 @@ contains
     !> Equal.
     pure logical function eq(value_1, value_2)
         type(big_integer), intent(in) :: value_1, value_2
+        logical :: condition_satisfied(2)
 
         eq = .false.
-        if (comp_(value_1%arr, value_2%arr) == 0 .and. &
-            (value_1%sgn .eqv. value_2%sgn)) eq = .true.
+        condition_satisfied(1) = comp_(value_1%arr, value_2%arr) == 0
+        condition_satisfied(2) = value_1%sgn .eqv. value_2%sgn
+        if (all(condition_satisfied)) eq = .true.
     end function eq
 
     !> Greater than.
@@ -302,9 +304,9 @@ contains
         associate (c => (comp_(value_1%arr, value_2%arr)))
             all_positive = all([value_1%sgn, value_2%sgn])
             all_negative = all([.not. value_1%sgn,.not. value_2%sgn])
-            condition_satisfied = &
-                [value_1%sgn .and. .not. value_2%sgn, &
-                 c == 1 .and. all_positive, c == -1 .and. all_negative]
+            condition_satisfied(1) = value_1%sgn .and. .not. value_2%sgn
+            condition_satisfied(2) = all_positive .and. c == 1
+            condition_satisfied(3) = all_negative .and. c == -1
         end associate
 
         if (any(condition_satisfied)) then
@@ -322,9 +324,9 @@ contains
         associate (c => (comp_(value_1%arr, value_2%arr)))
             all_positive = all([value_1%sgn, value_2%sgn])
             all_negative = all([.not. value_1%sgn,.not. value_2%sgn])
-            condition_satisfied = &
-                [.not. value_1%sgn .and. value_2%sgn, &
-                 c == -1 .and. all_positive, c == 1 .and. all_negative]
+            condition_satisfied(1) = .not. value_1%sgn .and. value_2%sgn
+            condition_satisfied(2) = all_positive .and. c == -1
+            condition_satisfied(3) = all_negative .and. c == 1
         end associate
 
         if (any(condition_satisfied)) then
@@ -354,9 +356,10 @@ contains
     pure function add(value_1, value_2) result(ret)
         type(big_integer), intent(in) :: value_1, value_2
         type(big_integer) :: ret
+        logical :: equal_value
 
-        if (comp_(value_1%arr, value_2%arr) == 0 .and. &
-            .not. (value_1%sgn .and. value_2%sgn)) then
+        equal_value = comp_(value_1%arr, value_2%arr) == 0
+        if (equal_value .and. .not. (value_1%sgn .and. value_2%sgn)) then
             ret = 0
         else if (all([value_1%sgn, value_2%sgn])) then
             ret%arr = add_(value_1%arr, value_2%arr)

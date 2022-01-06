@@ -6,7 +6,15 @@
 
 ### Dependencies
 
-All dependencies are available on conda and can be installed with:
+| Dependencies          | Options               |
+|:----------------------|:----------------------|
+| Fortran Compiler      | [gfortran](https://gcc.gnu.org/wiki/GFortran)/[ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.lki8b0) |
+| Build Tool            | [Meson](https://mesonbuild.com/)/[fpm](https://github.com/fortran-lang/fpm) |
+| External Libraries    | [stdlib](https://github.com/fortran-lang/stdlib)    |
+| Preprocessor          | [fypp](https://github.com/aradi/fypp)               |
+| Formatter (optional)  | [fprettify](https://github.com/pseewald/fprettify)  |
+
+All dependencies except stdlib are available on conda and can be installed with:
 
 ```
 conda config --add channels conda-forge
@@ -18,7 +26,7 @@ conda install fypp fprettify # if build with fpm
 
 ### Build with fpm
 
-The [fpm](https://github.com/fortran-lang/fpm) does not support [fypp](https://github.com/aradi/fypp) currently ([#78](https://github.com/fortran-lang/fpm/issues/78)), so in order to use fpm I wrote a simple installation script. If you have fpm, fypp and [fprettify](https://github.com/pseewald/fprettify) (optional) installed this would be the easist way to play with my project. For a quick start, navigate to the source directory and type:
+The fpm does not support fypp currently ([#78](https://github.com/fortran-lang/fpm/issues/78)), so in order to use fpm I wrote a simple installation script. If you have fpm, fypp and fprettify (optional) installed this would be the easist way to play with my project. For a quick start, navigate to the source directory and type:
 
 ```
 ./install.sh
@@ -28,7 +36,7 @@ Further information can be found through `./install.sh --help`.
 
 ### Build with meson
 
-[Meson](https://mesonbuild.com/) is a user friendly and fast build tool. To build with Meson:
+[Meson](https://mesonbuild.com/) is a fast and user friendly build tool. To build with Meson:
 
 ```
 ./install.sh --build-tool meson

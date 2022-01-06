@@ -14,31 +14,30 @@ contains
         integer(i32), parameter :: n = 10000
         integer(i32) :: i
         logical, allocatable :: is_prime(:)
+        integer(i32), parameter :: by = 3330
 
         allocate (is_prime(n))
         call Sieve_of_Eratosthenes(n, is_prime)
         do i = 9973, 7661, -1
-            associate (a => i, b => i - 3330, c => i - 6660)
+            associate (a => i, b => i - by, c => i - by*2)
                 if (.not. all([is_prime(a), is_prime(b), is_prime(c)])) cycle
-                if (sort(a) == sort(b) .and. sort(a) == sort(c)) exit
+                if (sort_(a) == sort_(b) .and. sort_(a) == sort_(c)) exit
             end associate
         end do
 
-        write (answer, "(3(i4))") i - 6660, i - 3330, i
+        write (answer, "(3(i4))") i - by*2, i - by, i
     end function answer
 
-    pure integer(i32) function sort(n)
+    pure integer(i32) function sort_(n)
+        use stdlib_sorting, only: sort
+        implicit none
+
         integer(i32), intent(in) :: n
-        integer(i32) :: i, j
         integer(i32), allocatable :: array(:)
 
         array = to_array(n)
-        do i = 1, 4
-            do j = i + 1, 4
-                if (array(i) > array(j)) call swap(array(i), array(j))
-            end do
-        end do
-        sort = to_integer(array)
-    end function sort
+        call sort(array)
+        sort_ = to_integer(array)
+    end function sort_
 
 end submodule euler_problem_0049_m

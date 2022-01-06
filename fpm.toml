@@ -8,6 +8,9 @@ description = "Solutions to Project Euler problems written by modern Fortran"
 keywords = ["fortran", "modern-fortran", "project-euler-solutions"]
 homepage = "https://github.com/han190/PE-Fortran"
 
+[dependencies]
+stdlib = { git="https://github.com/fortran-lang/stdlib", branch="stdlib-fpm" }
+
 [ library ]
 source-dir = "src-fpm"
 

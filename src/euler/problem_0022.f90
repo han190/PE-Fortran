@@ -8,6 +8,9 @@ contains
     end function euler0022
 
     integer(i32) function answer()
+        use stdlib_sorting, only: sort
+        implicit none
+
         integer(i32) :: i, iunit, istat
         character(len=:), allocatable :: names(:)
 
@@ -19,7 +22,7 @@ contains
         close (iunit)
 
         associate (x => count(names /= "n/a"))
-            call lexical_sort(names(1:x))
+            call sort(names(1:x))
             answer = sum([(i*score_of_letters(names(i)), i=1, x)])
         end associate
     end function answer
@@ -30,42 +33,5 @@ contains
 
         score_of_letters = sum([(iachar(str(i:i)) - 64, i=1, len_trim(str))])
     end function score_of_letters
-
-    pure subroutine lexical_sort(a)
-        character(len=*), intent(inout) :: a(:)
-
-        call quick_sort(a, 1, size(a))
-    end subroutine lexical_sort
-
-    pure recursive subroutine quick_sort(a, low, high)
-        character(len=*), intent(inout) :: a(:)
-        integer(i32), intent(in) :: low, high
-        integer(i32) :: p
-
-        if (low < high) then
-            call partition(a, low, high, p)
-            call quick_sort(a, low, p - 1)
-            call quick_sort(a, p + 1, high)
-        end if
-    end subroutine quick_sort
-
-    pure subroutine partition(a, low, high, i)
-        character(len=*), intent(inout) :: a(:)
-        integer(i32), intent(in) :: low, high
-        integer(i32), intent(inout) :: i
-        character(len=:), allocatable :: pivot
-        integer(i32) :: j
-
-        allocate (character(len=len(a(high))) :: pivot)
-        pivot = a(high)
-        i = low
-        do j = low, high
-            if (a(j) < pivot) then
-                call swap(a(i), a(j))
-                i = i + 1
-            end if
-        end do
-        call swap(a(i), a(high))
-    end subroutine partition
 
 end submodule euler_problem_0022_m
