@@ -14,7 +14,8 @@ module utility_m
     #: for F in funcs
     public :: ${F}$
     #: endfor
-    public :: swap, permute
+    public :: swap
+    public :: permute
 
     #: for F in funcs
     !> Function: ${F}$
@@ -229,60 +230,62 @@ contains
 
     #: for T in integer_kinds
     !> Next permutation of an ${T}$ array.
-    pure subroutine permute_${T}$ (idx, next_avail)
+    pure subroutine permute_${T}$ (idx, next)
         integer(${T}$), intent(inout) :: idx(:)
-        logical, intent(out) :: next_avail
+        logical, intent(out) :: next
         integer(${T}$) :: i, j
 
-        next_avail = .false.
-        do i = size(idx) - 1, 1, -1
-            if (idx(i) < idx(i + 1)) then
-                j = i
-                next_avail = .true.
-                exit
-            end if
-        end do
-        if (.not. next_avail) return
+        associate (s => (size(idx)))
+            next = .false.
+            do i = s - 1, 1, -1
+                if (idx(i) < idx(i + 1)) then
+                    j = i
+                    next = .true.
+                    exit
+                end if
+            end do
+            if (.not. next) return
 
-        do i = size(idx), 1, -1
-            if (idx(j) < idx(i)) exit
-        end do
+            do i = s, 1, -1
+                if (idx(j) < idx(i)) exit
+            end do
 
-        call swap_${T}$ (idx(i), idx(j))
-        idx(j + 1:size(idx)) = idx(size(idx):j + 1:-1)
+            call swap_${T}$ (idx(i), idx(j))
+            idx(j + 1:s) = idx(s:j + 1:-1)
+        end associate
     end subroutine permute_${T}$
 
     #: endfor
 
     #: for T in integer_kinds
     !> Next permutation (k, n) of an ${T}$ array.
-    pure subroutine permute_kn_${T}$ (k, n, idx, next_avail)
-        integer(${T}$), intent(in) :: k, n
-        integer(${T}$), intent(inout) :: idx(k)
-        logical, intent(out) :: next_avail
-        logical :: carried(k)
-        integer(${T}$) :: i
+    pure subroutine permute_kn_${T}$ (n, idx, next)
+        integer(${T}$), intent(in) :: n
+        integer(${T}$), intent(inout) :: idx(:)
+        logical, intent(out) :: next
+        logical, allocatable :: carr(:)
+        integer(${T}$) :: i, x, k
 
-        next_avail = .true.
-        associate (end => ([(i, i=n - k + 1, n)]))
-            if (all(idx == end)) then
-                next_avail = .false.
-                return
-            end if
-        end associate
+        next = .true.
+        k = size(idx)
+        x = n - k + 1
 
-        carried = .true.
+        if (all(idx == [(i, i=x, n)])) then
+            next = .false.; return
+        end if
+
+        carr = [(.true., i=1, k)]
         do i = k, 1, -1
-            if (idx(i) == n - k + i) carried(i) = .false.
+            x = n - k + i
+            if (idx(i) == x) carr(i) = .false.
         end do
 
-        if (all(carried)) then
-            idx(k) = idx(k) + 1
-        else
-            associate (x => (findloc(carried, value=.false., dim=1) - 1))
-                idx(x:k) = [(idx(x) + i, i=1, k - x + 1)]
-            end associate
+        if (all(carr)) then
+            idx(k) = idx(k) + 1; return
         end if
+
+        x = findloc(carr, value=.false., dim=1) - 1
+        idx(x:k) = idx(x) + [(i, i=1, k - x + 1)]
     end subroutine permute_kn_${T}$
 
     #: endfor

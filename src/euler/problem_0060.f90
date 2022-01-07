@@ -52,13 +52,15 @@ contains
         logical, intent(in) :: is_prime_(:)
         integer(i64), intent(out) :: flag(2)
         logical, intent(out) :: succeed
-        integer(i64) :: idx(2), i, arr(2)
+        integer(i64) :: idx(2), arr(2)
+        integer(i64) :: i, size_
         logical :: avail
 
         idx = [1, 2]
         avail = .true.
         flag = 0
         succeed = .true.
+        size_ = size(pair, kind=i64)
 
         do while (avail)
             arr = [concat(pair(idx)), concat(pair(idx(2:1:-1)))]
@@ -74,7 +76,8 @@ contains
                     return
                 end if
             end do
-            call permute(2_i64, size(pair, kind=i64), idx, avail)
+
+            call permute(size_, idx, avail)
         end do
     end subroutine is_prime_pair
 
@@ -84,16 +87,20 @@ contains
         integer(i64), intent(inout) :: flags(2)
         logical, intent(out) :: ret
         logical :: avail
-        integer(i64) :: i(2)
+        integer(i64) :: i(2), size_
 
-        i = [1, 2]; ret = .false.; avail = .true.
+        i = [1, 2]
+        ret = .false.
+        avail = .true.
+        size_ = size(idx, kind=i64)
+
         do while (avail)
             associate (x => idx(i), s => size(concs(1, :)))
                 if (all(x < s) .and. .not. concs(x(1), x(2))) then
                     ret = .true.; flags = i; return
                 end if
             end associate
-            call permute(2_i64, size(idx, kind=i64), i, avail)
+            call permute(size_, i, avail)
         end do
     end subroutine checked_before
 
@@ -110,7 +117,7 @@ contains
         ret = .true.
         associate (f => (max(flags(1), flags(2))))
             if (f == k .or. f == 0 .or. idx(size(idx)) == n) then
-                call permute(k, n, idx, ret)
+                call permute(n, idx, ret)
             else
                 idx(f:k) = [(idx(f) + i, i=1, k - f + 1)]
             end if

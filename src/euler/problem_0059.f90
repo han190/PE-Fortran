@@ -38,7 +38,7 @@ contains
                 call permute(idx2, avail2)
             end do inner
 
-            call permute(k, n, idx, avail)
+            call permute(n, idx, avail)
         end do outer
         answer = sum(decrypted)
     end function answer
