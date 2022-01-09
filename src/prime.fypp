@@ -12,88 +12,85 @@ module prime_m
 
     !> A generic interface that tells if an integer is prime.
     interface is_prime
-        #: for T in integer_kinds
-        module procedure is_prime_${T}$
+        #: for kind in integer_kinds
+            module procedure is_prime_${kind}$
         #: endfor
     end interface is_prime
 
     !> An algorithm for finding all prime numbers within a limit.
     interface Sieve_of_Eratosthenes
-        #: for T in integer_kinds
-        module procedure Sieve_of_Eratosthenes_logical_${T}$
-        module procedure Sieve_of_Eratosthenes_${T}$
+        #: for kind in integer_kinds
+            module procedure Sieve_of_Eratosthenes_logical_${kind}$
+            module procedure Sieve_of_Eratosthenes_${kind}$
         #: endfor
     end interface Sieve_of_Eratosthenes
 
 contains
 
-    #: for T in integer_kinds
-    !> A generic interface that tells if an integer is prime.
-    elemental logical function is_prime_${T}$ (n)
-        integer(${T}$), intent(in) :: n
-        integer(${T}$) :: i
+    #: for kind in integer_kinds
+        !> A generic interface that tells if an integer is prime.
+        elemental logical function is_prime_${kind}$ (n)
+            integer(${kind}$), intent(in) :: n
+            integer(${kind}$) :: i
 
-        is_prime_${T}$ = .true.
-        select case (n)
-        case (0_${T}$, 1_${T}$)
-            is_prime_${T}$ = .false.
-            return
-        case (2_${T}$, 3_${T}$)
-            return
-        end select
+            is_prime_${kind}$ = .true.
+            select case (n)
+            case (0_${kind}$, 1_${kind}$)
+                is_prime_${kind}$ = .false.
+                return
+            case (2_${kind}$, 3_${kind}$)
+                return
+            end select
 
-        if (mod(n, 2_${T}$) == 0_${T}$) then
-            is_prime_${T}$ = .false.
-            return
-        end if
-
-        do i = 3_${T}$, sqrt(n) + 1_${T}$, 2_${T}$
-            if (mod(n, i) == 0_${T}$) then
-                is_prime_${T}$ = .false.
+            if (mod(n, 2_${kind}$) == 0_${kind}$) then
+                is_prime_${kind}$ = .false.
                 return
             end if
-        end do
-    end function is_prime_${T}$
 
+            do i = 3_${kind}$, sqrt(n) + 1_${kind}$, 2_${kind}$
+                if (mod(n, i) == 0_${kind}$) then
+                    is_prime_${kind}$ = .false.
+                    return
+                end if
+            end do
+        end function is_prime_${kind}$${"\n"}$
     #: endfor
 
-    #: for T in integer_kinds
-    !> Sieve of Eratosthenes for kind: ${T}$.
-    pure subroutine Sieve_of_Eratosthenes_logical_${T}$ (n, primes)
-        integer(${T}$), intent(in) :: n
-        logical, intent(out) :: primes(n)
-        integer(${T}$) :: i
+    #: for kind in integer_kinds
+        !> Sieve of Eratosthenes for kind: ${kind}$.
+        pure subroutine Sieve_of_Eratosthenes_logical_${kind}$ (n, primes)
+            integer(${kind}$), intent(in) :: n
+            logical, intent(out) :: primes(n)
+            integer(${kind}$) :: i
 
-        primes(1:2) = [.false., .true.]
-        primes(3:n:2) = .true.
-        primes(4:n:2) = .false.
+            primes(1:2) = [.false., .true.]
+            primes(3:n:2) = .true.
+            primes(4:n:2) = .false.
 
-        do i = 2, sqrt(n)
-            if (primes(i)) primes(i*i:n:i) = .false.
-        end do
-    end subroutine Sieve_of_Eratosthenes_logical_${T}$
-
+            do i = 2, sqrt(n)
+                if (primes(i)) primes(i*i:n:i) = .false.
+            end do
+        end subroutine Sieve_of_Eratosthenes_logical_${kind}$${"\n"}$
     #: endfor
 
-    #: for T in integer_kinds
-    !> Sieve of Eratosthenes for kind: ${T}$.
-    pure subroutine Sieve_of_Eratosthenes_${T}$ (n, primes)
-        integer(${T}$), intent(in) :: n
-        integer(${T}$), allocatable, intent(out) :: primes(:)
-        logical :: is_prime_(n)
-        integer(${T}$) :: i, k
+    #: for kind in integer_kinds
+        !> Sieve of Eratosthenes for kind: ${kind}$.
+        pure subroutine Sieve_of_Eratosthenes_${kind}$ (n, primes)
+            integer(${kind}$), intent(in) :: n
+            integer(${kind}$), allocatable, intent(out) :: primes(:)
+            logical :: is_prime_(n)
+            integer(${kind}$) :: i, k
 
-        call Sieve_of_Eratosthenes(n, is_prime_)
-        allocate (primes(count(is_prime_)))
-        k = 1
-        do i = 1, n
-            if (is_prime_(i)) then
-                primes(k) = i
-                k = k + 1
-            end if
-        end do
-    end subroutine Sieve_of_Eratosthenes_${T}$
-
+            call Sieve_of_Eratosthenes(n, is_prime_)
+            allocate (primes(count(is_prime_)))
+            k = 1
+            do i = 1, n
+                if (is_prime_(i)) then
+                    primes(k) = i
+                    k = k + 1
+                end if
+            end do
+        end subroutine Sieve_of_Eratosthenes_${kind}$${"\n"}$
     #: endfor
 
 end module prime_m
