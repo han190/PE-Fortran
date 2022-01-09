@@ -4,7 +4,6 @@
 #: set operators = ['==', '>', '<', '>=', '<=', '+', '-', '*']
 #: set funcs = ['eq', 'gt', 'lt', 'ge', 'le', 'add', 'sub', 'mul']
 #: set operators_funcs = list(zip(operators, funcs))
-
 module big_integer_m
 
     use constant_m, only: i32
@@ -265,7 +264,7 @@ contains
             ${declare}$, intent(in) :: val
 
             big_${name}$ = val
-        end function big_${name}$${"\n"}$
+        end function big_${name + "\n"}$
     #: endfor
 
     !> Number of digits of a big integer.
@@ -443,7 +442,7 @@ contains
                 logical :: ret
 
                 ret = ${func}$ (value_1, big_(value_2))
-            end function ${func}$_${name}$${"\n"}$
+            end function ${func}$_${name + "\n"}$
         #: endfor
     #: endfor
 
@@ -456,7 +455,7 @@ contains
                 type(big_integer) :: ret
 
                 ret = ${func}$ (value_1, big_(value_2))
-            end function ${func}$_${name}$${"\n"}$
+            end function ${func}$_${name + "\n"}$
         #: endfor
     #: endfor
 

@@ -1,5 +1,4 @@
 #:set integer_kinds = ['i32', 'i64']
-
 module prime_m
 
     use constant_m
@@ -53,7 +52,7 @@ contains
                     return
                 end if
             end do
-        end function is_prime_${kind}$${"\n"}$
+        end function is_prime_${kind + "\n"}$
     #: endfor
 
     #: for kind in integer_kinds
@@ -70,7 +69,7 @@ contains
             do i = 2, sqrt(n)
                 if (primes(i)) primes(i*i:n:i) = .false.
             end do
-        end subroutine Sieve_of_Eratosthenes_logical_${kind}$${"\n"}$
+        end subroutine Sieve_of_Eratosthenes_logical_${kind + "\n"}$
     #: endfor
 
     #: for kind in integer_kinds
@@ -90,7 +89,7 @@ contains
                     k = k + 1
                 end if
             end do
-        end subroutine Sieve_of_Eratosthenes_${kind}$${"\n"}$
+        end subroutine Sieve_of_Eratosthenes_${kind + "\n"}$
     #: endfor
 
 end module prime_m
