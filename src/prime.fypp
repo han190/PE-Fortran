@@ -62,11 +62,8 @@ contains
             logical, intent(out) :: primes(n)
             integer(${kind}$) :: i
 
-            primes(1:2) = [.false., .true.]
-            primes(3:n:2) = .true.
-            primes(4:n:2) = .false.
-
-            do i = 2, sqrt(n)
+            primes = [[.false., .true.], [(merge(.true., .false., mod(i, 2_${kind}$) /= 0_${kind}$), i=3_${kind}$, n)]]
+            do i = 2_${kind}$, sqrt(n)
                 if (primes(i)) primes(i*i:n:i) = .false.
             end do
         end subroutine Sieve_of_Eratosthenes_logical_${kind + "\n"}$
@@ -77,18 +74,11 @@ contains
         pure subroutine Sieve_of_Eratosthenes_${kind}$ (n, primes)
             integer(${kind}$), intent(in) :: n
             integer(${kind}$), allocatable, intent(out) :: primes(:)
-            logical :: is_prime_(n)
-            integer(${kind}$) :: i, k
+            logical :: is_primes(n)
+            integer(${kind}$) :: i
 
-            call Sieve_of_Eratosthenes(n, is_prime_)
-            allocate (primes(count(is_prime_)))
-            k = 1
-            do i = 1, n
-                if (is_prime_(i)) then
-                    primes(k) = i
-                    k = k + 1
-                end if
-            end do
+            call Sieve_of_Eratosthenes(n, is_primes)
+            primes = pack([(i, i=1_${kind}$, n)], is_primes)
         end subroutine Sieve_of_Eratosthenes_${kind + "\n"}$
     #: endfor
 
