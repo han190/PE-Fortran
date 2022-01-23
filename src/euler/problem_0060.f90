@@ -65,11 +65,8 @@ contains
         do while (avail)
             arr = [concat(pair(idx)), concat(pair(idx(2:1:-1)))]
             do i = 1, 2
-                if (arr(i) <= size(is_prime_)) then
-                    succeed = is_prime_(arr(i))
-                else
-                    succeed = is_prime(arr(i))
-                end if
+                succeed = merge(is_prime_(arr(i)), is_prime(arr(i)), &
+                                arr(i) <= size(is_prime_))
 
                 if (.not. succeed) then
                     flag = idx

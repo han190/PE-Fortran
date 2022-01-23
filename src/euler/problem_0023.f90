@@ -42,13 +42,7 @@ contains
 
         spd = 1
         do i = 2, int(sqrt(real(n, sp)))
-            if (mod(n, i) == 0) then
-                if (n/i == i) then
-                    spd = spd + i
-                else
-                    spd = spd + i + n/i
-                end if
-            end if
+            if (mod(n, i) == 0) spd = merge(spd + i, spd + i + n/i, n/i == i)
         end do
     end function spd
 

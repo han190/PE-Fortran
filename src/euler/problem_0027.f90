@@ -12,13 +12,10 @@ contains
     end function answer
 
     pure integer(i32) function quadratic_primes(i, j, n)
-        integer, intent(in) :: i, j, n
+        integer(i32), intent(in) :: i, j, n
+        integer(i32), parameter :: k = 1000
 
-        if (abs(i) >= 1000 .or. abs(j) > 1000) then
-            quadratic_primes = 0
-        else
-            quadratic_primes = n**2 + i*n + j
-        end if
+        quadratic_primes = merge(0, n*(n + i) + j, abs(i) >= k .or. abs(j) > k)
     end function quadratic_primes
 
 end submodule euler_problem_0027_m

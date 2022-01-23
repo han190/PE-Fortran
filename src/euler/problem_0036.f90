@@ -23,11 +23,7 @@ contains
         end if
 
         associate (x => to_binary(n))
-            if (all(x == x(size(x):1:-1))) then
-                are_palindromics = .true.
-            else
-                are_palindromics = .false.
-            end if
+            are_palindromics = all(x == x(size(x):1:-1))
         end associate
     end function are_palindromics
 

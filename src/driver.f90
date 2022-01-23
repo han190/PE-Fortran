@@ -24,14 +24,15 @@ contains
 
     !> Get version messages.
     subroutine get_version_messages()
-        version_messages = &
-            [character(len=80) :: &
-             'Project Name: PE-Fortran', &
-             'Version: 0.0.2', &
-             'License: MIT', &
-             'Copyright: Copyright 2019 - 2022, Han Tang', &
-             'Homepage: https://github.com/han190/PE-Fortran', &
-             ' ']
+        version_messages = [                                                   &
+            character(len=80) ::                                               &
+            'Project Name: PE-Fortran',                                        &
+            'Version: 0.0.2',                                                  &
+            'License: MIT',                                                    &
+            'Copyright: Copyright 2019 - 2022, Han Tang',                      &
+            'Homepage: https://github.com/han190/PE-Fortran',                  &
+            ' '                                                                &
+        ]
     end subroutine get_version_messages
 
     !> Print version messages.
@@ -42,25 +43,25 @@ contains
 
     !> Get help messages.
     subroutine get_help_messages()
-        help_messages = &
-            [character(len=80) :: &
-             'PE Fortran Solution', &
-             'Arguments:', &
-             '   -v, --version          Print version.', &
-             '   -h, --help             Pop up this message.', &
-             '   -a N, --all N          Compute problem 1 through N.', &
-             '   -p N, --problem N      Compute problem N. ', &
-             '   -f, --fancy            (optional) Use emojis to express ', &
-             '                          relative difficulties.', &
-             '   -d, --data-directory   (optional) Directory of input data, ', &
-             '                          default is ".".', &
-             '   -n, --number-of-trails (optional) Number of trails, ', &
-             '                          default is 1.', &
-             'Example:', &
-             '   (1) Compute problem 1 to 50, 10 trails per problem, with', &
-             '       fancy style (emojis) and a specified data directory.', &
-             '     $ PE-Fortran -f -a 50 -d $(realpath ./data) -n 10', &
-             ' ']
+        help_messages = [                                                      &
+            character(len=80) :: 'PE Fortran Solution',                        &
+            'Arguments:',                                                      &
+            '   -v, --version          Print version.',                        &
+            '   -h, --help             Pop up this message.',                  &
+            '   -a N, --all N          Compute problem 1 through N.',          &
+            '   -p N, --problem N      Compute problem N. ',                   &
+            '   -f, --fancy            (optional) Use emojis to express ',     &
+            '                          relative difficulties.',                &
+            '   -d, --data-directory   (optional) Directory of input data, ',  &
+            '                          default is ".".',                       &
+            '   -n, --number-of-trails (optional) Number of trails, ',         &
+            '                          default is 1.',                         &
+            'Example:',                                                        &
+            '   (1) Compute problem 1 to 50, 10 trails per problem, with',     &
+            '       fancy style (emojis) and a specified data directory.',     &
+            '     $ PE-Fortran -f -a 50 -d $(realpath ./data) -n 10',          &
+            ' '                                                                &
+        ]
     end subroutine get_help_messages
 
     !> Print help messages.
@@ -79,8 +80,8 @@ contains
     end subroutine print_error_messages
 
     !> Compute relative difficulty level.
-    pure function level(x, xstr, x_min, x_max) result(ret)
-        real, intent(in) :: x, x_min, x_max
+    pure function level(x, xstr, r) result(ret)
+        real, intent(in) :: x, r(2)
         character(len=20), intent(in) :: xstr
         integer :: ret
         real :: norm
@@ -91,7 +92,7 @@ contains
             return
         end if
 
-        norm = (x - x_min)/(x_max - x_min)
+        norm = (x - r(1))/(r(2) - r(1))
         do i = 1, 5
             if (norm >= 10.**(-i)) then
                 ret = i
@@ -106,14 +107,16 @@ contains
         logical, intent(in) :: fancy
 
         if (fancy) then
-            level_name = &
-                [character(len=25) :: ":smiling_imp:", ":frowning_face:", &
-                 ":slightly_frowning_face:", ":confused:", ":neutral_face:", &
-                 ":slightly_smiling_face:", ":construction:"]
+            level_name = [                                                     &
+                character(len=25) :: ":smiling_imp:", ":frowning_face:",       &
+                ":slightly_frowning_face:", ":confused:", ":neutral_face:",    &
+                ":slightly_smiling_face:", ":construction:"                    &
+            ]
         else
-            level_name = &
-                [character(len=25) :: "_lvl1_", "_lvl2_", "_lvl3_", &
-                 "_lvl4_", "_lvl5_", "_lvl6_", "_unfinished_"]
+            level_name = [                                                     &
+                character(len=25) :: "_lvl1_", "_lvl2_", "_lvl3_",             &
+                "_lvl4_", "_lvl5_", "_lvl6_", "_unfinished_"                   &
+            ]
         end if
     end subroutine get_level_names
 
@@ -126,11 +129,8 @@ contains
         integer :: i
 
         call get_level_names(fancy)
-        associate (min_ => (minval(x)), max_ => (maxval(x)))
-            levels = "" ! Initilization
-            do i = 1, size(x)
-                levels(i) = level_name(level(x(i), xstr(i), min_, max_))
-            end do
+        associate (r => ([minval(x), maxval(x)]), s => (size(x)))
+            levels = [(level_name(level(x(i), xstr(i), r)), i=1, s)]
         end associate
     end subroutine get_levels
 
@@ -250,11 +250,11 @@ contains
         integer(i32) :: number_of_problems, number_of_trails
         logical :: fancy
         character(len=500) :: path_
-        character(len=*), parameter :: INVALID = "Invalid syntax!"
+        character(len=*), parameter :: invalid = "Invalid syntax!"
 
         argument_count = command_argument_count()
         if (argument_count >= 9 .or. argument_count < 1) then
-            call print_error_messages(INVALID)
+            call print_error_messages(invalid)
         end if
 
         allocate (arguments(argument_count))
@@ -295,7 +295,7 @@ contains
                 read (arguments(idx + 1), *) number_of_trails
                 idx = idx + 2
             case default
-                call print_error_messages(INVALID)
+                call print_error_messages(invalid)
             end select
         end do
 
@@ -305,7 +305,7 @@ contains
         case (2)
             call print_answers(number_of_problems, number_of_trails, fancy)
         case default
-            call print_error_messages(INVALID)
+            call print_error_messages(invalid)
         end select
     end subroutine get_arguments
 

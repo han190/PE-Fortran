@@ -21,7 +21,7 @@ contains
 
         do
             if (knt == 11 .or. i == n) exit
-            if (is_prime(i) .and. is_truncatable(i, is_prime)) then
+            if (is_prime(i) .and. is_trunc(i, is_prime)) then
                 answer = answer + i
                 knt = knt + 1
             end if
@@ -29,19 +29,14 @@ contains
         end do
     end function answer
 
-    pure logical function is_truncatable(n, is_prime)
+    pure logical function is_trunc(n, is_prime)
         integer(i64), intent(in) :: n
         logical, intent(in) :: is_prime(:)
 
-        if (is_left_truncatable(n, is_prime) .and. &
-            is_right_truncatable(n, is_prime)) then
-            is_truncatable = .true.
-        else
-            is_truncatable = .false.
-        end if
-    end function is_truncatable
+        is_trunc = is_left_trunc(n, is_prime) .and. is_right_trunc(n, is_prime)
+    end function is_trunc
 
-    pure logical function is_left_truncatable(n, is_prime)
+    pure logical function is_left_trunc(n, is_prime)
         integer(i64), intent(in) :: n
         logical, intent(in) :: is_prime(:)
         integer(i64) :: temp
@@ -49,15 +44,15 @@ contains
         temp = 10_i64
         do while (temp < n .and. mod(n, temp) >= 1)
             if (.not. is_prime(mod(n, temp))) then
-                is_left_truncatable = .false.
+                is_left_trunc = .false.
                 return
             end if
             temp = temp*10_i64
         end do
-        is_left_truncatable = .true.
-    end function is_left_truncatable
+        is_left_trunc = .true.
+    end function is_left_trunc
 
-    pure logical function is_right_truncatable(n, is_prime)
+    pure logical function is_right_trunc(n, is_prime)
         integer(i64), intent(in) :: n
         logical, intent(in) :: is_prime(:)
         integer(i64) :: temp
@@ -67,11 +62,11 @@ contains
             if (is_prime(temp)) then
                 temp = temp/10_i64
             else
-                is_right_truncatable = .false.
+                is_right_trunc = .false.
                 return
             end if
         end do
-        is_right_truncatable = .true.
-    end function is_right_truncatable
+        is_right_trunc = .true.
+    end function is_right_trunc
 
 end submodule euler_problem_0037_m

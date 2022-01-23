@@ -285,68 +285,55 @@ contains
     !> Equal.
     pure logical function eq(value_1, value_2)
         type(big_integer), intent(in) :: value_1, value_2
-        logical :: condition_satisfied(2)
+        logical :: conditions(2)
 
-        eq = .false.
-        condition_satisfied(1) = comp_(value_1%arr, value_2%arr) == 0
-        condition_satisfied(2) = value_1%sgn .eqv. value_2%sgn
-        if (all(condition_satisfied)) eq = .true.
+        conditions(1) = comp_(value_1%arr, value_2%arr) == 0
+        conditions(2) = value_1%sgn .eqv. value_2%sgn
+        eq = all(conditions)
     end function eq
 
     !> Greater than.
     pure logical function gt(value_1, value_2)
         type(big_integer), intent(in) :: value_1, value_2
-        logical :: condition_satisfied(3), all_positive, all_negative
+        logical :: conditions(3), all_positive, all_negative
 
         associate (c => (comp_(value_1%arr, value_2%arr)))
             all_positive = all([value_1%sgn, value_2%sgn])
             all_negative = all([.not. value_1%sgn,.not. value_2%sgn])
-            condition_satisfied(1) = value_1%sgn .and. .not. value_2%sgn
-            condition_satisfied(2) = all_positive .and. c == 1
-            condition_satisfied(3) = all_negative .and. c == -1
+            conditions(1) = value_1%sgn .and. .not. value_2%sgn
+            conditions(2) = all_positive .and. c == 1
+            conditions(3) = all_negative .and. c == -1
         end associate
-
-        if (any(condition_satisfied)) then
-            gt = .true.
-        else
-            gt = .false.
-        end if
+        gt = any(conditions)
     end function gt
 
     !> Less than.
     pure logical function lt(value_1, value_2)
         type(big_integer), intent(in) :: value_1, value_2
-        logical :: condition_satisfied(3), all_positive, all_negative
+        logical :: conditions(3), all_positive, all_negative
 
         associate (c => (comp_(value_1%arr, value_2%arr)))
             all_positive = all([value_1%sgn, value_2%sgn])
             all_negative = all([.not. value_1%sgn,.not. value_2%sgn])
-            condition_satisfied(1) = .not. value_1%sgn .and. value_2%sgn
-            condition_satisfied(2) = all_positive .and. c == -1
-            condition_satisfied(3) = all_negative .and. c == 1
+            conditions(1) = .not. value_1%sgn .and. value_2%sgn
+            conditions(2) = all_positive .and. c == -1
+            conditions(3) = all_negative .and. c == 1
         end associate
-
-        if (any(condition_satisfied)) then
-            lt = .true.
-        else
-            lt = .false.
-        end if
+        lt = any(conditions)
     end function lt
 
     !> Greater than or equal to.
     pure logical function ge(value_1, value_2)
         type(big_integer), intent(in) :: value_1, value_2
 
-        ge = .false.
-        if (gt(value_1, value_2) .or. eq(value_1, value_2)) ge = .true.
+        ge = gt(value_1, value_2) .or. eq(value_1, value_2)
     end function ge
 
     !> Less than or equal to.
     pure logical function le(value_1, value_2)
         type(big_integer), intent(in) :: value_1, value_2
 
-        le = .false.
-        if (lt(value_1, value_2) .or. eq(value_1, value_2)) le = .true.
+        le = lt(value_1, value_2) .or. eq(value_1, value_2)
     end function le
 
     !> Addition.
@@ -465,8 +452,7 @@ contains
         integer(i32), intent(in) :: value_2
         type(big_integer) :: ret
 
-        ret%sgn = .true.
-        if (.not. value_1%sgn .and. mod(value_2, 2) /= 0) ret%sgn = .false.
+        ret%sgn = value_1%sgn .and. (.not. mod(value_2, 2) /= 0)
         ret%arr = pow_(value_1%arr, value_2)
     end function pow_i32
 

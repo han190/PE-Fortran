@@ -33,16 +33,12 @@ contains
         answer = count(array)
     end function answer
 
-    pure function convert_base_power(base_power, primes) result(ret)
-        integer(i32), intent(in) :: base_power(2), primes(:)
+    pure function convert_base_power(val, primes) result(ret)
+        integer(i32), intent(in) :: val(2), primes(:)
         integer(i32) :: ret(2), temp(2)
 
-        call is_power(base_power(1), primes, temp)
-        if (all(temp == error)) then
-            ret = base_power
-        else
-            ret = [temp(1), temp(2)*base_power(2)]
-        end if
+        call is_power(val(1), primes, temp)
+        ret = merge(val, [temp(1), temp(2)*val(2)], all(temp == error))
     end function convert_base_power
 
     pure subroutine is_power(n, primes, base_power)

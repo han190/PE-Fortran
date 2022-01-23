@@ -36,11 +36,7 @@ contains
         integer(i64), intent(in) :: pj, pk
 
         associate (s => pj + pk, d => pk - pj)
-            if (is_pentagonal(s) .and. is_pentagonal(d)) then
-                is_pentagonal_pair = .true.
-            else
-                is_pentagonal_pair = .false.
-            end if
+            is_pentagonal_pair = is_pentagonal(s) .and. is_pentagonal(d)
         end associate
     end function is_pentagonal_pair
 
@@ -48,22 +44,14 @@ contains
         integer(i64), intent(in) :: p
 
         associate (x => sqrt(24.*real(p) + 1.))
-            if (is_integer(x) .and. mod(int(x, i64), 6_i64) == 5_i64) then
-                is_pentagonal = .true.
-            else
-                is_pentagonal = .false.
-            end if
+            is_pentagonal = is_integer(x) .and. mod(int(x, i64), 6_i64) == 5_i64
         end associate
     end function is_pentagonal
 
     elemental logical function is_integer(n)
         real(sp), intent(in) :: n
 
-        if (n - floor(n) <= tiny_sp) then
-            is_integer = .true.
-        else
-            is_integer = .false.
-        end if
+        is_integer = n - floor(n) <= tiny_sp
     end function is_integer
 
 end submodule euler_problem_0044_m

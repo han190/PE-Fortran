@@ -30,11 +30,7 @@ contains
 
             p_knt = 0; c_knt = 0
             associate (r => pack([(i, i=1, size(arr))], arr == arr(j)))
-                if (any(r == 1)) then
-                    s = 1
-                else
-                    s = 0
-                end if
+                s = merge(1, 0, any(r == 1))
 
                 inner: do j = s, 9
                     arr(r) = j
