@@ -62,7 +62,7 @@ contains
             logical, intent(out) :: primes(n)
             integer(${kind}$) :: i
 
-            primes = [[.false., .true.], [(merge(.true., .false., mod(i, 2_${kind}$) /= 0_${kind}$), i=3_${kind}$, n)]]
+            primes = [[.false., .true.], [(mod(i, 2_${kind}$) /= 0_${kind}$, i=3_${kind}$, n)]]
             do i = 2_${kind}$, sqrt(n)
                 if (primes(i)) primes(i*i:n:i) = .false.
             end do
