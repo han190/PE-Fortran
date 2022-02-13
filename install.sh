@@ -76,7 +76,9 @@ while true; do
     esac
 done
 
-if [ $build_tool == "fpm" ]; then
+if [ $generate_source_only == "true" ]; then
+    check_dependency fypp
+elif [ $build_tool == "fpm" ]; then
     check_dependency fypp
     check_dependency fpm
 elif [ $build_tool == "meson" ]; then
