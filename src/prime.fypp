@@ -27,7 +27,7 @@ module prime_m
 contains
 
     #: for kind in integer_kinds
-        !> A generic interface that tells if an integer is prime.
+        !> ${kind}$ version of 'is_prime'
         elemental logical function is_prime_${kind}$ (n)
             integer(${kind}$), intent(in) :: n
             integer(${kind}$) :: i
@@ -56,7 +56,7 @@ contains
     #: endfor
 
     #: for kind in integer_kinds
-        !> Sieve of Eratosthenes for kind: ${kind}$.
+        !> ${kind}$ version of 'Sieve_of_Eratosthenes_logical'
         pure subroutine Sieve_of_Eratosthenes_logical_${kind}$ (n, primes)
             integer(${kind}$), intent(in) :: n
             logical, intent(out) :: primes(n)
@@ -70,7 +70,7 @@ contains
     #: endfor
 
     #: for kind in integer_kinds
-        !> Sieve of Eratosthenes for kind: ${kind}$.
+        !> ${kind}$ version of 'Sieve_of_Eratosthenes'
         pure subroutine Sieve_of_Eratosthenes_${kind}$ (n, primes)
             integer(${kind}$), intent(in) :: n
             integer(${kind}$), allocatable, intent(out) :: primes(:)
