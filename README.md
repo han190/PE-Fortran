@@ -99,4 +99,12 @@ Here is what I plan to do in the future. (Not likely to be done recently cuz I a
 - [x] Add an installation script.
 - [ ] Add GUI!
 - [x] Use fpm to build, test, run and install the project.
-- [x] Review exisiting code, rewrite/refactor code with (1) modern Fortran, (2) functional programming and (3) array-oriented styles.
+- [x] Review exisiting code, rewrite/refactor code with:
+   * Modern Fortran, 
+   * Functional programming, and 
+   * Array-oriented styles.
+- [ ] One of the three: 
+   * Rewrite a simple yet robust big integer library.
+   * Use GMP for big integer.
+   * Use a good Fortran big integer library.
+- [ ] Implement an associative array for Project Euler.

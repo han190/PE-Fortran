@@ -19,7 +19,7 @@ contains
 
         allocate (problems(${NUM_PROB}$))
         #: for i in range(1, NUM_PROB + 1)
-            problems(${i}$)%answer => euler${"%4.4d" % (i,)}$
+        problems(${i}$)%answer => euler${"%4.4d" % (i,)}$
         #: endfor
     end subroutine initialize_problems
 

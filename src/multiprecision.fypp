@@ -15,7 +15,7 @@ module big_integer_m
     public :: len, swap
     public :: assignment(=)
     #: for operator in operators
-        public :: operator(${operator}$)
+    public :: operator(${operator}$)
     #: endfor
     public :: operator(**)
 
@@ -28,14 +28,14 @@ module big_integer_m
     !> Assignment(=)
     interface assignment(=)
         #: for name in names
-            module procedure init_${name}$
+        module procedure init_${name}$
         #: endfor
     end interface assignment(=)
 
     !> Convert to big_integer
     interface big_
         #: for name in names
-            module procedure big_${name}$
+        module procedure big_${name}$
         #: endfor
     end interface big_
 
@@ -48,13 +48,13 @@ module big_integer_m
     end interface swap
 
     #: for operator, func in operators_funcs
-        !> Operator(${operator}$)
-        interface operator(${operator}$)
-            module procedure ${func}$
-            #: for name in names
-                module procedure ${func}$_${name}$
-            #: endfor
-        end interface operator(${operator}$)${"\n"}$
+    !> Operator(${operator}$)
+    interface operator(${operator}$)
+        module procedure ${func}$
+        #: for name in names
+        module procedure ${func}$_${name}$
+        #: endfor
+    end interface operator(${operator}$)${"\n"}$
     #: endfor
 
     !> Operator(**)
@@ -259,12 +259,12 @@ contains
     end subroutine init_i32_arr
 
     #: for name, declare in names_types
-        !> Convert ${name}$ to big_integer
-        pure type(big_integer) function big_${name}$ (val)
-            ${declare}$, intent(in) :: val
+    !> Convert ${name}$ to big_integer
+    pure type(big_integer) function big_${name}$ (val)
+        ${declare}$, intent(in) :: val
 
-            big_${name}$ = val
-        end function big_${name + "\n"}$
+        big_${name}$ = val
+    end function big_${name + "\n"}$
     #: endfor
 
     !> Number of digits of a big integer.
@@ -421,29 +421,29 @@ contains
     end function mul
 
     #: for func in ['eq', 'gt', 'lt', 'ge', 'le']
-        #: for name, declare in names_types
-            !> Wrapper of function '${func}$' for type ${declare}$.
-            pure function ${func}$_${name}$ (value_1, value_2) result(ret)
-                type(big_integer), intent(in) :: value_1
-                ${declare}$, intent(in) :: value_2
-                logical :: ret
+    #: for name, declare in names_types
+    !> Wrapper of function '${func}$' for type ${declare}$.
+    pure function ${func}$_${name}$ (value_1, value_2) result(ret)
+        type(big_integer), intent(in) :: value_1
+        ${declare}$, intent(in) :: value_2
+        logical :: ret
 
-                ret = ${func}$ (value_1, big_(value_2))
-            end function ${func}$_${name + "\n"}$
-        #: endfor
+        ret = ${func}$ (value_1, big_(value_2))
+    end function ${func}$_${name + "\n"}$
+    #: endfor
     #: endfor
 
     #: for func in ['add', 'sub', 'mul']
-        #: for name, declare in names_types
-            !> Wrapper of function '${func}$' for type ${declare}$.
-            pure function ${func}$_${name}$ (value_1, value_2) result(ret)
-                type(big_integer), intent(in) :: value_1
-                ${declare}$, intent(in) :: value_2
-                type(big_integer) :: ret
+    #: for name, declare in names_types
+    !> Wrapper of function '${func}$' for type ${declare}$.
+    pure function ${func}$_${name}$ (value_1, value_2) result(ret)
+        type(big_integer), intent(in) :: value_1
+        ${declare}$, intent(in) :: value_2
+        type(big_integer) :: ret
 
-                ret = ${func}$ (value_1, big_(value_2))
-            end function ${func}$_${name + "\n"}$
-        #: endfor
+        ret = ${func}$ (value_1, big_(value_2))
+    end function ${func}$_${name + "\n"}$
+    #: endfor
     #: endfor
 
     !> Power.
