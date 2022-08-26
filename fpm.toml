@@ -8,28 +8,10 @@ description = "Solutions to Project Euler problems written by modern Fortran"
 keywords = ["fortran", "modern-fortran", "project-euler-solutions"]
 homepage = "https://github.com/han190/PE-Fortran"
 
-[dependencies]
-stdlib = { git="https://github.com/fortran-lang/stdlib", branch="stdlib-fpm" }
-
 [ library ]
-source-dir = "src-fpm"
+source-dir = "src"
 
 [[ test ]]
-name = "Test-big_integer_m"
-source-dir = "src-fpm/test"
-main = "test_multiprecision.f90"
-
-[[ test ]]
-name = "Test-prime_m"
-source-dir = "src-fpm/test"
-main = "test_prime.f90"
-
-[[ test ]]
-name = "Test-utility_m"
-source-dir = "src-fpm/test"
-main = "test_utility.f90"
-
-[[ executable ]]
-name = "PE-Fortran"
-source-dir = "src-fpm/app"
-main = "project_euler.f90"
+name = "long_integer_test"
+source-dir = "test"
+main = "LongInteger_Test.f90"
