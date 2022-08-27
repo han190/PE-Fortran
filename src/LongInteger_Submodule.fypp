@@ -1,3 +1,4 @@
+#: include 'Common.fypp'
 submodule(long_integer_module) long_integer_submodule
 
   implicit none
@@ -146,56 +147,56 @@ contains
   end function comp_
 
   !> Initialize a long_integer with an integer.
-  pure module subroutine init_i32(val, int_)
-    type(long_integer), intent(inout) :: val
-    integer(i32), intent(in) :: int_
+  pure module subroutine init_i32(val1, val2)
+    type(long_integer), intent(inout) :: val1
+    integer(i32), intent(in) :: val2
     integer(i32) :: tmp, i
     integer(i32) :: num_digits
 
-    val%sign = merge("+", "-", int_ >= 0)
-    if (int_ == 0_i32) then
-      val%digit = [0_i8]
+    val1%sign = merge("+", "-", val2 >= 0)
+    if (val2 == 0_i32) then
+      val1%digit = [0_i8]
       return
     end if
 
-    tmp = abs(int_)
+    tmp = abs(val2)
     num_digits = floor(log10(real(tmp))) + 1
-    call allocate_(val, num_digits)
+    call allocate_(val1, num_digits)
     do i = num_digits, 1, -1
-      val%digit(i) = int(mod(tmp, 10), i8)
+      val1%digit(i) = int(mod(tmp, 10), i8)
       tmp = tmp/10
     end do
   end subroutine init_i32
 
   !> Initialize a long_integer with a character.
-  pure module subroutine init_str(val, char_)
-    type(long_integer), intent(inout) :: val
-    character(len=*), intent(in) :: char_
+  pure module subroutine init_str(val1, val2)
+    type(long_integer), intent(inout) :: val1
+    character(len=*), intent(in) :: val2
 
-    select case (char_(1:1))
+    select case (val2(1:1))
     case ("+", "-")
-      val%sign = char_(1:1)
-      call allocate_(val, len(char_) - 1)
-      read (char_(2:len(char_)), "(*(i1))") val%digit
+      val1%sign = val2(1:1)
+      call allocate_(val1, len(val2) - 1)
+      read (val2(2:len(val2)), "(*(i1))") val1%digit
     case default
-      val%sign = "+"
-      call allocate_(val, len(char_))
-      read (char_(1:len(char_)), "(*(i1))") val%digit
+      val1%sign = "+"
+      call allocate_(val1, len(val2))
+      read (val2(1:len(val2)), "(*(i1))") val1%digit
     end select
   end subroutine init_str
 
   !> Initialize a long_integer with i32_arr
-  pure module subroutine init_i32_arr(val, digs)
-    type(long_integer), intent(inout) :: val
-    integer(i32), intent(in) :: digs(:)
+  pure module subroutine init_i32_arr(val1, val2)
+    type(long_integer), intent(inout) :: val1
+    integer(i32), intent(in) :: val2(:)
     integer(i32) :: i
 
-    call allocate_(val, size(digs))
-    if (any(digs >= 10)) then
+    call allocate_(val1, size(val2))
+    if (any(val2 >= 10)) then
       error stop "Error: init_i32_arr."
     end if
-    val%sign = "+"
-    val%digit = [(int(digs(i), i8), i=1, size(digs))]
+    val1%sign = "+"
+    val1%digit = [(int(val2(i), i8), i=1, size(val2))]
   end subroutine init_i32_arr
 
   !> Convert a variable to long integer
@@ -240,7 +241,7 @@ contains
   end function to_long_vect
 
   !> Equal.
-  pure module logical function eq(val1, val2)
+  elemental module logical function eq(val1, val2)
     type(long_integer), intent(in) :: val1, val2
 
     eq = all(val1%digit == val2%digit) &
@@ -248,7 +249,7 @@ contains
   end function eq
 
   !> Greater than
-  pure module logical function gt(val1, val2)
+  elemental module logical function gt(val1, val2)
     type(long_integer), intent(in) :: val1, val2
     logical :: pstv, ngtv
     integer(i8) :: c
@@ -261,7 +262,7 @@ contains
   end function gt
 
   !> Less than
-  pure module logical function lt(val1, val2)
+  elemental module logical function lt(val1, val2)
     type(long_integer), intent(in) :: val1, val2
     logical :: pstv, ngtv
     integer(i8) :: c
@@ -274,21 +275,34 @@ contains
   end function lt
 
   !> Greater than or equal to.
-  pure module logical function ge(val1, val2)
+  elemental module logical function ge(val1, val2)
     type(long_integer), intent(in) :: val1, val2
 
     ge = gt(val1, val2) .or. eq(val1, val2)
   end function ge
 
   !> Less than or equal to
-  pure module logical function le(val1, val2)
+  elemental module logical function le(val1, val2)
     type(long_integer), intent(in) :: val1, val2
 
     le = lt(val1, val2) .or. eq(val1, val2)
   end function le
 
-  !> Add
-  pure module function add(val1, val2) result(ret)
+  #: for func in rel_names
+  #: for suffix, T in suffix_type_names
+  !> Wrapper of function ${func}$ for type ${T}$
+  pure module function ${func}$_${suffix}$ (val1, val2) result(ret)
+    type(long_integer), intent(in) :: val1
+    ${T}$, intent(in) :: val2
+    logical :: ret
+
+    ret = ${func}$(val1, int(val2, "ll"))
+  end function ${func}$_${suffix}$ ${"\n"}$
+  #: endfor
+  #: endfor
+
+  !> Addition.
+  elemental module function add(val1, val2) result(ret)
     type(long_integer), intent(in) :: val1, val2
     type(long_integer) :: ret
     integer(i8) :: c
@@ -324,36 +338,37 @@ contains
     end if
   end function add
 
-  pure module function sub(val2, val1) result(ret)
-    type(long_integer), intent(in) :: val2, val1
+  !> Subtraction.
+  elemental module function sub(val1, val2) result(ret)
+    type(long_integer), intent(in) :: val1, val2
     type(long_integer) :: ret
     integer(i8) :: c
 
-    c = comp_(val2%digit, val1%digit)
-    if (val1 == val2) then
+    c = comp_(val1%digit, val2%digit)
+    if (val2 == val1) then
       ret%digit = [0_i8]
       ret%sign = "+"
-    else if (val1%sign == "+" .and. val2%sign == "+") then
+    else if (val2%sign == "+" .and. val1%sign == "+") then
       if (c == 1) then
-        ret%digit = sub_(val2%digit, val1%digit)
-        ret%sign = "+"
-      else
-        ret%digit = sub_(val1%digit, val2%digit)
-        ret%sign = "-"
-      end if
-    else if (val1%sign == "-" .and. val2%sign == "-") then
-      if (c == 1) then
-        ret%digit = sub_(val2%digit, val1%digit)
-        ret%sign = "-"
-      else
         ret%digit = sub_(val1%digit, val2%digit)
         ret%sign = "+"
+      else
+        ret%digit = sub_(val2%digit, val1%digit)
+        ret%sign = "-"
       end if
-    else if (val1%sign == "+" .and. val2%sign == "-") then
-      ret%digit = add_(val1%digit, val2%digit)
+    else if (val2%sign == "-" .and. val1%sign == "-") then
+      if (c == 1) then
+        ret%digit = sub_(val1%digit, val2%digit)
+        ret%sign = "-"
+      else
+        ret%digit = sub_(val2%digit, val1%digit)
+        ret%sign = "+"
+      end if
+    else if (val2%sign == "+" .and. val1%sign == "-") then
+      ret%digit = add_(val2%digit, val1%digit)
       ret%sign = "+"
-    else if (val1%sign == "-" .and. val2%sign == "+") then
-      ret%digit = add_(val1%digit, val2%digit)
+    else if (val2%sign == "-" .and. val1%sign == "+") then
+      ret%digit = add_(val2%digit, val1%digit)
       ret%sign = "-"
     else
       error stop "Error: sub."
