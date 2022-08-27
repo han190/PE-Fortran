@@ -14,6 +14,8 @@ module long_integer_module
   public :: operator(+)
   public :: operator(-)
 
+  public :: int
+
   private
 
   !> Long integer type.
@@ -27,11 +29,16 @@ module long_integer_module
   !> Interface for assignment
   interface assignment(=)
     module procedure init_i32
-    module procedure init_char
-    module procedure init_i8_arr
+    module procedure init_str
+    module procedure init_i32_arr
   end interface assignment(=)
 
   !> Interface
+  interface int
+    module procedure to_long_scal
+    module procedure to_long_vect
+  end interface int
+
   interface operator(==)
     module procedure eq
   end interface operator(==)
@@ -67,39 +74,46 @@ module long_integer_module
       integer(i32), intent(in) :: int_
     end subroutine init_i32
 
-    pure module subroutine init_char(val, char_)
+    pure module subroutine init_str(val, char_)
       type(long_integer), intent(inout) :: val
       character(len=*), intent(in) :: char_
-    end subroutine init_char
+    end subroutine init_str
 
-    pure module subroutine init_i8_arr(val, digit_)
+    pure module subroutine init_i32_arr(val, digs)
       type(long_integer), intent(inout) :: val
-      integer(i8), intent(in) :: digit_(:)
-    end subroutine init_i8_arr
+      integer(i32), intent(in) :: digs(:)
+    end subroutine init_i32_arr
+
+    elemental module function to_long_scal(val, kind) result(ret)
+      class(*), intent(in) :: val
+      character(*), intent(in) :: kind
+      type(long_integer) :: ret
+    end function to_long_scal
+
+    pure module function to_long_vect(vals, kind) result(ret)
+      class(*), intent(in) :: vals(:)
+      character(*), intent(in) :: kind
+      type(long_integer) :: ret
+    end function to_long_vect
 
     pure module logical function eq(val1, val2)
-      type(long_integer), intent(in) :: val1
-      type(long_integer), intent(in) :: val2
+      type(long_integer), intent(in) :: val1, val2
     end function eq
 
     pure module logical function gt(val1, val2)
-      type(long_integer), intent(in) :: val1
-      type(long_integer), intent(in) :: val2
+      type(long_integer), intent(in) :: val1, val2
     end function gt
 
     pure module logical function lt(val1, val2)
-      type(long_integer), intent(in) :: val1
-      type(long_integer), intent(in) :: val2
+      type(long_integer), intent(in) :: val1, val2
     end function lt
 
     pure module logical function ge(val1, val2)
-      type(long_integer), intent(in) :: val1
-      type(long_integer), intent(in) :: val2
+      type(long_integer), intent(in) :: val1, val2
     end function
 
     pure module logical function le(val1, val2)
-      type(long_integer), intent(in) :: val1
-      type(long_integer), intent(in) :: val2
+      type(long_integer), intent(in) :: val1, val2
     end function le
 
     pure module function add(val1, val2) result(ret)
@@ -108,8 +122,7 @@ module long_integer_module
     end function add
 
     pure module function sub(val2, val1) result(ret)
-      type(long_integer), intent(in) :: val2
-      type(long_integer), intent(in) :: val1
+      type(long_integer), intent(in) :: val2, val1
       type(long_integer) :: ret
     end function sub
   end interface

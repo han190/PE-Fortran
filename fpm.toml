@@ -1,5 +1,5 @@
 name = "PE-Fortran"
-version = "0.0.1"
+version = "0.0.3"
 license = "MIT"
 maintainer = "htang2@alaska.edu"
 author = "Han Tang"

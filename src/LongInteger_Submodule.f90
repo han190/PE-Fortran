@@ -168,7 +168,7 @@ contains
   end subroutine init_i32
 
   !> Initialize a long_integer with a character.
-  pure module subroutine init_char(val, char_)
+  pure module subroutine init_str(val, char_)
     type(long_integer), intent(inout) :: val
     character(len=*), intent(in) :: char_
 
@@ -182,17 +182,62 @@ contains
       call allocate_(val, len(char_))
       read (char_(1:len(char_)), "(*(i1))") val%digit
     end select
-  end subroutine init_char
+  end subroutine init_str
 
-  !> Initialize a long_integer with
-  pure module subroutine init_i8_arr(val, digit_)
+  !> Initialize a long_integer with i32_arr
+  pure module subroutine init_i32_arr(val, digs)
     type(long_integer), intent(inout) :: val
-    integer(i8), intent(in) :: digit_(:)
+    integer(i32), intent(in) :: digs(:)
+    integer(i32) :: i
 
-    call allocate_(val, size(digit_))
-    val%digit = digit_(:)
+    call allocate_(val, size(digs))
+    if (any(digs >= 10)) then
+      error stop "Error: init_i32_arr."
+    end if
     val%sign = "+"
-  end subroutine init_i8_arr
+    val%digit = [(int(digs(i), i8), i=1, size(digs))]
+  end subroutine init_i32_arr
+
+  !> Convert a variable to long integer
+  elemental module function to_long_scal(val, kind) result(ret)
+    class(*), intent(in) :: val
+    character(*), intent(in) :: kind
+    type(long_integer) :: ret
+
+    select case(trim(kind))
+    case ("ll", "long", "long_int", "long_integer")
+    case default
+      error stop "Error: to_long_scal."
+    end select
+
+    select type (val_ => val)
+    type is (character(*))
+      call init_str(ret, val_)
+    type is (integer(i32))
+      call init_i32(ret, val_)
+    class default
+      error stop "Error: to_long_scal."
+    end select
+  end function to_long_scal
+
+  pure module function to_long_vect(vals, kind) result(ret)
+    class(*), intent(in) :: vals(:)
+    character(*), intent(in) :: kind
+    type(long_integer) :: ret
+
+    select case(trim(kind))
+    case ("ll", "long", "long_int", "long_integer")
+    case default
+      error stop "Error: to_long_vect."
+    end select
+
+    select type (vals_ => vals)
+    type is (integer(i32))
+      call init_i32_arr(ret, vals_)
+    class default
+      error stop "Error: to_long_vect."
+    end select
+  end function to_long_vect
 
   !> Equal.
   pure module logical function eq(val1, val2)
