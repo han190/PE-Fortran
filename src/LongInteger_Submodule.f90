@@ -21,51 +21,54 @@ contains
   end subroutine allocate_
 
   !> Cut leading zeros of an digit array.
-  pure function cut_leading_zeros_(digit) result(cut)
-    integer(i8), contiguous, intent(in) :: digit(:)
-    integer(i8), allocatable :: cut(:)
+  pure function cut_leading_zeros_(digs) result(ret)
+    integer(i8), contiguous, intent(in) :: digs(:)
+    integer(i8), allocatable :: ret(:)
     integer(i32) :: i
 
-    do i = 1, size(digit)
-      if (digit(i) /= 0_i8) then
-        cut = digit(i:)
+    do i = 1, size(digs)
+      if (digs(i) /= 0_i8) then
+        ret = digs(i:)
         return
       end if
     end do
   end function cut_leading_zeros_
 
   !> The function of carry.
-  pure function carry_(digit, option) result(ret)
-    integer(i8), contiguous, intent(in) :: digit(:)
-    character, intent(in) :: option
+  pure function carry_(digs, opt) result(ret)
+    integer(i8), contiguous, intent(in) :: digs(:)
+    character, intent(in) :: opt
     integer(i8), allocatable :: ret(:)
     integer(i8), allocatable :: tmp(:)
-    integer(i32) :: i, n
 
-    select case (option)
+    select case (opt)
     case ('+')
 
-      n = size(digit)
-      ret = [[0_i8, 0_i8], digit]
-      tmp = [(0_i8, i=1, n + 2)]
+      ret = [[0_i8], digs]
+      allocate (tmp(size(ret)))
 
       do
-        if (all(ret <= 9)) return
-        tmp = ret - ret/10_i8*10_i8
-        ret = tmp + [ret(2:)/10_i8, 0_i8]
+        if (all(ret < 10)) return
+        tmp = 0 !> Initialization
+        where (ret >= 10)
+          tmp = 1
+          ret = ret - 10
+        end where
+        tmp = cshift(tmp, 1)
+        ret = ret + tmp
       end do
 
     case ('-')
 
-      n = size(digit)
-      ret = digit
-      tmp = [(0_i8, i=1, n)]
+      ret = digs
+      allocate (tmp(size(ret)))
 
       do
         if (all(ret >= 0)) return
+        tmp = 0 !> Initialization
         where (ret < 0)
-          tmp = 1_i8
-          ret = ret + 10_i8
+          tmp = 1
+          ret = ret + 10
         end where
         tmp = cshift(tmp, 1)
         ret = ret - tmp
@@ -75,52 +78,47 @@ contains
     error stop "Error: carry_."
   end function carry_
 
-  !> Inner function to add two positive digit arrays.
-  pure function add_(digit1, digit2) result(ret)
-    integer(i8), contiguous, intent(in) :: digit1(:)
-    integer(i8), contiguous, intent(in) :: digit2(:)
-    integer(i8), allocatable :: ret(:)
-    integer(i8), allocatable :: temp1(:), temp2(:)
-    integer(i32) :: n, n1, n2
+  !> Inner function used in add_ and sub_
+  pure subroutine init_(dig1, dig2, tmp1, tmp2)
+    integer(i8), contiguous, intent(in) :: dig1(:), dig2(:)
+    integer(i8), allocatable, intent(out) :: tmp1(:), tmp2(:)
+    integer(i32) :: i, n
 
-    n1 = size(digit1)
-    n2 = size(digit2)
-    n = max(n1, n2)
-    allocate (temp1(n), temp2(n))
-
-    associate (i1 => n - n1, i2 => n - n2)
-      temp1(:i1) = 0; temp1(i1 + 1:) = digit1
-      temp2(:i2) = 0; temp2(i2 + 1:) = digit2
+    associate (n1 => size(dig1), n2 => size(dig2))
+      n = max(n1, n2)
+      tmp1 = [[(0_i8, i=1, n - n1)], dig1]
+      tmp2 = [[(0_i8, i=1, n - n2)], dig2]
     end associate
-    ret = cut_leading_zeros_(carry_(temp1 + temp2, '+'))
+  end subroutine init_
+
+  !> Inner function to add two positive digit arrays.
+  pure function add_(dig1, dig2) result(ret)
+    integer(i8), contiguous, intent(in) :: dig1(:), dig2(:)
+    integer(i8), allocatable :: ret(:)
+    integer(i8), allocatable :: tmp1(:), tmp2(:)
+
+    call init_(dig1, dig2, tmp1, tmp2)
+    ret = cut_leading_zeros_(carry_(tmp1 + tmp2, '+'))
   end function add_
 
-  !> Inner function to subtract when digit2 >= digit1.
-  pure function sub_(digit2, digit1) result(ret)
-    integer(i8), contiguous, intent(in) :: digit2(:)
-    integer(i8), contiguous, intent(in) :: digit1(:)
+  !> Inner function to subtract when dig2 >= dig1.
+  pure function sub_(dig2, dig1) result(ret)
+    integer(i8), contiguous, intent(in) :: dig2(:), dig1(:)
     integer(i8), allocatable :: ret(:)
-    integer(i8), allocatable :: temp1(:), temp2(:)
-    integer(i32) :: n1, n2
+    integer(i8), allocatable :: tmp1(:), tmp2(:)
 
-    n1 = size(digit1)
-    n2 = size(digit2)
-    allocate (temp1(n2), temp2(n2))
-    temp2 = digit2
-    temp1(:n2 - n1) = 0
-    temp1(n2 - n1 + 1:) = digit1
-    ret = cut_leading_zeros_(carry_(temp2 - temp1, '-'))
+    call init_(dig1, dig2, tmp1, tmp2)
+    ret = cut_leading_zeros_(carry_(tmp2 - tmp1, '-'))
   end function sub_
 
   !> Inner function to compare two digit arrays.
-  pure function comp_(digit1, digit2) result(ret)
-    integer(i8), contiguous, intent(in) :: digit1(:)
-    integer(i8), contiguous, intent(in) :: digit2(:)
+  pure function comp_(dig1, dig2) result(ret)
+    integer(i8), contiguous, intent(in) :: dig1(:), dig2(:)
     integer(i8) :: ret
     integer(i32) :: i, n1, n2
 
-    n1 = size(digit1)
-    n2 = size(digit2)
+    n1 = size(dig1)
+    n2 = size(dig2)
 
     if (n1 > n2) then
       ret = 1
@@ -131,10 +129,10 @@ contains
     end if
 
     do i = n1, 1, -1
-      if (digit1(i) > digit2(i)) then
+      if (dig1(i) > dig2(i)) then
         ret = 1
         return
-      else if (digit1(i) < digit2(i)) then
+      else if (dig1(i) < dig2(i)) then
         ret = -1
         return
       else
@@ -151,7 +149,7 @@ contains
   pure module subroutine init_i32(val, int_)
     type(long_integer), intent(inout) :: val
     integer(i32), intent(in) :: int_
-    integer(i32) :: temp, i
+    integer(i32) :: tmp, i
     integer(i32) :: num_digits
 
     val%sign = merge("+", "-", int_ >= 0)
@@ -160,12 +158,12 @@ contains
       return
     end if
 
-    temp = abs(int_)
-    num_digits = floor(log10(real(temp))) + 1
+    tmp = abs(int_)
+    num_digits = floor(log10(real(tmp))) + 1
     call allocate_(val, num_digits)
     do i = num_digits, 1, -1
-      val%digit(i) = int(mod(temp, 10), i8)
-      temp = temp/10
+      val%digit(i) = int(mod(tmp, 10), i8)
+      tmp = tmp/10
     end do
   end subroutine init_i32
 
@@ -198,8 +196,7 @@ contains
 
   !> Equal.
   pure module logical function eq(val1, val2)
-    type(long_integer), intent(in) :: val1
-    type(long_integer), intent(in) :: val2
+    type(long_integer), intent(in) :: val1, val2
 
     eq = all(val1%digit == val2%digit) &
          .and. val1%sign == val2%sign
@@ -207,8 +204,7 @@ contains
 
   !> Greater than
   pure module logical function gt(val1, val2)
-    type(long_integer), intent(in) :: val1
-    type(long_integer), intent(in) :: val2
+    type(long_integer), intent(in) :: val1, val2
     logical :: pstv, ngtv
     integer(i8) :: c
 
@@ -221,8 +217,7 @@ contains
 
   !> Less than
   pure module logical function lt(val1, val2)
-    type(long_integer), intent(in) :: val1
-    type(long_integer), intent(in) :: val2
+    type(long_integer), intent(in) :: val1, val2
     logical :: pstv, ngtv
     integer(i8) :: c
 
@@ -235,16 +230,14 @@ contains
 
   !> Greater than or equal to.
   pure module logical function ge(val1, val2)
-    type(long_integer), intent(in) :: val1
-    type(long_integer), intent(in) :: val2
+    type(long_integer), intent(in) :: val1, val2
 
     ge = gt(val1, val2) .or. eq(val1, val2)
   end function ge
 
   !> Less than or equal to
   pure module logical function le(val1, val2)
-    type(long_integer), intent(in) :: val1
-    type(long_integer), intent(in) :: val2
+    type(long_integer), intent(in) :: val1, val2
 
     le = lt(val1, val2) .or. eq(val1, val2)
   end function le
@@ -287,8 +280,7 @@ contains
   end function add
 
   pure module function sub(val2, val1) result(ret)
-    type(long_integer), intent(in) :: val2
-    type(long_integer), intent(in) :: val1
+    type(long_integer), intent(in) :: val2, val1
     type(long_integer) :: ret
     integer(i8) :: c
 
