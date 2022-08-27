@@ -38,19 +38,19 @@ module long_integer_module
   end interface int
 
   !> rel-ops
-  #: for op, func_name in rel_opnames
+  #: for op, func in rel_opnames
   interface operator(${op}$)
-    module procedure ${func_name}$
+    module procedure ${func}$
     #: for suffix in suffix_names
-    module procedure ${func_name}$_${suffix}$
+    module procedure ${func}$_${suffix}$
     #: endfor
   end interface operator(${op}$) ${"\n"}$
   #: endfor
 
   !> add-ops
-  #: for op, func_name in add_opnames
+  #: for op, func in add_opnames
   interface operator(${op}$)
-    module procedure ${func_name}$
+    module procedure ${func}$
   end interface operator(${op}$) ${"\n"}$
   #: endfor
 
@@ -75,10 +75,10 @@ module long_integer_module
       type(long_integer) :: ret
     end function to_long_vect
 
-    #: for func_name in rel_names
-    elemental module logical function ${func_name}$(val1, val2)
+    #: for func in rel_names
+    elemental module logical function ${func}$(val1, val2)
       type(long_integer), intent(in) :: val1, val2
-    end function ${func_name}$ ${"\n"}$
+    end function ${func}$ ${"\n"}$
     #: endfor
 
     #: for func in rel_names
@@ -91,11 +91,11 @@ module long_integer_module
     #: endfor
     #: endfor
 
-    #: for func_name in add_names
-    elemental module function ${func_name}$(val1, val2) result(ret)
+    #: for func in add_names
+    elemental module function ${func}$(val1, val2) result(ret)
       type(long_integer), intent(in) :: val1, val2
       type(long_integer) :: ret
-    end function ${func_name}$ ${"\n"}$
+    end function ${func}$ ${"\n"}$
     #: endfor
   end interface
 
