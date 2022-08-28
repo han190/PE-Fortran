@@ -6,6 +6,6 @@
 #: set add_names = ['add', 'sub']
 #: set add_opnames = list(zip(add_ops, add_names))
 
-#: set suffix_names = ['char', 'i32', 'i32_arr']
+#: set suffix_names = ['str', 'i32', 'i32_arr']
 #: set types = ['character(*)', 'integer(i32)', 'integer(i32), dimension(:)']
 #: set suffix_type_names = list(zip(suffix_names, types))

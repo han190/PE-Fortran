@@ -44,39 +44,26 @@ contains
 
     select case (opt)
     case ('+')
-
       ret = [[0_i8], digs]
       allocate (tmp(size(ret)))
 
-      do
-        if (all(ret < 10)) return
-        tmp = 0 !> Initialization
-        where (ret >= 10)
-          tmp = 1
-          ret = ret - 10
-        end where
-        tmp = cshift(tmp, 1)
-        ret = ret + tmp
+      do while (any(ret >= 10))
+        tmp = merge(1, 0, ret >= 10)
+        where (ret >= 10) ret = ret - 10
+        ret = ret + cshift(tmp, 1)
       end do
-
     case ('-')
-
       ret = digs
       allocate (tmp(size(ret)))
 
-      do
-        if (all(ret >= 0)) return
-        tmp = 0 !> Initialization
-        where (ret < 0)
-          tmp = 1
-          ret = ret + 10
-        end where
-        tmp = cshift(tmp, 1)
-        ret = ret - tmp
+      do while (any(ret < 0))
+        tmp = merge(1, 0, ret < 0)
+        where (ret < 0) ret = ret + 10
+        ret = ret - cshift(tmp, 1)
       end do
-
+    case default
+      error stop "Error: carry_."
     end select
-    error stop "Error: carry_."
   end function carry_
 
   !> Inner function used in add_ and sub_

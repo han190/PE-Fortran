@@ -83,7 +83,7 @@ module long_integer_module
 
     #: for func in rel_names
     #: for suffix, T in suffix_type_names
-    pure module function ${func}$_${suffix}$ (val1, val2) result(ret)
+    pure module function ${func}$_${suffix}$(val1, val2) result(ret)
       type(long_integer), intent(in) :: val1
       ${T}$, intent(in) :: val2
       logical :: ret
