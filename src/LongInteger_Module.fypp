@@ -12,6 +12,7 @@ module long_integer_module
   #: for op in add_ops
   public :: operator(${op}$)
   #: endfor
+  public :: operator(*)
   public :: int
 
   private
@@ -23,6 +24,18 @@ module long_integer_module
     character :: sign
     integer(i8), allocatable :: digit(:)
   end type long_integer
+
+  !> Diagonal boxes for 
+  !> lattice multiplication
+  type :: box_type
+    integer(i8) :: value
+  end type box_type
+
+  !> Lattice type
+  type :: lattice_type
+    integer(i8), allocatable :: boxes(:, :)
+    integer(i32) :: n1, n2
+  end type lattice_type
 
   !> Assignment
   interface assignment(=)
@@ -53,6 +66,11 @@ module long_integer_module
     module procedure ${func}$
   end interface operator(${op}$) ${"\n"}$
   #: endfor
+
+  !> mul-ops
+  interface operator(*)
+    module procedure mul
+  end interface operator(*)
 
   !> Interfaces for submodule
   interface
@@ -97,6 +115,11 @@ module long_integer_module
       type(long_integer) :: ret
     end function ${func}$ ${"\n"}$
     #: endfor
+
+    elemental module function mul(val1, val2) result(ret)
+      type(long_integer), intent(in) :: val1, val2
+      type(long_integer) :: ret
+    end function mul
   end interface
 
 end module long_integer_module

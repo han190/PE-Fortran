@@ -133,6 +133,61 @@ contains
     end if
   end function comp_
 
+  !> Initialize_slice
+  pure function init_lattice_(dig1, dig2) result(lattice)
+    integer(i8), intent(in) :: dig1(:), dig2(:)
+    type(lattice_type) :: lattice
+    integer(i32) :: i, j
+
+    lattice%n1 = size(dig1)
+    lattice%n2 = size(dig2)
+
+    associate ( &
+      n1 => lattice%n1, &
+      n2 => lattice%n2)
+
+      allocate (lattice%boxes(n1, n2))
+      do concurrent(j=1:n2, i=1:n1)
+        lattice%boxes(i, j) = dig1(i)*dig2(j)
+      end do
+    end associate
+  end function init_lattice_
+
+  !> Slice a lattice
+  pure function slice_(lattice) result(ret)
+    class(lattice_type), intent(in) :: lattice
+    integer(i8), allocatable :: ret(:)
+    integer(i32) :: i, j, k
+
+    associate ( &
+      n1 => lattice%n1, &
+      n2 => lattice%n2)
+
+      allocate (ret(n1 + n2))
+      ret = 0
+
+      do j = 1, n2
+        do i = 1, n1
+          k = i + j
+          associate (x => lattice%boxes(i, j))
+            ret(k) = ret(k) + mod(x, 10_i8)
+            ret(k - 1) = ret(k - 1) + x/10_i8
+          end associate
+        end do
+      end do
+    end associate
+  end function slice_
+
+  !> Inner function of multiplication
+  pure function mul_(dig1, dig2) result(ret)
+    integer(i8), contiguous, intent(in) :: dig1(:), dig2(:)
+    integer(i8), allocatable :: ret(:)
+    type(lattice_type) :: lattice
+
+    lattice = init_lattice_(dig1, dig2)
+    ret = cut_leading_zeros_(carry_(slice_(lattice), "+"))
+  end function mul_
+
   !> Initialize a long_integer with an integer.
   pure module subroutine init_i32(val1, val2)
     type(long_integer), intent(inout) :: val1
@@ -192,7 +247,7 @@ contains
     character(*), intent(in) :: kind
     type(long_integer) :: ret
 
-    select case(trim(kind))
+    select case (trim(kind))
     case ("ll", "long", "long_int", "long_integer")
     case default
       error stop "Error: to_long_scal."
@@ -213,7 +268,7 @@ contains
     character(*), intent(in) :: kind
     type(long_integer) :: ret
 
-    select case(trim(kind))
+    select case (trim(kind))
     case ("ll", "long", "long_int", "long_integer")
     case default
       error stop "Error: to_long_vect."
@@ -283,8 +338,8 @@ contains
     ${T}$, intent(in) :: val2
     logical :: ret
 
-    ret = ${func}$(val1, int(val2, "ll"))
-  end function ${func}$_${suffix}$ ${"\n"}$
+    ret = ${func}$ (val1, int(val2, "ll"))
+  end function ${func}$_${suffix}$${"\n"}$
   #: endfor
   #: endfor
 
@@ -361,5 +416,14 @@ contains
       error stop "Error: sub."
     end if
   end function sub
+
+  !> Multiplication
+  elemental module function mul(val1, val2) result(ret)
+    type(long_integer), intent(in) :: val1, val2
+    type(long_integer) :: ret
+
+    ret%sign = merge("+", "-", val1%sign == val2%sign)
+    ret%digit = mul_(val1%digit, val2%digit)
+  end function mul
 
 end submodule long_integer_submodule
