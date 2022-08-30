@@ -1,7 +1,7 @@
 #: include 'Common.fypp'
 module long_integer_module
 
-  use constant_module, only: i8, i32
+  use constant_module, only: i32
   implicit none
 
   public :: long_integer
@@ -13,6 +13,7 @@ module long_integer_module
   public :: operator(${op}$)
   #: endfor
   public :: operator(*)
+  public :: operator(**)
   public :: int
 
   private
@@ -22,20 +23,8 @@ module long_integer_module
   !> is less than huge(0_i32).
   type :: long_integer
     character :: sign
-    integer(i8), allocatable :: digit(:)
+    integer(i32), allocatable :: digit(:)
   end type long_integer
-
-  !> Diagonal boxes for 
-  !> lattice multiplication
-  type :: box_type
-    integer(i8) :: value
-  end type box_type
-
-  !> Lattice type
-  type :: lattice_type
-    integer(i8), allocatable :: boxes(:, :)
-    integer(i32) :: n1, n2
-  end type lattice_type
 
   !> Assignment
   interface assignment(=)
@@ -64,13 +53,24 @@ module long_integer_module
   #: for op, func in add_opnames
   interface operator(${op}$)
     module procedure ${func}$
+    #: for suffix in suffix_names
+    module procedure ${func}$_${suffix}$
+    #: endfor
   end interface operator(${op}$) ${"\n"}$
   #: endfor
 
   !> mul-ops
   interface operator(*)
     module procedure mul
+    #: for suffix in suffix_names
+    module procedure mul_${suffix}$
+    #: endfor
   end interface operator(*)
+
+  !> power-op
+  interface operator(**)
+    module procedure pow
+  end interface operator(**)
 
   !> Interfaces for submodule
   interface
@@ -120,6 +120,22 @@ module long_integer_module
       type(long_integer), intent(in) :: val1, val2
       type(long_integer) :: ret
     end function mul
+
+    elemental recursive module function pow(val1, val2) result(ret)
+      type(long_integer), intent(in) :: val1
+      integer(i32), intent(in) :: val2
+      type(long_integer) :: ret
+    end function pow
+
+    #: for func in ['add', 'sub', 'mul']
+    #: for suffix, T in suffix_type_names
+    pure module function ${func}$_${suffix}$(val1, val2) result(ret)
+      type(long_integer), intent(in) :: val1
+      ${T}$, intent(in) :: val2
+      type(long_integer) :: ret
+    end function ${func}$_${suffix}$ ${"\n"}$
+    #: endfor
+    #: endfor
   end interface
 
 end module long_integer_module

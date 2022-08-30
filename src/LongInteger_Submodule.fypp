@@ -23,12 +23,12 @@ contains
 
   !> Cut leading zeros of an digit array.
   pure function cut_leading_zeros_(digs) result(ret)
-    integer(i8), contiguous, intent(in) :: digs(:)
-    integer(i8), allocatable :: ret(:)
+    integer(i32), contiguous, intent(in) :: digs(:)
+    integer(i32), allocatable :: ret(:)
     integer(i32) :: i
 
     do i = 1, size(digs)
-      if (digs(i) /= 0_i8) then
+      if (digs(i) /= 0) then
         ret = digs(i:)
         return
       end if
@@ -37,14 +37,14 @@ contains
 
   !> The function of carry.
   pure function carry_(digs, opt) result(ret)
-    integer(i8), contiguous, intent(in) :: digs(:)
+    integer(i32), contiguous, intent(in) :: digs(:)
     character, intent(in) :: opt
-    integer(i8), allocatable :: ret(:)
-    integer(i8), allocatable :: tmp(:)
+    integer(i32), allocatable :: ret(:)
+    integer(i32), allocatable :: tmp(:)
 
     select case (opt)
     case ('+')
-      ret = [[0_i8], digs]
+      ret = [[0], digs]
       allocate (tmp(size(ret)))
 
       do while (any(ret >= 10))
@@ -68,22 +68,22 @@ contains
 
   !> Inner function used in add_ and sub_
   pure subroutine init_(dig1, dig2, tmp1, tmp2)
-    integer(i8), contiguous, intent(in) :: dig1(:), dig2(:)
-    integer(i8), allocatable, intent(out) :: tmp1(:), tmp2(:)
+    integer(i32), contiguous, intent(in) :: dig1(:), dig2(:)
+    integer(i32), allocatable, intent(out) :: tmp1(:), tmp2(:)
     integer(i32) :: i, n
 
     associate (n1 => size(dig1), n2 => size(dig2))
       n = max(n1, n2)
-      tmp1 = [[(0_i8, i=1, n - n1)], dig1]
-      tmp2 = [[(0_i8, i=1, n - n2)], dig2]
+      tmp1 = [[(0, i=1, n - n1)], dig1]
+      tmp2 = [[(0, i=1, n - n2)], dig2]
     end associate
   end subroutine init_
 
   !> Inner function to add two positive digit arrays.
   pure function add_(dig1, dig2) result(ret)
-    integer(i8), contiguous, intent(in) :: dig1(:), dig2(:)
-    integer(i8), allocatable :: ret(:)
-    integer(i8), allocatable :: tmp1(:), tmp2(:)
+    integer(i32), contiguous, intent(in) :: dig1(:), dig2(:)
+    integer(i32), allocatable :: ret(:)
+    integer(i32), allocatable :: tmp1(:), tmp2(:)
 
     call init_(dig1, dig2, tmp1, tmp2)
     ret = cut_leading_zeros_(carry_(tmp1 + tmp2, '+'))
@@ -91,9 +91,9 @@ contains
 
   !> Inner function to subtract when dig2 >= dig1.
   pure function sub_(dig2, dig1) result(ret)
-    integer(i8), contiguous, intent(in) :: dig2(:), dig1(:)
-    integer(i8), allocatable :: ret(:)
-    integer(i8), allocatable :: tmp1(:), tmp2(:)
+    integer(i32), contiguous, intent(in) :: dig2(:), dig1(:)
+    integer(i32), allocatable :: ret(:)
+    integer(i32), allocatable :: tmp1(:), tmp2(:)
 
     call init_(dig1, dig2, tmp1, tmp2)
     ret = cut_leading_zeros_(carry_(tmp2 - tmp1, '-'))
@@ -101,8 +101,8 @@ contains
 
   !> Inner function to compare two digit arrays.
   pure function comp_(dig1, dig2) result(ret)
-    integer(i8), contiguous, intent(in) :: dig1(:), dig2(:)
-    integer(i8) :: ret
+    integer(i32), contiguous, intent(in) :: dig1(:), dig2(:)
+    integer(i32) :: ret
     integer(i32) :: i, n1, n2
 
     n1 = size(dig1)
@@ -135,43 +135,43 @@ contains
 
   !> Initialize_slice
   pure function init_lattice_(dig1, dig2) result(lattice)
-    integer(i8), intent(in) :: dig1(:), dig2(:)
-    type(lattice_type) :: lattice
+    integer(i32), intent(in) :: dig1(:), dig2(:)
+    integer(i32), allocatable :: lattice(:, :)
     integer(i32) :: i, j
 
-    lattice%n1 = size(dig1)
-    lattice%n2 = size(dig2)
-
     associate ( &
-      n1 => lattice%n1, &
-      n2 => lattice%n2)
+      n1 => size(dig1), &
+      n2 => size(dig2))
 
-      allocate (lattice%boxes(n1, n2))
+      allocate (lattice(n1, n2))
       do concurrent(j=1:n2, i=1:n1)
-        lattice%boxes(i, j) = dig1(i)*dig2(j)
+        lattice(i, j) = dig1(i)*dig2(j)
       end do
     end associate
   end function init_lattice_
 
   !> Slice a lattice
   pure function slice_(lattice) result(ret)
-    class(lattice_type), intent(in) :: lattice
-    integer(i8), allocatable :: ret(:)
-    integer(i32) :: i, j, k
+    integer(i32), intent(in) :: lattice(:, :)
+    integer(i32), allocatable :: ret(:)
+    integer(i32) :: i, j
 
     associate ( &
-      n1 => lattice%n1, &
-      n2 => lattice%n2)
+      n1 => size(lattice, 1), &
+      n2 => size(lattice, 2))
 
       allocate (ret(n1 + n2))
       ret = 0
 
       do j = 1, n2
         do i = 1, n1
-          k = i + j
-          associate (x => lattice%boxes(i, j))
-            ret(k) = ret(k) + mod(x, 10_i8)
-            ret(k - 1) = ret(k - 1) + x/10_i8
+          associate ( &
+            x => lattice(i, j), &
+            k => i + j, &
+            l => i + j - 1)
+
+            ret(k) = ret(k) + mod(x, 10)
+            ret(l) = ret(l) + x/10
           end associate
         end do
       end do
@@ -180,9 +180,9 @@ contains
 
   !> Inner function of multiplication
   pure function mul_(dig1, dig2) result(ret)
-    integer(i8), contiguous, intent(in) :: dig1(:), dig2(:)
-    integer(i8), allocatable :: ret(:)
-    type(lattice_type) :: lattice
+    integer(i32), contiguous, intent(in) :: dig1(:), dig2(:)
+    integer(i32), allocatable :: ret(:)
+    integer(i32), allocatable :: lattice(:, :)
 
     lattice = init_lattice_(dig1, dig2)
     ret = cut_leading_zeros_(carry_(slice_(lattice), "+"))
@@ -196,8 +196,8 @@ contains
     integer(i32) :: num_digits
 
     val1%sign = merge("+", "-", val2 >= 0)
-    if (val2 == 0_i32) then
-      val1%digit = [0_i8]
+    if (val2 == 0) then
+      val1%digit = [0]
       return
     end if
 
@@ -205,7 +205,7 @@ contains
     num_digits = floor(log10(real(tmp))) + 1
     call allocate_(val1, num_digits)
     do i = num_digits, 1, -1
-      val1%digit(i) = int(mod(tmp, 10), i8)
+      val1%digit(i) = int(mod(tmp, 10), i32)
       tmp = tmp/10
     end do
   end subroutine init_i32
@@ -238,7 +238,7 @@ contains
       error stop "Error: init_i32_arr."
     end if
     val1%sign = "+"
-    val1%digit = [(int(val2(i), i8), i=1, size(val2))]
+    val1%digit = [(int(val2(i), i32), i=1, size(val2))]
   end subroutine init_i32_arr
 
   !> Convert a variable to long integer
@@ -263,6 +263,7 @@ contains
     end select
   end function to_long_scal
 
+  !> Convert a variable array to long integer.
   pure module function to_long_vect(vals, kind) result(ret)
     class(*), intent(in) :: vals(:)
     character(*), intent(in) :: kind
@@ -294,7 +295,7 @@ contains
   elemental module logical function gt(val1, val2)
     type(long_integer), intent(in) :: val1, val2
     logical :: pstv, ngtv
-    integer(i8) :: c
+    integer(i32) :: c
 
     c = comp_(val1%digit, val2%digit)
     pstv = all([val1%sign, val2%sign] == "+")
@@ -307,7 +308,7 @@ contains
   elemental module logical function lt(val1, val2)
     type(long_integer), intent(in) :: val1, val2
     logical :: pstv, ngtv
-    integer(i8) :: c
+    integer(i32) :: c
 
     c = comp_(val1%digit, val2%digit)
     pstv = all([val1%sign, val2%sign] == "+")
@@ -347,18 +348,15 @@ contains
   elemental module function add(val1, val2) result(ret)
     type(long_integer), intent(in) :: val1, val2
     type(long_integer) :: ret
-    integer(i8) :: c
+    integer(i32) :: c
 
     c = comp_(val1%digit, val2%digit)
     if (c == 0 .and. val1%sign /= val2%sign) then
-      ret%digit = [0_i8]
+      ret%digit = [0]
       ret%sign = "+"
-    else if (val1%sign == "+" .and. val2%sign == "+") then
+    else if (val1%sign == val2%sign) then
       ret%digit = add_(val1%digit, val2%digit)
-      ret%sign = "+"
-    else if (val1%sign == "-" .and. val2%sign == "-") then
-      ret%digit = add_(val1%digit, val2%digit)
-      ret%sign = "-"
+      ret%sign = val1%sign
     else if (val1%sign == "+" .and. val2%sign == "-") then
       if (c == 1) then
         ret%digit = sub_(val1%digit, val2%digit)
@@ -384,11 +382,11 @@ contains
   elemental module function sub(val1, val2) result(ret)
     type(long_integer), intent(in) :: val1, val2
     type(long_integer) :: ret
-    integer(i8) :: c
+    integer(i32) :: c
 
     c = comp_(val1%digit, val2%digit)
     if (val2 == val1) then
-      ret%digit = [0_i8]
+      ret%digit = [0]
       ret%sign = "+"
     else if (val2%sign == "+" .and. val1%sign == "+") then
       if (c == 1) then
@@ -425,5 +423,35 @@ contains
     ret%sign = merge("+", "-", val1%sign == val2%sign)
     ret%digit = mul_(val1%digit, val2%digit)
   end function mul
+
+  !> Power
+  elemental recursive module function pow(val1, val2) result(ret)
+    type(long_integer), intent(in) :: val1
+    integer(i32), intent(in) :: val2
+    type(long_integer) :: ret
+
+    if (val2 < 0) then
+      error stop ""
+    else if (val2 == 0) then
+      ret = 1
+    else if (mod(val2, 2) == 0) then
+      ret = pow(val1*val1, val2/2)
+    else if (mod(val2, 2) /= 0) then
+      ret = val1*pow(val1*val1, (val2 - 1)/2)
+    end if
+  end function pow
+
+  #: for func in ['add', 'sub', 'mul']
+  #: for suffix, T in suffix_type_names
+  !> Wrapper of function ${func}$ for type ${T}$
+  pure module function ${func}$_${suffix}$ (val1, val2) result(ret)
+    type(long_integer), intent(in) :: val1
+    ${T}$, intent(in) :: val2
+    type(long_integer) :: ret
+
+    ret = ${func}$ (val1, int(val2, "ll"))
+  end function ${func}$_${suffix}$${"\n"}$
+  #: endfor
+  #: endfor
 
 end submodule long_integer_submodule
