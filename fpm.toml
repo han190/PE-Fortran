@@ -12,6 +12,6 @@ homepage = "https://github.com/han190/PE-Fortran"
 source-dir = "src"
 
 [[ test ]]
-name = "long_integer_test"
+name = "multiprecision_test"
 source-dir = "test"
-main = "LongInteger_Test.f90"
+main = "multiprecision_test.f90"

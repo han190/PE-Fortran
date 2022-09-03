@@ -1,5 +1,5 @@
-#: include 'Common.fypp'
-submodule(long_integer_module) long_integer_submodule
+#: include 'common.fypp'
+submodule(multiprecision_module) multiprecision_submodule
 
   implicit none
   !> Inner function ends with a '_'.
@@ -133,59 +133,23 @@ contains
     end if
   end function comp_
 
-  !> Initialize_slice
-  pure function init_lattice_(dig1, dig2) result(lattice)
+  !> Lattice multiplication
+  pure function mul_(dig1, dig2) result(ret)
     integer(i32), intent(in) :: dig1(:), dig2(:)
-    integer(i32), allocatable :: lattice(:, :)
-    integer(i32) :: i, j
-
-    associate ( &
-      n1 => size(dig1), &
-      n2 => size(dig2))
-
-      allocate (lattice(n1, n2))
-      do concurrent(j=1:n2, i=1:n1)
-        lattice(i, j) = dig1(i)*dig2(j)
-      end do
-    end associate
-  end function init_lattice_
-
-  !> Slice a lattice
-  pure function slice_(lattice) result(ret)
-    integer(i32), intent(in) :: lattice(:, :)
     integer(i32), allocatable :: ret(:)
-    integer(i32) :: i, j
+    integer(i32) :: i, j, tmp
 
-    associate ( &
-      n1 => size(lattice, 1), &
-      n2 => size(lattice, 2))
-
+    associate (n1 => size(dig1), n2 => size(dig2))
       allocate (ret(n1 + n2))
       ret = 0
 
-      do j = 1, n2
-        do i = 1, n1
-          associate ( &
-            x => lattice(i, j), &
-            k => i + j, &
-            l => i + j - 1)
-
-            ret(k) = ret(k) + mod(x, 10)
-            ret(l) = ret(l) + x/10
-          end associate
-        end do
+      do concurrent (j=1:n2, i=1:n1)
+        tmp = dig1(i)*dig2(j)
+        ret(i + j) = ret(i + j) + mod(tmp, 10)
+        ret(i + j - 1) = ret(i + j - 1) + tmp/10
       end do
     end associate
-  end function slice_
-
-  !> Inner function of multiplication
-  pure function mul_(dig1, dig2) result(ret)
-    integer(i32), contiguous, intent(in) :: dig1(:), dig2(:)
-    integer(i32), allocatable :: ret(:)
-    integer(i32), allocatable :: lattice(:, :)
-
-    lattice = init_lattice_(dig1, dig2)
-    ret = cut_leading_zeros_(carry_(slice_(lattice), "+"))
+    ret = cut_leading_zeros_(carry_(ret, "+"))
   end function mul_
 
   !> Initialize a long_integer with an integer.
@@ -301,7 +265,7 @@ contains
     pstv = all([val1%sign, val2%sign] == "+")
     ngtv = all([val1%sign, val2%sign] == "-")
     gt = any([pstv .and. c == 1, ngtv .and. c == -1, &
-              val1%sign == "+" .and. val2%sign == "-"])
+      val1%sign == "+" .and. val2%sign == "-"])
   end function gt
 
   !> Less than
@@ -314,7 +278,7 @@ contains
     pstv = all([val1%sign, val2%sign] == "+")
     ngtv = all([val1%sign, val2%sign] == "-")
     lt = any([pstv .and. c == -1, ngtv .and. c == 1, &
-              val1%sign == "-" .and. val2%sign == "+"])
+      val1%sign == "-" .and. val2%sign == "+"])
   end function lt
 
   !> Greater than or equal to.
@@ -350,69 +314,47 @@ contains
     type(long_integer) :: ret
     integer(i32) :: c
 
-    c = comp_(val1%digit, val2%digit)
-    if (c == 0 .and. val1%sign /= val2%sign) then
-      ret%digit = [0]
-      ret%sign = "+"
-    else if (val1%sign == val2%sign) then
-      ret%digit = add_(val1%digit, val2%digit)
-      ret%sign = val1%sign
-    else if (val1%sign == "+" .and. val2%sign == "-") then
-      if (c == 1) then
-        ret%digit = sub_(val1%digit, val2%digit)
-        ret%sign = "+"
+    associate ( &
+      dig1 => val1%digit, &
+      dig2 => val2%digit, &
+      sgn1 => val1%sign, &
+      sgn2 => val2%sign)
+
+      c = comp_(dig1, dig2)
+      if (sgn1 == sgn2) then
+        ret%digit = add_(dig1, dig2)
+        ret%sign = sgn1
       else
-        ret%digit = sub_(val2%digit, val1%digit)
-        ret%sign = "-"
+        if (c == 0) then
+          ret = 0
+          return
+        end if
+
+        ret%digit = merge( &
+          sub_(dig1, dig2), &
+          sub_(dig2, dig1), c == 1)
+
+        ret%sign = merge( &
+          sgn1, sgn2, sgn1 == "+")
       end if
-    else if (val1%sign == "-" .and. val2%sign == "+") then
-      if (c == 1) then
-        ret%digit = sub_(val1%digit, val2%digit)
-        ret%sign = "-"
-      else
-        ret%digit = sub_(val2%digit, val1%digit)
-        ret%sign = "+"
-      end if
-    else
-      error stop "Error: add."
-    end if
+    end associate
   end function add
+
+  !> Opposite number (additive inverse)
+  elemental function opposite(val) result(ret)
+    type(long_integer), intent(in) :: val
+    type(long_integer) :: ret
+
+    ret%digit = val%digit
+    ret%sign = merge("+", "-", val%sign == "-")
+  end function opposite
 
   !> Subtraction.
   elemental module function sub(val1, val2) result(ret)
     type(long_integer), intent(in) :: val1, val2
     type(long_integer) :: ret
-    integer(i32) :: c
 
-    c = comp_(val1%digit, val2%digit)
-    if (val2 == val1) then
-      ret%digit = [0]
-      ret%sign = "+"
-    else if (val2%sign == "+" .and. val1%sign == "+") then
-      if (c == 1) then
-        ret%digit = sub_(val1%digit, val2%digit)
-        ret%sign = "+"
-      else
-        ret%digit = sub_(val2%digit, val1%digit)
-        ret%sign = "-"
-      end if
-    else if (val2%sign == "-" .and. val1%sign == "-") then
-      if (c == 1) then
-        ret%digit = sub_(val1%digit, val2%digit)
-        ret%sign = "-"
-      else
-        ret%digit = sub_(val2%digit, val1%digit)
-        ret%sign = "+"
-      end if
-    else if (val2%sign == "+" .and. val1%sign == "-") then
-      ret%digit = add_(val2%digit, val1%digit)
-      ret%sign = "+"
-    else if (val2%sign == "-" .and. val1%sign == "+") then
-      ret%digit = add_(val2%digit, val1%digit)
-      ret%sign = "-"
-    else
-      error stop "Error: sub."
-    end if
+    ret = val1 + opposite(val2)
   end function sub
 
   !> Multiplication
@@ -454,4 +396,4 @@ contains
   #: endfor
   #: endfor
 
-end submodule long_integer_submodule
+end submodule multiprecision_submodule

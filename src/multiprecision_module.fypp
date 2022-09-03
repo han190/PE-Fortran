@@ -1,5 +1,5 @@
-#: include 'Common.fypp'
-module long_integer_module
+#: include 'common.fypp'
+module multiprecision_module
 
   use constant_module, only: i32
   implicit none
@@ -138,4 +138,4 @@ module long_integer_module
     #: endfor
   end interface
 
-end module long_integer_module
+end module multiprecision_module
