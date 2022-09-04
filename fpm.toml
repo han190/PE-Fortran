@@ -15,3 +15,8 @@ source-dir = "src"
 name = "multiprecision_test"
 source-dir = "test"
 main = "multiprecision_test.f90"
+
+[[ test ]]
+name = "utility_test"
+source-dir = "test"
+main = "utility_test.f90"

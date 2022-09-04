@@ -1,4 +1,6 @@
-#: include 'common.fypp'
+#: set rel_funcs = ['eq', 'gt', 'lt', 'ge', 'le']
+#: set suffixes = ['str', 'i32', 'i32_arr']
+#: set declares = ['character(*)', 'integer(i32)', 'integer(i32), dimension(:)']
 submodule(multiprecision_module) multiprecision_submodule
 
   implicit none
@@ -198,9 +200,8 @@ contains
     integer(i32) :: i
 
     call allocate_(val1, size(val2))
-    if (any(val2 >= 10)) then
+    if (any(val2 >= 10)) &
       error stop "Error: init_i32_arr."
-    end if
     val1%sign = "+"
     val1%digit = [(int(val2(i), i32), i=1, size(val2))]
   end subroutine init_i32_arr
@@ -295,12 +296,12 @@ contains
     le = lt(val1, val2) .or. eq(val1, val2)
   end function le
 
-  #: for func in rel_names
-  #: for suffix, T in suffix_type_names
-  !> Wrapper of function ${func}$ for type ${T}$
+  #: for func in rel_funcs
+  #: for suffix, declare in list(zip(suffixes, declares))
+  !> Wrapper of function ${func}$ for type ${declare}$
   pure module function ${func}$_${suffix}$ (val1, val2) result(ret)
     type(long_integer), intent(in) :: val1
-    ${T}$, intent(in) :: val2
+    ${declare}$, intent(in) :: val2
     logical :: ret
 
     ret = ${func}$ (val1, int(val2, "ll"))
@@ -384,11 +385,11 @@ contains
   end function pow
 
   #: for func in ['add', 'sub', 'mul']
-  #: for suffix, T in suffix_type_names
-  !> Wrapper of function ${func}$ for type ${T}$
+  #: for suffix, declare in list(zip(suffixes, declares))
+  !> Wrapper of function ${func}$ for type ${declare}$
   pure module function ${func}$_${suffix}$ (val1, val2) result(ret)
     type(long_integer), intent(in) :: val1
-    ${T}$, intent(in) :: val2
+    ${declare}$, intent(in) :: val2
     type(long_integer) :: ret
 
     ret = ${func}$ (val1, int(val2, "ll"))

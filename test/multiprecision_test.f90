@@ -1,14 +1,12 @@
-program test
+program main
 
   use multiprecision_module
   use constant_module
   implicit none
 
-  type(long_integer) :: i1, i2, i3
-
-  print "(a)", "Testing"
-
+  call title("'multiprecision_module'")
   test_init: block
+    type(long_integer) :: i1, i2, i3
     integer(i32) :: i
     logical :: cond
 
@@ -22,8 +20,9 @@ program test
   end block test_init
 
   test_power: block
+    type(long_integer) :: i1, i2, i3
     character(:), allocatable :: str
-    
+
     str = "437124189620885610010004822109262358637075660656881926429"
     i1 = 123456789
     i3 = int(str, "ll")
@@ -35,4 +34,24 @@ program test
     end if
   end block test_power
 
-end program test
+contains
+
+  subroutine test(input_condition, input_name)
+    logical, intent(inout) :: input_condition
+    character(*), intent(in) :: input_name
+
+    if (input_condition) then
+      print "(a)", "Testing "//input_name//"... passed."
+    else
+      print "(a)", "Testing "//input_name//"... not passed!"
+      stop
+    end if
+  end subroutine test
+
+  subroutine title(input_name)
+    character(*), intent(in) :: input_name
+
+    print "(a)", repeat("-", 30)//new_line("a")//"Testing "//input_name
+  end subroutine title
+
+end program main

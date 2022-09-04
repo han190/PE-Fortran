@@ -1,4 +1,9 @@
-#: include 'common.fypp'
+#: set rel_ops = ['==', '>', '<', '>=', '<=']
+#: set rel_funcs = ['eq', 'gt', 'lt', 'ge', 'le']
+#: set add_ops = ['+', '-']
+#: set add_funcs = ['add', 'sub']
+#: set suffixes = ['str', 'i32', 'i32_arr']
+#: set declares = ['character(*)', 'integer(i32)', 'integer(i32), dimension(:)']
 module multiprecision_module
 
   use constant_module, only: i32
@@ -28,7 +33,7 @@ module multiprecision_module
 
   !> Assignment
   interface assignment(=)
-    #: for suffix in suffix_names
+    #: for suffix in suffixes
     module procedure init_${suffix}$
     #: endfor
   end interface assignment(=)
@@ -40,20 +45,20 @@ module multiprecision_module
   end interface int
 
   !> rel-ops
-  #: for op, func in rel_opnames
+  #: for op, func in list(zip(rel_ops, rel_funcs))
   interface operator(${op}$)
     module procedure ${func}$
-    #: for suffix in suffix_names
+    #: for suffix in suffixes
     module procedure ${func}$_${suffix}$
     #: endfor
   end interface operator(${op}$) ${"\n"}$
   #: endfor
 
   !> add-ops
-  #: for op, func in add_opnames
+  #: for op, func in list(zip(add_ops, add_funcs))
   interface operator(${op}$)
     module procedure ${func}$
-    #: for suffix in suffix_names
+    #: for suffix in suffixes
     module procedure ${func}$_${suffix}$
     #: endfor
   end interface operator(${op}$) ${"\n"}$
@@ -62,7 +67,7 @@ module multiprecision_module
   !> mul-ops
   interface operator(*)
     module procedure mul
-    #: for suffix in suffix_names
+    #: for suffix in suffixes
     module procedure mul_${suffix}$
     #: endfor
   end interface operator(*)
@@ -74,10 +79,10 @@ module multiprecision_module
 
   !> Interfaces for submodule
   interface
-    #: for suffix, T in suffix_type_names
+    #: for suffix, declare in list(zip(suffixes, declares))
     pure module subroutine init_${suffix}$(val1, val2)
       type(long_integer), intent(inout) :: val1
-      ${T}$, intent(in) :: val2
+      ${declare}$, intent(in) :: val2
     end subroutine init_${suffix}$ ${"\n"}$
     #: endfor
 
@@ -93,23 +98,23 @@ module multiprecision_module
       type(long_integer) :: ret
     end function to_long_vect
 
-    #: for func in rel_names
+    #: for func in rel_funcs
     elemental module logical function ${func}$(val1, val2)
       type(long_integer), intent(in) :: val1, val2
     end function ${func}$ ${"\n"}$
     #: endfor
 
-    #: for func in rel_names
-    #: for suffix, T in suffix_type_names
+    #: for func in rel_funcs
+    #: for suffix, declare in list(zip(suffixes, declares))
     pure module function ${func}$_${suffix}$(val1, val2) result(ret)
       type(long_integer), intent(in) :: val1
-      ${T}$, intent(in) :: val2
+      ${declare}$, intent(in) :: val2
       logical :: ret
     end function ${func}$_${suffix}$ ${"\n"}$
     #: endfor
     #: endfor
 
-    #: for func in add_names
+    #: for func in add_funcs
     elemental module function ${func}$(val1, val2) result(ret)
       type(long_integer), intent(in) :: val1, val2
       type(long_integer) :: ret
@@ -128,10 +133,10 @@ module multiprecision_module
     end function pow
 
     #: for func in ['add', 'sub', 'mul']
-    #: for suffix, T in suffix_type_names
+    #: for suffix, declare in list(zip(suffixes, declares))
     pure module function ${func}$_${suffix}$(val1, val2) result(ret)
       type(long_integer), intent(in) :: val1
-      ${T}$, intent(in) :: val2
+      ${declare}$, intent(in) :: val2
       type(long_integer) :: ret
     end function ${func}$_${suffix}$ ${"\n"}$
     #: endfor
