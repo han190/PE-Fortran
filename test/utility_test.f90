@@ -6,17 +6,22 @@ program main
 
   call title("'utility_module'")
   block
-    integer, parameter :: i = 35124
-    integer :: arr(5)
+    integer, parameter :: i = 12345
+    integer, allocatable :: arr(:)
     logical :: next
 
-    arr = [3, 5, 1, 2, 4]
+    arr = [1, 2, 3, 4, 5]
     call test(all(to_array(i) == arr), "to_array")
     call test(to_integer(arr) == i, "to_integer")
-    call test(unit_digit(i) == 4, "unit_digit")
+    call test(unit_digit(i) == 5, "unit_digit")
     call test(number_of_digits(i) == 5, "number_of_digits")
-    call permute(arr, next)
-    call test(all(arr == [3, 5, 1, 4, 2] .and. next), "permute")
+
+    next = next_permute(arr)
+    call test(all(arr == [1, 2, 3, 5, 4]), "next_permute(idx)")
+
+    arr = [1, 2, 3, 4, 5]
+    next = next_permute(arr, 6)
+    call test(all(arr == [1, 2, 3, 4, 6]), "next_permute(idx, n)")
   end block
 
 contains
