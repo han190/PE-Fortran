@@ -1,5 +1,5 @@
 name = "PE-Fortran"
-version = "0.0.1"
+version = "0.0.3"
 license = "MIT"
 maintainer = "htang2@alaska.edu"
 author = "Han Tang"
@@ -9,25 +9,20 @@ keywords = ["fortran", "modern-fortran", "project-euler-solutions"]
 homepage = "https://github.com/han190/PE-Fortran"
 
 [dependencies]
-stdlib = { git="https://github.com/fortran-lang/stdlib", branch="stdlib-fpm" }
+stdlib = {git="https://github.com/fortran-lang/stdlib", branch="stdlib-fpm"}
 
 [ library ]
 source-dir = "src-fpm"
 
 [[ test ]]
-name = "Test-big_integer_m"
+name = "multiprecision_test"
 source-dir = "src-fpm/test"
-main = "test_multiprecision.f90"
+main = "multiprecision_test.f90"
 
 [[ test ]]
-name = "Test-prime_m"
+name = "utility_test"
 source-dir = "src-fpm/test"
-main = "test_prime.f90"
-
-[[ test ]]
-name = "Test-utility_m"
-source-dir = "src-fpm/test"
-main = "test_utility.f90"
+main = "utility_test.f90"
 
 [[ executable ]]
 name = "PE-Fortran"

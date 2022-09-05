@@ -1,4 +1,3 @@
-src-fpm/
 build/
 build-meson/
-ANSWER.md
+src-fpm/

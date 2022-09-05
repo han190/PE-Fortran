@@ -1,6 +1,6 @@
 program main
-    use driver_m
-    implicit none
+  use driver_module
+  implicit none
 
-    call get_arguments()
+  call get_arguments()
 end program main

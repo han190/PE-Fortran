@@ -1,0 +1,248 @@
+#: set integer_kinds = ['i32', 'i64']
+#: set kinds = ['i32', 'i64', 'str']
+#: set declares = ['integer(i32)', 'integer(i64)', 'character(*)']
+#: set digit_funcs = ['unit_digit', 'number_of_digits', 'sqrt']
+#: set array_funcs = ['to_array', 'to_integer']
+#: set spec_funcs = ['is_palindromic', 'is_pandigital', 'gcd', 'lcm']
+#: set funcs = digit_funcs + array_funcs + spec_funcs
+module utility_module
+
+  use constant_module, only: sp, i32, i64
+  implicit none
+
+  #: for func in funcs
+  public :: ${func}$
+  #: endfor
+  public :: swap
+  public :: next_permute
+
+  private
+
+  #: for func in funcs
+  !> Function: ${func}$
+  interface ${func}$
+    #: for kind in integer_kinds
+    module procedure ${func}$_${kind}$
+    #: endfor
+  end interface ${func + "\n"}$
+  #: endfor
+
+  !> Swap.
+  interface swap
+    #: for kind in kinds
+    module procedure swap_${kind}$
+    #: endfor
+  end interface swap
+
+  !> Next permutation.
+  interface next_permute
+    #: for kind in integer_kinds
+    module procedure next_permute_${kind}$
+    module procedure next_permute_kn_${kind}$
+    #: endfor
+  end interface next_permute
+
+contains
+
+  #: for kind in integer_kinds
+  !> Unit digit of an ${kind}$ integer.
+  elemental integer(${kind}$) function unit_digit_${kind}$ (n)
+    integer(${kind}$), intent(in) :: n
+
+    unit_digit_${kind}$ = mod(n, 10_${kind}$)
+  end function unit_digit_${kind}$${"\n"}$
+  #: endfor
+
+  #: for kind in integer_kinds
+  !> Number of digits in an ${kind}$ integer.
+  elemental integer(${kind}$) function number_of_digits_${kind}$ (n)
+    integer(${kind}$), intent(in) :: n
+
+    number_of_digits_${kind}$ = floor(log10(real(n, sp))) + 1_${kind}$
+  end function number_of_digits_${kind}$${"\n"}$
+  #: endfor
+
+  #: for kind in integer_kinds
+  !> Next permutation (k, n) for ${kind}$.
+  elemental integer(${kind}$) function sqrt_${kind}$ (n)
+    integer(${kind}$), intent(in) :: n
+
+    sqrt_${kind}$ = floor(sqrt(real(n, sp)), ${kind}$)
+  end function sqrt_${kind}$${"\n"}$
+  #: endfor
+
+  #: for kind in integer_kinds
+  !> Convert an integer into an ${kind}$ array.
+  pure function to_array_${kind}$ (n) result(ret)
+    integer(${kind}$), intent(in) :: n
+    integer(${kind}$), allocatable :: ret(:)
+    integer(${kind}$) :: i, tmp
+
+    tmp = n
+    associate (l => (number_of_digits(tmp)))
+      allocate (ret(l))
+      do i = l, 1, -1
+        ret(i) = unit_digit(tmp)
+        tmp = tmp/10_${kind}$
+      end do
+    end associate
+  end function to_array_${kind}$${"\n"}$
+  #: endfor
+
+  #: for kind in integer_kinds
+  !> Convert an ${kind}$ integer array into an ${kind}$ integer.
+  pure integer(${kind}$) function to_integer_${kind}$ (arr)
+    integer(${kind}$), intent(in) :: arr(:)
+    integer(${kind}$) :: i, tmp
+
+    tmp = 0_${kind}$
+    do i = 1, size(arr)
+      tmp = tmp*10_${kind}$+arr(i)
+    end do
+    to_integer_${kind}$ = tmp
+  end function to_integer_${kind}$${"\n"}$
+  #: endfor
+
+  #: for kind in integer_kinds
+  !> To tell if an ${kind}$ integer is palindromic.
+  elemental logical function is_palindromic_${kind}$ (n)
+    integer(${kind}$), intent(in) :: n
+    integer(${kind}$) :: reversed, tmp
+
+    reversed = 0_${kind}$
+    tmp = n
+    do while (tmp > 0_${kind}$)
+      reversed = reversed*10_${kind}$+mod(tmp, 10_${kind}$)
+      tmp = tmp/10_${kind}$
+    end do
+
+    is_palindromic_${kind}$ = .false.
+    if (n == reversed) is_palindromic_${kind}$ = .true.
+  end function is_palindromic_${kind}$${"\n"}$
+  #: endfor
+
+  #: for kind in integer_kinds
+  !> To tell if an ${kind}$ integer is pandigital.
+  pure logical function is_pandigital_${kind}$ (n)
+    integer(${kind}$), intent(in) :: n
+    integer(${kind}$) :: tmp, l
+    logical, allocatable :: arr(:)
+
+    l = number_of_digits(n)
+    if (l > 9_${kind}$) l = 9_${kind}$
+    allocate (arr(l))
+
+    is_pandigital_${kind}$ = .false.
+    arr = .false.
+    tmp = n
+
+    do
+      associate (u => (unit_digit(tmp)))
+        if (u == 0_${kind}$ .or. u > l) exit
+        arr(u) = .true.
+      end associate
+      tmp = tmp/10
+    end do
+
+    if (count(arr) == l) is_pandigital_${kind}$ = .true.
+  end function is_pandigital_${kind}$${"\n"}$
+  #: endfor
+
+  #: for kind in integer_kinds
+  !> Greatest common divisor of two ${kind}$ integers.
+  elemental recursive function gcd_${kind}$ (a, b) result(ret)
+    integer(${kind}$), intent(in) :: a, b
+    integer(${kind}$) :: ret
+
+    if (b == 0_${kind}$) then
+      ret = a
+    else
+      associate (r => mod(a, b))
+        ret = gcd_${kind}$ (b, r)
+      end associate
+    end if
+  end function gcd_${kind}$
+  #: endfor
+
+  #: for kind in integer_kinds
+  !> Least common multiple of two ${kind}$ integers.
+  pure integer(${kind}$) function lcm_${kind}$ (a, b)
+    integer(${kind}$), intent(in) :: a, b
+
+    lcm_${kind}$ = abs(a*b)/gcd_${kind}$ (a, b)
+  end function lcm_${kind}$${"\n"}$
+  #: endfor
+
+  #: for kind, declare in list(zip(kinds, declares))
+  !> Swap for ${kind}$.
+  pure subroutine swap_${kind}$ (a, b)
+    ${declare}$, intent(inout) :: a, b
+
+    associate (tmp => (a))
+      a = b
+      b = tmp
+    end associate
+  end subroutine swap_${kind}$${"\n"}$
+  #: endfor
+
+  #: for kind in integer_kinds
+  !> Next permutation of an ${kind}$ array.
+  function next_permute_${kind}$ (idx) result(next)
+    integer(${kind}$), intent(inout) :: idx(:)
+    logical :: next
+    integer(${kind}$) :: i, j
+
+    associate (s => (size(idx)))
+      next = .false.
+      do i = s - 1, 1, -1
+        if (idx(i) < idx(i + 1)) then
+          j = i
+          next = .true.
+          exit
+        end if
+      end do
+      if (.not. next) return
+
+      do i = s, 1, -1
+        if (idx(j) < idx(i)) exit
+      end do
+
+      call swap_${kind}$ (idx(i), idx(j))
+      idx(j + 1:s) = idx(s:j + 1:-1)
+    end associate
+  end function next_permute_${kind + "\n"}$
+  #: endfor
+
+  #: for kind in integer_kinds
+  !> Next permutation (k, n) of an ${kind}$ array.
+  function next_permute_kn_${kind}$ (idx, n) result(next)
+    integer(${kind}$), intent(inout) :: idx(:)
+    integer(${kind}$), intent(in) :: n
+    logical :: next
+    logical, allocatable :: carr(:)
+    integer(${kind}$) :: i, x, k
+
+    next = .true.
+    k = size(idx)
+    x = n - k + 1
+
+    if (all(idx == [(i, i=x, n)])) then
+      next = .false.; return
+    end if
+
+    carr = [(.true., i=1, k)]
+    do i = k, 1, -1
+      x = n - k + i
+      if (idx(i) == x) carr(i) = .false.
+    end do
+
+    if (all(carr)) then
+      idx(k) = idx(k) + 1; return
+    end if
+
+    x = findloc(carr, value=.false., dim=1) - 1
+    idx(x:k) = idx(x) + [(i, i=1, k - x + 1)]
+  end function next_permute_kn_${kind + "\n"}$
+  #: endfor
+
+end module utility_module

@@ -1,5 +1,5 @@
 project('PE-Fortran', 'fortran', 
-    version: '0.0.2', 
+    version: '0.0.3', 
     meson_version: '>=0.51',
     license: 'MIT',
     default_options: [
@@ -72,11 +72,12 @@ gen_f90 = generator(
     arguments: ['@INPUT@', '@EXTRA_ARGS@', '@OUTPUT@']
 )
 fypp_files = [
-    src_dir/'prime.fypp',
-    src_dir/'multiprecision.fypp',
-    src_dir/'utility.fypp',
-    src_dir/'interface.fypp', 
-    src_dir/'problems.fypp'
+    src_dir/'utility_module.fypp',
+    src_dir/'prime_module.fypp',
+    src_dir/'multiprecision_module.fypp',
+    src_dir/'multiprecision_submodule.fypp',
+    src_dir/'interface_module.fypp', 
+    src_dir/'problem_module.fypp'
 ]
 
 fypp_src = []
@@ -86,8 +87,8 @@ endforeach
 
 # Source files
 util_src = [
-    src_dir/'constant.f90',
-    src_dir/'driver.f90'
+    src_dir/'constant_module.f90',
+    src_dir/'driver_module.f90'
 ]
 
 app_src = [
@@ -95,9 +96,9 @@ app_src = [
 ]
 
 test_src = [
-    test_dir/'test_prime.f90',
-    test_dir/'test_multiprecision.f90',
-    test_dir/'test_utility.f90'
+    test_dir/'prime_test.f90',
+    test_dir/'multiprecision_test.f90',
+    test_dir/'utility_test.f90'
 ]
 
 prob_src = []
@@ -130,27 +131,27 @@ pe_fortran = executable(
     dependencies: fortran_stdlib
 )
 
-test_prime_m = executable(
-    'Test-prime', 
-    sources: [util_src[0], fypp_src[0], fypp_src[2], test_src[0]],
-    dependencies: fortran_stdlib
-)
+# test_prime_m = executable(
+#     'Test-prime', 
+#     sources: [util_src, fypp_src, test_src[0]],
+#     dependencies: fortran_stdlib
+# )
 
-test_multiprecision_m = executable(
-    'Test-multiprecision',  
-    sources: [util_src[0], fypp_src[1], test_src[1]],
-    dependencies: fortran_stdlib
-)
+# test_multiprecision_m = executable(
+#     'Test-multiprecision',  
+#     sources: [util_src, fypp_src, test_src[1]],
+#     dependencies: fortran_stdlib
+# )
 
-test_utility_m = executable(
-    'Test-utility', 
-    sources: [util_src[0], fypp_src[1], fypp_src[2], test_src[2]],
-    dependencies: fortran_stdlib
-)
+# test_utility_m = executable(
+#     'Test-utility', 
+#     sources: [util_src, fypp_src, test_src[2]],
+#     dependencies: fortran_stdlib
+# )
 
-test('Test multiprecision module', test_multiprecision_m)
-test('Test prime module', test_prime_m)
-test('Test utility module', test_utility_m)
+# test('Test multiprecision module', test_multiprecision_m)
+# test('Test prime module', test_prime_m)
+# test('Test utility module', test_utility_m)
 
 argument_list = ['--fancy', '--all', nproblems.to_string()]
 test_name = 'Test all problems available '

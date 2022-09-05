@@ -130,7 +130,7 @@ if [ -d "src" ]; then
 
         if command -v fprettify &>/dev/null; then
             echo "Found fprettify, formatting source codes..."
-            fprettify -i=4 -r $srcfpmdir
+            fprettify -i=2 -r $srcfpmdir
         else
             echo "fprettify not found."
         fi
