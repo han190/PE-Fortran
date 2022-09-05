@@ -1,4 +1,4 @@
-d#: set integer_kinds = ['i32', 'i64']
+#: set integer_kinds = ['i32', 'i64']
 #: set kinds = ['i32', 'i64', 'str']
 #: set declares = ['integer(i32)', 'integer(i64)', 'character(*)']
 #: set digit_funcs = ['unit_digit', 'number_of_digits', 'sqrt']
@@ -154,7 +154,13 @@ contains
     integer(${kind}$), intent(in) :: a, b
     integer(${kind}$) :: ret
 
-    ret = merge(a, gcd_${kind}$ (b, mod(a, b)), b == 0_${kind}$)
+    if (b == 0_${kind}$) then
+      ret = a
+    else
+      associate (r => mod(a, b))
+        ret = gcd_${kind}$ (b, r)
+      end associate
+    end if
   end function gcd_${kind}$
   #: endfor
 
@@ -184,54 +190,59 @@ contains
   function next_permute_${kind}$ (idx) result(next)
     integer(${kind}$), intent(inout) :: idx(:)
     logical :: next
-    integer(${kind}$) :: i, j, n
+    integer(${kind}$) :: i, j
 
-    n = size(idx)
-    do i = n - 1, 1, -1
-      if (idx(i) < idx(i + 1)) exit
-    end do
+    associate (s => (size(idx)))
+      next = .false.
+      do i = s - 1, 1, -1
+        if (idx(i) < idx(i + 1)) then
+          j = i
+          next = .true.
+          exit
+        end if
+      end do
+      if (.not. next) return
 
-    next = i /= 1
-    if (.not. next) return
+      do i = s, 1, -1
+        if (idx(j) < idx(i)) exit
+      end do
 
-    j = i
-    do i = n, 1, -1
-      if (idx(j) < idx(i)) exit
-    end do
-
-    call swap_${kind}$ (idx(i), idx(j))
-    idx(j + 1:n) = idx(n:j + 1:-1)
-  end function next_permute_${kind}$${"\n"}$
+      call swap_${kind}$ (idx(i), idx(j))
+      idx(j + 1:s) = idx(s:j + 1:-1)
+    end associate
+  end function next_permute_${kind + "\n"}$
   #: endfor
 
   #: for kind in integer_kinds
-  !: Next permutation (k, n) of an ${kind}$ array.
+  !> Next permutation (k, n) of an ${kind}$ array.
   function next_permute_kn_${kind}$ (idx, n) result(next)
     integer(${kind}$), intent(inout) :: idx(:)
     integer(${kind}$), intent(in) :: n
     logical :: next
-    integer(${kind}$) :: i, k, x
     logical, allocatable :: carr(:)
+    integer(${kind}$) :: i, x, k
 
+    next = .true.
     k = size(idx)
-    x = n - k
+    x = n - k + 1
 
-    next = all(idx /= [(i, i=x + 1, n)])
-    if (.not. next) return
-
-    allocate (carr(k))
-    carr = idx /= [(x + i, i=k, 1, -1)]
-
-    if (all(carr)) then
-      idx(k) = idx(k) + 1
-      return
+    if (all(idx == [(i, i=x, n)])) then
+      next = .false.; return
     end if
 
-    do x = 1, size(carr)
-      if (.not. carr(i)) exit
+    carr = [(.true., i=1, k)]
+    do i = k, 1, -1
+      x = n - k + i
+      if (idx(i) == x) carr(i) = .false.
     end do
-    idx(x:) = idx(x) + [(i, i=1, k - x + 1)]
-  end function next_permute_kn_${kind}$${"\n"}$
+
+    if (all(carr)) then
+      idx(k) = idx(k) + 1; return
+    end if
+
+    x = findloc(carr, value=.false., dim=1) - 1
+    idx(x:k) = idx(x) + [(i, i=1, k - x + 1)]
+  end function next_permute_kn_${kind + "\n"}$
   #: endfor
 
 end module utility_module

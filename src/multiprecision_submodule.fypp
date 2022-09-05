@@ -248,6 +248,24 @@ contains
     end select
   end function to_long_vect
 
+  !> Swap
+  pure module subroutine swap_long(val1, val2)
+    type(long_integer), intent(inout) :: val1, val2
+    type(long_integer) :: tmp
+
+    tmp = val1
+    val1 = val2
+    val2 = tmp
+  end subroutine swap_long
+
+  !> Digit of a long integer.
+  elemental module function len_long(val1) result(ret)
+    type(long_integer), intent(in) :: val1
+    integer(i32) :: ret
+
+    ret = size(val1%digit, 1)
+  end function len_long
+
   !> Equal.
   elemental module logical function eq(val1, val2)
     type(long_integer), intent(in) :: val1, val2

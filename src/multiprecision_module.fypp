@@ -10,6 +10,9 @@ module multiprecision_module
   implicit none
 
   public :: long_integer
+  public :: int
+  public :: swap
+  public :: len
   public :: assignment(=)
   #: for op in rel_ops
   public :: operator(${op}$)
@@ -19,7 +22,6 @@ module multiprecision_module
   #: endfor
   public :: operator(*)
   public :: operator(**)
-  public :: int
 
   private
 
@@ -43,6 +45,16 @@ module multiprecision_module
     module procedure to_long_scal
     module procedure to_long_vect
   end interface int
+
+  !> Swap
+  interface swap
+    module procedure swap_long
+  end interface swap
+
+  !> Len
+  interface len
+    module procedure len_long
+  end interface len
 
   !> rel-ops
   #: for op, func in list(zip(rel_ops, rel_funcs))
@@ -97,6 +109,15 @@ module multiprecision_module
       character(*), intent(in) :: kind
       type(long_integer) :: ret
     end function to_long_vect
+
+    pure module subroutine swap_long(val1, val2)
+      type(long_integer), intent(inout) :: val1, val2
+    end subroutine swap_long
+
+    elemental module function len_long(val1) result(ret)
+      type(long_integer), intent(in) :: val1
+      integer(i32) :: ret
+    end function len_long
 
     #: for func in rel_funcs
     elemental module logical function ${func}$(val1, val2)

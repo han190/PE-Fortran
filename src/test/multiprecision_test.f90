@@ -51,7 +51,7 @@ contains
   subroutine title(input_name)
     character(*), intent(in) :: input_name
 
-    print "(a)", repeat("-", 30)//new_line("a")//"Testing "//input_name
+    print "(a)", "Testing "//input_name
   end subroutine title
 
 end program main
