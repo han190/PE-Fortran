@@ -14,14 +14,13 @@
 | Preprocessor          | [fypp](https://github.com/aradi/fypp)               |
 | Formatter (optional)  | [fprettify](https://github.com/pseewald/fprettify)  |
 
-All dependencies except stdlib are available on conda and can be installed with:
+All dependencies can be installed using conda
 
-```
+```bash
 conda config --add channels conda-forge
-conda create -n fpm fpm
-conda activate fpm
-conda install fypp fprettify # if build with fpm
-# conda install fypp meson ninja # if build with meson
+conda create -n fortran_env
+conda activate fortran_env
+conda install -c conda-forge fypp fprettify fpm gfortran fortran_stdlib meson ninja
 ```
 
 ### Build with fpm
