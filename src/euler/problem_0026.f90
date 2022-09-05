@@ -13,16 +13,16 @@ contains
 
     integer(i64), parameter :: n = 1000
     logical, allocatable :: is_prime(:)
-    integer(i64) :: temp, k, i
+    integer(i64) :: tmp, k, i
 
     allocate (is_prime(n))
     call Sieve_of_Eratosthenes(n, is_prime)
-    temp = 0; k = 1; answer = 0
+    tmp = 0; k = 1; answer = 0
     do i = 7, n
       if (is_prime(i)) then
-        temp = multiplicative_order(i, 10_i64)
-        if (temp > k) then
-          k = temp
+        tmp = multiplicative_order(i, 10_i64)
+        if (tmp > k) then
+          k = tmp
           answer = i
         end if
       end if

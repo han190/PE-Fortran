@@ -20,19 +20,19 @@ contains
 
   elemental logical function is_lychrel(n)
     type(long_integer), intent(in) :: n
-    type(long_integer) :: temp, temp2
+    type(long_integer) :: tmp, temp2
     integer(i32) :: i
 
-    i = 0; temp = n
+    i = 0; tmp = n
     is_lychrel = .true.
 
     do while (i <= 50)
-      temp2 = reverse(temp) + temp
+      temp2 = reverse(tmp) + tmp
       if (is_palindromic_(temp2)) then
         is_lychrel = .false.
         return
       end if
-      temp = temp2
+      tmp = temp2
       i = i + 1
     end do
   end function is_lychrel

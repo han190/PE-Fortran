@@ -39,15 +39,15 @@ contains
   pure logical function is_left_trunc(n, is_prime)
     integer(i64), intent(in) :: n
     logical, intent(in) :: is_prime(:)
-    integer(i64) :: temp
+    integer(i64) :: tmp
 
-    temp = 10_i64
-    do while (temp < n .and. mod(n, temp) >= 1)
-      if (.not. is_prime(mod(n, temp))) then
+    tmp = 10_i64
+    do while (tmp < n .and. mod(n, tmp) >= 1)
+      if (.not. is_prime(mod(n, tmp))) then
         is_left_trunc = .false.
         return
       end if
-      temp = temp*10_i64
+      tmp = tmp*10_i64
     end do
     is_left_trunc = .true.
   end function is_left_trunc
@@ -55,12 +55,12 @@ contains
   pure logical function is_right_trunc(n, is_prime)
     integer(i64), intent(in) :: n
     logical, intent(in) :: is_prime(:)
-    integer(i64) :: temp
+    integer(i64) :: tmp
 
-    temp = n
-    do while (temp > 0_i64)
-      if (is_prime(temp)) then
-        temp = temp/10_i64
+    tmp = n
+    do while (tmp > 0_i64)
+      if (is_prime(tmp)) then
+        tmp = tmp/10_i64
       else
         is_right_trunc = .false.
         return

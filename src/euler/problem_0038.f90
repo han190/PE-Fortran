@@ -8,22 +8,22 @@ contains
   end function euler0038
 
   elemental integer(i64) function answer()
-    integer(i64) :: i, j, temp
+    integer(i64) :: i, j, tmp
 
     answer = 0
     outer: do i = 2, 10000
-      j = 1; temp = 0
+      j = 1; tmp = 0
 
       inner: do
-        if (temp /= 0) then
-          if (number_of_digits(temp) > 9) cycle outer
+        if (tmp /= 0) then
+          if (number_of_digits(tmp) > 9) cycle outer
         end if
 
-        if (is_pandigital(temp)) then
-          if (temp > answer) answer = temp
+        if (is_pandigital(tmp)) then
+          if (tmp > answer) answer = tmp
         end if
 
-        temp = i*j + temp*10**number_of_digits(i*j)
+        tmp = i*j + tmp*10**number_of_digits(i*j)
         j = j + 1
       end do inner
     end do outer

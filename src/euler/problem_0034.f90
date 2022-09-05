@@ -20,8 +20,8 @@ contains
 
     is_curious = .false.
     associate (x => to_array(n))
-      associate (temp => sum([(factorial(x(i)), i=1, size(x))]))
-        if (temp == n) is_curious = .true.
+      associate (tmp => sum([(factorial(x(i)), i=1, size(x))]))
+        if (tmp == n) is_curious = .true.
       end associate
     end associate
   end function is_curious

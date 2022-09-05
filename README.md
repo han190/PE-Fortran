@@ -83,7 +83,7 @@ cloc --force-lang="Fortran 90",fypp .
 
 To format all source files:
 ```
-fprettify -i=4 -r src
+fprettify -i=2 -r src
 ```
 
 ## A todo list

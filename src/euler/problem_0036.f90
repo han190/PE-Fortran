@@ -30,14 +30,14 @@ contains
   pure function to_binary(n) result(ret)
     integer(i32), intent(in) :: n
     integer(i32), allocatable :: ret(:)
-    integer(i32) :: i, temp
+    integer(i32) :: i, tmp
 
     associate (length => floor(log2(n)) + 1)
       allocate (ret(length))
-      temp = n
+      tmp = n
       do i = 1, length
-        ret(i) = mod(temp, 2_i32)
-        temp = temp/2_i32
+        ret(i) = mod(tmp, 2_i32)
+        tmp = tmp/2_i32
       end do
     end associate
   end function to_binary

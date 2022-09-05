@@ -49,7 +49,7 @@ contains
   pure subroutine get_cyclic(x, y)
     type(array_type), allocatable, intent(inout) :: x(:)
     integer(i32), intent(in) :: y(:)
-    type(array_type) :: temp(99)
+    type(array_type) :: tmp(99)
     integer(i32) :: i, j, k, s
 
     if (.not. allocated(x)) then
@@ -66,7 +66,7 @@ contains
       do j = 1, size(y)
         if (mod(x(i)%array(s), 100) == y(j)/100) then
           k = k + 1
-          temp(k)%array = [x(i)%array, [y(j)]]
+          tmp(k)%array = [x(i)%array, [y(j)]]
         end if
       end do
     end do
@@ -75,7 +75,7 @@ contains
     if (k > 0) then
       allocate (x(k))
       do i = 1, k
-        x(i)%array = temp(i)%array
+        x(i)%array = tmp(i)%array
       end do
     end if
   end subroutine get_cyclic

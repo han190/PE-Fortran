@@ -49,11 +49,11 @@ contains
   pure subroutine carry(a, m)
     integer(i32), intent(inout) :: a(:)
     integer(i32), intent(in) :: m
-    integer(i32) :: temp
+    integer(i32) :: tmp
 
-    temp = a(2)
-    a(2) = unit_digit(temp)
-    a(1) = a(1)*m + (temp - a(2))/10
+    tmp = a(2)
+    a(2) = unit_digit(tmp)
+    a(1) = a(1)*m + (tmp - a(2))/10
   end subroutine carry
 
 end submodule euler_problem_0048_submodule

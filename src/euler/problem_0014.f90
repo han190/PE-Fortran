@@ -9,7 +9,7 @@ contains
 
   elemental integer(i64) function answer()
     integer(i64), allocatable :: array(:)
-    integer(i64) :: temp, length, longest_length, i
+    integer(i64) :: tmp, length, longest_length, i
     integer(i64), parameter :: start = 5*10**5_i64, end = 10**6_i64
 
     allocate (array(end)); array = -1
@@ -18,16 +18,16 @@ contains
     answer = 0
 
     do i = 1, end
-      temp = i
+      tmp = i
       length = 0
 
       if (array(i) == -1) then
-        do while (temp /= 1)
-          if (mod(temp, 2_i64) == 0) then
-            temp = temp/2
+        do while (tmp /= 1)
+          if (mod(tmp, 2_i64) == 0) then
+            tmp = tmp/2
             length = length + 1
           else
-            temp = (temp*3 + 1)/2
+            tmp = (tmp*3 + 1)/2
             length = length + 2
           end if
         end do

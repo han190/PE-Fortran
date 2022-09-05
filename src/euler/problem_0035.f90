@@ -34,14 +34,14 @@ contains
     integer(i32), intent(in) :: n
     logical, intent(in) :: is_prime(:)
     integer(i32), allocatable, intent(out) :: array(:)
-    integer(i32) :: temp, i
+    integer(i32) :: tmp, i
 
     if (allocated(array)) deallocate (array)
     associate (x => number_of_digits(n))
-      temp = n
+      tmp = n
       do i = 1, x
-        if (.not. is_prime(temp)) return
-        temp = rotate(temp)
+        if (.not. is_prime(tmp)) return
+        tmp = rotate(tmp)
       end do
 
       allocate (array(x))
@@ -52,12 +52,12 @@ contains
   pure subroutine circular_array(n, array)
     integer(i32), intent(in) :: n
     integer(i32), intent(out) :: array(:)
-    integer(i32) :: i, temp
+    integer(i32) :: i, tmp
 
-    temp = n
+    tmp = n
     do i = 1, number_of_digits(n)
-      array(i) = temp
-      temp = rotate(temp)
+      array(i) = tmp
+      tmp = rotate(tmp)
     end do
   end subroutine circular_array
 
