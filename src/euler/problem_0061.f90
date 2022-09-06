@@ -10,15 +10,13 @@ contains
   integer(i32) function answer()
     type(array_type) :: polygonals(3:8)
     type(array_type), allocatable :: array(:)
-    logical :: avail
     integer(i32) :: i(6), k
 
-    avail = .true.
     answer = 0
     i = [3, 4, 5, 6, 7, 8]
     call get_polygonals(polygonals)
 
-    outer: do while (avail)
+    outer: do
       do k = 1, 6
         call get_cyclic(array, polygonals(i(k))%array)
       end do
@@ -30,7 +28,7 @@ contains
         end do inner
       end if
 
-      avail = next_permute(i)
+      if (.not. next_permute(i)) exit outer
       if (allocated(array)) deallocate (array)
     end do outer
     answer = sum(array(k)%array)
