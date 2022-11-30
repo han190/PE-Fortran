@@ -91,80 +91,45 @@ contains
   end subroutine get_polygonals
 
   pure function is_polygonal(n, val) result(ret)
-    integer, intent(in) :: n, val
+    integer, intent(in) :: n
+    integer, intent(in) :: val
     logical :: ret
+    real :: x, c(4)
 
     select case (n)
-    case (3)
-      ret = is_triangle(val)
-    case (4)
-      ret = is_square(val)
-    case (5)
-      ret = is_pentagonal(val)
-    case (6)
-      ret = is_hexaonal(val)
-    case (7)
-      ret = is_heptagonal(val)
-    case (8)
-      ret = is_octagonal(val)
+    !> triangular
+    case (3) 
+      c = [1., 8., -1., 2.]
+    !> square
+    case (4) 
+      c = [0., 1., 0., 1.]
+    !> pentagonal
+    case (5) 
+      c = [1., 24., 1., 6.]
+    !> hexaonal
+    case (6) 
+      c = [1., 8., 1., 4.]
+    !> heptagonal
+    case (7) 
+      c = [9., 40., 3., 10.]
+    !> octagonal
+    case (8) 
+      c = [1., 3., 1., 3.]
+    case default
+      error stop "Invalid poly!"
     end select
+
+    associate (x_ => real(val))
+      x = (sqrt(c(1) + c(2)*x_) + c(3))/c(4)
+      ret = is_int(x)
+    end associate
   end function is_polygonal
 
-  pure function is_triangle(val) result(ret)
-    integer, intent(in) :: val
-    logical :: ret
-
-    ret = .false.
-    if (is_int(.5*(sqrt(1.+8.*real(val)) - 1.))) ret = .true.
-  end function is_triangle
-
-  pure function is_square(val) result(ret)
-    integer, intent(in) :: val
-    logical :: ret
-
-    ret = .false.
-    if (is_int(sqrt(real(val)))) ret = .true.
-  end function is_square
-
-  pure function is_pentagonal(val) result(ret)
-    integer, intent(in) :: val
-    logical :: ret
-
-    ret = .false.
-    if (is_int((sqrt(1.+24.*real(val)) + 1.)/6.)) ret = .true.
-  end function is_pentagonal
-
-  pure function is_hexaonal(val) result(ret)
-    integer, intent(in) :: val
-    logical :: ret
-
-    ret = .false.
-    if (is_int(.25*(sqrt(1.+8.*real(val)) + 1.))) ret = .true.
-  end function is_hexaonal
-
-  pure function is_heptagonal(val) result(ret)
-    integer, intent(in) :: val
-    logical :: ret
-
-    ret = .false.
-    if (is_int((sqrt(9.+40.*real(val)) + 3.)/10.)) ret = .true.
-  end function is_heptagonal
-
-  pure function is_octagonal(val) result(ret)
-    integer, intent(in) :: val
-    logical :: ret
-
-    ret = .false.
-    if (is_int((sqrt(1.+3.*real(val)) + 1.)/3.)) ret = .true.
-  end function is_octagonal
-
-  pure function is_int(val) result(ret)
+  elemental logical function is_int(val)
     real, intent(in) :: val
-    logical :: ret
     real, parameter :: eps = tiny(0.)
 
-    ret = .false.
-    if (abs(val - nint(val)) < eps) ret = .true.
+    is_int = abs(val - nint(val)) < eps
   end function is_int
 
 end submodule euler_problem_0061_submodule
