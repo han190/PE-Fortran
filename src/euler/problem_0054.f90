@@ -8,16 +8,18 @@ contains
   end function euler0054
 
   integer(i32) function answer()
-    character(len=2) :: cards(10)
+    character(len=2) :: cards(10, 1000)
     integer(i32) :: i, iunit
 
     open (newunit=iunit, file=data_path//"/"//"data_0054.txt", &
           action="read", status="old")
+    read (iunit, "(10(a2, 1x))") cards
+    close (iunit)
 
     answer = 0
     do i = 1, 1000
-      read (iunit, *) cards
-      if (player_one_win(cards)) answer = answer + 1
+      if (player_one_win(cards(:, i))) &
+        answer = answer + 1
     end do
     close (iunit)
   end function answer
@@ -31,11 +33,10 @@ contains
     call rank_(string_array(6:10), rank2)
 
     do i = 1, 6
-      if (rank1(i) > rank2(i)) then
-        ret = .true.
-        return
-      else if (rank1(i) < rank2(i)) then
-        ret = .false.
+      if (rank1(i) == rank2(i)) then
+        continue
+      else
+        ret = rank1(i) > rank2(i)
         return
       end if
     end do
