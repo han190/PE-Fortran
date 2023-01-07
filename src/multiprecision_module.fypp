@@ -6,162 +6,162 @@
 #: set declares = ['character(*)', 'integer(i32)', 'integer(i32), dimension(:)']
 module multiprecision_module
 
-  use constant_module, only: i32
-  implicit none
+use constant_module, only: i32
+implicit none
 
-  public :: long_integer
-  public :: int
-  public :: swap
-  public :: len
-  public :: assignment(=)
-  #: for op in rel_ops
-  public :: operator(${op}$)
+public :: long_integer
+public :: int
+public :: swap
+public :: len
+public :: assignment(=)
+#: for op in rel_ops
+public :: operator(${op}$)
+#: endfor
+#: for op in add_ops
+public :: operator(${op}$)
+#: endfor
+public :: operator(*)
+public :: operator(**)
+
+private
+
+!> Long integer type.
+!> Assuming the number of digits
+!> is less than huge(0_i32).
+type :: long_integer
+  character :: sign
+  integer(i32), allocatable :: digit(:)
+end type long_integer
+
+!> Assignment
+interface assignment(=)
+  #: for suffix in suffixes
+  module procedure init_${suffix}$
   #: endfor
-  #: for op in add_ops
-  public :: operator(${op}$)
+end interface assignment(=)
+
+!> Overloaded intrinsics
+interface int
+  module procedure to_long_scal
+  module procedure to_long_vect
+end interface int
+
+!> Swap
+interface swap
+  module procedure swap_long
+end interface swap
+
+!> Len
+interface len
+  module procedure len_long
+end interface len
+
+!> rel-ops
+#: for op, func in list(zip(rel_ops, rel_funcs))
+interface operator(${op}$)
+  module procedure ${func}$
+  #: for suffix in suffixes
+  module procedure ${func}$_${suffix}$
   #: endfor
-  public :: operator(*)
-  public :: operator(**)
+end interface operator(${op}$) ${"\n"}$
+#: endfor
 
-  private
+!> add-ops
+#: for op, func in list(zip(add_ops, add_funcs))
+interface operator(${op}$)
+  module procedure ${func}$
+  #: for suffix in suffixes
+  module procedure ${func}$_${suffix}$
+  #: endfor
+end interface operator(${op}$) ${"\n"}$
+#: endfor
 
-  !> Long integer type.
-  !> Assuming the number of digits
-  !> is less than huge(0_i32).
-  type :: long_integer
-    character :: sign
-    integer(i32), allocatable :: digit(:)
-  end type long_integer
+!> mul-ops
+interface operator(*)
+  module procedure mul
+  #: for suffix in suffixes
+  module procedure mul_${suffix}$
+  #: endfor
+end interface operator(*)
 
-  !> Assignment
-  interface assignment(=)
-    #: for suffix in suffixes
-    module procedure init_${suffix}$
-    #: endfor
-  end interface assignment(=)
+!> power-op
+interface operator(**)
+  module procedure pow
+end interface operator(**)
 
-  !> Overloaded intrinsics
-  interface int
-    module procedure to_long_scal
-    module procedure to_long_vect
-  end interface int
-
-  !> Swap
-  interface swap
-    module procedure swap_long
-  end interface swap
-
-  !> Len
-  interface len
-    module procedure len_long
-  end interface len
-
-  !> rel-ops
-  #: for op, func in list(zip(rel_ops, rel_funcs))
-  interface operator(${op}$)
-    module procedure ${func}$
-    #: for suffix in suffixes
-    module procedure ${func}$_${suffix}$
-    #: endfor
-  end interface operator(${op}$) ${"\n"}$
+!> Interfaces for submodule
+interface
+  #: for suffix, declare in list(zip(suffixes, declares))
+  pure module subroutine init_${suffix}$ (val1, val2)
+    type(long_integer), intent(inout) :: val1
+    ${declare}$, intent(in) :: val2
+  end subroutine init_${suffix}$${"\n"}$
   #: endfor
 
-  !> add-ops
-  #: for op, func in list(zip(add_ops, add_funcs))
-  interface operator(${op}$)
-    module procedure ${func}$
-    #: for suffix in suffixes
-    module procedure ${func}$_${suffix}$
-    #: endfor
-  end interface operator(${op}$) ${"\n"}$
+  elemental module function to_long_scal(val, kind) result(ret)
+    class(*), intent(in) :: val
+    character(*), intent(in) :: kind
+    type(long_integer) :: ret
+  end function to_long_scal
+
+  pure module function to_long_vect(vals, kind) result(ret)
+    class(*), intent(in) :: vals(:)
+    character(*), intent(in) :: kind
+    type(long_integer) :: ret
+  end function to_long_vect
+
+  pure module subroutine swap_long(val1, val2)
+    type(long_integer), intent(inout) :: val1, val2
+  end subroutine swap_long
+
+  elemental module function len_long(val1) result(ret)
+    type(long_integer), intent(in) :: val1
+    integer(i32) :: ret
+  end function len_long
+
+  #: for func in rel_funcs
+  elemental module logical function ${func}$ (val1, val2)
+  type(long_integer), intent(in) :: val1, val2
+  end function ${func}$${"\n"}$
   #: endfor
 
-  !> mul-ops
-  interface operator(*)
-    module procedure mul
-    #: for suffix in suffixes
-    module procedure mul_${suffix}$
-    #: endfor
-  end interface operator(*)
+  #: for func in rel_funcs
+  #: for suffix, declare in list(zip(suffixes, declares))
+  pure module function ${func}$_${suffix}$ (val1, val2) result(ret)
+    type(long_integer), intent(in) :: val1
+    ${declare}$, intent(in) :: val2
+    logical :: ret
+  end function ${func}$_${suffix}$${"\n"}$
+  #: endfor
+  #: endfor
 
-  !> power-op
-  interface operator(**)
-    module procedure pow
-  end interface operator(**)
+  #: for func in add_funcs
+  elemental module function ${func}$ (val1, val2) result(ret)
+  type(long_integer), intent(in) :: val1, val2
+  type(long_integer) :: ret
+end function ${func}$${"\n"}$
+#: endfor
 
-  !> Interfaces for submodule
-  interface
-    #: for suffix, declare in list(zip(suffixes, declares))
-    pure module subroutine init_${suffix}$(val1, val2)
-      type(long_integer), intent(inout) :: val1
-      ${declare}$, intent(in) :: val2
-    end subroutine init_${suffix}$ ${"\n"}$
-    #: endfor
+elemental module function mul(val1, val2) result(ret)
+  type(long_integer), intent(in) :: val1, val2
+  type(long_integer) :: ret
+end function mul
 
-    elemental module function to_long_scal(val, kind) result(ret)
-      class(*), intent(in) :: val
-      character(*), intent(in) :: kind
-      type(long_integer) :: ret
-    end function to_long_scal
+elemental recursive module function pow(val1, val2) result(ret)
+  type(long_integer), intent(in) :: val1
+  integer(i32), intent(in) :: val2
+  type(long_integer) :: ret
+end function pow
 
-    pure module function to_long_vect(vals, kind) result(ret)
-      class(*), intent(in) :: vals(:)
-      character(*), intent(in) :: kind
-      type(long_integer) :: ret
-    end function to_long_vect
-
-    pure module subroutine swap_long(val1, val2)
-      type(long_integer), intent(inout) :: val1, val2
-    end subroutine swap_long
-
-    elemental module function len_long(val1) result(ret)
-      type(long_integer), intent(in) :: val1
-      integer(i32) :: ret
-    end function len_long
-
-    #: for func in rel_funcs
-    elemental module logical function ${func}$(val1, val2)
-      type(long_integer), intent(in) :: val1, val2
-    end function ${func}$ ${"\n"}$
-    #: endfor
-
-    #: for func in rel_funcs
-    #: for suffix, declare in list(zip(suffixes, declares))
-    pure module function ${func}$_${suffix}$(val1, val2) result(ret)
-      type(long_integer), intent(in) :: val1
-      ${declare}$, intent(in) :: val2
-      logical :: ret
-    end function ${func}$_${suffix}$ ${"\n"}$
-    #: endfor
-    #: endfor
-
-    #: for func in add_funcs
-    elemental module function ${func}$(val1, val2) result(ret)
-      type(long_integer), intent(in) :: val1, val2
-      type(long_integer) :: ret
-    end function ${func}$ ${"\n"}$
-    #: endfor
-
-    elemental module function mul(val1, val2) result(ret)
-      type(long_integer), intent(in) :: val1, val2
-      type(long_integer) :: ret
-    end function mul
-
-    elemental recursive module function pow(val1, val2) result(ret)
-      type(long_integer), intent(in) :: val1
-      integer(i32), intent(in) :: val2
-      type(long_integer) :: ret
-    end function pow
-
-    #: for func in ['add', 'sub', 'mul']
-    #: for suffix, declare in list(zip(suffixes, declares))
-    pure module function ${func}$_${suffix}$(val1, val2) result(ret)
-      type(long_integer), intent(in) :: val1
-      ${declare}$, intent(in) :: val2
-      type(long_integer) :: ret
-    end function ${func}$_${suffix}$ ${"\n"}$
-    #: endfor
-    #: endfor
-  end interface
+#: for func in ['add', 'sub', 'mul']
+#: for suffix, declare in list(zip(suffixes, declares))
+pure module function ${func}$_${suffix}$ (val1, val2) result(ret)
+  type(long_integer), intent(in) :: val1
+  ${declare}$, intent(in) :: val2
+  type(long_integer) :: ret
+end function ${func}$_${suffix}$${"\n"}$
+#: endfor
+#: endfor
+end interface
 
 end module multiprecision_module
