@@ -1,0 +1,4 @@
+{
+  "fortran.fortls.disabled": true,
+  "mesonbuild.configureOnOpen": false
+}
