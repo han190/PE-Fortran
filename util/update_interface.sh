@@ -5,5 +5,5 @@ utildir=./util/
 
 rm -rf $builddir
 mkdir $builddir
-$compiler -cpp $utildir/interface.f90 -o $builddir/interface
+$compiler -cpp $utildir/interface_generator.f90 -o $builddir/interface
 $builddir/interface
