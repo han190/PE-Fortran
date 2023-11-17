@@ -1,9 +1,9 @@
-submodule(module_interface) submodule_euler0045
+submodule(module_problem) submodule_euler0045
 implicit none
 contains
 
 module subroutine euler0045(problem)
-  type(problem_type), intent(inout) :: problem
+  class(problem_type), intent(inout) :: problem
   integer(int64) :: x, y
 
   call hexagonal_pentagonal(3_int64, x, y)

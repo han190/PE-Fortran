@@ -1,9 +1,9 @@
-submodule(module_interface) submodule_euler0042
+submodule(module_problem) submodule_euler0042
 implicit none
 contains
 
 module subroutine euler0042(problem)
-  type(problem_type), intent(inout) :: problem
+  class(problem_type), intent(inout) :: problem
   integer(int64), parameter :: score_max = 26*50
   logical :: is_triangular(score_max)
   character(len=:), allocatable :: names(:)

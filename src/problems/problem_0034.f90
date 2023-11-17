@@ -1,9 +1,9 @@
-submodule(module_interface) submodule_euler0034
+submodule(module_problem) submodule_euler0034
 implicit none
 contains
 
 module subroutine euler0034(problem)
-  type(problem_type), intent(inout) :: problem
+  class(problem_type), intent(inout) :: problem
   integer(int64) :: i, sln
 
   sln = 0

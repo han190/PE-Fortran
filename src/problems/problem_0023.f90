@@ -1,9 +1,9 @@
-submodule(module_interface) submodule_euler0023
+submodule(module_problem) submodule_euler0023
 implicit none
 contains
 
 module subroutine euler0023(problem)
-  type(problem_type), intent(inout) :: problem
+  class(problem_type), intent(inout) :: problem
   integer(int64), allocatable :: abundants(:)
   integer(int64), parameter :: istart = 12, iend = 28123
   integer(int64) :: i, j

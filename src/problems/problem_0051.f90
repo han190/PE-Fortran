@@ -1,9 +1,9 @@
-submodule(module_interface) submodule_euler0051
+submodule(module_problem) submodule_euler0051
 implicit none
 contains
 
 module subroutine euler0051(problem)
-  type(problem_type), intent(inout) :: problem
+  class(problem_type), intent(inout) :: problem
   type(sieve_type(len=:)), allocatable :: sieve
   integer(int64), parameter :: PRIME_START = 100000, PRIME_END = 999999
   integer(int64) :: i, j, k, s, num_primes, idx, p_knt, c_knt

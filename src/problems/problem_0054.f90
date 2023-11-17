@@ -1,4 +1,4 @@
-submodule(module_interface) submodule_euler0054
+submodule(module_problem) submodule_euler0054
 implicit none
 character(len=1), parameter :: suit_arr(4) = ['S', 'H', 'C', 'D']
 character(len=1), parameter :: value_arr(14) = [ &
@@ -6,7 +6,7 @@ character(len=1), parameter :: value_arr(14) = [ &
 contains
 
 module subroutine euler0054(problem)
-  type(problem_type), intent(inout) :: problem
+  class(problem_type), intent(inout) :: problem
   integer(int64) :: i, unit, sln
   character(len=2) :: cards(10)
 

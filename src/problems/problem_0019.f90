@@ -1,9 +1,9 @@
-submodule(module_interface) submodule_euler0019
+submodule(module_problem) submodule_euler0019
 implicit none
 contains
 
 module subroutine euler0019(problem)
-  type(problem_type), intent(inout) :: problem
+  class(problem_type), intent(inout) :: problem
   integer(int64) :: num_days(12), year, month, day_of_week, sln
 
   num_days = 30 + [1, -2, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1]

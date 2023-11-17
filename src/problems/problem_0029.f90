@@ -1,10 +1,10 @@
-submodule(module_interface) submodule_euler0029
+submodule(module_problem) submodule_euler0029
 implicit none
 integer(int64), parameter :: error = -99999
 contains
 
 module subroutine euler0029(problem)
-  type(problem_type), intent(inout) :: problem
+  class(problem_type), intent(inout) :: problem
 
   write (problem%answer, "(i20)") solve()
 end subroutine euler0029
