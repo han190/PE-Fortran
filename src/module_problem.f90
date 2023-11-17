@@ -42,11 +42,7 @@ subroutine new_problems(problems, data_dir)
   character(len=*), intent(in) :: data_dir
   integer(int64) :: i
 
-  include 'problem.inc'
-  do i = 1, size(problems)
-    if (trim(problems(i)%file) /= "") &
-      & problems(i)%file = data_dir//"/"//trim(problems(i)%file)
-  end do
+  include "problem.inc"
 end subroutine new_problems
 
 !> Solve problem
@@ -78,8 +74,7 @@ subroutine solve_problems(problems, num_trails)
   integer(int64) :: i
 
   do i = 1, size(problems)
-    if (associated(problems(i)%solve)) &
-      & call solve_problem(problems(i), num_trails)
+    call solve_problem(problems(i), num_trails)
   end do
   write (*, "(a)", advance='no') repeat(char(32), 34)//char(13)
   write (*, "(i0, 1x, 'problems solved.')") size(problems)
@@ -124,23 +119,22 @@ subroutine answer_sheet(problems, file)
     end if
   end do
 
-  format_ = "(i0, t6, a, t50, es20.4e3, 1x, a)"
+  format_ = "(i0, t6, a, t40, es20.4e3, 1x, a)"
   open (newunit=unit, file=file, action='write')
-  write (unit, "('*', t6, 'Compiler version:', 1x, a)") compiler_version()
   write (unit, "('*', t6, a)") "TC: time consuming"//new_line("(a)")
-  write (unit, "('#', t6, 'Answer', t59, 'Timespan (sec)')")
-  write (unit, "(a)") repeat('-', 72)
+  write (unit, "('#', t6, 'Answer', t49, 'Timespan (sec)')")
+  write (unit, "(a)") repeat('-', 62)
   do i = 1, size(problems)
     difficulty = relative_difficulty(problems(i)%time_span, time_min, time_max)
     label = merge(TC, repeat(space, len(TC)), difficulty < 2)
     write (unit, format_) problems(i)%index, &
       & adjustl(trim(problems(i)%answer)), problems(i)%time_span, trim(label)
   end do
-  write (unit, "(a)") repeat('-', 72)
+  write (unit, "(a)") repeat('-', 62)
   message = "Number of problems solved"
-  write (unit, "(t6, a, t50, i20)") message, num_problems
+  write (unit, "(t6, a, t40, i20)") message, num_problems
   message = "Mean time spent per problem (sec)"
-  write (unit, "(t6, a, t50, es20.4e3)") message, time_tot/num_problems
+  write (unit, "(t6, a, t40, es20.4e3)") message, time_tot/num_problems
   close (unit)
 end subroutine answer_sheet
 

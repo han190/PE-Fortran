@@ -1,3 +1,4 @@
+!> Automatically generated.
 module subroutine euler0001(problem)
   class(problem_type), intent(inout) :: problem
 end subroutine euler0001

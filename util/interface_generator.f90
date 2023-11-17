@@ -23,6 +23,7 @@ datasets = read_numbers(sel_datasets, 12)
 
 !> Generate interfaces
 open (newunit=unit, file=src//"interface.inc")
+write (unit, "(a)") "!> Automatically generated."
 do i = 1, size(problems)
   write (unit, "(a, i4.4, a)") "module subroutine euler", problems(i), "(problem)"
   write (unit, "(2x, a)") "class(problem_type), intent(inout) :: problem"
@@ -32,13 +33,14 @@ close (unit)
 
 !> Generate pointer associations
 open (newunit=unit, file=src//"problem.inc")
+write (unit, "(a)") "!> Automatically generated."
 write (unit, "(a, i0, a)") "allocate (problems(", size(problems), "))"
 do i = 1, size(problems)
   write (unit, "(a, i0, a, i4.4)") "problems(", i, ")%solve => euler", problems(i)
   write (unit, "(a, i0, a, i0)") "problems(", i, ")%index = ", problems(i)
   if (any(problems(i) == datasets)) &
     & write (unit, "(a, i0, a, i4.4, a)") &
-    & "problems(", i, ")%file = 'data_", problems(i), ".txt'"
+    & "problems(", i, ")%file = data_dir//'/'//'data_", problems(i), ".txt'"
 end do
 close (unit)
 
