@@ -143,20 +143,22 @@ end function relative_difficulty
 subroutine answer_sheet(problems, file)
   type(problem_type), intent(in) :: problems(:)
   character(len=*), intent(in) :: file
-  integer(int64) :: unit, i, difficulty
+  integer(int64) :: unit, i, difficulty, num_problems
   character(:), allocatable :: format_
   real(real64) :: time_min, time_max, time_tot
   character(len=*), parameter :: TC = "TC", space = char(32)
-  character(len=:), allocatable :: label
+  character(len=:), allocatable :: label, message
 
   time_min = huge(0.0_real64)
   time_max = tiny(0.0_real64)
-  time_tot = 0.0_real64
+  time_tot = 0.0
+  num_problems = 0
   do i = 1, size(problems)
     if (.not. trim(problems(i)%answer) == "") then
       time_min = min(problems(i)%time_span, time_min)
       time_max = max(problems(i)%time_span, time_max)
       time_tot = time_tot + problems(i)%time_span
+      num_problems = num_problems + 1
     end if
   end do
 
@@ -173,8 +175,10 @@ subroutine answer_sheet(problems, file)
       & adjustl(trim(problems(i)%answer)), problems(i)%time_span, trim(label)
   end do
   write (unit, "(a)") repeat('-', 92)
-  write (unit, "(t5, a, t70, i20)") "Number of problesm solved", size(problems)
-  write (unit, "(t5, a, t70, es20.4e3)") "Mean time spent per problem (sec)", time_tot/size(problems)
+  message = "Number of problems solved"
+  write (unit, "(t5, a, t70, i20)") message, num_problems
+  message = "Mean time spent per problem (sec)"
+  write (unit, "(t5, a, t70, es20.4e3)") message, time_tot/num_problems
   close (unit)
 end subroutine answer_sheet
 
