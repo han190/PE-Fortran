@@ -6,16 +6,16 @@ module subroutine euler0061(problem)
   type(problem_type), intent(inout) :: problem
   type(jagged_type) :: polygonals(3:8)
   type(jagged_type), allocatable :: array(:)
-  type(permutation_type(n=6)) :: permutation
+  type(permutation_type) :: permutation
   integer(int64) :: i, ordered(6)
 
   ordered = [(i, i=3, 8)]
-  call initialize(permutation)
+  permutation = new_permutation(n=6_int64)
   call get_polygonals(polygonals)
 
   outer: do while (permutable(permutation))
     do i = 1, 6
-      associate (indices => ordered(permutation%indices))
+      associate (indices => ordered(index(permutation)))
         call get_cyclic(array, polygonals(indices(i))%array)
       end associate
     end do

@@ -7,7 +7,7 @@ implicit none
 
 character(*), parameter :: data_dir = "data"
 character(*), parameter :: answer = "answer.log"
-integer(int64), parameter :: num_trails = 10
+integer(int64), parameter :: num_trails = 1
 type(problem_type), allocatable :: problems(:)
 type(solution_type), allocatable :: solutions(:)
 

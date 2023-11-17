@@ -7,7 +7,7 @@ module subroutine euler0059(problem)
   integer(int64), parameter :: n = 26, k = 3
   integer(int64), allocatable :: encrypted(:), decrypted(:)
   integer(int64) :: letters(n), i
-  type(permutation_type(n=n, k=k)) :: permutation
+  type(permutation_type) :: permutation
   integer(int64) :: unit, iostat
 
   allocate (encrypted(2000))
@@ -20,9 +20,9 @@ module subroutine euler0059(problem)
   letters = [(i, i=97, 122)]
   allocate (decrypted(size(encrypted)))
 
-  call initialize(permutation)
+  permutation = new_permutation(n=n, k=k)
   do while (permutable(permutation))
-    associate (key => (letters(permutation%indices)))
+    associate (key => (letters(index(permutation))))
       call decrypt(encrypted, key, decrypted)
     end associate
     if (is_english(decrypted)) exit

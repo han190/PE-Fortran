@@ -172,9 +172,6 @@ end subroutine euler0058
 module subroutine euler0059(problem)
   type(problem_type), intent(inout) :: problem
 end subroutine euler0059
-module subroutine euler0060(problem)
-  type(problem_type), intent(inout) :: problem
-end subroutine euler0060
 module subroutine euler0061(problem)
   type(problem_type), intent(inout) :: problem
 end subroutine euler0061
