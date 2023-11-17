@@ -10,16 +10,16 @@ public :: problem_type
 public :: new_problems
 public :: solve_problem
 public :: solve_problems
-public :: answer_sheet
+public :: print_problems
 private
 
 !> Problem type
 type :: problem_type
+  procedure(solve_procedure), pointer :: solve => null()
   integer(int64) :: index = 0
   character(len=:), allocatable :: file
   real(real64) :: time_span = 0.0
   character(len=20) :: answer = ""
-  procedure(solve_procedure), pointer :: solve => null()
 end type problem_type
 
 !> Interface of a solution procedure
@@ -30,6 +30,7 @@ abstract interface
   end subroutine solve_procedure
 end interface
 
+!> Interface to submodules
 interface
   include "interface.inc"
 end interface
@@ -37,13 +38,12 @@ end interface
 contains
 
 !> Construct problem arrays
-subroutine new_problems(problems, data_dir)
-  type(problem_type), allocatable, intent(inout) :: problems(:)
+function new_problems(data_dir) result(problems)
   character(len=*), intent(in) :: data_dir
-  integer(int64) :: i
+  type(problem_type), allocatable :: problems(:)
 
   include "problem.inc"
-end subroutine new_problems
+end function new_problems
 
 !> Solve problem
 subroutine solve_problem(problem, num_trails)
@@ -88,16 +88,13 @@ elemental function relative_difficulty(time_span, time_min, time_max) result(ret
 
   norm = (time_span - time_min)/(time_max - time_min)
   do i = 1, 5
-    if (norm >= 10.**(-i)) then
-      ret = i
-      return
-    end if
+    if (norm >= 10.**(-i)) exit
   end do
-  ret = 6
+  ret = i
 end function relative_difficulty
 
 !> Write answers to file
-subroutine answer_sheet(problems, file)
+subroutine print_problems(problems, file)
   type(problem_type), intent(in) :: problems(:)
   character(len=*), intent(in) :: file
   integer(int64) :: unit, i, difficulty, num_problems
@@ -121,7 +118,6 @@ subroutine answer_sheet(problems, file)
 
   format_ = "(i0, t6, a, t40, es20.4e3, 1x, a)"
   open (newunit=unit, file=file, action='write')
-  write (unit, "('*', t6, a)") "TC: time consuming"//new_line("(a)")
   write (unit, "('#', t6, 'Answer', t49, 'Timespan (sec)')")
   write (unit, "(a)") repeat('-', 62)
   do i = 1, size(problems)
@@ -132,10 +128,11 @@ subroutine answer_sheet(problems, file)
   end do
   write (unit, "(a)") repeat('-', 62)
   message = "Number of problems solved"
-  write (unit, "(t6, a, t40, i20)") message, num_problems
+  write (unit, "('*', t6, a, t40, i20)") message, num_problems
   message = "Mean time spent per problem (sec)"
-  write (unit, "(t6, a, t40, es20.4e3)") message, time_tot/num_problems
+  write (unit, "('*', t6, a, t40, es20.4e3)") message, time_tot/num_problems
+  write (unit, "('*', t6, a)") "TC: time consuming"
   close (unit)
-end subroutine answer_sheet
+end subroutine print_problems
 
 end module module_problem
