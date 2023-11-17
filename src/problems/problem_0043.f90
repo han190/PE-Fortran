@@ -11,7 +11,7 @@ module subroutine euler0043(problem)
   call initialize(permutation)
   sln = 0
   do while (permutable(permutation))
-    array = permutation%indices - 1
+    array = index(permutation) - 1
     tmp = to_integer(array)
     if (divisible(tmp)) sln = sln + tmp
   end do

@@ -163,9 +163,8 @@ pure subroutine permute(permutation)
 end subroutine permute
 
 !> Current permutation
-pure function current_permutation(permutation, option) result(ret)
+pure function current_permutation(permutation) result(ret)
   type(permutation_type(n=*, k=*)), intent(in) :: permutation
-  character(len=*), intent(in), optional :: option
   integer(int64), allocatable :: ret(:)
 
   ret = permutation%indices
