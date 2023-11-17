@@ -5,14 +5,13 @@ contains
 
 module subroutine euler0043(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int64) :: i, sln, tmp, array(10)
+  integer(int64) :: sln, tmp
   type(permutation_type) :: permutation
 
   permutation = new_permutation(n=10_int64)
   sln = 0
   do while (permutable(permutation))
-    array = index(permutation) - 1
-    tmp = to_integer(array)
+    tmp = to_integer(index(permutation) - 1)
     if (divisible(tmp)) sln = sln + tmp
   end do
   write (problem%answer, "(i20)") sln
