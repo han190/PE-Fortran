@@ -1,4 +1,4 @@
-allocate (solutions(60))
+allocate (solutions(61))
 solutions(1)%solve => euler0001
 solutions(1)%index = 1
 solutions(2)%solve => euler0002
@@ -107,15 +107,17 @@ solutions(53)%solve => euler0053
 solutions(53)%index = 53
 solutions(54)%solve => euler0054
 solutions(54)%index = 54
-solutions(55)%solve => euler0057
-solutions(55)%index = 57
-solutions(56)%solve => euler0058
-solutions(56)%index = 58
-solutions(57)%solve => euler0059
-solutions(57)%index = 59
-solutions(58)%solve => euler0060
-solutions(58)%index = 60
-solutions(59)%solve => euler0061
-solutions(59)%index = 61
-solutions(60)%solve => euler0063
-solutions(60)%index = 63
+solutions(55)%solve => euler0055
+solutions(55)%index = 55
+solutions(56)%solve => euler0057
+solutions(56)%index = 57
+solutions(57)%solve => euler0058
+solutions(57)%index = 58
+solutions(58)%solve => euler0059
+solutions(58)%index = 59
+solutions(59)%solve => euler0060
+solutions(59)%index = 60
+solutions(60)%solve => euler0061
+solutions(60)%index = 61
+solutions(61)%solve => euler0063
+solutions(61)%index = 63

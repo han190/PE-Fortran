@@ -208,28 +208,36 @@ elemental logical function is_palindromic_int64(n)
 end function is_palindromic_int64
 
 !> Carry
-pure subroutine carry_int32(digs)
-  integer(int32), contiguous, intent(inout) :: digs(:)
-  integer(int32) :: tmp1(size(digs)), tmp2(size(digs))
+pure function carry_int32(digs) result(ret)
+  integer(int32), contiguous, intent(in) :: digs(:)
+  integer(int32), allocatable :: ret(:)
+  integer(int32), allocatable :: tmp(:)
 
-  do while (any(digs >= 10))
-    tmp1 = merge(1, 0, digs >= 10)
-    tmp2 = merge(digs - 10, digs, digs >= 10)
-    digs = tmp2 + cshift(tmp1, 1)
+  ret = [[0], digs]
+  allocate (tmp(size(ret)))
+
+  do while (any(ret >= 10))
+    tmp = merge(1, 0, ret >= 10)
+    where (ret >= 10) ret = ret - 10
+    ret = ret + cshift(tmp, 1)
   end do
-end subroutine carry_int32
+end function carry_int32
 
 !> Carry
-pure subroutine carry_int64(digs)
-  integer(int64), contiguous, intent(inout) :: digs(:)
-  integer(int64) :: tmp1(size(digs)), tmp2(size(digs))
+pure function carry_int64(digs) result(ret)
+  integer(int64), contiguous, intent(in) :: digs(:)
+  integer(int64), allocatable :: ret(:)
+  integer(int64), allocatable :: tmp(:)
 
-  do while (any(digs >= 10))
-    tmp1 = merge(1, 0, digs >= 10)
-    tmp2 = merge(digs - 10, digs, digs >= 10)
-    digs = tmp2 + cshift(tmp1, 1)
+  ret = [[0_int64], digs]
+  allocate (tmp(size(ret)))
+
+  do while (any(ret >= 10))
+    tmp = merge(1, 0, ret >= 10)
+    where (ret >= 10) ret = ret - 10
+    ret = ret + cshift(tmp, 1)
   end do
-end subroutine carry_int64
+end function carry_int64
 
 pure function to_array_int32(n) result(ret)
   integer(int32), intent(in) :: n

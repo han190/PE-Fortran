@@ -1,10 +1,7 @@
 module module_interface
 
-use :: module_constant
-use :: module_utility
-use :: module_prime
+use :: euler_toolkit
 use :: module_problem
-use :: module_permutation
 implicit none
 
 public :: new_solutions

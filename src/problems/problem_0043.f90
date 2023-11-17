@@ -6,7 +6,7 @@ contains
 module subroutine euler0043(problem)
   type(problem_type), intent(inout) :: problem
   integer(int64) :: i, sln, tmp, array(10)
-  type(permutation_type(n=10, k=10)) :: permutation
+  type(permutation_type(n=10)) :: permutation
 
   call initialize(permutation)
   sln = 0

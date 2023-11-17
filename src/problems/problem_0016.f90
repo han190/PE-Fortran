@@ -20,8 +20,9 @@ end subroutine euler0016
 pure subroutine multiply_2(long_integer)
   integer(int32), contiguous, intent(inout) :: long_integer(:)
 
-  long_integer = long_integer*2
-  call carry(long_integer)
+  associate (tmp => carry(long_integer*2))
+    long_integer = tmp(2:)
+  end associate
 end subroutine multiply_2
 
 end submodule submodule_euler0016

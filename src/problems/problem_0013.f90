@@ -16,7 +16,7 @@ module subroutine euler0013(problem)
   n = size(tmp)
   do i = 1, 100
     tmp(n - 49:n) = tmp(n - 49:n) + digs(:, i)
-    call carry(tmp)
+    tmp = carry(tmp)
   end do
 
   do i = 1, n

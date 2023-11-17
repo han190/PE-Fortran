@@ -1,7 +1,7 @@
 module module_problem
 
-use :: module_constant
-use :: iso_fortran_env, only: compiler_version, compiler_options
+use :: iso_fortran_env, only: int32, int64, &
+  & real64, compiler_version, compiler_options
 implicit none
 
 public :: problem_type
@@ -22,7 +22,7 @@ type :: problem_type
   character(len=20) :: answer = ""
 end type problem_type
 
-!> Doing so we could have an array of procedure pointers
+!> An array of procedure pointers
 type :: solution_type
   integer(int32) :: index = 0
   procedure(solve_procedure), nopass, pointer :: solve => null()

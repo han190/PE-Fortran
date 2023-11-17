@@ -1,6 +1,6 @@
 module module_permutation
 
-use :: module_constant
+use :: iso_fortran_env, only: int32, int64
 implicit none
 
 public :: permutation_type
@@ -13,7 +13,7 @@ private
 !> Permutation type
 type :: permutation_type(n, k, kind)
   integer, len :: n
-  integer, len :: k
+  integer, len :: k = 0_int32
   integer, kind :: kind = int32
   integer(kind=kind) :: indices(k)
   integer(kind=kind) :: pool(n)
@@ -45,16 +45,20 @@ contains
 pure subroutine initialize_int32(permutation, start)
   type(permutation_type(n=*, k=*, kind=int32)), intent(inout) :: permutation
   integer(int32), intent(in), optional :: start(:)
-  integer(int32) :: i, tmp
+  integer(int32) :: i, k, tmp
 
-  if (permutation%k > permutation%n) &
-    & error stop "[initialize_int32] k > n!"
+  if (permutation%k > permutation%n .or. permutation%k < 0) then
+    error stop "[initialize_int32] Invalid k."
+  else if (permutation%n < 0) then
+    error stop "[initialize_int32] Invalid n."
+  end if
+
   if (.not. present(start)) then
     do i = 1, permutation%n
       permutation%pool(i) = i
     end do
-
-    do i = 1, permutation%k
+    k = merge(permutation%n, permutation%k, permutation%k == 0)
+    do i = 1, k
       permutation%indices(i) = i
       permutation%cycles(i) = permutation%n - i + 1
     end do
@@ -66,16 +70,20 @@ end subroutine initialize_int32
 pure subroutine initialize_int64(permutation, start)
   type(permutation_type(n=*, k=*, kind=int64)), intent(inout) :: permutation
   integer(int64), intent(in), optional :: start(:)
-  integer(int64) :: i
+  integer(int64) :: i, k
 
-  if (permutation%k > permutation%n) &
-    & error stop "[initialize_int64] k > n!"
+  if (permutation%k > permutation%n .or. permutation%k < 0) then
+    error stop "[initialize_int32] Invalid k."
+  else if (permutation%n < 0) then
+    error stop "[initialize_int32] Invalid n."
+  end if
+
   if (.not. present(start)) then
     do i = 1, permutation%n
       permutation%pool(i) = i
     end do
-
-    do i = 1, permutation%k
+    k = merge(permutation%n, permutation%k, permutation%k == 0)
+    do i = 1, k
       permutation%indices(i) = i
       permutation%cycles(i) = permutation%n - i + 1
     end do
@@ -134,17 +142,17 @@ pure subroutine set_permutation_int32(permutation, indices)
   integer(int32), intent(in) :: indices(:)
   integer(int32), allocatable :: pool(:), ordered(:)
   logical, allocatable :: selected(:)
-  integer(int32) :: i
+  integer(int32) :: i, k
 
-  if (size(indices) /= permutation%k) &
-    & error stop "[set_permutation_int32] Invalid indices size."
+  k = merge(permutation%n, permutation%k, permutation%k == 0)
+  if (size(indices) /= k) error stop "[set_permutation_int32] Invalid indices size."
   permutation%indices = indices
   ordered = [(i, i=1, permutation%n)]
   permutation%pool = reorder_int32(ordered, indices)
-  if (size(permutation%cycles) /= permutation%k) &
+  if (size(permutation%cycles) /= k) &
     & error stop "[set_permutation_int32] Invalid cycles size."
   permutation%cycles(1) = permutation%n - permutation%indices(1) + 1
-  do i = 2, permutation%k
+  do i = 2, k
     pool = reorder_int32(ordered, permutation%indices(1:i - 1))
     permutation%cycles(i) = permutation%n - &
       & findloc(pool, permutation%indices(i), dim=1) + 1
@@ -157,17 +165,17 @@ pure subroutine set_permutation_int64(permutation, indices)
   integer(int64), intent(in) :: indices(:)
   integer(int64), allocatable :: pool(:), ordered(:)
   logical, allocatable :: selected(:)
-  integer(int64) :: i
+  integer(int64) :: i, k
 
-  if (size(indices) /= permutation%k) &
-    & error stop "[set_permutation_int64] Invalid indices size."
+  k = merge(permutation%n, permutation%k, permutation%k == 0)
+  if (size(indices) /= k) error stop "[set_permutation_int64] Invalid indices size."
   permutation%indices = indices
   ordered = [(i, i=1, permutation%n)]
   permutation%pool = reorder_int64(ordered, indices)
-  if (size(permutation%cycles) /= permutation%k) &
+  if (size(permutation%cycles) /= k) &
     & error stop "[set_permutation_int64] Invalid cycles size."
   permutation%cycles(1) = permutation%n - permutation%indices(1) + 1
-  do i = 2, permutation%k
+  do i = 2, k
     pool = reorder_int64(ordered, permutation%indices(1:i - 1))
     permutation%cycles(i) = permutation%n - &
       & findloc(pool, permutation%indices(i), dim=1) + 1
@@ -213,9 +221,10 @@ end function permutable_int64
 !> Permute
 pure subroutine permute_int32(permutation)
   type(permutation_type(n=*, k=*, kind=int32)), intent(inout) :: permutation
-  integer(int32) :: i, j, tmp
+  integer(int32) :: i, j, k, tmp
 
-  do i = permutation%k, 1, -1
+  k = merge(permutation%n, permutation%k, permutation%k == 0)
+  do i = k, 1, -1
     permutation%cycles(i) = permutation%cycles(i) - 1
     if (permutation%cycles(i) == 0) then
       permutation%pool(i:) = [permutation%pool(i + 1:), permutation%pool(i)]
@@ -223,7 +232,7 @@ pure subroutine permute_int32(permutation)
     else
       j = permutation%cycles(i)
       call swap_int32(permutation%pool(i), permutation%pool(permutation%n - j + 1))
-      permutation%indices = permutation%pool(:permutation%k)
+      permutation%indices = permutation%pool(:k)
       exit
     end if
   end do
@@ -232,9 +241,10 @@ end subroutine permute_int32
 !> Permute
 pure subroutine permute_int64(permutation)
   type(permutation_type(n=*, k=*, kind=int64)), intent(inout) :: permutation
-  integer(int64) :: i, j, tmp
+  integer(int64) :: i, j, k, tmp
 
-  do i = permutation%k, 1, -1
+  k = merge(permutation%n, permutation%k, permutation%k == 0)
+  do i = k, 1, -1
     permutation%cycles(i) = permutation%cycles(i) - 1
     if (permutation%cycles(i) == 0) then
       permutation%pool(i:) = [permutation%pool(i + 1:), permutation%pool(i)]
@@ -242,7 +252,7 @@ pure subroutine permute_int64(permutation)
     else
       j = permutation%cycles(i)
       call swap_int64(permutation%pool(i), permutation%pool(permutation%n - j + 1))
-      permutation%indices = permutation%pool(:permutation%k)
+      permutation%indices = permutation%pool(:k)
       exit
     end if
   end do
@@ -278,9 +288,14 @@ subroutine write_formatted_int32(permutation, unit, iotype, v_list, iostat, ioms
   if (iotype == "DT" .or. iotype == "LISTDIRECTED") then
     select case (trim(iomsg))
     case ("Meta")
-      fmt = "(i0, '-Permutation of ', i0, ' (int32)')"
-      write (unit, fmt, iostat=iostat) &
-        & permutation%k, permutation%n
+      if (permutation%k == 0) then
+        fmt = "('Permutation of ', i0, ' (int32)')"
+        write (unit, fmt, iostat=iostat) permutation%n
+      else
+        fmt = "(i0, '-Permutation of ', i0, ' (int32)')"
+        write (unit, fmt, iostat=iostat) &
+          & permutation%k, permutation%n
+      end if
     case ("Cycles")
       allocate (character(len=100) :: n)
       write (n, "(i0)") size(permutation%indices) - 1
@@ -307,9 +322,14 @@ subroutine write_formatted_int64(permutation, unit, iotype, v_list, iostat, ioms
   if (iotype == "DT" .or. iotype == "LISTDIRECTED") then
     select case (trim(iomsg))
     case ("Meta")
-      fmt = "(i0, '-Permutation of ', i0, ' (int64)')"
-      write (unit, fmt, iostat=iostat) &
-        & permutation%k, permutation%n
+      if (permutation%k == 0) then
+        fmt = "('Permutation of ', i0, ' (int32)')"
+        write (unit, fmt, iostat=iostat) permutation%n
+      else
+        fmt = "(i0, '-Permutation of ', i0, ' (int32)')"
+        write (unit, fmt, iostat=iostat) &
+          & permutation%k, permutation%n
+      end if
     case ("Cycles")
       allocate (character(len=100) :: n)
       write (n, "(i0)") size(permutation%indices) - 1

@@ -6,7 +6,7 @@ module subroutine euler0061(problem)
   type(problem_type), intent(inout) :: problem
   type(jagged_type) :: polygonals(3:8)
   type(jagged_type), allocatable :: array(:)
-  type(permutation_type(n=6, k=6)) :: permutation
+  type(permutation_type(n=6)) :: permutation
   integer(int32) :: i, ordered(6)
 
   ordered = [(i, i=3, 8)]
