@@ -4,10 +4,10 @@ contains
 
 module subroutine euler0042(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), parameter :: score_max = 26*50
+  integer(int64), parameter :: score_max = 26*50
   logical :: is_triangular(score_max)
   character(len=:), allocatable :: names(:)
-  integer(int32) :: unit, iostat, i, sln
+  integer(int64) :: unit, iostat, i, sln
 
   open (newunit=unit, file=problem%file, action="read", status="old")
   allocate (character(len=50) :: names(2000))
@@ -23,17 +23,17 @@ module subroutine euler0042(problem)
   write (problem%answer, "(i20)") sln
 end subroutine euler0042
 
-pure integer(int32) function score(str)
+pure integer(int64) function score(str)
   character(len=*), intent(in) :: str
-  integer(int32) :: i
+  integer(int64) :: i
 
   score = sum([(iachar(str(i:i)) - 64, i=1, len_trim(str))])
 end function score
 
 pure subroutine triangular_number(n, is_triangular)
-  integer(int32), intent(in) :: n
+  integer(int64), intent(in) :: n
   logical, intent(out) :: is_triangular(n)
-  integer(int32) :: i
+  integer(int64) :: i
 
   is_triangular = .false.
   i = 1

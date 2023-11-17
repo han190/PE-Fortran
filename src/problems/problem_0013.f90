@@ -4,9 +4,9 @@ contains
 
 module subroutine euler0013(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32) :: sln(10)
-  integer(int32) :: digs(50, 100), tmp(150), unit
-  integer(int32) :: i, n
+  integer(int64) :: sln(10)
+  integer(int64) :: digs(50, 100), tmp(150), unit
+  integer(int64) :: i, n
 
   open (newunit=unit, file=problem%file, status="old", action="read")
   read (unit, "(50(i1))") digs
@@ -16,7 +16,9 @@ module subroutine euler0013(problem)
   n = size(tmp)
   do i = 1, 100
     tmp(n - 49:n) = tmp(n - 49:n) + digs(:, i)
-    tmp = carry(tmp)
+    associate (tmp_ => carry(tmp))
+      tmp = tmp_(2:)
+    end associate
   end do
 
   do i = 1, n

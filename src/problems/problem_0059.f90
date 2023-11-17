@@ -4,11 +4,11 @@ contains
 
 module subroutine euler0059(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), parameter :: n = 26, k = 3
-  integer(int32), allocatable :: encrypted(:), decrypted(:)
-  integer(int32) :: letters(n), i
+  integer(int64), parameter :: n = 26, k = 3
+  integer(int64), allocatable :: encrypted(:), decrypted(:)
+  integer(int64) :: letters(n), i
   type(permutation_type(n=n, k=k)) :: permutation
-  integer(int32) :: unit, iostat
+  integer(int64) :: unit, iostat
 
   allocate (encrypted(2000))
   encrypted = -1
@@ -31,9 +31,9 @@ module subroutine euler0059(problem)
 end subroutine euler0059
 
 pure subroutine decrypt(encrypted, key, decrypted)
-  integer(int32), intent(in) :: encrypted(:), key(:)
-  integer(int32), intent(out) :: decrypted(:)
-  integer(int32) :: i, k
+  integer(int64), intent(in) :: encrypted(:), key(:)
+  integer(int64), intent(out) :: decrypted(:)
+  integer(int64) :: i, k
 
   do i = 1, size(encrypted)
     k = mod(i, 3)
@@ -43,10 +43,10 @@ pure subroutine decrypt(encrypted, key, decrypted)
 end subroutine decrypt
 
 pure function is_english(decrypted) result(ret)
-  integer(int32), intent(in) :: decrypted(:)
+  integer(int64), intent(in) :: decrypted(:)
   logical :: ret
   character(len=1) :: check_(8)
-  integer(int32) :: i, knt(8)
+  integer(int64) :: i, knt(8)
   logical :: english_features
 
   check_ = ["e", "t", "a", "o", "i", "n", "s", "h"]

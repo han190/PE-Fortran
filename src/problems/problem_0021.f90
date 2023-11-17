@@ -4,8 +4,8 @@ contains
 
 module subroutine euler0021(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), parameter :: n = 10000
-  integer(int32) :: i, sln
+  integer(int64), parameter :: n = 10000
+  integer(int64) :: i, sln
 
   sln = 0
   do i = 1, n
@@ -16,9 +16,9 @@ module subroutine euler0021(problem)
 end subroutine euler0021
 
 elemental function sum_divisors(n) result(ret)
-  integer(int32), intent(in) :: n
-  integer(int32) :: ret
-  integer(int32) :: i
+  integer(int64), intent(in) :: n
+  integer(int64) :: ret
+  integer(int64) :: i
 
   ret = 1
   do i = 2, sqrt(n)

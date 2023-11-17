@@ -7,7 +7,7 @@ module subroutine euler0061(problem)
   type(jagged_type) :: polygonals(3:8)
   type(jagged_type), allocatable :: array(:)
   type(permutation_type(n=6)) :: permutation
-  integer(int32) :: i, ordered(6)
+  integer(int64) :: i, ordered(6)
 
   ordered = [(i, i=3, 8)]
   call initialize(permutation)
@@ -32,16 +32,16 @@ module subroutine euler0061(problem)
 end subroutine euler0061
 
 pure logical function ouroboric(x)
-  integer(int32), intent(in) :: x(:)
+  integer(int64), intent(in) :: x(:)
 
   ouroboric = x(1)/100 == mod(x(size(x)), 100)
 end function ouroboric
 
 pure subroutine get_cyclic(x, y)
   type(jagged_type), allocatable, intent(inout) :: x(:)
-  integer(int32), intent(in) :: y(:)
+  integer(int64), intent(in) :: y(:)
   type(jagged_type) :: tmp(99)
-  integer(int32) :: i, j, k, s
+  integer(int64) :: i, j, k, s
 
   if (.not. allocated(x)) then
     allocate (x(size(y)))
@@ -73,8 +73,8 @@ end subroutine get_cyclic
 
 pure subroutine get_polygonals(p)
   type(jagged_type), intent(out) :: p(3:8)
-  integer(int32) :: i, j
-  integer(int32), parameter :: i_ = 1000, f_ = 9999
+  integer(int64) :: i, j
+  integer(int64), parameter :: i_ = 1000, f_ = 9999
 
   do i = 3, 8
     associate (mask_ => ([(is_polygonal(i, j), j=i_, f_)]))
@@ -84,7 +84,7 @@ pure subroutine get_polygonals(p)
 end subroutine get_polygonals
 
 pure function is_polygonal(n, val) result(ret)
-  integer, intent(in) :: n, val
+  integer(int64), intent(in) :: n, val
   logical :: ret
 
   select case (n)
@@ -104,7 +104,7 @@ pure function is_polygonal(n, val) result(ret)
 end function is_polygonal
 
 pure function is_triangle(val) result(ret)
-  integer, intent(in) :: val
+  integer(int64), intent(in) :: val
   logical :: ret
 
   ret = .false.
@@ -112,7 +112,7 @@ pure function is_triangle(val) result(ret)
 end function is_triangle
 
 pure function is_square(val) result(ret)
-  integer, intent(in) :: val
+  integer(int64), intent(in) :: val
   logical :: ret
 
   ret = .false.
@@ -120,7 +120,7 @@ pure function is_square(val) result(ret)
 end function is_square
 
 pure function is_pentagonal(val) result(ret)
-  integer, intent(in) :: val
+  integer(int64), intent(in) :: val
   logical :: ret
 
   ret = .false.
@@ -128,7 +128,7 @@ pure function is_pentagonal(val) result(ret)
 end function is_pentagonal
 
 pure function is_hexaonal(val) result(ret)
-  integer, intent(in) :: val
+  integer(int64), intent(in) :: val
   logical :: ret
 
   ret = .false.
@@ -136,7 +136,7 @@ pure function is_hexaonal(val) result(ret)
 end function is_hexaonal
 
 pure function is_heptagonal(val) result(ret)
-  integer, intent(in) :: val
+  integer(int64), intent(in) :: val
   logical :: ret
 
   ret = .false.
@@ -144,7 +144,7 @@ pure function is_heptagonal(val) result(ret)
 end function is_heptagonal
 
 pure function is_octagonal(val) result(ret)
-  integer, intent(in) :: val
+  integer(int64), intent(in) :: val
   logical :: ret
 
   ret = .false.

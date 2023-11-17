@@ -4,8 +4,8 @@ contains
 
 module subroutine euler0007(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), parameter :: n = 10000
-  integer(int32) :: i, sln
+  integer(int64), parameter :: n = 10000
+  integer(int64) :: i, sln
 
   i = 0
   sln = 0

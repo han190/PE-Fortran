@@ -4,7 +4,7 @@ contains
 
 module subroutine euler0028(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32) :: i, j, sln
+  integer(int64) :: i, j, sln
 
   sln = 1
   do i = 2, 501

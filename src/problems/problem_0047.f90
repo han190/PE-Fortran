@@ -4,9 +4,9 @@ contains
 
 module subroutine euler0047(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), parameter :: n = 1000000 - 1
-  integer(int32) :: i, goal, sln
-  integer(int32), allocatable :: n_factor(:)
+  integer(int64), parameter :: n = 1000000 - 1
+  integer(int64) :: i, goal, sln
+  integer(int64), allocatable :: n_factor(:)
 
   allocate (n_factor(n + 1))
   n_factor = 0

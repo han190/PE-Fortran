@@ -8,7 +8,7 @@ module subroutine euler0060(problem)
   integer(int64), parameter :: num_concats = 1500
   logical, allocatable :: prime_check(:), concat_check(:, :)
   integer(int64), allocatable :: primes(:)
-  integer(int32), allocatable :: indices(:)
+  integer(int64), allocatable :: indices(:)
   type(permutation_type(n=:, k=:)), allocatable :: permutation
   integer(int64) :: i, k, pivot(2)
   logical :: checked, succeed
@@ -30,7 +30,7 @@ module subroutine euler0060(problem)
   ! indices = [(i, i=2, 1 + k)]
   ! pivot = [1, 2]
 
-  ! permutation = new_permutation(int(num_concats, int32), int(k, int32))
+  ! permutation = new_permutation(int(num_concats, int64), int(k, int64))
   ! call set_permutation(permutation, indices)
 
   ! if (.not. allocated(concat_check)) then
@@ -77,14 +77,14 @@ end subroutine euler0060
 ! subroutine fast_permute(permutation, pivot)
 !   type(permutation_type), intent(inout) :: permutation
 !   integer(int64), intent(in) :: pivot(:)
-!   integer(int32), allocatable :: new_indices(:)
+!   integer(int64), allocatable :: new_indices(:)
 !   integer(int64) :: i
 
 !   associate (p => maxval(pivot), k => permutation%k, &
 !     & indices => permutation%indices)
 !     ! if (p /= 0 .and. p /= k .and. indices(k) /= permutation%n) then
 !       new_indices = indices
-!       new_indices(p:) = [(int(indices(p) + i, int32), i=1, k - p + 1)]
+!       new_indices(p:) = [(int(indices(p) + i, int64), i=1, k - p + 1)]
 !       call set_permutation(permutation, new_indices)
 !     ! else
 !     !   call permute(permutation)

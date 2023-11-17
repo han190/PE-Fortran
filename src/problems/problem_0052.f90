@@ -4,7 +4,7 @@ contains
 
 module subroutine euler0052(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32) :: i, j
+  integer(int64) :: i, j
   logical :: array(0:9), array_temp(0:9)
 
   i = 1
@@ -24,7 +24,7 @@ module subroutine euler0052(problem)
 end subroutine euler0052
 
 pure subroutine digits_in_use(n, array)
-  integer(int32), intent(in) :: n
+  integer(int64), intent(in) :: n
   logical, intent(out) :: array(0:9)
 
   array = .false.

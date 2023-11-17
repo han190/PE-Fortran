@@ -5,12 +5,12 @@ contains
 module subroutine euler0012(problem)
   type(problem_type), intent(inout) :: problem
   type(sieve_type(len=:)), allocatable :: sieve
-  integer(int32), pointer :: primes(:) => null()
-  integer(int32) :: i, sln
+  integer(int64), allocatable :: primes(:)
+  integer(int64) :: i, sln
 
   allocate (sieve_type(len=50000) :: sieve)
   call sift(sieve)
-  primes => pack(sieve)
+  primes = pack(sieve)
   i = 0
   sln = 0
 
@@ -20,7 +20,6 @@ module subroutine euler0012(problem)
     if (num_divisors(sln, primes) > 500) exit
   end do
   write (problem%answer, "(i20)") sln
-  nullify (primes)
 end subroutine euler0012
 
 end submodule submodule_euler0012

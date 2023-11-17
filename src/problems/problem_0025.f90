@@ -5,7 +5,7 @@ contains
 module subroutine euler0025(problem)
   type(problem_type), intent(inout) :: problem
   real(real64) :: phi
-  integer(int32) :: sln
+  integer(int64) :: sln
 
   !> Fn = round(phi**n/sqrt(5)), Solve for num_digits(Fn) = 1000
   phi = 0.5*(1.0 + sqrt(5.0_real64))

@@ -4,11 +4,12 @@ contains
 
 module subroutine euler0049(problem)
   type(problem_type), intent(inout) :: problem
-  type(sieve_type(len=10000)) :: sieve
-  integer(int32), parameter :: by = 3330
-  integer(int32) :: i
+  type(sieve_type(len=:)), allocatable :: sieve
+  integer(int64), parameter :: by = 3330
+  integer(int64) :: i
   logical, pointer :: check(:) => null()
 
+  allocate (sieve_type(len=10000) :: sieve)
   call sift(sieve, check=check)
   do i = 9973, 7661, -1
     associate (a => i, b => i - by, c => i - by*2)
@@ -20,19 +21,19 @@ module subroutine euler0049(problem)
   nullify (check)
 end subroutine euler0049
 
-pure integer(int32) function sort(n)
-  integer(int32), intent(in) :: n
-  integer(int32), allocatable :: array(:)
+pure integer(int64) function sort(n)
+  integer(int64), intent(in) :: n
+  integer(int64), allocatable :: array(:)
 
   array = to_array(n)
-  call quicksort(array, 1, size(array))
+  call quicksort(array, 1_int64, size(array, kind=int64))
   sort = to_integer(array)
 end function sort
 
 pure recursive subroutine quicksort(arr, low, high)
-  integer(int32), intent(inout) :: arr(:)
-  integer, intent(in) :: low, high
-  integer :: pivot_loc
+  integer(int64), intent(inout) :: arr(:)
+  integer(int64), intent(in) :: low, high
+  integer(int64) :: pivot_loc
 
   if (low < high) then
     call partition(arr, low, high, pivot_loc)
@@ -42,10 +43,10 @@ pure recursive subroutine quicksort(arr, low, high)
 end subroutine quicksort
 
 pure subroutine partition(arr, low, high, pivot_loc)
-  integer(int32), intent(inout) :: arr(:)
-  integer(int32), intent(in) :: low, high
-  integer(int32), intent(out) :: pivot_loc
-  integer(int32) :: i, j, pivot
+  integer(int64), intent(inout) :: arr(:)
+  integer(int64), intent(in) :: low, high
+  integer(int64), intent(out) :: pivot_loc
+  integer(int64) :: i, j, pivot
 
   pivot = arr(high)
   i = low - 1

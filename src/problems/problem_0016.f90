@@ -4,8 +4,8 @@ contains
 
 module subroutine euler0016(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), allocatable :: long_integer(:)
-  integer(int32) :: i
+  integer(int64), allocatable :: long_integer(:)
+  integer(int64) :: i
 
   allocate (long_integer(floor(1000*log10(2.0)) + 1))
   long_integer = 0
@@ -18,7 +18,7 @@ module subroutine euler0016(problem)
 end subroutine euler0016
 
 pure subroutine multiply_2(long_integer)
-  integer(int32), contiguous, intent(inout) :: long_integer(:)
+  integer(int64), contiguous, intent(inout) :: long_integer(:)
 
   associate (tmp => carry(long_integer*2))
     long_integer = tmp(2:)

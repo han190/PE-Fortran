@@ -1,19 +1,19 @@
 submodule(module_interface) submodule_euler0017
 implicit none
 
-integer(int32), parameter :: error = 9999999
+integer(int64), parameter :: error = 9999999
 contains
 
 module subroutine euler0017(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32) :: i
+  integer(int64) :: i
 
   write (problem%answer, "(i20)") sum([(count_letters(i), i=1, 1000)])
 end subroutine euler0017
 
 elemental function count_letters(n) result(ret)
-  integer(int32), intent(in) :: n
-  integer(int32) :: ret
+  integer(int64), intent(in) :: n
+  integer(int64) :: ret
 
   select case (n)
   case (1:9)
@@ -30,9 +30,9 @@ elemental function count_letters(n) result(ret)
 end function count_letters
 
 elemental function count_letters_3(n) result(ret)
-  integer(int32), intent(in) :: n
-  integer(int32) :: ret
-  integer(int32) :: d1, d2
+  integer(int64), intent(in) :: n
+  integer(int64) :: ret
+  integer(int64) :: d1, d2
 
   associate (hundred => 7, and => 3)
     d1 = n/100
@@ -45,9 +45,9 @@ elemental function count_letters_3(n) result(ret)
 end function count_letters_3
 
 elemental function count_letters_2(n) result(ret)
-  integer(int32), intent(in) :: n
-  integer(int32) :: ret
-  integer(int32) :: d1, d2
+  integer(int64), intent(in) :: n
+  integer(int64) :: ret
+  integer(int64) :: d1, d2
 
   d1 = 0
   d2 = 0
@@ -63,8 +63,8 @@ elemental function count_letters_2(n) result(ret)
 end function count_letters_2
 
 elemental function count_letters_1(n) result(ret)
-  integer(int32), intent(in) :: n
-  integer(int32) :: ret
+  integer(int64), intent(in) :: n
+  integer(int64) :: ret
 
   select case (n)
   case (0)

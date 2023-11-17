@@ -4,8 +4,8 @@ contains
 
 module subroutine euler0002(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), parameter :: n = 4000000
-  integer(int32) :: i, sln
+  integer(int64), parameter :: n = 4000000
+  integer(int64) :: i, sln
 
   i = 0
   sln = 0
@@ -17,8 +17,8 @@ module subroutine euler0002(problem)
 end subroutine euler0002
 
 elemental recursive function fibonacci(n) result(ret)
-  integer(int32), intent(in) :: n
-  integer(int32) :: k, ret
+  integer(int64), intent(in) :: n
+  integer(int64) :: k, ret
 
   if (n == 0) then
     ret = 0

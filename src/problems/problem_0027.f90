@@ -9,7 +9,7 @@ contains
 
 module subroutine euler0027(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), parameter :: x = 31
+  integer(int64), parameter :: x = 31
 
   write (problem%answer, "(i20)") -(2*x - 1)*(x**2 - x + 41)
 end subroutine euler0027

@@ -7,7 +7,7 @@ contains
 
 module subroutine euler0054(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32) :: i, unit, sln
+  integer(int64) :: i, unit, sln
   character(len=2) :: cards(10)
 
   open (newunit=unit, file=problem%file, action="read", status="old")
@@ -23,7 +23,7 @@ end subroutine euler0054
 pure function player_one_win(string_array) result(ret)
   character(len=2), intent(in) :: string_array(10)
   logical :: ret
-  integer(int32) :: rank1(6), rank2(6), i
+  integer(int64) :: rank1(6), rank2(6), i
 
   call rank_(string_array(1:5), rank1)
   call rank_(string_array(6:10), rank2)
@@ -42,8 +42,8 @@ end function player_one_win
 
 pure subroutine rank_(hands, s_arr)
   character(len=2), intent(in) :: hands(5)
-  integer(int32), intent(out) :: s_arr(6)
-  integer(int32) :: vals(1:14), suits(1:4), x, y, z
+  integer(int64), intent(out) :: s_arr(6)
+  integer(int64) :: vals(1:14), suits(1:4), x, y, z
 
   call deck_(hands, vals, suits)
   s_arr = 0
@@ -51,7 +51,7 @@ pure subroutine rank_(hands, s_arr)
   ! Royal Flush
   if (all(vals(10:14) == 1) .and. any(suits(:) == 5)) then
     x = findloc(suits, 5, dim=1)
-    s_arr(1:2) = [10, x]
+    s_arr(1:2) = [10_int64, x]
     return
   end if
 
@@ -60,7 +60,7 @@ pure subroutine rank_(hands, s_arr)
     do x = 1, 10
       if (all(vals(x:x + 4) == 1)) then
         y = findloc(suits, 5, dim=1)
-        s_arr(1:3) = [9, x, y]
+        s_arr(1:3) = [9_int64, x, y]
         return
       end if
     end do
@@ -70,7 +70,7 @@ pure subroutine rank_(hands, s_arr)
   if (any(vals(:) == 4)) then
     x = findloc(vals, 4, dim=1, back=.true.)
     y = findloc(vals, 1, dim=1, back=.true.)
-    s_arr(1:3) = [8, x, y]
+    s_arr(1:3) = [8_int64, x, y]
     return
   end if
 
@@ -78,21 +78,21 @@ pure subroutine rank_(hands, s_arr)
   if (any(vals(:) == 3) .and. any(vals(:) == 2)) then
     x = findloc(vals, 3, dim=1, back=.true.)
     y = findloc(vals, 2, dim=1, back=.true.)
-    s_arr(1:3) = [7, x, y]
+    s_arr(1:3) = [7_int64, x, y]
     return
   end if
 
   ! Flush
   if (any(suits(:) == 5)) then
     s_arr(1) = 6
-    call knt_one_by_one(2, vals, s_arr)
+    call knt_one_by_one(2_int64, vals, s_arr)
     return
   end if
 
   ! Straight
   do x = 1, 10
     if (all(vals(x:x + 4) == 1)) then
-      s_arr(1:2) = [5, x]
+      s_arr(1:2) = [5_int64, x]
       return
     end if
   end do
@@ -102,7 +102,7 @@ pure subroutine rank_(hands, s_arr)
     x = findloc(vals, 3, dim=1, back=.true.)
     y = findloc(vals, 1, dim=1, back=.true.)
     z = findloc(vals(2:14), 1, dim=1) + 1
-    s_arr(1:4) = [4, x, y, z]
+    s_arr(1:4) = [4_int64, x, y, z]
     return
   end if
 
@@ -111,28 +111,28 @@ pure subroutine rank_(hands, s_arr)
     x = findloc(vals, 2, dim=1, back=.true.)
     y = findloc(vals(2:14), 2, dim=1) + 1
     z = findloc(vals, 1, dim=1, back=.true.)
-    s_arr(1:4) = [3, x, y, z]
+    s_arr(1:4) = [3_int64, x, y, z]
     return
   end if
 
   ! One pair
   if (any(vals(:) == 2)) then
     x = findloc(vals, 2, dim=1, back=.true.)
-    s_arr(1:2) = [2, x]
-    call knt_one_by_one(3, vals, s_arr)
+    s_arr(1:2) = [2_int64, x]
+    call knt_one_by_one(3_int64, vals, s_arr)
     return
   end if
 
   ! High card
   s_arr(1) = 1
-  call knt_one_by_one(2, vals, s_arr)
+  call knt_one_by_one(2_int64, vals, s_arr)
 
 contains
 
   pure subroutine knt_one_by_one(x_, val_arr, output_arr)
-    integer(int32), intent(in) :: val_arr(:), x_
-    integer(int32), intent(out) :: output_arr(:)
-    integer(int32) :: idx, tmp
+    integer(int64), intent(in) :: val_arr(:), x_
+    integer(int64), intent(out) :: output_arr(:)
+    integer(int64) :: idx, tmp
 
     tmp = x_
     do idx = 14, 2, -1
@@ -148,8 +148,8 @@ end subroutine rank_
 
 pure subroutine deck_(hands, vals, suits)
   character(len=2), intent(in) :: hands(5)
-  integer(int32), intent(out) :: vals(1:14), suits(1:4)
-  integer(int32) :: i, v, s
+  integer(int64), intent(out) :: vals(1:14), suits(1:4)
+  integer(int64) :: i, v, s
 
   vals = 0
   suits = 0

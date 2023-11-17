@@ -5,10 +5,11 @@ contains
 module subroutine euler0037(problem)
   type(problem_type), intent(inout) :: problem
   integer(int64), parameter :: n = 1000000_int64
-  type(sieve_type(len=n, kind=int64)) :: sieve
+  type(sieve_type(len=:)), allocatable :: sieve
   integer(int64) :: i, knt, sln
   logical, pointer :: check(:) => null()
 
+  allocate (sieve_type(len=n) :: sieve)
   call sift(sieve, check=check)
   i = 10
   knt = 0

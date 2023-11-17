@@ -4,9 +4,9 @@ contains
 
 module subroutine euler0018(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), parameter :: n = 15
+  integer(int64), parameter :: n = 15
   type(jagged_type), allocatable :: jagged(:)
-  integer(int32) :: i, j, x, unit
+  integer(int64) :: i, j, x, unit
 
   allocate (jagged(n))
   do i = 1, n

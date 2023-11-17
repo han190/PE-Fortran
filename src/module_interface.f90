@@ -1,5 +1,6 @@
 module module_interface
 
+use :: iso_fortran_env, only: int64, real64
 use :: euler_toolkit
 use :: module_problem
 implicit none

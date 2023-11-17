@@ -4,7 +4,7 @@ contains
 
 module subroutine euler0001(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32) :: i, j, n, sln
+  integer(int64) :: i, j, n, sln
 
   i = 3
   j = 5
@@ -14,8 +14,8 @@ module subroutine euler0001(problem)
 end subroutine euler0001
 
 elemental function sdb(i, j) result(ret)
-  integer(int32), intent(in) :: i, j
-  integer(int32) :: ret
+  integer(int64), intent(in) :: i, j
+  integer(int64) :: ret
 
   ret = i*(j/i*(j/i + 1))/2
 end function sdb

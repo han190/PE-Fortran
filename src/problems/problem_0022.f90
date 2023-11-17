@@ -5,7 +5,7 @@ contains
 module subroutine euler0022(problem)
   type(problem_type), intent(inout) :: problem
   character(len=20), parameter :: default = "N/A"
-  integer(int32) :: i, n, unit, istat
+  integer(int64) :: i, n, unit, istat
   character(len=:), allocatable :: names(:)
 
   allocate (character(len=20) :: names(6000))
@@ -16,21 +16,21 @@ module subroutine euler0022(problem)
   close (unit)
 
   n = count(names /= default)
-  call quicksort(names, 1, n)
+  call quicksort(names, 1_int64, n)
   write (problem%answer, "(i20)") sum([(i*score_letters(names(i)), i=1, n)])
 end subroutine euler0022
 
-elemental integer(int32) function score_letters(str)
+elemental integer(int64) function score_letters(str)
   character(len=*), intent(in) :: str
-  integer(int32) :: i
+  integer(int64) :: i
 
   score_letters = sum([(iachar(str(i:i)) - 64, i=1, len_trim(str))])
 end function score_letters
 
 recursive subroutine quicksort(string_arr, low, high)
   character(len=*), dimension(:), intent(inout) :: string_arr
-  integer, intent(in) :: low, high
-  integer :: pivot_loc
+  integer(int64), intent(in) :: low, high
+  integer(int64) :: pivot_loc
 
   if (low < high) then
     call partition(string_arr, low, high, pivot_loc)
@@ -41,10 +41,10 @@ end subroutine quicksort
 
 pure subroutine partition(string_arr, low, high, pivot_loc)
   character(len=*), intent(inout) :: string_arr(:)
-  integer(int32), intent(in) :: low, high
-  integer(int32), intent(out) :: pivot_loc
+  integer(int64), intent(in) :: low, high
+  integer(int64), intent(out) :: pivot_loc
   character(:), allocatable :: pivot
-  integer(int32) :: i, j
+  integer(int64) :: i, j
 
   pivot = string_arr(high)
   i = low - 1

@@ -4,8 +4,8 @@ contains
 
 module subroutine euler0011(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32) :: array(20, 20), selected(4, 4)
-  integer(int32) :: i, j, unit, sln
+  integer(int64) :: array(20, 20), selected(4, 4)
+  integer(int64) :: i, j, unit, sln
 
   open (newunit=unit, file=problem%file, status="old", action="read")
   read (unit, *) array
@@ -21,9 +21,9 @@ module subroutine euler0011(problem)
   write (problem%answer, "(i20)") sln
 end subroutine euler0011
 
-pure integer(int32) function max_(matrix)
-  integer(int32), intent(in) :: matrix(4, 4)
-  integer(int32) :: i
+pure integer(int64) function max_(matrix)
+  integer(int64), intent(in) :: matrix(4, 4)
+  integer(int64) :: i
 
   associate ( &
     diagonal => product([(matrix(i, i), i=1, 4)]), &

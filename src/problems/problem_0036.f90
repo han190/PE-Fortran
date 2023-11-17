@@ -4,8 +4,8 @@ contains
 
 module subroutine euler0036(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), parameter :: n = 1000000
-  integer(int32) :: i, sln
+  integer(int64), parameter :: n = 1000000
+  integer(int64) :: i, sln
 
   sln = 0
   do i = 1, n
@@ -15,7 +15,7 @@ module subroutine euler0036(problem)
 end subroutine euler0036
 
 pure logical function are_palindromics(n)
-  integer(int32), intent(in) :: n
+  integer(int64), intent(in) :: n
 
   if (.not. is_palindromic(n)) then
     are_palindromics = .false.
@@ -28,24 +28,24 @@ pure logical function are_palindromics(n)
 end function are_palindromics
 
 pure function to_binary(n) result(ret)
-  integer(int32), intent(in) :: n
-  integer(int32), allocatable :: ret(:)
-  integer(int32) :: i, tmp
+  integer(int64), intent(in) :: n
+  integer(int64), allocatable :: ret(:)
+  integer(int64) :: i, tmp
 
   associate (length => floor(log2(n)) + 1)
     allocate (ret(length))
     tmp = n
     do i = 1, length
-      ret(i) = mod(tmp, 2_int32)
-      tmp = tmp/2_int32
+      ret(i) = mod(tmp, 2_int64)
+      tmp = tmp/2_int64
     end do
   end associate
 end function to_binary
 
-elemental real(sp) function log2(n)
-  integer(int32), intent(in) :: n
+elemental real(real64) function log2(n)
+  integer(int64), intent(in) :: n
 
-  log2 = log(real(n, sp))/log(2.0)
+  log2 = log(real(n, real64))/log(2.0)
 end function log2
 
 end submodule submodule_euler0036

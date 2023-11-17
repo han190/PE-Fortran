@@ -4,9 +4,9 @@ contains
 
 module subroutine euler0020(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), allocatable :: long_integer(:)
-  integer(int32) :: i
-  real(real32) :: tmp
+  integer(int64), allocatable :: long_integer(:)
+  integer(int64) :: i
+  real(real64) :: tmp
 
   tmp = 0.0
   do i = 1, 100
@@ -24,8 +24,8 @@ module subroutine euler0020(problem)
 end subroutine euler0020
 
 pure subroutine multiply(long_integer, n)
-  integer(int32), contiguous, intent(inout) :: long_integer(:)
-  integer(int32), intent(in) :: n
+  integer(int64), contiguous, intent(inout) :: long_integer(:)
+  integer(int64), intent(in) :: n
 
   associate (tmp => carry(long_integer*n))
     long_integer = tmp(2:)

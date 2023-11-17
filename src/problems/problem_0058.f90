@@ -16,7 +16,7 @@ module subroutine euler0058(problem)
     end associate
 
     associate (primes => real(j), total => real((n - 1)*4 + 1))
-      if (primes/total < 0.1_sp) exit
+      if (primes/total < 0.1_real64) exit
     end associate
     n = n + 1
   end do

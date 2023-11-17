@@ -4,15 +4,15 @@ contains
 
 module subroutine euler0039(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), parameter :: n = 1000
-  integer(int32) :: i
+  integer(int64), parameter :: n = 1000
+  integer(int64) :: i
 
   write (problem%answer, "(i20)") maxloc([(right_triangle(i), i=1, n)], dim=1)
 end subroutine euler0039
 
-elemental integer(int32) function right_triangle(p)
-  integer(int32), intent(in) :: p
-  integer(int32) :: i, j, k
+elemental integer(int64) function right_triangle(p)
+  integer(int64), intent(in) :: p
+  integer(int64) :: i, j, k
 
   right_triangle = 0
   do i = 1, p/2 + 1

@@ -1,6 +1,6 @@
 submodule(module_interface) submodule_euler0029
 implicit none
-integer(int32), parameter :: error = -99999
+integer(int64), parameter :: error = -99999
 contains
 
 module subroutine euler0029(problem)
@@ -9,17 +9,17 @@ module subroutine euler0029(problem)
   write (problem%answer, "(i20)") solve()
 end subroutine euler0029
 
-integer(int32) function solve()
-  integer(int32), parameter :: upper = 100
-  integer(int32), parameter :: limit = upper*6 ! 2**7 > 100
-  integer(int32) :: i, j, tmp(2)
+integer(int64) function solve()
+  integer(int64), parameter :: upper = 100
+  integer(int64), parameter :: limit = upper*6 ! 2**7 > 100
+  integer(int64) :: i, j, tmp(2)
   type(sieve_type(len=:)), allocatable :: sieve
-  integer(int32), pointer :: primes(:) => null()
+  integer(int64), allocatable :: primes(:)
   logical, allocatable :: array(:, :)
 
   allocate (sieve_type(len=1000) :: sieve)
   call sift(sieve)
-  primes => pack(sieve)
+  primes = pack(sieve)
   allocate (array(limit, limit))
   array = .false.
 
@@ -30,12 +30,11 @@ integer(int32) function solve()
     end do
   end do
   solve = count(array)
-  nullify (primes)
 end function solve
 
 pure function convert_base_power(i, j, primes) result(ret)
-  integer(int32), intent(in) :: i, j, primes(:)
-  integer(int32) :: ret(2), tmp(2)
+  integer(int64), intent(in) :: i, j, primes(:)
+  integer(int64) :: ret(2), tmp(2)
 
   call is_power(i, primes, tmp)
   if (all(tmp == error)) then
@@ -48,9 +47,9 @@ pure function convert_base_power(i, j, primes) result(ret)
 end function convert_base_power
 
 pure subroutine is_power(n, primes, base_power)
-  integer(int32), intent(in) :: n, primes(:)
-  integer(int32), intent(out) :: base_power(2)
-  integer(int32) :: powers(size(primes))
+  integer(int64), intent(in) :: n, primes(:)
+  integer(int64), intent(out) :: base_power(2)
+  integer(int64) :: powers(size(primes))
 
   base_power = error
   call prime_factorization(n, primes, powers)

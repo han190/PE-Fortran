@@ -4,9 +4,9 @@ contains
 
 module subroutine euler0023(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), allocatable :: abundants(:)
-  integer(int32), parameter :: istart = 12, iend = 28123
-  integer(int32) :: i, j
+  integer(int64), allocatable :: abundants(:)
+  integer(int64), parameter :: istart = 12, iend = 28123
+  integer(int64) :: i, j
   logical, allocatable :: sum_abundants(:)
 
   abundants = pack([(i, i=istart, iend)], [(is_abundant(i), i=istart, iend)])
@@ -23,15 +23,15 @@ module subroutine euler0023(problem)
 end subroutine euler0023
 
 elemental logical function is_abundant(n)
-  integer(int32), intent(in) :: n
+  integer(int64), intent(in) :: n
 
   is_abundant = sum_divisors(n) > n
 end function is_abundant
 
 elemental function sum_divisors(n) result(ret)
-  integer(int32), intent(in) :: n
-  integer(int32) :: ret
-  integer(int32) :: i
+  integer(int64), intent(in) :: n
+  integer(int64) :: ret
+  integer(int64) :: i
 
   ret = 1
   do i = 2, sqrt(n)

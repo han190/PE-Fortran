@@ -4,8 +4,8 @@ contains
 
 module subroutine euler0031(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32), parameter :: n = 200
-  integer(int32) :: coins(0:7), array(0:7, 0:n), i, j, sln
+  integer(int64), parameter :: n = 200
+  integer(int64) :: coins(0:7), array(0:7, 0:n), i, j, sln
 
   coins = [1, 2, 5, 10, 20, 50, 100, 200]
   array(1:7, :) = 0

@@ -4,11 +4,11 @@ contains
 
 module subroutine euler0063(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int32) :: i, k, sln
+  integer(int64) :: i, k, sln
 
   sln = 0
   do i = 1, 9
-    associate (r => real(i, sp), log10 => log(10.))
+    associate (r => real(i, real64), log10 => log(10.))
       k = floor(log10/(log10 - log(r)))
       sln = sln + k
     end associate

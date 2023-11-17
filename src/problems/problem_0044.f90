@@ -40,15 +40,15 @@ end function is_pentagonal_pair
 elemental logical function is_pentagonal(p)
   integer(int64), intent(in) :: p
 
-  associate (x => sqrt(24.*real(p) + 1.))
+  associate (x => sqrt(24.0*real(p) + 1.0_real64))
     is_pentagonal = is_integer(x) .and. mod(int(x, int64), 6_int64) == 5_int64
   end associate
 end function is_pentagonal
 
 elemental logical function is_integer(n)
-  real(sp), intent(in) :: n
+  real(real64), intent(in) :: n
 
-  is_integer = n - floor(n) <= tiny(0._sp)
+  is_integer = n - floor(n) <= tiny(0.0_real64)
 end function is_integer
 
 end submodule submodule_euler0044
