@@ -1,4 +1,4 @@
-submodule(module_problem) module_euler0014
+submodule(module_problem) submodule_euler0014
 implicit none
 contains
 
@@ -46,4 +46,4 @@ elemental integer(int64) function len_collatz(n)
   end do
 end function len_collatz
 
-end submodule module_euler0014
+end submodule submodule_euler0014
