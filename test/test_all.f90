@@ -7,6 +7,6 @@ implicit none
 type(problem_type), allocatable :: problems(:)
 problems = new_problems("data")
 call solve_problems(problems, 1_int64)
-call print_problems(problems, "answer.log")
+call print_answers(problems, "answer.log")
 
 end program main

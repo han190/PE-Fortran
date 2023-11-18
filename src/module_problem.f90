@@ -9,7 +9,7 @@ public :: problem_type
 public :: new_problems
 public :: solve_problem
 public :: solve_problems
-public :: print_problems
+public :: print_answers
 private
 
 !> Problem type
@@ -93,7 +93,7 @@ elemental function relative_difficulty(time_span, time_min, time_max) result(ret
 end function relative_difficulty
 
 !> Write answers to file
-subroutine print_problems(problems, file)
+subroutine print_answers(problems, file)
   type(problem_type), intent(in) :: problems(:)
   character(len=*), intent(in) :: file
   integer(int64) :: unit, i, difficulty, num_problems
@@ -120,10 +120,12 @@ subroutine print_problems(problems, file)
   write (unit, "('#', t6, 'Answer', t49, 'Timespan (sec)')")
   write (unit, "(a)") repeat('-', 62)
   do i = 1, size(problems)
-    difficulty = relative_difficulty(problems(i)%time_span, time_min, time_max)
-    label = merge(TC, repeat(space, len(TC)), difficulty < 2)
-    write (unit, format_) problems(i)%index, &
-      & adjustl(trim(problems(i)%answer)), problems(i)%time_span, trim(label)
+    associate (P => problems(i))
+      difficulty = relative_difficulty(P%time_span, time_min, time_max)
+      label = merge(TC, repeat(space, len(TC)), difficulty < 2)
+      write (unit, format_) P%index, adjustl(P%answer), &
+        & P%time_span, trim(label)
+    end associate
   end do
   write (unit, "(a)") repeat('-', 62)
   message = "Number of problems solved"
@@ -132,6 +134,6 @@ subroutine print_problems(problems, file)
   write (unit, "('*', t6, a, t40, es20.4e3)") message, time_tot/num_problems
   write (unit, "('*', t6, a)") "TC: time consuming"
   close (unit)
-end subroutine print_problems
+end subroutine print_answers
 
 end module module_problem
