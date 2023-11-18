@@ -17,15 +17,10 @@ For the basic usage, one should be able to run all the solved problems with a si
 fpm run
 ```
 
-## Euler toolkit
-
-Please refer
-
 ## Contribution
-
 If you would like to contribute:
-
-1. add your file `problem_xxxx.f90` to `src/problems`, where `xxxx` is the problem number with leading zeros. The syntax should follow
+#### Step 1
+Add your file `problem_xxxx.f90` to `src/problems`, where `xxxx` is the problem number with leading zeros. The syntax of a solution submodule should follow
 ```fortran
 submodule(module_interface) submodule_eulerxxxx
 implicit none
@@ -43,11 +38,15 @@ module subroutine eulerxxxx(problem)
 end subroutine eulerxxxx
 end submodule submodule_eulerxxxx
 ```
-2. Update `*.inc` files (using bash)
+
+#### Step 2
+Update `*.inc` files (using bash). The Fortran script `util/interface_generator.f90` scans `./data/` and `./src/problems` to generate an array of solved problems, and based on that it generates `*.inc` files required by `module_problem`.
 ```bash
 ./util/update_interface.sh
 ```
-3. Use FPM to test
+
+#### Step 3
+Test 
 ```
 fpm test all
 ```
@@ -56,21 +55,5 @@ fpm test all
 
 Here is what I plan to do in the future. (Not likely to be done recently cuz I am kinda busy...)
 
-- [x] Organize folders, use Shell scripts to compile codes.
-- [x] Use a build tool, for example Meson to wrap all the codes. 
-- [x] Use a Fortran preprocessor to simplify my code.
 - [ ] Write a documentation to clearly explain the algorithms, Fortran features, or anything that is interesting for each question.
-- [x] Add version control.
-- [x] Add a command line interface.
-- [x] Add an installation script.
-- [ ] Add GUI!
-- [x] Use fpm to build, test, run and install the project.
-- [x] Review exisiting code, rewrite/refactor code with:
-   * Modern Fortran, 
-   * Functional programming, and 
-   * Array-oriented styles.
-- [ ] ~~One of the three:~~
-   * ~~Rewrite a simple yet robust big integer library.~~
-   * ~~Use GMP for big integer.~~
-   * ~~Use a good Fortran big integer library.~~
 - [ ] Implement an associative array for Project Euler.
