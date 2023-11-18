@@ -13,13 +13,12 @@ integer(int64) function solve()
   integer(int64), parameter :: upper = 100
   integer(int64), parameter :: limit = upper*6 ! 2**7 > 100
   integer(int64) :: i, j, tmp(2)
-  type(sieve_type(len=:)), allocatable :: sieve
+  logical, allocatable :: check(:)
   integer(int64), allocatable :: primes(:)
   logical, allocatable :: array(:, :)
 
-  allocate (sieve_type(len=1000) :: sieve)
-  call sift(sieve)
-  primes = pack(sieve)
+  check = sift(1000_int64)
+  primes = pack(check)
   allocate (array(limit, limit))
   array = .false.
 

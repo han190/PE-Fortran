@@ -4,19 +4,16 @@ contains
 
 module subroutine euler0051(problem)
   class(problem_type), intent(inout) :: problem
-  type(sieve_type(len=:)), allocatable :: sieve
-  integer(int64), parameter :: PRIME_START = 100000, PRIME_END = 999999
+  integer(int64), parameter :: lower = 100000, upper = 999999
   integer(int64) :: i, j, k, s, num_primes, idx, p_knt, c_knt
-  integer(int64), allocatable :: array(:)
-  integer(int64), allocatable :: primes(:)
-  logical, pointer :: check(:) => null()
+  integer(int64), allocatable :: array(:), primes(:)
+  logical, allocatable :: check(:)
 
-  allocate (sieve_type(len=PRIME_END) :: sieve)
-  call sift(sieve, check=check)
-  primes = pack(sieve, lower_bound=PRIME_START, upper_bound=PRIME_END)
+  check = sift(upper)
+  primes = pack(check, lower, upper)
 
   k = 1
-  do i = PRIME_START, PRIME_END
+  do i = lower, upper
     if (check(i)) then
       primes(k) = i
       k = k + 1
@@ -48,7 +45,6 @@ module subroutine euler0051(problem)
     end associate
   end do outer
   write (problem%answer, "(i20)") primes(idx)
-  nullify (check)
 end subroutine euler0051
 
 end submodule submodule_euler0051

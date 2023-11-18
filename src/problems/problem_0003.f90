@@ -5,14 +5,12 @@ contains
 module subroutine euler0003(problem)
   class(problem_type), intent(inout) :: problem
   integer(int64), parameter :: n = 600851475143_real64
-  type(sieve_type(len=:)), allocatable :: sieve
+  logical, allocatable :: check(:)
   integer(int64), allocatable :: primes(:)
-  integer(int64) :: i, num_sieves
+  integer(int64) :: i, num_checks
 
-  num_sieves = sqrt(n)
-  allocate (sieve_type(len=num_sieves) :: sieve)
-  call sift(sieve)
-  primes = pack(sieve)
+  check = sift(sqrt(n), "Eratosthenes")
+  primes = pack(check)
   do i = size(primes), 1, -1
     if (mod(n, primes(i)) == 0) exit
   end do

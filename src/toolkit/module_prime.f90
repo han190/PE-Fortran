@@ -4,19 +4,12 @@ use :: iso_fortran_env, only: int64, real64
 use :: module_utility, only: sqrt
 implicit none
 
-public :: sieve_type
 public :: sift
 public :: pack
 public :: is_prime
 public :: num_divisors
 public :: prime_factorization
 private
-
-!> Sieve type
-type :: sieve_type(len)
-  integer(int64), len :: len
-  logical :: check(len)
-end type sieve_type
 
 !> Pack
 interface pack
@@ -26,58 +19,64 @@ end interface pack
 contains
 
 !> Sift
-pure subroutine sift(sieve, check, option)
-  type(sieve_type(len=*)), target, intent(inout) :: sieve
-  logical, pointer, intent(inout), optional :: check(:)
+pure function sift(n, option) result(check)
+  integer(int64), intent(in) :: n
   character(len=*), intent(in), optional :: option
+  logical, allocatable :: check(:)
   integer(int64) :: i
   character(len=:), allocatable :: option_
 
-  if (sieve%len > huge(0_int64)) &
-    & error stop "[sift] Invalid length."
   if (present(option)) then
     option_ = trim(option)
   else
     option_ = "Eratosthenes"
   end if
   
+  if (allocated(check)) then
+    if (size(check) /= n) then
+      deallocate (check)
+      allocate (check(n))
+    end if
+  else
+    allocate (check(n))
+  end if
+  
   select case (trim(option_))
   case ("Eratosthenes")
-    sieve%check(1) = .false.
-    sieve%check(2) = .true.
-    do i = 3, sieve%len
-      sieve%check(i) = mod(i, 2_int64) /= 0
+    check(1) = .false.
+    check(2) = .true.
+    do i = 3, n
+      check(i) = mod(i, 2_int64) /= 0
     end do
-    do i = 2, sqrt(sieve%len)
-      if (sieve%check(i)) sieve%check(i*i:sieve%len:i) = .false.
+    do i = 2, sqrt(n)
+      if (check(i)) check(i*i:n:i) = .false.
     end do
   case default
     error stop "[sift] Invalid sieve."
   end select
-  if (present(check)) check => sieve%check
-end subroutine sift
+end function sift
 
 !> Pack
-function pack_primes(sieve, lower_bound, upper_bound) result(primes)
-  type(sieve_type(len=*)), target, intent(inout) :: sieve
-  integer(int64), intent(in), optional :: lower_bound, upper_bound
+function pack_primes(check, lower, upper) result(primes)
+  logical, intent(in) :: check(:)
+  integer(int64), intent(in), optional :: lower, upper
   integer(int64), allocatable :: primes(:)
   integer(int64) :: i, k, num_primes
-  integer(int64) :: lower, upper
+  integer(int64) :: lower_, upper_
 
-  if (present(lower_bound)) then
-    lower = lower_bound
+  if (present(lower)) then
+    lower_ = lower
   else
-    lower = 1
+    lower_ = 1
   end if
 
-  if (present(upper_bound)) then
-    upper = upper_bound
+  if (present(upper)) then
+    upper_ = upper
   else
-    upper = size(sieve%check)
+    upper_ = size(check)
   end if
 
-  num_primes = count(sieve%check(lower:upper))
+  num_primes = count(check(lower_:upper_))
   if (allocated(primes)) then
     if (size(primes) /= num_primes) then
       deallocate (primes)
@@ -88,8 +87,8 @@ function pack_primes(sieve, lower_bound, upper_bound) result(primes)
   end if
 
   k = 1
-  do i = lower, upper
-    if (sieve%check(i)) then
+  do i = lower_, upper_
+    if (check(i)) then
       primes(k) = i
       k = k + 1
     end if
@@ -130,6 +129,7 @@ pure subroutine prime_factorization(n, primes, powers)
   integer(int64), intent(in) :: primes(:)
   integer(int64), intent(out) :: powers(size(primes))
   integer(int64) :: i, tmp
+  character(len=500) :: error_message
 
   powers = 0
   tmp = n
@@ -140,13 +140,10 @@ pure subroutine prime_factorization(n, primes, powers)
     end do
   end do
   
-  if (tmp /= 1) then
-    block
-      character(len=500) :: error_message
-      write (error_message, "(a, 2(1x, i0))") &
-        & "[prime_factorization] Not completely factorized.", n, tmp
-      error stop trim(error_message)
-    end block
+  if (tmp /= 1) then  
+    write (error_message, "(a, 2(1x, i0))") &
+      & "[prime_factorization] Not completely factorized.", n, tmp
+    error stop trim(error_message)
   end if
 end subroutine prime_factorization
 

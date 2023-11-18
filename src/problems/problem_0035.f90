@@ -5,15 +5,11 @@ contains
 module subroutine euler0035(problem)
   class(problem_type), intent(inout) :: problem
   integer(int64), parameter :: n = 1000000
-  type(sieve_type(len=:)), allocatable :: sieve
-  logical, allocatable :: is_circular(:)
+  logical, allocatable :: check(:), is_circular(:)
   integer(int64), allocatable :: array(:)
-  logical, pointer :: check(:) => null()
   integer(int64) :: i
 
-  allocate (sieve_type(len=n) :: sieve)
-  call sift(sieve, check=check)
-
+  check = sift(n)
   allocate (is_circular(n))
   is_circular = .false.
   do i = 100, n
@@ -22,7 +18,6 @@ module subroutine euler0035(problem)
     if (allocated(array)) is_circular(array) = .true.
   end do
   write (problem%answer, "(i20)") count(is_circular) + 13
-  nullify (check)
 end subroutine euler0035
 
 pure subroutine is_circular_prime(n, are_primes, array)

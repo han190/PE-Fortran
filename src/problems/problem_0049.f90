@@ -4,13 +4,11 @@ contains
 
 module subroutine euler0049(problem)
   class(problem_type), intent(inout) :: problem
-  type(sieve_type(len=:)), allocatable :: sieve
   integer(int64), parameter :: by = 3330
   integer(int64) :: i
-  logical, pointer :: check(:) => null()
+  logical, allocatable :: check(:)
 
-  allocate (sieve_type(len=10000) :: sieve)
-  call sift(sieve, check=check)
+  check = sift(10000_int64)
   do i = 9973, 7661, -1
     associate (a => i, b => i - by, c => i - by*2)
       if (.not. all([check(a), check(b), check(c)])) cycle
@@ -18,7 +16,6 @@ module subroutine euler0049(problem)
     end associate
   end do
   write (problem%answer, "(3(i4))") i - by*2, i - by, i
-  nullify (check)
 end subroutine euler0049
 
 pure integer(int64) function sort(n)

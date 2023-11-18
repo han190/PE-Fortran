@@ -5,12 +5,10 @@ contains
 module subroutine euler0026(problem)
   class(problem_type), intent(inout) :: problem
   integer(int64), parameter :: n = 1000
-  type(sieve_type(len=:)), allocatable :: sieve
-  logical, pointer :: check(:) => null()
+  logical, allocatable :: check(:)
   integer(int64) :: k, i, sln, tmp
 
-  allocate (sieve_type(len=1000) :: sieve)
-  call sift(sieve, check=check)
+  check = sift(n)
   k = 1
   do i = 7, n
     if (check(i)) then
@@ -22,7 +20,6 @@ module subroutine euler0026(problem)
     end if
   end do
   write (problem%answer, "(i20)") sln
-  nullify (check)
 end subroutine euler0026
 
 pure function multiplicative_order(n, m) result(ret)

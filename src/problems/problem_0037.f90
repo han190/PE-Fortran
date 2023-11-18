@@ -5,12 +5,10 @@ contains
 module subroutine euler0037(problem)
   class(problem_type), intent(inout) :: problem
   integer(int64), parameter :: n = 1000000_int64
-  type(sieve_type(len=:)), allocatable :: sieve
   integer(int64) :: i, knt, sln
-  logical, pointer :: check(:) => null()
+  logical, allocatable :: check(:)
 
-  allocate (sieve_type(len=n) :: sieve)
-  call sift(sieve, check=check)
+  check = sift(n)
   i = 10
   knt = 0
   sln = 0
@@ -24,7 +22,6 @@ module subroutine euler0037(problem)
     i = i + 1
   end do
   write (problem%answer, "(i20)") sln
-  nullify (check)
 end subroutine euler0037
 
 pure logical function is_trunc(n, primes)

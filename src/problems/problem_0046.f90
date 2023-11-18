@@ -4,13 +4,11 @@ contains
 
 module subroutine euler0046(problem)
   class(problem_type), intent(inout) :: problem
-  type(sieve_type(len=:)), allocatable :: sieve
   integer(int64) :: i, sln
   logical :: not_found
-  logical, pointer :: check(:) => null()
+  logical, allocatable :: check(:)
 
-  allocate (sieve_type(len=10000) :: sieve)
-  call sift(sieve, check=check)
+  check = sift(10000_int64)
   sln = 1
   not_found = .true.
 
@@ -28,7 +26,6 @@ module subroutine euler0046(problem)
     end do inner
   end do outer
   write (problem%answer, "(i20)") sln
-  nullify (check)
 end subroutine euler0046
 
 elemental logical function is_twice_square(n)

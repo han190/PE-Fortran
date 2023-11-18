@@ -4,13 +4,12 @@ contains
 
 module subroutine euler0012(problem)
   class(problem_type), intent(inout) :: problem
-  type(sieve_type(len=:)), allocatable :: sieve
+  logical, allocatable :: check(:)
   integer(int64), allocatable :: primes(:)
   integer(int64) :: i, sln
 
-  allocate (sieve_type(len=50000) :: sieve)
-  call sift(sieve)
-  primes = pack(sieve)
+  check = sift(50000_int64)
+  primes = pack(check)
   i = 0
   sln = 0
 
