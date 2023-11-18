@@ -5,6 +5,7 @@ implicit none
 
 public :: permutation_type
 public :: new_permutation
+public :: set_permutation
 public :: permute
 public :: permutable
 public :: index
@@ -65,11 +66,11 @@ pure function reorder(array, elements) result(ret)
   integer(int64) :: i
   character(len=:), allocatable :: error_message
 
-  error_message = "size(elements) > size(array)"
+  error_message = "[reorder] size(elements) > size(array)"
   if (size(elements) > size(array)) error stop error_message
 
   selected = .true.
-  error_message = "[reorder_int64] Invalid element."
+  error_message = "[reorder] Invalid element."
   do i = 1, size(elements)
     associate (e => elements(i))
       if (e > size(selected) .or. e <= 0) error stop error_message
