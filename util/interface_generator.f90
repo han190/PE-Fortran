@@ -1,28 +1,23 @@
 program main
 implicit none
 
-character(len=*), parameter :: src = "./src/", data = "./data/"
-character(len=*), parameter :: build = "./build/"
+character(len=*), parameter :: src = "./src/", data = "./data/", build = "./build/"
 integer, allocatable :: problems(:), datasets(:)
 character(len=:), allocatable :: sel_problems, sel_datasets
 integer :: i, unit
 
-sel_problems = build//"selected_problems.txt"
-sel_datasets = build//"selected_datasets.txt"
-!> Assuming linux/mac
-#if defined (_WIN32)
-error stop "[Interface Generator] Currently does not support windows."
-#else
+sel_problems = build//"sel_problems.txt"
+sel_datasets = build//"sel_datasets.txt"
+
 call execute_command_line("mkdir -p "//build)
 call execute_command_line("ls "//src//"problems/problem_????.f90"//" > "//sel_problems)
 call execute_command_line("ls "//data//"data_????.txt"//" > "//sel_datasets)
-#endif
 
-problems = read_numbers(sel_problems, 23)
-datasets = read_numbers(sel_datasets, 12)
+problems = read_numbers(sel_problems, "problem_")
+datasets = read_numbers(sel_datasets, "data_")
 
 !> Generate interfaces
-open (newunit=unit, file=src//"interface.inc")
+open (newunit=unit, file=src//"interface.inc", action="write")
 write (unit, "(a)") "!> Automatically generated."
 do i = 1, size(problems)
   write (unit, "(a, i4.4, a)") "module subroutine euler", problems(i), "(problem)"
@@ -32,42 +27,45 @@ end do
 close (unit)
 
 !> Generate pointer associations
-open (newunit=unit, file=src//"problem.inc")
+open (newunit=unit, file=src//"problem.inc", action="write")
 write (unit, "(a)") "!> Automatically generated."
 write (unit, "(a, i0, a)") "allocate (problems(", size(problems), "))"
 do i = 1, size(problems)
   write (unit, "(a, i0, a, i4.4)") "problems(", i, ")%solve => euler", problems(i)
   write (unit, "(a, i0, a, i0)") "problems(", i, ")%index = ", problems(i)
-  if (any(problems(i) == datasets)) &
-    & write (unit, "(a, i0, a, i4.4, a)") &
+  if (any(problems(i) == datasets)) write (unit, "(a, i0, a, i4.4, a)") &
     & "problems(", i, ")%file = data_dir//'/'//'data_", problems(i), ".txt'"
 end do
 close (unit)
 
 contains
 
-function read_numbers(filename, num_headers) result(numbers)
-  character(len=*), intent(in) :: filename
-  integer, intent(in) :: num_headers
+function read_numbers(filename, pattern) result(numbers)
+  character(len=*), intent(in) :: filename, pattern
   integer, allocatable :: numbers(:)
-  integer :: i, unit, num_lines, iostat
-  character(len=num_headers) :: head
-  character(len=3) :: ext
+  integer :: idx, fileunit, iostat, num_lines, loc
+  character(len=100) :: tmp
 
-  open (newunit=unit, file=filename, iostat=iostat)
   num_lines = 0
+  open (newunit=fileunit, file=filename, &
+    & action="read", iostat=iostat)
   do
-    read (unit, *, iostat=iostat)
+    read (fileunit, *, iostat=iostat)
     if (iostat /= 0) exit
     num_lines = num_lines + 1
   end do
 
   allocate (numbers(num_lines))
-  rewind (unit)
-  do i = 1, num_lines
-    read (unit, "(a, i4.4, a3)") head, numbers(i), ext
+  rewind (fileunit)
+  do idx = 1, num_lines
+    read (fileunit, "(a)") tmp
+    loc = index(tmp, pattern)
+    if (loc /= 0) then
+      loc = loc + len(pattern)
+      read (tmp(loc:loc + 3), "(i4.4)") numbers(idx)
+    end if
   end do
-  close (unit)
+  close (fileunit)
 end function read_numbers
 
 end program
