@@ -1,5 +1,5 @@
 !> Automatically generated.
-allocate (problems(60))
+allocate (problems(61))
 problems(1)%solve => euler0001
 problems(1)%index = 1
 problems(2)%solve => euler0002
@@ -128,3 +128,5 @@ problems(59)%solve => euler0061
 problems(59)%index = 61
 problems(60)%solve => euler0063
 problems(60)%index = 63
+problems(61)%solve => euler0092
+problems(61)%index = 92
