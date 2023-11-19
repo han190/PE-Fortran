@@ -1,18 +1,19 @@
 submodule(module_problem) submodule_euler0092
 implicit none
+!> https://oeis.org/A068571
+!> https://en.wikipedia.org/wiki/Happy_number
+!> Find all 10-happy number number under 10**7
 integer(int64), parameter :: unhappy(8) = &
     & [4, 16, 37, 58, 89, 145, 42, 20]
 contains
 
 module subroutine euler0092(problem)
   class(problem_type), intent(inout) :: problem
-  !> https://oeis.org/A068571
-  !> https://en.wikipedia.org/wiki/Happy_number
-  !> Find all 10-happy number number under 10**7
-  write (problem%answer, "(i20)") 10**7 - num_happys(7_int64)
+
+  write (problem%answer, "(i20)") 10_int64**7 - num_happys(7_int64)
 end subroutine euler0092
 
-pure function num_happys(n) result(ret)
+elemental function num_happys(n) result(ret)
   integer(int64), intent(in) :: n
   integer(int64) :: ret
   integer(int64) :: i, k
@@ -25,17 +26,15 @@ pure function num_happys(n) result(ret)
   end do
 end function num_happys
 
-recursive elemental function h(n, k) result(ret)
+elemental recursive function h(n, k) result(ret)
   integer(int64), intent(in) :: n, k
   integer(int64) :: ret
   integer(int64) :: i
 
-  if (n == 0 .and. k == 0) then
-    ret = 1
-  else if (k == 0 .and. n > 0) then
+  if (n < 0) then
     ret = 0
-  else if (n < 0) then
-    ret = 0
+  else if (k == 0) then
+    ret = merge(1, 0, n == 0)
   else
     ret = 0
     do i = 0, 9
@@ -44,7 +43,7 @@ recursive elemental function h(n, k) result(ret)
   end if
 end function h
 
-pure logical function is_happy(n) result(ret)
+elemental function is_happy(n) result(ret)
   integer(int64), intent(in) :: n
   integer(int64) :: tmp
   logical :: ret
@@ -60,7 +59,7 @@ pure logical function is_happy(n) result(ret)
   end do
 end function is_happy
 
-pure function sum_squares(n) result(ret)
+elemental function sum_squares(n) result(ret)
   integer(int64), intent(in) :: n
   integer(int64) :: ret
 
