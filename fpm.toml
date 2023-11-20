@@ -12,7 +12,7 @@ homepage = "https://github.com/han190/PE-Fortran"
 source-dir = "src"
 include-dir = "src"
 
-[[test]]
-name = "all"
-source-dir = "test"
-main = "test_all.f90"
+[[executable]]
+name = "ProjectEuler"
+source-dir = "src"
+main = "project_euler.f90"

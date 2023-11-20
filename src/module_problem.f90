@@ -1,7 +1,6 @@
 module module_problem
 
-use :: iso_fortran_env, only: int64, real64, &
-  & compiler_version, compiler_options
+use :: iso_fortran_env, only: int64, real64
 use :: euler_toolkit
 implicit none
 
@@ -48,8 +47,7 @@ end function new_problems
 subroutine solve_problem(problem, num_trails)
   type(problem_type), intent(inout) :: problem
   integer(int64), intent(in) :: num_trails
-  integer(int64) :: count_rate, clock_start, clock_end
-  integer(int64) :: i
+  integer(int64) :: count_rate, clock_start, clock_end, i
   real(real64) :: time_span
   character(len=:), allocatable :: format_
 
@@ -69,39 +67,31 @@ end subroutine solve_problem
 !> Solve problems
 subroutine solve_problems(problems, num_trails, selected)
   type(problem_type), allocatable, intent(inout) :: problems(:)
-  integer(int64), intent(in) :: num_trails
-  integer(int64), intent(in), optional :: selected(:)
-  integer(int64), allocatable :: sel_indices(:)
-  type(problem_type), allocatable :: sel_problems(:)
-  integer(int64) :: i, k
+  integer(int64), intent(in) :: num_trails, selected
+  character(len=:), allocatable :: clear
+  integer(int64) :: i
 
-  if (present(selected)) then
-    do i = 1, size(selected) - 1
-      if (selected(i) > selected(i + 1)) error stop &
-        & "[solve_problems] Problem list not ascending."
-    end do
-
-    allocate (sel_indices(size(selected)))
-    k = 1
+  clear = repeat(char(32), 34)//char(13)
+  if (selected /= 0) then
     do i = 1, size(problems)
-      if (problems(i)%index == selected(k)) then
-        sel_indices(k) = i
-        k = k + 1
-      end if
+      if (problems(i)%index == selected) exit
     end do
-    if (k /= size(selected) + 1) error stop &
-      & "[solve_problems] Problems not found in solution."
+    if (i == size(problems) + 1) error stop &
+      & "[solve_problem] Problem not found."
+    associate (P => problems(i))
+      call solve_problem(P, num_trails)
+      write (*, "(a)", advance='no') clear
+      write (*, "('Problem', t10, i20)") P%index
+      write (*, "('Solution', t10, a20)") P%answer
+      write (*, "('Time span', t10, es20.4e3)") P%time_span
+    end associate
   else
-    sel_indices = [(i, i=1, size(problems))]
+    do i = 1, size(problems)
+      call solve_problem(problems(i), num_trails)
+    end do
+    write (*, "(a)", advance='no') clear
+    write (*, "(i0, 1x, 'problems solved.')") size(problems)
   end if
-
-  sel_problems = problems(sel_indices)
-  do i = 1, size(sel_problems)
-    call solve_problem(sel_problems(i), num_trails)
-  end do
-  write (*, "(a)", advance='no') repeat(char(32), 34)//char(13)
-  write (*, "(i0, 1x, 'problems solved.')") size(sel_problems)
-  if (present(selected)) problems = sel_problems
 end subroutine solve_problems
 
 !> Relative difficulty
@@ -141,7 +131,7 @@ subroutine print_answers(problems, file)
   end do
 
   format_ = "(i0, t6, a, t40, es20.4e3, 1x, a)"
-  open (newunit=unit, file=file, action='write')
+  open (newunit=unit, file=file, action='write', status='unknown')
   write (unit, "('#', t6, 'Answer', t49, 'Timespan (sec)')")
   write (unit, "(a)") repeat('-', 62)
   do i = 1, size(problems)
