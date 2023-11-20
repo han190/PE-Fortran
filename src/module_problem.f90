@@ -81,9 +81,9 @@ subroutine solve_problems(problems, num_trails, selected)
     associate (P => problems(i))
       call solve_problem(P, num_trails)
       write (*, "(a)", advance='no') clear
-      write (*, "('Problem', t10, i20)") P%index
-      write (*, "('Solution', t10, a20)") P%answer
-      write (*, "('Time span', t10, es20.4e3)") P%time_span
+      write (*, "('Problem', t12, i0)") P%index
+      write (*, "('Solution', t12, a)") adjustl(P%answer)
+      write (*, "('Time span', t12, es0.4e3)") P%time_span
     end associate
   else
     do i = 1, size(problems)
@@ -130,10 +130,10 @@ subroutine print_answers(problems, file)
     end if
   end do
 
-  format_ = "(i0, t6, a, t40, es20.4e3, 1x, a)"
+  format_ = "(i0, t6, a, t40, es0.4e3, 1x, a)"
   open (newunit=unit, file=file, action='write', status='unknown')
-  write (unit, "('#', t6, 'Answer', t49, 'Timespan (sec)')")
-  write (unit, "(a)") repeat('-', 62)
+  write (unit, "('#', t6, 'Answer', t40, 'Timespan (sec)')")
+  write (unit, "(a)") repeat('-', 54)
   do i = 1, size(problems)
     associate (P => problems(i))
       difficulty = relative_difficulty(P%time_span, time_min, time_max)
@@ -142,11 +142,11 @@ subroutine print_answers(problems, file)
         & P%time_span, trim(label)
     end associate
   end do
-  write (unit, "(a)") repeat('-', 62)
+  write (unit, "(a)") repeat('-', 54)
   message = "Number of problems solved"
-  write (unit, "('*', t6, a, t40, i20)") message, num_problems
+  write (unit, "('*', t6, a, t40, i0)") message, num_problems
   message = "Mean time spent per problem (sec)"
-  write (unit, "('*', t6, a, t40, es20.4e3)") message, time_tot/num_problems
+  write (unit, "('*', t6, a, t40, es0.4e3)") message, time_tot/num_problems
   write (unit, "('*', t6, a)") "TC: time consuming"
   close (unit)
 end subroutine print_answers
