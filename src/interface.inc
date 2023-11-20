@@ -182,3 +182,6 @@ end subroutine euler0063
 module subroutine euler0092(problem)
   class(problem_type), intent(inout) :: problem
 end subroutine euler0092
+module subroutine euler0097(problem)
+  class(problem_type), intent(inout) :: problem
+end subroutine euler0097
