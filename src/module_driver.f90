@@ -25,7 +25,7 @@ end subroutine print_characters
 subroutine get_version()
   version_messages = [character(len=80) :: &
     & 'Project Name: PE-Fortran', &
-    & 'Version: 0.3.0', 'License: MIT', &
+    & 'Version: 0.4.0', 'License: MIT', &
     & 'Copyright: Copyright 2019 - 2023, Han Tang', &
     & 'Homepage: https://github.com/han190/PE-Fortran']
 end subroutine get_version
@@ -38,7 +38,9 @@ subroutine get_help()
     & '   -v, --version             Print version.', &
     & '   -h, --help                Pop up this message.', &
     & '   P, -p, --problem          (optional) Problem number. ', &
-    & '   N, -n, --number-of-trails (optional) Number of trails.']
+    & '   N, -n, --number-of-trails (optional) Number of trails.', &
+    & '   D, -d, --data-directory   (optional) Data directory.', &
+    & '   A, -a, --answer-sheet     (optional) Filename for answers.']
 end subroutine get_help
 
 !> Print version
@@ -69,18 +71,18 @@ end subroutine print_messages
 
 !> Get arugment
 subroutine get_arguments()
-  character(len=500), allocatable :: args(:)
-  integer(int32) :: arg_counts, i
+  character(len=500), allocatable :: arguments(:)
+  integer(int32) :: argument_counts, i
   integer(int64) :: num_problems, num_trails, selected
   type(problem_type), allocatable :: problems(:)
   character(len=500) :: answer_sheet, data_directory
 
-  arg_counts = command_argument_count()
-  if (arg_counts >= 9) &
+  argument_counts = command_argument_count()
+  if (argument_counts >= 9) &
     & call print_messages("error", "Invalid argument count.")
-  allocate (args(arg_counts))
-  do i = 1, arg_counts
-    call get_command_argument(i, args(i))
+  allocate (arguments(argument_counts))
+  do i = 1, argument_counts
+    call get_command_argument(i, arguments(i))
   end do
 
   data_directory = "data"
@@ -88,8 +90,9 @@ subroutine get_arguments()
   num_trails = 1
   selected = 0
   i = 1
-  do while (i <= arg_counts)
-    select case (trim(args(i)))
+
+  do while (i <= argument_counts)
+    select case (trim(arguments(i)))
     case ("-v", "V", "VERSION", "--version")
       call print_messages("version")
       return
@@ -97,13 +100,16 @@ subroutine get_arguments()
       call print_messages("help")
       return
     case ("-n", "N", "--number-of-trails")
-      read (args(i + 1), *) num_trails
+      read (arguments(i + 1), *) num_trails
       i = i + 2
     case ("-d", "D", "--data-directory")
-      read (args(i + 1), *) data_directory
+      read (arguments(i + 1), *) data_directory
       i = i + 2
     case ("-p", "P", "--problem")
-      read (args(i + 1), *) selected
+      read (arguments(i + 1), *) selected
+      i = i + 2
+    case ("-a", "A", "--answer")
+      read (arguments(i + 1), *) answer_sheet
       i = i + 2
     case default
       call print_messages("error", "Invalid argument.")
