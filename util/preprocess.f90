@@ -1,20 +1,12 @@
 program main
 implicit none
 
-character(len=*), parameter :: src = "./src/", data = "./data/", build = "./build/"
+character(len=*), parameter :: src = "./src/", build = "./build/"
 integer, allocatable :: problems(:), datasets(:)
-character(len=:), allocatable :: sel_problems, sel_datasets
 integer :: i, unit
 
-sel_problems = build//"sel_problems.txt"
-sel_datasets = build//"sel_datasets.txt"
-
-call execute_command_line("mkdir -p "//build)
-call execute_command_line("ls "//src//"problems/problem_????.f90"//" > "//sel_problems)
-call execute_command_line("ls "//data//"data_????.txt"//" > "//sel_datasets)
-
-problems = read_numbers(sel_problems, "problem_")
-datasets = read_numbers(sel_datasets, "data_")
+problems = read_numbers(build//"solved_problems.txt", "problem_")
+datasets = read_numbers(build//"required_datasets.txt", "data_")
 
 !> Generate interfaces
 open (newunit=unit, file=src//"interface.inc", action="write")
