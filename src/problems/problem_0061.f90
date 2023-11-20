@@ -1,5 +1,6 @@
 submodule(module_problem) submodule_euler0061
 implicit none
+real, parameter :: eps = tiny(0.0)
 contains
 
 module subroutine euler0061(problem)
@@ -74,11 +75,11 @@ end subroutine get_cyclic
 pure subroutine get_polygonals(p)
   type(jagged_type), intent(out) :: p(3:8)
   integer(int64) :: i, j
-  integer(int64), parameter :: i_ = 1000, f_ = 9999
+  integer(int64), parameter :: a = 1000, b = 9999
 
   do i = 3, 8
-    associate (mask_ => ([(is_polygonal(i, j), j=i_, f_)]))
-      p(i)%array = pack([(j, j=i_, f_)], mask_)
+    associate (mask => [(is_polygonal(i, j), j=a, b)])
+      p(i)%array = pack([(j, j=a, b)], mask)
     end associate
   end do
 end subroutine get_polygonals
@@ -103,61 +104,46 @@ pure function is_polygonal(n, val) result(ret)
   end select
 end function is_polygonal
 
-pure function is_triangle(val) result(ret)
+pure logical function is_triangle(val)
   integer(int64), intent(in) :: val
-  logical :: ret
 
-  ret = .false.
-  if (is_int(.5*(sqrt(1.+8.*real(val)) - 1.))) ret = .true.
+  is_triangle = is_integer(.5*(sqrt(1.+8.*real(val)) - 1.))
 end function is_triangle
 
-pure function is_square(val) result(ret)
+pure logical function is_square(val)
   integer(int64), intent(in) :: val
-  logical :: ret
 
-  ret = .false.
-  if (is_int(sqrt(real(val)))) ret = .true.
+  is_square = is_integer(sqrt(real(val)))
 end function is_square
 
-pure function is_pentagonal(val) result(ret)
+pure logical function is_pentagonal(val)
   integer(int64), intent(in) :: val
-  logical :: ret
 
-  ret = .false.
-  if (is_int((sqrt(1.+24.*real(val)) + 1.)/6.)) ret = .true.
+  is_pentagonal = is_integer((sqrt(1.+24.*real(val)) + 1.)/6.)
 end function is_pentagonal
 
-pure function is_hexaonal(val) result(ret)
+pure logical function is_hexaonal(val)
   integer(int64), intent(in) :: val
-  logical :: ret
 
-  ret = .false.
-  if (is_int(.25*(sqrt(1.+8.*real(val)) + 1.))) ret = .true.
+  is_hexaonal = is_integer(.25*(sqrt(1.+8.*real(val)) + 1.))
 end function is_hexaonal
 
-pure function is_heptagonal(val) result(ret)
+pure logical function is_heptagonal(val)
   integer(int64), intent(in) :: val
-  logical :: ret
 
-  ret = .false.
-  if (is_int((sqrt(9.+40.*real(val)) + 3.)/10.)) ret = .true.
+  is_heptagonal = is_integer((sqrt(9.+40.*real(val)) + 3.)/10.)
 end function is_heptagonal
 
-pure function is_octagonal(val) result(ret)
+pure logical function is_octagonal(val)
   integer(int64), intent(in) :: val
-  logical :: ret
 
-  ret = .false.
-  if (is_int((sqrt(1.+3.*real(val)) + 1.)/3.)) ret = .true.
+  is_octagonal = is_integer((sqrt(1.+3.*real(val)) + 1.)/3.)
 end function is_octagonal
 
-pure function is_int(val) result(ret)
+pure logical function is_integer(val)
   real, intent(in) :: val
-  logical :: ret
-  real, parameter :: eps = tiny(0.)
 
-  ret = .false.
-  if (abs(val - nint(val)) < eps) ret = .true.
-end function is_int
+  is_integer = abs(val - nint(val)) < eps
+end function is_integer
 
 end submodule submodule_euler0061
