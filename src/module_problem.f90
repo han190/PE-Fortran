@@ -67,16 +67,41 @@ subroutine solve_problem(problem, num_trails)
 end subroutine solve_problem
 
 !> Solve problems
-subroutine solve_problems(problems, num_trails)
-  type(problem_type), intent(inout) :: problems(:)
+subroutine solve_problems(problems, num_trails, selected)
+  type(problem_type), allocatable, intent(inout) :: problems(:)
   integer(int64), intent(in) :: num_trails
-  integer(int64) :: i
+  integer(int64), intent(in), optional :: selected(:)
+  integer(int64), allocatable :: sel_indices(:)
+  type(problem_type), allocatable :: sel_problems(:)
+  integer(int64) :: i, k
 
-  do i = 1, size(problems)
-    call solve_problem(problems(i), num_trails)
+  if (present(selected)) then
+    do i = 1, size(selected) - 1
+      if (selected(i) > selected(i + 1)) error stop &
+        & "[solve_problems] Problem list not ascending."
+    end do
+
+    allocate (sel_indices(size(selected)))
+    k = 1
+    do i = 1, size(problems)
+      if (problems(i)%index == selected(k)) then
+        sel_indices(k) = i
+        k = k + 1
+      end if
+    end do
+    if (k /= size(selected) + 1) error stop &
+      & "[solve_problems] Problems not found in solution."
+  else
+    sel_indices = [(i, i=1, size(problems))]
+  end if
+
+  sel_problems = problems(sel_indices)
+  do i = 1, size(sel_problems)
+    call solve_problem(sel_problems(i), num_trails)
   end do
   write (*, "(a)", advance='no') repeat(char(32), 34)//char(13)
-  write (*, "(i0, 1x, 'problems solved.')") size(problems)
+  write (*, "(i0, 1x, 'problems solved.')") size(sel_problems)
+  if (present(selected)) problems = sel_problems
 end subroutine solve_problems
 
 !> Relative difficulty
