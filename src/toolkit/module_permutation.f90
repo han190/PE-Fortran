@@ -40,9 +40,9 @@ pure function new_permutation(n, k, start) result(permutation)
   end if
 
   if (permutation%k > permutation%n .or. permutation%k < 0) then
-    error stop "[initialize] Invalid k."
+    error stop "[new_permutation] Invalid k."
   else if (permutation%n < 0) then
-    error stop "[initialize] Invalid n."
+    error stop "[new_permutation] Invalid n."
   end if
 
   if (.not. present(start)) then

@@ -25,7 +25,7 @@ elemental function count_letters(n) result(ret)
   case (1000)
     ret = 11
   case default
-    error stop "Not supported number."
+    error stop "[P17] Not supported number."
   end select
 end function count_letters
 

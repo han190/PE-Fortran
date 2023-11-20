@@ -37,7 +37,7 @@ pure function player_one_win(string_array) result(ret)
       return
     end if
   end do
-  error stop "There is no tie."
+  error stop "[P54] There is no tie."
 end function player_one_win
 
 pure subroutine rank_(hands, s_arr)
