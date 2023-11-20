@@ -56,6 +56,7 @@ function read_numbers(filename, pattern) result(numbers)
   end do
 
   allocate (numbers(num_lines))
+  numbers = 0
   rewind (fileunit)
   do idx = 1, num_lines
     read (fileunit, "(a)") tmp
@@ -66,6 +67,7 @@ function read_numbers(filename, pattern) result(numbers)
     end if
   end do
   close (fileunit)
+  numbers = pack(numbers, numbers /= 0)
 end function read_numbers
 
 end program
