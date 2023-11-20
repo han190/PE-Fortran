@@ -12,10 +12,11 @@
 | Build Tool            | [Fortran Package Manager (FPM)](https://github.com/fortran-lang/fpm) |
 
 ### Run with FPM
-For the basic usage, one should be able to run all the solved problems with a simple command
+One should be able to compile and run all the solved problems with a simple command
 ```bash
 fpm run
 ```
+* `fpm run -- --help` for more information.
 
 ## Contribution
 If you would like to contribute:
@@ -32,23 +33,28 @@ module subroutine eulerxxxx(problem)
    !> store your answer
    integer :: sln 
    !> Your solution here.
-   !> ......
-   !> write your answer to problem
+   !> ...
    write (problem%answer, "(i20)") sln
 end subroutine eulerxxxx
 end submodule submodule_eulerxxxx
 ```
 
 #### Step 2
-Update `*.inc` files (using bash). The Fortran script `util/interface_generator.f90` scans `./data/` and `./src/problems` to generate an array of solved problems, and based on that it generates `*.inc` files required by `module_problem`.
+Update `*.inc` files (using bash/powershell). The Fortran script `util/preprocess.f90` scans `./data/` and `./src/problems` to generate an array of solved problems, and based on that it generates `*.inc` files required by `module_problem`.
+
+bash:
 ```bash
-./util/update_interface.sh
+./util/update.sh
+```
+powershell:
+```powershell
+.\util\update.ps1
 ```
 
 #### Step 3
-Test 
+Test your result
 ```
-fpm test all
+fpm run -- P <Problem Number>
 ```
 
 ## A todo list
