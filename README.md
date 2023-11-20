@@ -8,102 +8,58 @@
 
 | Dependencies          | Options               |
 |:----------------------|:----------------------|
-| Fortran Compiler      | [gfortran](https://gcc.gnu.org/wiki/GFortran)/[ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.lki8b0) |
-| Build Tool            | [Meson](https://mesonbuild.com/)/[fpm](https://github.com/fortran-lang/fpm) |
-| External Libraries    | [stdlib](https://github.com/fortran-lang/stdlib)    |
-| Preprocessor          | [fypp](https://github.com/aradi/fypp)               |
-| Formatter (optional)  | [fprettify](https://github.com/pseewald/fprettify)  |
+| Fortran 2008 compliant Compiler      | [gfortran](https://gcc.gnu.org/wiki/GFortran)/[ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.lki8b0) |
+| Build Tool            | [Fortran Package Manager (FPM)](https://github.com/fortran-lang/fpm) |
 
-All dependencies can be installed using conda
-
+### Run with FPM
+One should be able to compile and run all the solved problems with a simple command
 ```bash
-conda config --add channels conda-forge
-conda create -n fortran_env
-conda activate fortran_env
-conda install -c conda-forge fypp fprettify fpm gfortran fortran_stdlib meson ninja
+fpm run
+```
+* `fpm run -- --help` for more information.
+
+## Contribution
+If you would like to contribute:
+#### Step 1
+Add your file `problem_xxxx.f90` to `src/problems`, where `xxxx` is the problem number with leading zeros. The syntax of a solution submodule should follow
+```fortran
+submodule(module_interface) submodule_eulerxxxx
+implicit none
+contains
+
+module subroutine eulerxxxx(problem)
+   !> Problem type
+   type(problem_type), intent(inout) :: problem
+   !> store your answer
+   integer :: sln 
+   !> Your solution here.
+   !> ...
+   write (problem%answer, "(i20)") sln
+end subroutine eulerxxxx
+end submodule submodule_eulerxxxx
 ```
 
-### Build with fpm
+#### Step 2
+Update `*.inc` files (using bash/powershell). The Fortran script `util/preprocess.f90` scans `./data/` and `./src/problems` to generate an array of solved problems, and based on that it generates `*.inc` files required by `module_problem`.
 
-The fpm does not support fypp currently ([#78](https://github.com/fortran-lang/fpm/issues/78)), so in order to use fpm I wrote a simple installation script. If you have fpm, fypp and fprettify (optional) installed this would be the easist way to play with my project. For a quick start, navigate to the source directory and type:
-
+bash:
+```bash
+./util/update.sh
 ```
-./install.sh
-```
-
-Further information can be found through `./install.sh --help`.
-
-### Build with meson
-
-[Meson](https://mesonbuild.com/) is a fast and user friendly build tool. To build with Meson:
-
-```
-./install.sh --build-tool meson
+powershell:
+```powershell
+.\util\update.ps1
 ```
 
-### Tested compilers
-
-| Compiler |
-|:----|
-| ifort (IFORT) 2021.5.0 20211109 |
-| GNU Fortran (Ubuntu 11.2.0-7ubuntu2) 11.2.0 |
-
-* _For a minimum installation of the Intel Fortran compiler, take a look at [this discussion](https://fortran-lang.discourse.group/t/intel-releases-oneapi-toolkit-free-fortran-2018/471/35?u=han190)._
-
-
-## Usage
-
+#### Step 3
+Test your result
 ```
-$ ./PE-Fortran --help
-PE Fortran Solution
-Arguments:
-   -v, --version          Print version.
-   -h, --help             Pop up this message.
-   -a N, --all N          Compute problem 1 through N.
-   -p N, --problem N      Compute problem N.
-   -f, --fancy            (optional) Use emojis to express
-                          relative difficulties.
-   -d, --data-directory   (optional) Directory of input data,
-                          default is ".".
-   -n, --number-of-trails (optional) Number of trails,
-                          default is 1.
-Example:
-   (1) Compute problem 1 to 50, 10 trails per problem, with
-       fancy style (emojis) and a specified data directory.
-     $ PE-Fortran -f -a 50 -d $(realpath ./data) -n 10
-```
-
-## Misc
-
-To count LOC:
-```
-cloc --force-lang="Fortran 90",fypp .
-```
-
-To format all source files:
-```
-fprettify -i=2 -r src
+fpm run -- P <Problem Number>
 ```
 
 ## A todo list
 
 Here is what I plan to do in the future. (Not likely to be done recently cuz I am kinda busy...)
 
-- [x] Organize folders, use Shell scripts to compile codes.
-- [x] Use a build tool, for example Meson to wrap all the codes. 
-- [x] Use a Fortran preprocessor to simplify my code.
 - [ ] Write a documentation to clearly explain the algorithms, Fortran features, or anything that is interesting for each question.
-- [x] Add version control.
-- [x] Add a command line interface.
-- [x] Add an installation script.
-- [ ] Add GUI!
-- [x] Use fpm to build, test, run and install the project.
-- [x] Review exisiting code, rewrite/refactor code with:
-   * Modern Fortran, 
-   * Functional programming, and 
-   * Array-oriented styles.
-- [ ] One of the three: 
-   * Rewrite a simple yet robust big integer library.
-   * Use GMP for big integer.
-   * Use a good Fortran big integer library.
 - [ ] Implement an associative array for Project Euler.

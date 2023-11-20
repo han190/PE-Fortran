@@ -1,0 +1,182 @@
+module module_utility
+
+use :: iso_fortran_env, only: int64, real64
+implicit none
+
+public :: unit_digit
+public :: num_digits
+public :: sqrt
+public :: lcm
+public :: gcd
+public :: carry
+public :: to_array
+public :: to_integer
+public :: is_palindromic
+public :: is_pandigital
+public :: jagged_type
+public :: swap
+private
+
+!> Jagged type
+type :: jagged_type
+  integer(int64), allocatable :: array(:)
+end type jagged_type
+
+!> Square root of an integer (override sqrt)
+interface sqrt
+  module procedure :: sqrt_int64
+end interface sqrt
+
+!> Swap
+interface swap
+  module procedure :: swap_int64
+  module procedure :: swap_char
+end interface swap
+
+contains
+
+!> Unit digit of a 64-bit integer
+elemental integer(int64) function unit_digit(n)
+  integer(int64), intent(in) :: n
+
+  unit_digit = mod(n, 10_int64)
+end function unit_digit
+
+!> Number of digits of a 64-bit integer
+elemental integer(int64) function num_digits(n)
+  integer(int64), intent(in) :: n
+
+  num_digits = floor(log10(real(n, real64))) + 1_int64
+end function num_digits
+
+!> Square root of a 64-bit integer
+elemental integer(int64) function sqrt_int64(n)
+  integer(int64), intent(in) :: n
+
+  sqrt_int64 = floor(sqrt(real(n, real64)), int64)
+end function sqrt_int64
+
+!> Greatest common divisor of two int64 integers.
+elemental recursive function gcd(a, b) result(ret)
+  integer(int64), intent(in) :: a, b
+  integer(int64) :: ret
+
+  if (b == 0_int64) then
+    ret = a
+  else
+    associate (r => mod(a, b))
+      ret = gcd(b, r)
+    end associate
+  end if
+end function gcd
+
+!> Least common multiple of two int64 integers.
+elemental integer(int64) function lcm(a, b)
+  integer(int64), intent(in) :: a, b
+
+  lcm = abs(a*b)/gcd(a, b)
+end function lcm
+
+!> To tell if an int64 integer is palindromic.
+elemental logical function is_palindromic(n)
+  integer(int64), intent(in) :: n
+  integer(int64) :: reversed, tmp
+
+  reversed = 0_int64
+  tmp = n
+  do while (tmp > 0_int64)
+    reversed = reversed*10_int64 + mod(tmp, 10_int64)
+    tmp = tmp/10_int64
+  end do
+
+  is_palindromic = .false.
+  if (n == reversed) is_palindromic = .true.
+end function is_palindromic
+
+!> Carry
+pure function carry(digs) result(ret)
+  integer(int64), contiguous, intent(in) :: digs(:)
+  integer(int64), allocatable :: ret(:)
+  integer(int64), allocatable :: tmp(:)
+
+  ret = [0_int64, digs]
+  allocate (tmp(size(ret)))
+
+  do while (any(ret >= 10))
+    tmp = merge(1, 0, ret >= 10)
+    where (ret >= 10) ret = ret - 10
+    ret = ret + cshift(tmp, 1)
+  end do
+end function carry
+
+!> Convert number to array.
+pure function to_array(n) result(ret)
+  integer(int64), intent(in) :: n
+  integer(int64), allocatable :: ret(:)
+  integer(int64) :: i, len_, tmp
+
+  tmp = n
+  len_ = num_digits(tmp)
+  allocate (ret(len_))
+  do i = len_, 1, -1
+    ret(i) = unit_digit(tmp)
+    tmp = tmp/10_int64
+  end do
+end function to_array
+
+!> Convert array to integer
+pure integer(int64) function to_integer(arr)
+  integer(int64), intent(in) :: arr(:)
+  integer(int64) :: i, tmp
+
+  tmp = 0_int64
+  do i = 1, size(arr)
+    tmp = tmp*10_int64 + arr(i)
+  end do
+  to_integer = tmp
+end function to_integer
+
+!> Pandigital checker
+pure logical function is_pandigital(n)
+  integer(int64), intent(in) :: n
+  integer(int64) :: tmp, l
+  logical, allocatable :: arr(:)
+
+  l = num_digits(n)
+  if (l > 9_int64) l = 9_int64
+  allocate (arr(l))
+
+  is_pandigital = .false.
+  arr = .false.
+  tmp = n
+
+  do
+    associate (u => (unit_digit(tmp)))
+      if (u == 0_int64 .or. u > l) exit
+      arr(u) = .true.
+    end associate
+    tmp = tmp/10
+  end do
+
+  if (count(arr) == l) is_pandigital = .true.
+end function is_pandigital
+
+pure subroutine swap_int64(a, b)
+  integer(int64), intent(inout) :: a, b
+  integer(int64) :: tmp
+
+  tmp = a
+  a = b
+  b = tmp
+end subroutine swap_int64
+
+pure subroutine swap_char(a, b)
+  character(len=*), intent(inout) :: a, b
+  character(len=len(a)) :: tmp
+
+  tmp = a
+  a = b
+  b = tmp
+end subroutine swap_char
+
+end module module_utility
