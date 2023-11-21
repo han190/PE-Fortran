@@ -1,5 +1,5 @@
 !> Automatically generated.
-allocate (problems(63))
+allocate (problems(64))
 problems(1)%solve => euler0001
 problems(1)%index = 1
 problems(2)%solve => euler0002
@@ -128,10 +128,12 @@ problems(59)%solve => euler0061
 problems(59)%index = 61
 problems(60)%solve => euler0063
 problems(60)%index = 63
-problems(61)%solve => euler0067
-problems(61)%index = 67
-problems(61)%file = data_dir//'/'//'data_0067.txt'
-problems(62)%solve => euler0092
-problems(62)%index = 92
-problems(63)%solve => euler0097
-problems(63)%index = 97
+problems(61)%solve => euler0064
+problems(61)%index = 64
+problems(62)%solve => euler0067
+problems(62)%index = 67
+problems(62)%file = data_dir//'/'//'data_0067.txt'
+problems(63)%solve => euler0092
+problems(63)%index = 92
+problems(64)%solve => euler0097
+problems(64)%index = 97
