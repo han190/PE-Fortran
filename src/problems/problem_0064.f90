@@ -4,13 +4,13 @@ contains
 
 module subroutine euler0064(problem)
   class(problem_type), intent(inout) :: problem
-  integer(int64), allocatable :: array(:)
+  integer(int64), parameter :: n = 1000_int64 ! Large enough
   integer(int64) :: i, p, sln
 
   sln = 0
   do i = 1, 10000
     if (i - sqrt(i)**2 > 0) then
-      p = continued_fraction_period(i, 1000_int64)
+      p = continued_fraction_period(i, n)
       sln = sln + merge(0, 1, mod(p, 2) == 0)
     end if
   end do
