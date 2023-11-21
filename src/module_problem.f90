@@ -33,6 +33,10 @@ interface
   include "interface.inc"
 end interface
 
+!> Commonly used parameters
+character(len=*), parameter :: carriage_return = char(13)
+character(len=*), parameter :: space = char(32)
+
 contains
 
 !> Construct problem arrays
@@ -49,12 +53,12 @@ subroutine solve_problem(problem, num_trails)
   integer(int64), intent(in) :: num_trails
   integer(int64) :: count_rate, clock_start, clock_end, i
   real(real64) :: time_span
-  character(len=:), allocatable :: format_
+  character(len=:), allocatable :: fmt
 
-  format_ = "('Solving problem', 1x, i4.4, 1x, 'trial', 1x, i4.4, '...', a1)"
+  fmt = "(a1, 'Solving problem', 1x, i4.4, 1x, 'trial', 1x, i4.4, '...')"
   call system_clock(count_rate=count_rate)
   do i = 1, num_trails
-    write (*, format_, advance='no') problem%index, i, char(13)
+    write (*, fmt, advance="no") carriage_return, problem%index, i
     call system_clock(count=clock_start)
     call problem%solve()
     call system_clock(count=clock_end)
@@ -68,10 +72,8 @@ end subroutine solve_problem
 subroutine solve_problems(problems, num_trails, selected)
   type(problem_type), allocatable, intent(inout) :: problems(:)
   integer(int64), intent(in) :: num_trails, selected
-  character(len=:), allocatable :: clear
   integer(int64) :: i
 
-  clear = repeat(char(32), 34)//char(13)
   if (selected /= 0) then
     do i = 1, size(problems)
       if (problems(i)%index == selected) exit
@@ -80,17 +82,17 @@ subroutine solve_problems(problems, num_trails, selected)
       & "[solve_problem] Problem not found."
     associate (P => problems(i))
       call solve_problem(P, num_trails)
-      write (*, "(a)", advance='no') clear
-      write (*, "('Problem', t12, i0)") P%index
-      write (*, "('Solution', t12, a)") adjustl(P%answer)
-      write (*, "('Time span', t12, es0.4e3)") P%time_span
+     print *, ""
+     print "('Problem', t12, i0)", P%index
+     print "('Solution', t12, a)", adjustl(P%answer)
+     print "('Time span', t12, es0.4e3)", P%time_span
     end associate
   else
     do i = 1, size(problems)
       call solve_problem(problems(i), num_trails)
     end do
-    write (*, "(a)", advance='no') clear
-    write (*, "(i0, 1x, 'problems solved.')") size(problems)
+    print *, ""
+    print "(i0, 1x, 'problems solved.')", size(problems)
   end if
 end subroutine solve_problems
 
@@ -114,7 +116,7 @@ subroutine print_answers(problems, file)
   integer(int64) :: unit, i, difficulty, num_problems
   character(:), allocatable :: format_
   real(real64) :: time_min, time_max, time_tot
-  character(len=*), parameter :: TC = "TC", space = char(32)
+  character(len=*), parameter :: TC = "TC"
   character(len=:), allocatable :: label, message
 
   time_min = huge(0.0_real64)
