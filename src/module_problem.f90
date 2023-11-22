@@ -68,7 +68,7 @@ subroutine solve_problems(problems, num_trails, selected)
   character(len=:), allocatable :: fmt
   type(problem_type), pointer :: P => null()
 
-  fmt = "(a1, '[', f0.2, '%]', 1x, 'Solving P', i0)"
+  fmt = "(a1, '[', i0, '%]', 1x, 'Solving P', i0)"
   num_problems = size(problems)
   if (selected /= 0) then
     do i = 1, num_problems
@@ -81,7 +81,7 @@ subroutine solve_problems(problems, num_trails, selected)
     do j = 1, num_trails
       percent = real(j)/num_trails*100.0
       write (*, fmt, advance="no") &
-        & carriage_return, percent, P%index
+        & carriage_return, int(percent), P%index
       call solve_problem(P)
       Tspan = Tspan + P%time_span
     end do
@@ -99,7 +99,7 @@ subroutine solve_problems(problems, num_trails, selected)
         step = (i - 1)*num_trails + j
         percent = real(step)/num_steps*100.0
         write (*, fmt, advance="no") &
-          & carriage_return, percent, P%index
+          & carriage_return, int(percent), P%index
         call solve_problem(P)
         Tspan = Tspan + P%time_span
       end do
