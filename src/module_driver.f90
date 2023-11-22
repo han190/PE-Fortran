@@ -35,12 +35,10 @@ subroutine get_help()
   help_messages = [character(len=80) :: &
     & 'PE Fortran Solution', &
     & 'Arguments:', &
-    & '   -v, --version             Print version.', &
-    & '   -h, --help                Pop up this message.', &
-    & '   P, -p, --problem          (optional) Problem number. ', &
-    & '   N, -n, --number-of-trails (optional) Number of trails.', &
-    & '   D, -d, --data-directory   (optional) Data directory.', &
-    & '   A, -a, --answer-sheet     (optional) Filename for answers.']
+    & '   --version            Print version.', &
+    & '   --help               Pop up this message.', &
+    & '   P, -p=, --problem=   (optional) Problem number. ', &
+    & '   N, -n=, --trail=     (optional) Number of trails.']
 end subroutine get_help
 
 !> Print version
@@ -72,10 +70,11 @@ end subroutine print_messages
 !> Get arugment
 subroutine get_arguments()
   character(len=500), allocatable :: arguments(:)
-  integer(int32) :: argument_counts, i
+  integer(int32) :: argument_counts, i, j
   integer(int64) :: num_problems, num_trails, selected
   type(problem_type), allocatable :: problems(:)
   character(len=500) :: answer_sheet, data_directory
+  character(len=:), allocatable :: argument, keyword, keywords(:)
 
   argument_counts = command_argument_count()
   if (argument_counts >= 9) &
@@ -91,30 +90,38 @@ subroutine get_arguments()
   selected = 0
   i = 1
 
-  do while (i <= argument_counts)
-    select case (trim(arguments(i)))
-    case ("-v", "V", "VERSION", "--version")
-      call print_messages("version")
-      return
-    case ("-h", "H", "--help")
-      call print_messages("help")
-      return
-    case ("-n", "N", "--number-of-trails")
-      read (arguments(i + 1), *) num_trails
-      i = i + 2
-    case ("-d", "D", "--data-directory")
-      read (arguments(i + 1), *) data_directory
-      i = i + 2
-    case ("-p", "P", "--problem")
-      read (arguments(i + 1), *) selected
-      i = i + 2
-    case ("-a", "A", "--answer")
-      read (arguments(i + 1), *) answer_sheet
-      i = i + 2
-    case default
-      call print_messages("error", "Invalid argument.")
-    end select
-  end do
+  argument_loop: do while (i <= argument_counts)
+    argument = trim(arguments(i))
+    !> Problems
+    keywords = [character(len=500) :: "P", "--problem=", "-p="]
+    do j = 1, size(keywords)
+      keyword = trim(keywords(j))
+      if (index(argument, keyword) == 1) then
+        read (argument(len(keyword) + 1:), *) selected
+        i = i + 1
+        cycle argument_loop
+      end if
+    end do
+    !> Trails
+    keywords = [character(len=500) :: "T", "--trail=", "-t="]
+    do j = 1, size(keywords)
+      keyword = trim(keywords(j))
+      if (index(argument, keyword) == 1) then
+        read (argument(len(keyword) + 1:), *) num_trails
+        i = i + 1
+        cycle argument_loop
+      end if
+    end do
+    !> Version
+    keywords = [character(len=500) :: "--version", "--help"]
+    do j = 1, size(keywords)
+      keyword = trim(keywords(j))
+      if (index(argument, keyword) == 1) then
+        call print_messages(keyword(3:))
+        return
+      end if
+    end do
+  end do argument_loop
 
   problems = new_problems(trim(data_directory))
   call solve_problems(problems, num_trails, selected)

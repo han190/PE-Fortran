@@ -12,9 +12,13 @@
 | Build Tool            | [Fortran Package Manager (FPM)](https://github.com/fortran-lang/fpm) |
 
 ### Run with FPM
-One should be able to compile and run all the solved problems with a simple command
+To run a single problem:
 ```bash
-fpm run
+fpm run -- P<Problem number> [T<Number of trails>]
+```
+To run all solved problems:
+```bash
+fpm run [-- T<Number of trails>]
 ```
 * `fpm run -- --help` for more information.
 
@@ -49,12 +53,6 @@ bash:
 powershell:
 ```powershell
 .\util\update.ps1
-```
-
-#### Step 3
-Test your result
-```
-fpm run -- P <Problem Number>
 ```
 
 ## A todo list

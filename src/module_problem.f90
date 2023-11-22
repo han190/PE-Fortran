@@ -48,52 +48,67 @@ function new_problems(data_dir) result(problems)
 end function new_problems
 
 !> Solve problem
-subroutine solve_problem(problem, num_trails)
+subroutine solve_problem(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int64), intent(in) :: num_trails
-  integer(int64) :: count_rate, clock_start, clock_end, i
-  real(real64) :: time_span
-  character(len=:), allocatable :: fmt
+  integer(int64) :: count_rate, clock_start, clock_end
 
-  fmt = "(a1, 'Solving problem', 1x, i4.4, 1x, 'trial', 1x, i4.4, '...')"
   call system_clock(count_rate=count_rate)
-  do i = 1, num_trails
-    write (*, fmt, advance="no") carriage_return, problem%index, i
-    call system_clock(count=clock_start)
-    call problem%solve()
-    call system_clock(count=clock_end)
-    time_span = real(clock_end - clock_start, real64)/count_rate
-    problem%time_span = problem%time_span + time_span
-  end do
-  problem%time_span = problem%time_span/num_trails
+  call system_clock(count=clock_start)
+  call problem%solve()
+  call system_clock(count=clock_end)
+  problem%time_span = real(clock_end - clock_start, real64)/count_rate
 end subroutine solve_problem
 
 !> Solve problems
 subroutine solve_problems(problems, num_trails, selected)
-  type(problem_type), allocatable, intent(inout) :: problems(:)
+  type(problem_type), allocatable, target, intent(inout) :: problems(:)
   integer(int64), intent(in) :: num_trails, selected
-  integer(int64) :: i
+  integer(int64) :: i, j, step, num_steps, num_problems
+  real(real64) :: Tspan, percent
+  character(len=:), allocatable :: fmt
+  type(problem_type), pointer :: P => null()
 
+  fmt = "(a1, '[', f0.2, '%]', 1x, 'Solving P', i0)"
+  num_problems = size(problems)
   if (selected /= 0) then
-    do i = 1, size(problems)
+    do i = 1, num_problems
       if (problems(i)%index == selected) exit
     end do
-    if (i == size(problems) + 1) error stop &
+    if (i == num_problems + 1) error stop &
       & "[solve_problem] Problem not found."
-    associate (P => problems(i))
-      call solve_problem(P, num_trails)
-     print *, ""
-     print "('Problem', t12, i0)", P%index
-     print "('Solution', t12, a)", adjustl(P%answer)
-     print "('Time span', t12, es0.4e3)", P%time_span
-    end associate
+    P => problems(i)
+    Tspan = 0.0
+    do j = 1, num_trails
+      percent = real(j)/num_trails*100.0
+      write (*, fmt, advance="no") &
+        & carriage_return, percent, P%index
+      call solve_problem(P)
+      Tspan = Tspan + P%time_span
+    end do
+    P%time_span = Tspan/num_trails
+    print *, ""
+    print "('Problem:', 1x, i0)", P%index
+    print "('Solution:', 1x, a)", adjustl(P%answer)
+    print "('Time span:', 1x, es0.4e3, 1x, '(sec)')", P%time_span
   else
-    do i = 1, size(problems)
-      call solve_problem(problems(i), num_trails)
+    num_steps = num_problems*num_trails
+    do i = 1, num_problems
+      P => problems(i)
+      Tspan = 0.0
+      do j = 1, num_trails
+        step = (i - 1)*num_trails + j
+        percent = real(step)/num_steps*100.0
+        write (*, fmt, advance="no") &
+          & carriage_return, percent, P%index
+        call solve_problem(P)
+        Tspan = Tspan + P%time_span
+      end do
+      P%time_span = Tspan/num_trails
     end do
     print *, ""
-    print "(i0, 1x, 'problems solved.')", size(problems)
+    print "(i0, 1x, 'problems solved.')", num_problems
   end if
+  nullify (P)
 end subroutine solve_problems
 
 !> Relative difficulty
