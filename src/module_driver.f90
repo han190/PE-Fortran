@@ -1,6 +1,6 @@
 module module_driver
 
-use :: iso_fortran_env, only: int32, int64
+use :: iso_fortran_env, only: int32, int64, output_unit
 use :: module_problem
 implicit none
 
@@ -23,7 +23,7 @@ subroutine print_characters(array)
   integer(int64) :: i
 
   do i = 1, size(array)
-    print "(a)", array(i)
+    write (output_unit, "(a)") array(i)
   end do
 end subroutine print_characters
 
@@ -61,7 +61,7 @@ subroutine print_messages(message)
     call get_version()
     call print_characters(ver_msgs)
   case default
-    print "(a, 1x, a)", "[PROJECT EULER]", trim(message)
+    write (output_unit, "(a, 1x, a)") "[PROJECT EULER]", trim(message)
     stop
   end select
 end subroutine print_messages

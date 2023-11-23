@@ -1,6 +1,6 @@
 module module_problem
 
-use :: iso_fortran_env, only: int64, real64
+use :: iso_fortran_env, only: int64, real64, output_unit
 use :: euler_toolkit
 implicit none
 
@@ -80,16 +80,21 @@ subroutine solve_problems(problems, num_trails, selected)
     Tspan = 0.0
     do j = 1, num_trails
       percent = real(j)/num_trails*100.0
-      write (*, fmt, advance="no") &
+      write (output_unit, fmt, advance="no") &
         & carriage_return, int(percent), P%index
+      flush (output_unit)
       call solve_problem(P)
       Tspan = Tspan + P%time_span
     end do
     P%time_span = Tspan/num_trails
-    print *, ""
-    print "('Problem:', 1x, i0)", P%index
-    print "('Solution:', 1x, a)", adjustl(P%answer)
-    print "('Time span:', 1x, es0.4e3, 1x, '(sec)')", P%time_span
+    write (output_unit, "(a1)") carriage_return
+    flush (output_unit)
+    fmt = "('Problem:', 1x, i0)"
+    write (output_unit, fmt) P%index
+    fmt = "('Solution:', 1x, a)"
+    write (output_unit, fmt) adjustl(P%answer)
+    fmt = "('Time span:', 1x, es0.4e3, 1x, '(sec)')"
+    write (output_unit, fmt) P%time_span
   else
     num_steps = num_problems*num_trails
     do i = 1, num_problems
@@ -98,15 +103,18 @@ subroutine solve_problems(problems, num_trails, selected)
       do j = 1, num_trails
         step = (i - 1)*num_trails + j
         percent = real(step)/num_steps*100.0
-        write (*, fmt, advance="no") &
+        write (output_unit, fmt, advance="no") &
           & carriage_return, int(percent), P%index
+        flush (output_unit)
         call solve_problem(P)
         Tspan = Tspan + P%time_span
       end do
       P%time_span = Tspan/num_trails
     end do
-    print *, ""
-    print "(i0, 1x, 'problems solved.')", num_problems
+    write (output_unit, "(a1)") carriage_return
+    flush (output_unit)
+    fmt = "(i0, 1x, 'problems solved.')"
+    write (output_unit, fmt) num_problems
   end if
   nullify (P)
 end subroutine solve_problems
