@@ -25,35 +25,24 @@ fpm run [-- T<Number of trails>]
 ## Contribution
 If you would like to contribute:
 #### Step 1
-Add your file `problem_xxxx.f90` to `src/problems`, where `xxxx` is the problem number with leading zeros. The syntax of a solution submodule should follow
+Add your file `problem_xxxx.f90` to `src/problems`, where `xxxx` is the problem number with leading zeros. If a data file is required, add your data file `data_xxxx.txt` to `data/`. The syntax of a solution submodule should follow
 ```fortran
-submodule(module_interface) submodule_eulerxxxx
+submodule(module_problem) submodule_eulerxxxx
 implicit none
 contains
 
 module subroutine eulerxxxx(problem)
-   !> Problem type
-   type(problem_type), intent(inout) :: problem
-   !> store your answer
-   integer :: sln 
-   !> Your solution here.
-   !> ...
+   class(problem_type), intent(inout) :: problem !> Problem type
+   integer :: sln !> store your answer
+   !> If data file is required:
+   !> open (newunit=unit, file=problem%file)
    write (problem%answer, "(i20)") sln
 end subroutine eulerxxxx
 end submodule submodule_eulerxxxx
 ```
 
 #### Step 2
-Update `*.inc` files (using bash/powershell). The Fortran script `util/preprocess.f90` scans `./data/` and `./src/problems` to generate an array of solved problems, and based on that it generates `*.inc` files required by `module_problem`.
-
-bash:
-```bash
-./util/update.sh
-```
-powershell:
-```powershell
-.\util\update.ps1
-```
+Update `*.inc` files by using `bash ./util/update.sh` or `.\util\update.ps1` for Unix-like/Windows system correspondingly. The Fortran script `util/preprocess.f90` will scan `./data/` and `./src/problems` to generate an array of solved problems, and based on that it generates `*.inc` files required by `module_problem`.
 
 ## A todo list
 
