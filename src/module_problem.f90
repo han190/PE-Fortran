@@ -57,6 +57,7 @@ subroutine solve_problem(problem)
   call problem%solve()
   call system_clock(count=clock_end)
   problem%time_span = real(clock_end - clock_start, real64)/count_rate
+  problem%answer = adjustl(problem%answer) !> Format answer
 end subroutine solve_problem
 
 !> Solve problems
@@ -137,10 +138,8 @@ subroutine print_answers(problems, file)
   type(problem_type), intent(in) :: problems(:)
   character(len=*), intent(in) :: file
   integer(int64) :: unit, i, difficulty, num_problems
-  character(:), allocatable :: format_
   real(real64) :: time_min, time_max, time_tot
-  character(len=*), parameter :: TC = "TC"
-  character(len=:), allocatable :: label, message
+  character(len=:), allocatable :: label, message, fmt
 
   time_min = huge(0.0_real64)
   time_max = tiny(0.0_real64)
@@ -155,24 +154,23 @@ subroutine print_answers(problems, file)
     end if
   end do
 
-  format_ = "(i0, t6, a, t40, es0.4e3, 1x, a)"
+  fmt = "(i0, t6, a, t40, es0.4e3, 1x, a)"
   open (newunit=unit, file=file, action='write', status='unknown')
   write (unit, "('#', t6, 'Answer', t40, 'Timespan (sec)')")
-  write (unit, "(a)") repeat('-', 54)
+  write (unit, "(a)") repeat('-', 53)
   do i = 1, size(problems)
     associate (P => problems(i))
       difficulty = relative_difficulty(P%time_span, time_min, time_max)
-      label = merge(TC, repeat(space, len(TC)), difficulty < 2)
-      write (unit, format_) P%index, adjustl(P%answer), &
-        & P%time_span, trim(label)
+      label = merge("<", repeat(space, len("<")), difficulty < 2)
+      write (unit, fmt) P%index, P%answer, P%time_span, trim(label)
     end associate
   end do
-  write (unit, "(a)") repeat('-', 54)
+  write (unit, "(a)") repeat('-', 53)
   message = "Number of problems solved"
   write (unit, "('*', t6, a, t40, i0)") message, num_problems
-  message = "Mean time spent per problem (sec)"
-  write (unit, "('*', t6, a, t40, es0.4e3)") message, time_tot/num_problems
-  write (unit, "('*', t6, a)") "TC: time consuming"
+  message = "Mean time (sec) / problem"
+  fmt = "('*', t6, a, t40, es0.4e3)"
+  write (unit, fmt) message, time_tot/num_problems
   close (unit)
 end subroutine print_answers
 
