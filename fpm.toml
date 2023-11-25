@@ -18,6 +18,6 @@ source-dir = "test"
 main = "test.f90"
 
 [[executable]]
-name = "ProjectEuler"
+name = "PE-Fortran"
 source-dir = "src"
 main = "project_euler.f90"

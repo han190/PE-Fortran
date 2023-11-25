@@ -108,11 +108,12 @@ subroutine get_arguments()
   integer(int64) :: num_problems, num_trails, selected
   type(problem_type), allocatable :: problems(:)
   character(len=500) :: answer_sheet, data_directory
-  character(len=:), allocatable :: keywords(:), argument, next_argument
+  character(len=:), allocatable :: keywords(:), output_format
+  character(len=:), allocatable :: argument, next_argument
   logical :: list_solved
 
   argument_counts = command_argument_count()
-  if (argument_counts >= 5) &
+  if (argument_counts >= 10) &
     & call print_messages("Invalid argument count.")
   allocate (arguments(argument_counts))
   do i = 1, argument_counts
@@ -145,12 +146,20 @@ subroutine get_arguments()
     end if
 
     select case (argument)
+    case ("-p", "--problem")
+      read (next_argument, *) selected
     case ("-t", "--trail")
       read (next_argument, *) num_trails
+      output_format = "('Number of trails:', 1x, i0)"
+      write (output_unit, output_format) num_trails
     case ("-d", "--data")
-      read (next_argument, *) data_directory
+      read (next_argument, "(a)") data_directory
+      output_format = "('Data directory:', 1x, a)"
+      write (output_unit, output_format) trim(data_directory)
     case ("-a", "--answer")
-      read (next_argument, *) answer_sheet
+      read (next_argument, "(a)") answer_sheet
+      output_format = "('Answer sheet:', 1x, a)"
+      write (output_unit, output_format) trim(answer_sheet)
     case ("-l", "--list")
       list_solved = .true.
     case ("-v", "--version")

@@ -14,11 +14,11 @@
 ### Run with FPM
 To run a single problem:
 ```bash
-fpm run -- P<Problem number> [T<Number of trails>]
+fpm run -- p<problem number> [--trail <number of trails>]
 ```
 To run all solved problems:
 ```bash
-fpm run [-- T<Number of trails>]
+fpm run [-- --trail <number of trails>]
 ```
 * `fpm run -- --help` for more information.
 
