@@ -67,10 +67,10 @@ subroutine solve_problems(problems, num_trails, selected)
   integer(int64), intent(in) :: num_trails, selected
   integer(int64) :: i, j, step, num_steps, num_problems
   real(real64) :: Tspan, percent
-  character(len=:), allocatable :: fmt
+  character(len=:), allocatable :: output_format
   type(problem_type), pointer :: P => null()
 
-  fmt = "(a1, '[', i0, '%]', 1x, 'Solving P', i0)"
+  output_format = "(a1, '[', i0, '%]', 1x, 'Solving P', i0)"
   num_problems = size(problems)
   if (selected /= 0) then
     do i = 1, num_problems
@@ -82,7 +82,7 @@ subroutine solve_problems(problems, num_trails, selected)
     Tspan = 0.0
     do j = 1, num_trails
       percent = real(j)/num_trails*100.0
-      write (output_unit, fmt, advance="no") &
+      write (output_unit, output_format, advance="no") &
         & carriage_return, int(percent), P%index
       flush (output_unit)
       call solve_problem(P)
@@ -91,12 +91,12 @@ subroutine solve_problems(problems, num_trails, selected)
     P%time_span = Tspan/num_trails
     write (output_unit, "(a1)") carriage_return
     flush (output_unit)
-    fmt = "('Problem:', 1x, i0)"
-    write (output_unit, fmt) P%index
-    fmt = "('Solution:', 1x, a)"
-    write (output_unit, fmt) adjustl(P%answer)
-    fmt = "('Time span:', 1x, es0.4e3, 1x, '(sec)')"
-    write (output_unit, fmt) P%time_span
+    output_format = "('Problem:', 1x, i0)"
+    write (output_unit, output_format) P%index
+    output_format = "('Solution:', 1x, a)"
+    write (output_unit, output_format) adjustl(P%answer)
+    output_format = "('Time span:', 1x, es0.4e3, 1x, '(sec)')"
+    write (output_unit, output_format) P%time_span
   else
     num_steps = num_problems*num_trails
     do i = 1, num_problems
@@ -105,7 +105,7 @@ subroutine solve_problems(problems, num_trails, selected)
       do j = 1, num_trails
         step = (i - 1)*num_trails + j
         percent = real(step)/num_steps*100.0
-        write (output_unit, fmt, advance="no") &
+        write (output_unit, output_format, advance="no") &
           & carriage_return, int(percent), P%index
         flush (output_unit)
         call solve_problem(P)
@@ -115,23 +115,24 @@ subroutine solve_problems(problems, num_trails, selected)
     end do
     write (output_unit, "(a1)") carriage_return
     flush (output_unit)
-    fmt = "(i0, 1x, 'problems solved.')"
-    write (output_unit, fmt) num_problems
+    output_format = "(i0, 1x, 'problems solved.')"
+    write (output_unit, output_format) num_problems
   end if
   nullify (P)
 end subroutine solve_problems
 
 !> Relative difficulty
-elemental function relative_difficulty(time_span, time_min, time_max) result(ret)
+elemental function relative_difficulty( &
+  & time_span, time_min, time_max) result(ret)
   real(real64), intent(in) :: time_span, time_min, time_max
-  integer(int64) :: ret, i
-  real(real64) :: norm
+  integer(int64) :: ret
+  real(real64) :: normalized
 
-  norm = (time_span - time_min)/(time_max - time_min)
-  do i = 1, 5
-    if (norm >= 10.**(-i)) exit
+  ret = 0
+  normalized = (time_span - time_min)/(time_max - time_min)
+  do while (normalized < 10.0**(-ret))
+    ret = ret + 1
   end do
-  ret = i
 end function relative_difficulty
 
 !> List all solved problems
@@ -168,7 +169,7 @@ subroutine print_answers(problems, file)
   character(len=*), intent(in) :: file
   integer(int64) :: unit, i, difficulty, num_problems
   real(real64) :: time_min, time_max, time_tot
-  character(len=:), allocatable :: label, message, fmt
+  character(len=:), allocatable :: message, output_format
 
   time_min = huge(0.0_real64)
   time_max = tiny(0.0_real64)
@@ -183,23 +184,23 @@ subroutine print_answers(problems, file)
     end if
   end do
 
-  fmt = "(i0, t6, a, t40, es0.4e3, 1x, a)"
+  output_format = "(i0, t6, a, t40, es0.4e3, 1x, a)"
   open (newunit=unit, file=file, action='write', status='unknown')
-  write (unit, "('#', t6, 'Answer', t40, 'Timespan (sec)')")
-  write (unit, "(a)") repeat('-', 53)
+  write (unit, "('#', t6, 'Answer', t40, 'Time (sec)')")
+  write (unit, "(a)") repeat('-', 50)
   do i = 1, size(problems)
     associate (P => problems(i))
       difficulty = relative_difficulty(P%time_span, time_min, time_max)
-      label = merge("<", repeat(space, len("<")), difficulty < 2)
-      write (unit, fmt) P%index, P%answer, P%time_span, trim(label)
+      write (unit, output_format) P%index, P%answer, P%time_span, &
+        & merge("slow", repeat(space, len("slow")), difficulty < 2)
     end associate
   end do
-  write (unit, "(a)") repeat('-', 53)
+  write (unit, "(a)") repeat('-', 50)
   message = "Number of problems solved"
   write (unit, "('*', t6, a, t40, i0)") message, num_problems
   message = "Mean time (sec) / problem"
-  fmt = "('*', t6, a, t40, es0.4e3)"
-  write (unit, fmt) message, time_tot/num_problems
+  output_format = "('*', t6, a, t40, es0.4e3)"
+  write (unit, output_format) message, time_tot/num_problems
   close (unit)
 end subroutine print_answers
 
