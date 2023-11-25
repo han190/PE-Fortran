@@ -137,21 +137,29 @@ end function relative_difficulty
 !> List all solved problems
 subroutine list_problems(problems)
   type(problem_type), intent(in) :: problems(:)
-  integer(int64) :: i, j, stride
+  integer(int64) :: i, j, s
   integer(int64), allocatable :: indices(:)
   integer(int64) :: num_problems
+  logical, allocatable :: solved(:)
+  character(len=:), allocatable :: output_format
 
-  num_problems = size(problems)
-  write (output_unit, "('[', i0, 1x, 'problems solved]')") num_problems
-  stride = 10
-  do i = 1, num_problems, stride
-    if (i + stride - 1 <= num_problems) then
-      indices = [(problems(j)%index, j=i, i + stride - 1)]
-    else
-      indices = [(problems(j)%index, j=i, num_problems)]
-    end if
-    write (output_unit, "(*(i4, 1x))") indices
+  num_problems = 0
+  do while (num_problems < size(problems))
+    num_problems = num_problems + 50
   end do
+
+  allocate (solved(num_problems))
+  solved = .false.
+  indices = [(problems(i)%index, i=1, size(problems))]
+  solved(indices) = .true.
+  s = 5
+  output_format = "(*(i4, 1x, a1))"
+  do i = 1, num_problems, s
+    write (output_unit, output_format) &
+      & (j, merge("x", " ", solved(j)), j=i, i + s - 1)
+  end do
+  output_format = "('[', i0, 1x, 'problems solved]')"
+  write (output_unit, output_format) size(problems)
 end subroutine list_problems
 
 !> Write answers to file
