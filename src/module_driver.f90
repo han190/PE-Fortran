@@ -1,19 +1,13 @@
 module module_driver
 
-use :: iso_fortran_env, only: int32, int64, output_unit
+use :: iso_fortran_env, only: int64, output_unit
 use :: module_problem
 implicit none
 
 public :: get_arguments
 private
-character(len=:), allocatable :: help_msgs(:)
-character(len=:), allocatable :: ver_msgs(:)
-
-interface check
-  module procedure :: check_integer
-  module procedure :: check_character
-  module procedure :: check_message
-end interface check
+character(len=:), allocatable :: help_message(:)
+character(len=:), allocatable :: version_message(:)
 
 contains
 
@@ -29,7 +23,7 @@ end subroutine print_characters
 
 !> Get version
 subroutine get_version()
-  ver_msgs = [character(len=80) :: &
+  version_message = [character(len=80) :: &
     & 'Project Name: PE-Fortran', &
     & 'Version: 0.4.0', 'License: MIT', &
     & 'Copyright: Copyright 2019 - 2023, Han Tang', &
@@ -38,13 +32,16 @@ end subroutine get_version
 
 !> Print help
 subroutine get_help()
-  help_msgs = [character(len=80) :: &
+  help_message = [character(len=80) :: &
     & 'PE Fortran Solution', &
     & 'Arguments:', &
-    & '   --version            Print version.', &
-    & '   --help               Pop up this message.', &
-    & '   P, -p=, --problem=   (optional) Problem number. ', &
-    & '   N, -n=, --trail=     (optional) Number of trails.']
+    & '   P<N>, PROB<N>, PROBLEM<N> Solve a single problem.', &
+    & '   -v, --version             Print version.', &
+    & '   -h, --help                Pop up this message.', &
+    & '   -t, --trail               Number of trails.', &
+    & '   -d, --data                Data directory.', &
+    & '   -a, --answer              Answer sheet (output file).', &
+    & '   -l, --list                List solved problems.']
 end subroutine get_help
 
 !> Print version
@@ -53,83 +50,66 @@ subroutine print_messages(message)
 
   select case (trim(message))
   case ("help")
-    if (allocated(help_msgs)) deallocate (help_msgs)
+    if (allocated(help_message)) deallocate (help_message)
     call get_help()
-    call print_characters(help_msgs)
+    call print_characters(help_message)
   case ("version")
-    if (allocated(ver_msgs)) deallocate (ver_msgs)
+    if (allocated(version_message)) deallocate (version_message)
     call get_version()
-    call print_characters(ver_msgs)
+    call print_characters(version_message)
   case default
     write (output_unit, "(a, 1x, a)") "[PROJECT EULER]", trim(message)
     stop
   end select
 end subroutine print_messages
 
-!> Argument check for integer
-function check_integer(argument, keywords, value) result(found)
+!> If a string contains only digit
+pure function is_digit(string) result(ret)
+  character(len=*), intent(In) :: string
+  logical :: ret
+  integer :: i, a
+
+  ret = .true.
+  do i = 1, len(string)
+    a = ichar(string(i:i))
+    if (.not. (a >= 48 .and. a <= 57)) then
+      ret = .false.
+      return
+    end if
+  end do
+end function is_digit
+
+!> Argument check for single problem solution.
+function problem_found(argument, keywords, value) result(found)
   character(len=*), intent(in) :: argument, keywords(:)
   integer(int64), intent(inout) :: value
   logical :: found
-  character(len=:), allocatable :: keyword
+  character(len=:), allocatable :: keyword, value_str
   integer(int64) :: i
 
   found = .false.
   do i = 1, size(keywords)
     keyword = trim(keywords(i))
     if (index(argument, keyword) == 1) then
-      read (argument(len(keyword) + 1:), *) value
+      value_str = argument(len(keyword) + 1:)
+      if (.not. is_digit(value_str)) &
+        & call print_messages("Invalid format.")
+      read (value_str, *) value
       found = .true.
       return
     end if
   end do
-end function check_integer
-
-!> Argument check for integer
-function check_character(argument, keywords, value) result(found)
-  character(len=*), intent(in) :: argument, keywords(:)
-  character(len=*), intent(inout) :: value
-  logical :: found
-  character(len=:), allocatable :: keyword
-  integer(int64) :: i
-
-  found = .false.
-  do i = 1, size(keywords)
-    keyword = trim(keywords(i))
-    if (index(argument, keyword) == 1) then
-      read (argument(len(keyword) + 1:), *) value
-      found = .true.
-      return
-    end if
-  end do
-end function check_character
-
-!> Argument check for integer
-function check_message(argument, keywords) result(found)
-  character(len=*), intent(in) :: argument, keywords(:)
-  logical :: found
-  character(len=:), allocatable :: keyword
-  integer(int64) :: i
-
-  found = .false.
-  do i = 1, size(keywords)
-    keyword = trim(keywords(i))
-    if (index(argument, keyword) == 1) then
-      call print_messages(keyword(3:))
-      found = .true.
-      return
-    end if
-  end do
-end function check_message
+end function problem_found
 
 !> Get arugment
 subroutine get_arguments()
   character(len=500), allocatable :: arguments(:)
-  integer(int32) :: argument_counts, i, j
+  integer :: argument_counts, i, j
   integer(int64) :: num_problems, num_trails, selected
   type(problem_type), allocatable :: problems(:)
   character(len=500) :: answer_sheet, data_directory
-  character(len=500) :: argument, keyword, keywords(10)
+  character(len=:), allocatable :: keywords(:), argument, next_argument
+  logical :: list_solved
 
   argument_counts = command_argument_count()
   if (argument_counts >= 5) &
@@ -144,25 +124,56 @@ subroutine get_arguments()
   answer_sheet = "answer.log"
   num_trails = 1
   selected = 0
+  list_solved = .false.
 
-  keywords = [character(len=500) :: &
-    & "P", "--problem=", "T", "--trail=", "D", "--data=", &
-    & "A", "--answer=", "--version", "--help"]
-  do i = 1, argument_counts
-    argument = trim(arguments(i))
-    if ( &
-      check(argument, keywords(1:2), selected) .or. &
-      check(argument, keywords(3:4), num_trails) .or. &
-      check(argument, keywords(5:6), data_directory) .or. &
-      check(argument, keywords(7:8), answer_sheet) .or. &
-      check(argument, keywords(9:10)) &
-    ) cycle 
-    call print_messages("Invalid argument.")
+  i = 1
+  do while (i <= argument_counts)
+    !> If a single problem is selected
+    argument = trim(adjustl(arguments(i)))
+    keywords = [character(len=500) :: &
+      & "PROBLEM", "Problem", "problem", &
+      & "PROB", "Prob", "prob", "P", "p"]
+    if (problem_found(argument, keywords, selected)) then
+      i = i + 1
+      cycle
+    end if
+
+    if (argument_counts >= 2) then
+      next_argument = trim(adjustl(arguments(i + 1)))
+    else
+      next_argument = ""
+    end if
+
+    select case (argument)
+    case ("-t", "--trail")
+      read (next_argument, *) num_trails
+    case ("-d", "--data")
+      read (next_argument, *) data_directory
+    case ("-a", "--answer")
+      read (next_argument, *) answer_sheet
+    case ("-l", "--list")
+      list_solved = .true.
+    case ("-v", "--version")
+      call print_messages("version")
+      return
+    case ("-h", "--help")
+      call print_messages("help")
+      return
+    case default
+      call print_messages("Invalid argument.")
+    end select
+    i = i + 2
   end do
 
   problems = new_problems(trim(data_directory))
+  if (list_solved) then
+    call list_problems(problems)
+    return
+  end if
   call solve_problems(problems, num_trails, selected)
-  if (selected == 0) call print_answers(problems, trim(answer_sheet))
+  if (selected == 0) then
+    call print_answers(problems, trim(answer_sheet))
+  end if
 end subroutine get_arguments
 
 end module module_driver

@@ -9,6 +9,7 @@ public :: new_problems
 public :: solve_problem
 public :: solve_problems
 public :: print_answers
+public :: list_problems
 private
 
 !> Problem type
@@ -132,6 +133,26 @@ elemental function relative_difficulty(time_span, time_min, time_max) result(ret
   end do
   ret = i
 end function relative_difficulty
+
+!> List all solved problems
+subroutine list_problems(problems)
+  type(problem_type), intent(in) :: problems(:)
+  integer(int64) :: i, j, stride
+  integer(int64), allocatable :: indices(:)
+  integer(int64) :: num_problems
+
+  num_problems = size(problems)
+  write (output_unit, "('[', i0, 1x, 'problems solved]')") num_problems
+  stride = 10
+  do i = 1, num_problems, stride
+    if (i + stride - 1 <= num_problems) then
+      indices = [(problems(j)%index, j=i, i + stride - 1)]
+    else
+      indices = [(problems(j)%index, j=i, num_problems)]
+    end if
+    write (output_unit, "(*(i4, 1x))") indices
+  end do
+end subroutine list_problems
 
 !> Write answers to file
 subroutine print_answers(problems, file)
