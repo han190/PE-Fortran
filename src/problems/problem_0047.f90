@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0047(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64), parameter :: n = 1000000 - 1
   integer(int64) :: i, goal, sln
   integer(int64), allocatable :: n_factor(:)

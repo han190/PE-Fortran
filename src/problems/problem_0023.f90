@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0023(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64), allocatable :: abundants(:)
   integer(int64), parameter :: istart = 12, iend = 28123
   integer(int64) :: i, j

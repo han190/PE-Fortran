@@ -4,7 +4,7 @@ implicit none
 contains
 
 module subroutine euler0076(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64), allocatable :: array(:), tmp(:)
   integer(int64) :: i, j, k, n
 

@@ -4,7 +4,7 @@ real, parameter :: eps = tiny(0.0)
 contains
 
 module subroutine euler0061(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   type(jagged_type) :: polygonals(3:8)
   type(jagged_type), allocatable :: array(:)
   type(permutation_type) :: permutation

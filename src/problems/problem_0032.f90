@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0032(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64) :: tmp, i, j, k, products(9)
 
   k = 1

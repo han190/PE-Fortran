@@ -106,7 +106,7 @@ subroutine get_arguments()
   character(len=500), allocatable :: arguments(:)
   integer :: argument_counts, i, j
   integer(int64) :: num_problems, num_trails, selected
-  type(problem_type), allocatable :: problems(:)
+  type(problemset_type(num_problems=:)), allocatable :: problemset
   character(len=500) :: answer_sheet, data_directory
   character(len=:), allocatable :: keywords(:), output_format
   character(len=:), allocatable :: argument, next_argument
@@ -150,7 +150,7 @@ subroutine get_arguments()
       read (next_argument, *) selected
     case ("-t", "--trail")
       read (next_argument, *) num_trails
-      output_format = "('Number of trails:', 1x, i0)"
+      output_format = "('Number of trails / problem:', 1x, i0)"
       write (output_unit, output_format) num_trails
     case ("-d", "--data")
       read (next_argument, "(a)") data_directory
@@ -174,14 +174,14 @@ subroutine get_arguments()
     i = i + 2
   end do
 
-  problems = new_problems(trim(data_directory))
+  problemset = new_problemset(trim(data_directory))
   if (list_solved) then
-    call list_problems(problems)
+    call list_problems(problemset)
     return
   end if
-  call solve_problems(problems, num_trails, selected)
+  call solve_problems(problemset, num_trails, selected)
   if (selected == 0) then
-    call print_answers(problems, trim(answer_sheet))
+    call print_answers(problemset, trim(answer_sheet))
   end if
 end subroutine get_arguments
 

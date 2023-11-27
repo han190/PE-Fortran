@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0018(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64), parameter :: n = 15
   type(jagged_type), allocatable :: jagged(:)
   integer(int64) :: i, j, x, unit

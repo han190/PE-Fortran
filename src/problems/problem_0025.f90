@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0025(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   real(real64) :: phi
   integer(int64) :: sln
 

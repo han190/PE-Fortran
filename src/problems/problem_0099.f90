@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0099(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64) :: unit, iostat, current(2), largest(2), k, sln
 
   largest = [1, 1]

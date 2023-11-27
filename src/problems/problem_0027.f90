@@ -8,7 +8,7 @@ implicit none
 contains
 
 module subroutine euler0027(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64), parameter :: x = 31
 
   write (problem%answer, "(i20)") -(2*x - 1)*(x**2 - x + 41)

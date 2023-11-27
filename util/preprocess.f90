@@ -12,21 +12,32 @@ datasets = read_numbers(build//"required_datasets.txt", "data_")
 open (newunit=unit, file=src//"interface.inc", action="write")
 write (unit, "(a)") "!> Automatically generated."
 do i = 1, size(problems)
-  write (unit, "(a, i4.4, a)") "module subroutine euler", problems(i), "(problem)"
-  write (unit, "(2x, a)") "class(problem_type), intent(inout) :: problem"
+  write (unit, "(a, i4.4, a)") "module subroutine euler", &
+    & problems(i), "(problem)"
+  write (unit, "(2x, a)") "type(problem_type), intent(inout) :: problem"
   write (unit, "(a, i4.4)") "end subroutine euler", problems(i)
 end do
 close (unit)
 
 !> Generate pointer associations
-open (newunit=unit, file=src//"problem.inc", action="write")
+open (newunit=unit, file=src//"problemset.inc", action="write")
 write (unit, "(a)") "!> Automatically generated."
-write (unit, "(a, i0, a)") "allocate (problems(", size(problems), "))"
+write (unit, "(a, i0)") "problemset%num_problems = ", size(problems)
+write (unit, "(a)") "allocate (problemset%solutions(problemset%num_problems))"
+write (unit, "(a)") "allocate (problemset%problems(problemset%num_problems))"
 do i = 1, size(problems)
-  write (unit, "(a, i0, a, i4.4)") "problems(", i, ")%solve => euler", problems(i)
-  write (unit, "(a, i0, a, i0)") "problems(", i, ")%index = ", problems(i)
-  if (any(problems(i) == datasets)) write (unit, "(a, i0, a, i4.4, a)") &
-    & "problems(", i, ")%file = data_dir//'/'//'data_", problems(i), ".txt'"
+  write (unit, "(a, i0, a, i4.4)") "problemset%solutions(", &
+    & i, ")%solve => euler", problems(i)
+  write (unit, "(a, i0, a, i0)") "problemset%problems(", &
+    & i, ")%index = ", problems(i)
+  if (any(problems(i) == datasets)) then
+    write (unit, "(a, i0, a, i4.4, a)") &
+      & "problemset%problems(", i, &
+      & ")%file = data_directory//'/'//'data_", problems(i), ".txt'"
+  else
+    write (unit, "(a, i0, a)") &
+      & "problemset%problems(", i, ")%file = ''"
+  end if
 end do
 close (unit)
 

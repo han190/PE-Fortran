@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0042(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64), parameter :: score_max = 26*50
   logical :: is_triangular(score_max)
   character(len=:), allocatable :: names(:)

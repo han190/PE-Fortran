@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0059(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64), parameter :: n = 26, k = 3
   integer(int64), allocatable :: encrypted(:), decrypted(:)
   integer(int64) :: letters(n), i

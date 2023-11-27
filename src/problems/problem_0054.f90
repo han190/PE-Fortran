@@ -6,7 +6,7 @@ character(len=1), parameter :: value_arr(14) = [ &
 contains
 
 module subroutine euler0054(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64) :: i, unit, sln
   character(len=2) :: cards(10)
 

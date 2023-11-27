@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0049(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64), parameter :: by = 3330
   integer(int64) :: i
   logical, allocatable :: check(:)

@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0057(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   real(real64), parameter :: delta = log10(1._real64 + sqrt(2._real64))
   real(real64) :: logp, logq
   integer(int64) :: sln, i

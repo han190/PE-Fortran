@@ -9,7 +9,7 @@ integer(int64), parameter :: error = -9999999
 contains
 
 module subroutine euler0092(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
 
   write (problem%answer, "(i20)") 10_int64**7 - num_happys(7_int64)
 end subroutine euler0092

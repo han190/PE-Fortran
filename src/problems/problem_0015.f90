@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0015(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64), parameter :: n = 20
   integer(int64) :: i
   integer(int64) :: sln

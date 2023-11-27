@@ -4,7 +4,7 @@ integer(int64), parameter :: primes(7) = [17, 13, 11, 7, 5, 3, 2]
 contains
 
 module subroutine euler0043(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64) :: sln, tmp
   type(permutation_type) :: permutation
 

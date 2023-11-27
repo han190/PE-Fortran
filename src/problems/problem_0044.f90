@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0044(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64), parameter :: n = 3000
   integer(int64) :: pentagonals(n)
   integer(int64) :: i, j, sln

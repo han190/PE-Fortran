@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0008(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64) :: array(1000), i, unit, sln
 
   open (newunit=unit, file=problem%file, status='old', action='read')

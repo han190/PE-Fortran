@@ -3,7 +3,7 @@ implicit none
 contains
 
 module subroutine euler0033(problem)
-  class(problem_type), intent(inout) :: problem
+  type(problem_type), intent(inout) :: problem
   integer(int64) :: denom, numer, counter, denom_prod, numer_prod
 
   denom = 1
