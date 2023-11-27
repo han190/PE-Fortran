@@ -106,7 +106,7 @@ subroutine get_arguments()
   character(len=500), allocatable :: arguments(:)
   integer :: argument_counts, i, j
   integer(int64) :: num_problems, num_trails, selected
-  type(problemset_type(num_problems=:)), allocatable :: problemset
+  type(problemset_type) :: problemset
   character(len=500) :: answer_sheet, data_directory
   character(len=:), allocatable :: keywords(:), output_format
   character(len=:), allocatable :: argument, next_argument
