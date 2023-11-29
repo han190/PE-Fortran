@@ -64,8 +64,7 @@ subroutine solve_problem(problem, solution)
   type(solution_type), intent(in) :: solution
   integer(int64) :: count_rate, clock_start, clock_end
 
-  call system_clock(count_rate=count_rate)
-  call system_clock(count=clock_start)
+  call system_clock(count=clock_start, count_rate=count_rate)
   call solution%solve(problem)
   call system_clock(count=clock_end)
   problem%time_span = real(clock_end - clock_start, real64)/count_rate
