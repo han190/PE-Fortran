@@ -16,36 +16,40 @@ end subroutine euler0055
 function is_lychrel(arr) result(ret)
   integer(int64), contiguous, intent(in) :: arr(:)
   logical :: ret
-  integer(int64), allocatable :: tmp(:), tmpr(:)
+  integer(int64), allocatable :: tmp(:), reversed(:)
   integer(int64) :: i
 
   tmp = arr
+  reversed = arr(size(arr):1:-1)
   ret = .true.
 
   do i = 1, 50
-    if (is_palindromic_array(tmp, tmpr)) then
+    tmp = add(tmp, reversed)
+    if (is_palindromic_array(tmp, reversed)) then
       ret = .false.
       exit
     end if
-    tmp = add(tmp, tmpr)
   end do
 end function is_lychrel
 
-function is_palindromic_array(digit, digitr) result(ret)
+function is_palindromic_array(digit, reversed) result(ret)
   integer(int64), contiguous, intent(in) :: digit(:)
-  integer(int64), allocatable, intent(out) :: digitr(:)
+  integer(int64), allocatable, intent(out) :: reversed(:)
   logical :: ret
+  integer(int64) :: i, j, num_tests, num_digits
 
-  digitr = reverse(digit)
-  ret = all(digitr == digit)
+  num_digits = size(digit)
+  num_tests = num_digits/2
+  ret = .true.
+  do i = 1, num_tests
+    j = num_digits - i + 1
+    if (digit(i) /= digit(j)) then
+      ret = .false.
+      exit
+    end if
+  end do
+  if (.not. ret) reversed = digit(num_digits:1:-1)
 end function is_palindromic_array
-
-pure function reverse(digit) result(ret)
-  integer(int64), contiguous, intent(in) :: digit(:)
-  integer(int64), allocatable :: ret(:)
-
-  ret = digit(size(digit):1:-1)
-end function reverse
 
 pure function add(digit1, digit2) result(ret)
   integer(int64), contiguous, intent(in) :: digit1(:), digit2(:)
@@ -69,7 +73,7 @@ pure function cut_leading_zeros(digit) result(ret)
   do i = 1, size(digit)
     if (digit(i) /= 0) then
       ret = digit(i:)
-      return
+      exit
     end if
   end do
 end function cut_leading_zeros

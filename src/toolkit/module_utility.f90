@@ -88,9 +88,7 @@ elemental logical function is_palindromic(n)
     reversed = reversed*10_int64 + mod(tmp, 10_int64)
     tmp = tmp/10_int64
   end do
-
-  is_palindromic = .false.
-  if (n == reversed) is_palindromic = .true.
+  is_palindromic = n == reversed
 end function is_palindromic
 
 !> Carry
@@ -146,7 +144,6 @@ pure logical function is_pandigital(n)
   if (l > 9_int64) l = 9_int64
   allocate (arr(l))
 
-  is_pandigital = .false.
   arr = .false.
   tmp = n
 
@@ -157,8 +154,7 @@ pure logical function is_pandigital(n)
     end associate
     tmp = tmp/10
   end do
-
-  if (count(arr) == l) is_pandigital = .true.
+  is_pandigital = count(arr) == l
 end function is_pandigital
 
 pure subroutine swap_int64(a, b)
