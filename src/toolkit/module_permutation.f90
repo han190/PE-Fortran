@@ -89,6 +89,13 @@ pure subroutine set_permutation(permutation, indices)
   integer(int64) :: i
 
   if (permutation%k /= 0) then
+    if (.not. allocated(permutation%cycles)) then
+      allocate (permutation%cycles(permutation%k))
+    else if (size(permutation%cycles) /= permutation%k) then
+      deallocate (permutation%cycles)
+      allocate (permutation%cycles(permutation%k))
+    end if
+
     permutation%indices = indices
     ordered = [(i, i=1, permutation%n)]
     permutation%pool = reorder(ordered, indices)
@@ -122,11 +129,13 @@ pure subroutine permute(permutation)
     do i = permutation%k, 1, -1
       permutation%cycles(i) = permutation%cycles(i) - 1
       if (permutation%cycles(i) == 0) then
-        permutation%pool(i:) = [permutation%pool(i + 1:), permutation%pool(i)]
+        permutation%pool(i:) = [permutation%pool(i + 1:), &
+          & permutation%pool(i)]
         permutation%cycles(i) = permutation%n - i + 1
       else
         j = permutation%cycles(i)
-        call swap(permutation%pool(i), permutation%pool(permutation%n - j + 1))
+        call swap(permutation%pool(permutation%n - j + 1), &
+          & permutation%pool(i))
         permutation%indices = permutation%pool(:permutation%k)
         exit
       end if

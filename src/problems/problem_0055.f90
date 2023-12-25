@@ -58,10 +58,12 @@ pure function add(digit1, digit2) result(ret)
   integer(int64) :: n, i
 
   associate (n1 => size(digit1), n2 => size(digit2))
-    n = max(n1, n2)
+    n = max(n1, n2) + 1
     tmp1 = [[(0_int64, i=1, n - n1)], digit1]
     tmp2 = [[(0_int64, i=1, n - n2)], digit2]
-    ret = cut_leading_zeros(carry(tmp1 + tmp2))
+    tmp1 = tmp1 + tmp2
+    call carry(tmp1)
+    ret = cut_leading_zeros(tmp1)
   end associate
 end function add
 

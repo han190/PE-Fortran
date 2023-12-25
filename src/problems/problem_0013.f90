@@ -16,11 +16,9 @@ module subroutine euler0013(problem)
   n = size(tmp)
   do i = 1, 100
     tmp(n - 49:n) = tmp(n - 49:n) + digs(:, i)
-    associate (tmp_ => carry(tmp))
-      tmp = tmp_(2:)
-    end associate
   end do
 
+  call carry(tmp)
   do i = 1, n
     if (tmp(i) /= 0) exit
   end do

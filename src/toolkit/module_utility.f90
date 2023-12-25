@@ -92,20 +92,40 @@ elemental logical function is_palindromic(n)
 end function is_palindromic
 
 !> Carry
-pure function carry(digs) result(ret)
-  integer(int64), contiguous, intent(in) :: digs(:)
-  integer(int64), allocatable :: ret(:)
+pure subroutine carry(digit, option)
+  integer(int64), contiguous, intent(inout) :: digit(:)
+  character, intent(in), optional :: option
+  character :: option_
   integer(int64), allocatable :: tmp(:)
 
-  ret = [0_int64, digs]
-  allocate (tmp(size(ret)))
+  !> "option" is optional, default is "+"
+  if (present(option)) then
+    option_ = option
+  else
+    option_ = "+"
+  end if
 
-  do while (any(ret >= 10))
-    tmp = merge(1, 0, ret >= 10)
-    where (ret >= 10) ret = ret - 10
-    ret = ret + cshift(tmp, 1)
-  end do
-end function carry
+  select case (option_)
+  case ("+")
+    allocate (tmp(size(digit)))
+
+    do while (any(digit >= 10))
+      tmp = merge(1, 0, digit >= 10)
+      where (digit >= 10) digit = digit - 10
+      digit = digit + cshift(tmp, 1)
+    end do
+  case ("-")
+    allocate (tmp(size(digit)))
+
+    do while (any(digit < 10))
+      tmp = merge(1, 0, digit < 10)
+      where (digit < 10) digit = digit + 10
+      digit = digit - cshift(tmp, 1)
+    end do
+  case default
+    error stop "[carry] Invalid option."
+  end select
+end subroutine carry
 
 !> Convert number to array.
 pure function to_array(n) result(ret)
