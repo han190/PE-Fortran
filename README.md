@@ -12,13 +12,26 @@
 | Build Tool            | [Fortran Package Manager (FPM)](https://github.com/fortran-lang/fpm) |
 
 ### Run with FPM
-To run a single problem:
+#### Solve a single problem
 ```bash
 fpm run -- p<problem number> [--trail <number of trails>]
 ```
-To run all solved problems:
+#### Example: Solve Problem 20
+```bash
+fpm run -- p20
+```
+#### Solved all available problems:
 ```bash
 fpm run [-- --trail <number of trails>]
+```
+#### Example: Solve all available problems 10 times
+```bash
+fpm run -- --trail 10
+```
+#### Intel Fortran compiler
+To avoid Memory Sanitizer (ifx (IFX) 2023.2.0)
+```bash
+fpm run --compiler ifx --flag "-check all,nouninit"
 ```
 * `fpm run -- --help` for more information.
 
