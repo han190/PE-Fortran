@@ -62,8 +62,8 @@ end subroutine new_long
 
 !> inner function
 pure subroutine addition_(ret, digit1, digit2)
-  integer(int64), intent(inout) :: ret(:)
-  integer(int64), intent(in) :: digit1(:), digit2(:)
+  integer(int64), contiguous, intent(inout) :: ret(:)
+  integer(int64), contiguous, intent(in) :: digit1(:), digit2(:)
 
   if (.not. (size(digit1) == size(digit2) .and. &
     & size(digit2) == size(ret))) error stop &
