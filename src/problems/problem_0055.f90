@@ -4,40 +4,32 @@ contains
 
 module subroutine euler0055(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int64) :: sln, i
+  integer(int64) :: sln, i, j
+  type(long_type(len=:)), allocatable :: tmp, reversed
 
+  !> Read the problem why I assigned 28 digits.
+  allocate (long_type(len=28) :: tmp, reversed)
   sln = 0
-  do i = 1, 10000
-    if (is_lychrel(to_array(i))) sln = sln + 1
-  end do
+  outer: do i = 1, 10000
+    tmp = to_array(i)
+    do j = 1, 50
+      reversed = reverse(tmp)
+      tmp = tmp + reversed
+      if (palindromic(tmp)) cycle outer
+    end do
+    sln = sln + 1
+  end do outer
   write (problem%answer, "(i20)") sln
 end subroutine euler0055
 
-function is_lychrel(arr) result(ret)
-  integer(int64), contiguous, intent(in) :: arr(:)
-  logical :: ret
-  integer(int64), allocatable :: tmp(:), reversed(:)
-  integer(int64) :: i
-
-  tmp = arr
-  reversed = arr(size(arr):1:-1)
-  ret = .true.
-
-  do i = 1, 50
-    tmp = add(tmp, reversed)
-    if (is_palindromic_array(tmp, reversed)) then
-      ret = .false.
-      exit
-    end if
-  end do
-end function is_lychrel
-
-function is_palindromic_array(digit, reversed) result(ret)
-  integer(int64), contiguous, intent(in) :: digit(:)
-  integer(int64), allocatable, intent(out) :: reversed(:)
+!> Check if a number if palindromic
+pure function palindromic(x) result(ret)
+  type(long_type(len=*)), intent(in) :: x
   logical :: ret
   integer(int64) :: i, j, num_tests, num_digits
+  integer(int64), allocatable :: digit(:)
 
+  digit = x%digit(x%start:)
   num_digits = size(digit)
   num_tests = num_digits/2
   ret = .true.
@@ -48,36 +40,16 @@ function is_palindromic_array(digit, reversed) result(ret)
       exit
     end if
   end do
-  if (.not. ret) reversed = digit(num_digits:1:-1)
-end function is_palindromic_array
+end function palindromic
 
-pure function add(digit1, digit2) result(ret)
-  integer(int64), contiguous, intent(in) :: digit1(:), digit2(:)
+!> UNO: reverse!
+pure function reverse(x) result(ret)
+  type(long_type(len=*)), intent(in) :: x
   integer(int64), allocatable :: ret(:)
-  integer(int64), allocatable :: tmp1(:), tmp2(:)
-  integer(int64) :: n, i
 
-  associate (n1 => size(digit1), n2 => size(digit2))
-    n = max(n1, n2) + 1
-    tmp1 = [[(0_int64, i=1, n - n1)], digit1]
-    tmp2 = [[(0_int64, i=1, n - n2)], digit2]
-    tmp1 = tmp1 + tmp2
-    call carry(tmp1)
-    ret = cut_leading_zeros(tmp1)
+  associate (tmp => x%digit(x%start:))
+    ret = tmp(size(tmp):1:-1)
   end associate
-end function add
-
-pure function cut_leading_zeros(digit) result(ret)
-  integer(int64), contiguous, intent(in) :: digit(:)
-  integer(int64), allocatable :: ret(:)
-  integer(int64) :: i
-
-  do i = 1, size(digit)
-    if (digit(i) /= 0) then
-      ret = digit(i:)
-      exit
-    end if
-  end do
-end function cut_leading_zeros
+end function reverse
 
 end submodule submodule_euler0055

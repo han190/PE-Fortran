@@ -105,18 +105,15 @@ pure subroutine carry(digit, option)
     option_ = "+"
   end if
 
+  allocate (tmp(size(digit)))
   select case (option_)
   case ("+")
-    allocate (tmp(size(digit)))
-
     do while (any(digit >= 10))
       tmp = merge(1, 0, digit >= 10)
       where (digit >= 10) digit = digit - 10
       digit = digit + cshift(tmp, 1)
     end do
   case ("-")
-    allocate (tmp(size(digit)))
-
     do while (any(digit < 10))
       tmp = merge(1, 0, digit < 10)
       where (digit < 10) digit = digit + 10
