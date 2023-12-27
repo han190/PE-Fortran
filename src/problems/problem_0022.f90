@@ -16,7 +16,7 @@ module subroutine euler0022(problem)
   close (unit)
 
   n = count(names /= default)
-  call quicksort(names, 1_int64, n)
+  call quicksort_string(names, 1_int64, n)
   write (problem%answer, "(i20)") sum([(i*score_letters(names(i)), i=1, n)])
 end subroutine euler0022
 
@@ -27,17 +27,17 @@ elemental integer(int64) function score_letters(str)
   score_letters = sum([(iachar(str(i:i)) - 64, i=1, len_trim(str))])
 end function score_letters
 
-recursive subroutine quicksort(string_arr, low, high)
+recursive subroutine quicksort_string(string_arr, low, high)
   character(len=*), dimension(:), intent(inout) :: string_arr
   integer(int64), intent(in) :: low, high
   integer(int64) :: pivot_loc
 
   if (low < high) then
     call partition(string_arr, low, high, pivot_loc)
-    call quicksort(string_arr, low, pivot_loc - 1)
-    call quicksort(string_arr, pivot_loc + 1, high)
+    call quicksort_string(string_arr, low, pivot_loc - 1)
+    call quicksort_string(string_arr, pivot_loc + 1, high)
   end if
-end subroutine quicksort
+end subroutine quicksort_string
 
 pure subroutine partition(string_arr, low, high, pivot_loc)
   character(len=*), intent(inout) :: string_arr(:)
