@@ -39,7 +39,7 @@ end interface operator(**)
 
 !> Size
 interface size
-  module procedure :: num_digits
+  module procedure :: num_valid_digits
 end interface size
 
 contains
@@ -93,13 +93,13 @@ pure subroutine assign(long, array)
 end subroutine assign
 
 !> Number of digits
-elemental function num_digits(value1) result(ret)
+elemental function num_valid_digits(value1) result(ret)
   type(long_type), intent(in) :: value1
   integer(int64) :: ret
 
-  if (value1%len == 0) error stop "[num_digits] Invalid number."
+  if (value1%len == 0) error stop "[num_valid_digits] Invalid number."
   ret = value1%len - value1%start + 1
-end function num_digits
+end function num_valid_digits
 
 !> Addition function
 pure function add(value1, value2) result(ret)
