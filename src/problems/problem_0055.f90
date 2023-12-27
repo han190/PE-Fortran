@@ -5,15 +5,16 @@ contains
 module subroutine euler0055(problem)
   type(problem_type), intent(inout) :: problem
   integer(int64) :: sln, i, j
-  type(long_type(len=:)), allocatable :: tmp, reversed
+  type(long_type) :: tmp, reversed
 
   !> Read the problem why I assigned 28 digits.
-  allocate (long_type(len=28) :: tmp, reversed)
+  call initialize(tmp, 28_int64)
+  call initialize(reversed, 28_int64)
   sln = 0
   outer: do i = 1, 10000
     tmp = to_array(i)
     do j = 1, 50
-      reversed = reverse(tmp)
+      call reverse(tmp, reversed)
       tmp = tmp + reversed
       if (palindromic(tmp)) cycle outer
     end do
@@ -24,7 +25,7 @@ end subroutine euler0055
 
 !> Check if a number if palindromic
 pure function palindromic(x) result(ret)
-  type(long_type(len=*)), intent(in) :: x
+  type(long_type), intent(in) :: x
   logical :: ret
   integer(int64) :: i, j, num_tests, num_digits
   integer(int64), allocatable :: digit(:)
@@ -43,13 +44,13 @@ pure function palindromic(x) result(ret)
 end function palindromic
 
 !> UNO: reverse!
-pure function reverse(x) result(ret)
-  type(long_type(len=*)), intent(in) :: x
-  integer(int64), allocatable :: ret(:)
+pure subroutine reverse(x, ret)
+  type(long_type), intent(in) :: x
+  type(long_type), intent(inout) :: ret
 
   associate (tmp => x%digit(x%start:))
     ret = tmp(size(tmp):1:-1)
   end associate
-end function reverse
+end subroutine reverse
 
 end submodule submodule_euler0055
