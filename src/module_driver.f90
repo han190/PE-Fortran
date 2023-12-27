@@ -1,6 +1,6 @@
 module module_driver
 
-use :: iso_fortran_env, only: int64, output_unit
+use, intrinsic :: iso_fortran_env, only: int64, output_unit
 use :: module_problem
 implicit none
 

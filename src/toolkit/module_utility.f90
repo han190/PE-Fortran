@@ -1,6 +1,6 @@
 module module_utility
 
-use :: iso_fortran_env, only: int64, real64
+use, intrinsic :: iso_fortran_env, only: int64, real64
 implicit none
 
 public :: unit_digit

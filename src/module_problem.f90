@@ -1,6 +1,6 @@
 module module_problem
 
-use :: iso_fortran_env, only: int64, real64, output_unit
+use, intrinsic :: iso_fortran_env, only: int64, real64, output_unit
 use :: euler_toolkit
 implicit none
 

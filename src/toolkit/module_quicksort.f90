@@ -1,6 +1,6 @@
 module module_quicksort
 
-use :: iso_fortran_env, only: int64
+use, intrinsic :: iso_fortran_env, only: int64
 use :: module_utility, only: swap
 implicit none
 
