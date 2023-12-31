@@ -135,22 +135,17 @@ subroutine solve_problems(problemset, num_trails, selected)
 end subroutine solve_problems
 
 !> Relative difficulty
-elemental function relative_difficulty( &
-  & time_span, time_min, time_max) result(ret)
+elemental function relative_difficulty(time_span, time_min, time_max)
   real(real64), intent(in) :: time_span, time_min, time_max
-  character(len=10) :: ret
-  integer(int64) :: level, level_max
-  real(real64) :: normalized
+  character(len=16) :: relative_difficulty
+  real(real64) :: score
 
-  level = 0
-  level_max = 8
-  normalized = (time_span - time_min)/(time_max - time_min)
-  do while (normalized < 10.0**(-level) .and. level < level_max)
-    level = level + 1
-  end do
-  level = level_max - level
-  write (ret, "('[', a8, ']')") repeat('|', level)// &
-    & repeat(space, level_max - level)
+  score = log10((time_min*10 - time_max)/(time_min - time_max) + &
+    & (1 - 10)*time_span/(time_min - time_max))/log10(10.0)
+  associate (num_bars => nint(score*10))
+    write (relative_difficulty, "('[', a10, ']', i0, '%')") &
+      & repeat('|', num_bars)//repeat(space, 10 - num_bars), nint(score*100)
+  end associate
 end function relative_difficulty
 
 !> List all solved problems
@@ -190,7 +185,7 @@ subroutine print_answers(problemset, file)
   type(problemset_type), target, intent(in) :: problemset
   character(len=*), intent(in) :: file
   integer(int64) :: unit, i, difficulty, num_problems
-  character(len=10), allocatable :: difficulties(:)
+  character(len=:), allocatable :: difficulties(:)
   real(real64) :: time_min, time_max, time_tot
   character(len=:), allocatable :: message, output_format
   type(problem_type), pointer :: problems(:) => null()
@@ -210,13 +205,13 @@ subroutine print_answers(problemset, file)
   difficulties = [(relative_difficulty(problems(i)%time_span, &
     & time_min, time_max), i=1, size(problems))]
   open (newunit=unit, file=file, action='write', status='unknown')
-  output_format = "('#', t6, a, t40, a, t63, a)"
+  output_format = "('#', t6, a, t40, a, t65, a)"
   write (unit, output_format) 'Answer', 'Time (sec)', 'Difficulty'
-  write (unit, "(a)") repeat('-', 72)
-  output_format = "(i0, t6, a, t40, es0.4e3, 1x, t63, a)"
+  write (unit, "(a)") repeat('-', 80)
+  output_format = "(i0, t6, a, t40, es0.4e3, 1x, t65, a)"
   write (unit, output_format) (problems(i)%index, problems(i)%answer, &
     & problems(i)%time_span, difficulties(i), i=1, size(problems))
-  write (unit, "(a)") repeat('-', 72)
+  write (unit, "(a)") repeat('-', 80)
   message = "Number of problems solved"
   write (unit, "('*', t6, a, t40, i0)") message, num_problems
   message = "Mean time (sec) / problem"
