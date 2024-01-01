@@ -37,13 +37,13 @@ pure subroutine get_help(messages)
   messages = [character(len=80) :: &
     & 'PE Fortran Solution', &
     & 'Arguments:', &
-    & '   P<N>, PROB<N>, PROBLEM<N> Solve a single problem.', &
-    & '   -v, --version             Print version.', &
-    & '   -h, --help                Pop up this message.', &
-    & '   -t, --trail               Number of trails.', &
-    & '   -d, --data                Data directory.', &
-    & '   -a, --answer              Answer sheet (output file).', &
-    & '   -l, --list                List solved problems.']
+    & '   P<N>, PROBLEM<N> Solve a single problem.', &
+    & '   -v, --version    Print version.', &
+    & '   -h, --help       Pop up this message.', &
+    & '   -t, --trail      Number of trails.', &
+    & '   -d, --data       Data directory.', &
+    & '   -a, --answer     Answer sheet (output file).', &
+    & '   -l, --list       List solved problems.']
 end subroutine get_help
 
 !> If a string contains only digit
@@ -86,19 +86,18 @@ end function problem_found
 
 !> Get arugment
 subroutine get_arguments()
-  character(len=500), allocatable :: arguments(:)
-  integer :: argument_counts, i, j
-  integer(int64) :: num_problems, num_trails, selected
-  type(problemset_type) :: problemset
-  character(len=500) :: answer_sheet, data_directory
-  character(len=:), allocatable :: keywords(:), output_format
+  character(len=:), allocatable :: answer_sheet, data_directory, output_format
+  character(len=:), allocatable :: arguments(:), keywords(:)
   character(len=:), allocatable :: argument, next_argument, messages(:)
+  integer(int64) :: num_problems, num_trails, selected
+  integer :: argument_counts, i, j
+  type(problemset_type) :: problemset
   logical :: list_solved
 
   argument_counts = command_argument_count()
   if (argument_counts >= 10) &
     & error stop "[PROJECT EULER] Invalid argument count."
-  allocate (arguments(argument_counts))
+  allocate (character(len=500) :: arguments(argument_counts))
   do i = 1, argument_counts
     call get_command_argument(i, arguments(i))
   end do
