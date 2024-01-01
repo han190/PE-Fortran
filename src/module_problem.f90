@@ -45,8 +45,8 @@ interface
 end interface
 
 !> Commonly used parameters
-character(len=*), parameter :: carriage_return = char(13)
-character(len=*), parameter :: space = char(32)
+character, parameter :: carriage_return = char(13)
+character, parameter :: space = char(32)
 
 contains
 

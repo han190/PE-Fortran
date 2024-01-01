@@ -1,7 +1,7 @@
 module module_multiprecision
 
 use, intrinsic :: iso_fortran_env, only: int64
-use :: module_utility, only: carry, to_integer, to_array
+use :: module_utility, only: carry, to_integer, to_array, re_allocate
 implicit none
 
 public :: long_type, initialize
@@ -49,14 +49,7 @@ pure subroutine initialize(long, len)
   type(long_type), intent(inout) :: long
   integer(int64), intent(in) :: len
 
-  if (allocated(long%digit)) then
-    if (size(long%digit) /= len) then
-      deallocate (long%digit)
-      allocate (long%digit(len))
-    end if
-  else
-    allocate (long%digit(len))
-  end if
+  call re_allocate(long%digit, len)
   long%len = len
 end subroutine initialize
 

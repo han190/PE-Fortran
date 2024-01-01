@@ -26,7 +26,6 @@ pure subroutine is_circular_prime(n, are_primes, array)
   integer(int64), allocatable, intent(out) :: array(:)
   integer(int64) :: tmp, i
 
-  if (allocated(array)) deallocate (array)
   associate (x => num_digits(n))
     tmp = n
     do i = 1, x
@@ -34,7 +33,7 @@ pure subroutine is_circular_prime(n, are_primes, array)
       tmp = rotate(tmp)
     end do
 
-    allocate (array(x))
+    call re_allocate(array, x)
     call circular_array(n, array)
   end associate
 end subroutine is_circular_prime

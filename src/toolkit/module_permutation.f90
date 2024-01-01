@@ -1,6 +1,7 @@
 module module_permutation
 
 use, intrinsic :: iso_fortran_env, only: int64
+use :: module_utility, only: swap
 implicit none
 
 public :: permutation_type
@@ -109,16 +110,6 @@ pure subroutine set_permutation(permutation, indices)
     permutation%indices = indices
   end if
 end subroutine set_permutation
-
-!> Swap
-pure subroutine swap(a, b)
-  integer(int64), intent(inout) :: a, b
-  integer(int64) :: tmp
-
-  tmp = a
-  a = b
-  b = tmp
-end subroutine swap
 
 !> Permute
 pure subroutine permute(permutation)

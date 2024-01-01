@@ -1,7 +1,7 @@
 module module_prime
 
 use, intrinsic :: iso_fortran_env, only: int64, real64
-use :: module_utility, only: sqrt
+use :: module_utility, only: sqrt, re_allocate
 implicit none
 
 public :: sift
@@ -31,16 +31,8 @@ pure function sift(n, option) result(check)
   else
     option_ = "Eratosthenes"
   end if
-  
-  if (allocated(check)) then
-    if (size(check) /= n) then
-      deallocate (check)
-      allocate (check(n))
-    end if
-  else
-    allocate (check(n))
-  end if
-  
+  call re_allocate(check, n)  
+
   select case (trim(option_))
   case ("Eratosthenes")
     check(1) = .false.
@@ -77,14 +69,7 @@ function pack_primes(check, lower, upper) result(primes)
   end if
 
   num_primes = count(check(lower_:upper_))
-  if (allocated(primes)) then
-    if (size(primes) /= num_primes) then
-      deallocate (primes)
-      allocate (primes(num_primes))
-    end if
-  else
-    allocate (primes(num_primes))
-  end if
+  call re_allocate(primes, num_primes)
 
   k = 1
   do i = lower_, upper_

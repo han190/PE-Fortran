@@ -6,8 +6,6 @@ implicit none
 
 public :: get_arguments
 private
-character(len=:), allocatable :: help_message(:)
-character(len=:), allocatable :: version_message(:)
 
 contains
 
@@ -22,8 +20,10 @@ subroutine print_characters(array)
 end subroutine print_characters
 
 !> Get version
-subroutine get_version()
-  version_message = [character(len=80) :: &
+pure subroutine get_version(messages)
+  character(len=:), allocatable, intent(inout) :: messages(:)
+
+  messages = [character(len=80) :: &
     & 'Project Name: PE-Fortran', &
     & 'Version: 0.4.0', 'License: MIT', &
     & 'Copyright: Copyright 2019 - 2023, Han Tang', &
@@ -31,8 +31,10 @@ subroutine get_version()
 end subroutine get_version
 
 !> Print help
-subroutine get_help()
-  help_message = [character(len=80) :: &
+pure subroutine get_help(messages)
+  character(len=:), allocatable, intent(inout) :: messages(:)
+
+  messages = [character(len=80) :: &
     & 'PE Fortran Solution', &
     & 'Arguments:', &
     & '   P<N>, PROB<N>, PROBLEM<N> Solve a single problem.', &
@@ -43,25 +45,6 @@ subroutine get_help()
     & '   -a, --answer              Answer sheet (output file).', &
     & '   -l, --list                List solved problems.']
 end subroutine get_help
-
-!> Print version
-subroutine print_messages(message)
-  character(len=*), intent(in) :: message
-
-  select case (trim(message))
-  case ("help")
-    if (allocated(help_message)) deallocate (help_message)
-    call get_help()
-    call print_characters(help_message)
-  case ("version")
-    if (allocated(version_message)) deallocate (version_message)
-    call get_version()
-    call print_characters(version_message)
-  case default
-    write (output_unit, "(a, 1x, a)") "[PROJECT EULER]", trim(message)
-    stop
-  end select
-end subroutine print_messages
 
 !> If a string contains only digit
 pure function is_digit(string) result(ret)
@@ -93,7 +76,7 @@ function problem_found(argument, keywords, value) result(found)
     if (index(argument, keyword) == 1) then
       value_str = argument(len(keyword) + 1:)
       if (.not. is_digit(value_str)) &
-        & call print_messages("Invalid format.")
+        & error stop "[PROJECT EULER] Invalid format."
       read (value_str, *) value
       found = .true.
       return
@@ -109,12 +92,12 @@ subroutine get_arguments()
   type(problemset_type) :: problemset
   character(len=500) :: answer_sheet, data_directory
   character(len=:), allocatable :: keywords(:), output_format
-  character(len=:), allocatable :: argument, next_argument
+  character(len=:), allocatable :: argument, next_argument, messages(:)
   logical :: list_solved
 
   argument_counts = command_argument_count()
   if (argument_counts >= 10) &
-    & call print_messages("Invalid argument count.")
+    & error stop "[PROJECT EULER] Invalid argument count."
   allocate (arguments(argument_counts))
   do i = 1, argument_counts
     call get_command_argument(i, arguments(i))
@@ -123,7 +106,7 @@ subroutine get_arguments()
   !> Default values
   data_directory = "data"
   answer_sheet = "answer.log"
-  num_trails = 1
+  num_trails = 2
   selected = 0
   list_solved = .false.
 
@@ -150,8 +133,6 @@ subroutine get_arguments()
       read (next_argument, *) selected
     case ("-t", "--trail")
       read (next_argument, *) num_trails
-      output_format = "('Number of trails / problem:', 1x, i0)"
-      write (output_unit, output_format) num_trails
     case ("-d", "--data")
       read (next_argument, "(a)") data_directory
       output_format = "('Data directory:', 1x, a)"
@@ -163,26 +144,30 @@ subroutine get_arguments()
     case ("-l", "--list")
       list_solved = .true.
     case ("-v", "--version")
-      call print_messages("version")
+      call get_version(messages)
+      call print_characters(messages)
       return
     case ("-h", "--help")
-      call print_messages("help")
+      call get_help(messages)
+      call print_characters(messages)
       return
     case default
-      call print_messages("Invalid argument.")
+      error stop "[PROJECT EULER] Invalid argument."
     end select
     i = i + 2
   end do
 
+  if (num_trails > 2) then
+    output_format = "('Number of trails / problem:', 1x, i0)"
+    write (output_unit, output_format) num_trails
+  end if
   problemset = new_problemset(trim(data_directory))
   if (list_solved) then
     call list_problems(problemset)
     return
   end if
   call solve_problems(problemset, num_trails, selected)
-  if (selected == 0) then
-    call print_answers(problemset, trim(answer_sheet))
-  end if
+  if (selected == 0) call print_answers(problemset, trim(answer_sheet))
 end subroutine get_arguments
 
 end module module_driver

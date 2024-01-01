@@ -15,6 +15,7 @@ public :: is_palindromic
 public :: is_pandigital
 public :: jagged_type
 public :: swap
+public :: re_allocate
 private
 
 !> Jagged type
@@ -32,6 +33,12 @@ interface swap
   module procedure :: swap_int64
   module procedure :: swap_char
 end interface swap
+
+!> Reallocation
+interface re_allocate
+  module procedure :: re_allocate_integer_1d
+  module procedure :: re_allocate_logical_1d
+end interface re_allocate
 
 contains
 
@@ -174,6 +181,7 @@ pure logical function is_pandigital(n)
   is_pandigital = count(arr) == l
 end function is_pandigital
 
+!> Swap integers
 pure subroutine swap_int64(a, b)
   integer(int64), intent(inout) :: a, b
   integer(int64) :: tmp
@@ -183,6 +191,7 @@ pure subroutine swap_int64(a, b)
   b = tmp
 end subroutine swap_int64
 
+!> Swap characters
 pure subroutine swap_char(a, b)
   character(len=*), intent(inout) :: a, b
   character(len=len(a)) :: tmp
@@ -191,5 +200,35 @@ pure subroutine swap_char(a, b)
   a = b
   b = tmp
 end subroutine swap_char
+
+!> Reallocate logical array
+pure subroutine re_allocate_logical_1d(array, new_size)
+  logical, allocatable, intent(inout) :: array(:)
+  integer(int64), intent(in) :: new_size
+
+  if (allocated(array)) then
+    if (size(array) /= new_size) then
+      deallocate (array)
+      allocate (array(new_size))
+    end if
+  else
+    allocate (array(new_size))
+  end if
+end subroutine re_allocate_logical_1d
+
+!> Reallocate integer array
+pure subroutine re_allocate_integer_1d(array, new_size)
+  integer(int64), allocatable, intent(inout) :: array(:)
+  integer(int64), intent(in) :: new_size
+
+  if (allocated(array)) then
+    if (size(array) /= new_size) then
+      deallocate (array)
+      allocate (array(new_size))
+    end if
+  else
+    allocate (array(new_size))
+  end if
+end subroutine re_allocate_integer_1d
 
 end module module_utility
