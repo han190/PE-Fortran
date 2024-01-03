@@ -85,15 +85,22 @@ elemental integer(int64) function lcm(a, b)
 end function lcm
 
 !> To tell if an int64 integer is palindromic.
-elemental logical function is_palindromic(n)
+elemental logical function is_palindromic(n, base)
   integer(int64), intent(in) :: n
-  integer(int64) :: reversed, tmp
+  integer(int64), intent(in), optional :: base
+  integer(int64) :: reversed, tmp, base_
+
+  if (present(base)) then
+    base_ = base
+  else !> Default is base-10 number
+    base_ = 10_int64
+  end if
 
   reversed = 0_int64
   tmp = n
   do while (tmp > 0_int64)
-    reversed = reversed*10_int64 + mod(tmp, 10_int64)
-    tmp = tmp/10_int64
+    reversed = reversed*base_ + mod(tmp, base_)
+    tmp = tmp/base_
   end do
   is_palindromic = n == reversed
 end function is_palindromic
