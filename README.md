@@ -14,22 +14,13 @@
 ### Run with FPM
 #### Solve a single problem
 ```bash
-fpm run -- p<problem number> [--trail <number of trails>]
+fpm run [-- p<problem number> [--trail <number of trails/problem>]]
+# Example1, solve all problems: fpm run
+# Example2, solve all problems 10 times: fpm run -- --trail 10
+# Example3, solve problem 10: fpm run -- p10
+# Example4, solve problem 10 for 100 times: fpm run -- p10 --trail 10
 ```
-#### Example: Solve Problem 20
-```bash
-fpm run -- p20
-```
-#### Solved all available problems:
-```bash
-fpm run [-- --trail <number of trails>]
-```
-#### Example: Solve all available problems 10 times
-```bash
-fpm run -- --trail 10
-```
-#### Intel Fortran compiler
-To avoid Memory Sanitizer (ifx (IFX) 2023.2.0)
+#### To avoid Memory Sanitizer from the Intel Fortran compiler(ifx (IFX) 2023.2.0)
 ```bash
 fpm run --compiler ifx --flag "-check all,nouninit"
 ```

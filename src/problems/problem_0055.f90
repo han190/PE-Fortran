@@ -27,15 +27,15 @@ end subroutine euler0055
 pure function palindromic(x) result(ret)
   type(long_type), intent(in) :: x
   logical :: ret
-  integer(int64) :: i, j, num_tests, num_digits
+  integer(int64) :: i, j, n, num_tests
   integer(int64), allocatable :: digit(:)
 
   digit = x%digit(x%start:)
-  num_digits = size(digit)
-  num_tests = num_digits/2
+  n = size(digit)
+  num_tests = n/2
   ret = .true.
   do i = 1, num_tests
-    j = num_digits - i + 1
+    j = n - i + 1
     if (digit(i) /= digit(j)) then
       ret = .false.
       exit

@@ -119,15 +119,19 @@ pure subroutine prime_factorization(n, primes, powers)
   powers = 0
   tmp = n
   do i = 1, size(primes)
+    if (tmp == 1) then
+      exit
+    end if
+
     do while (mod(tmp, primes(i)) == 0)
       powers(i) = powers(i) + 1_int64
       tmp = tmp/primes(i)
     end do
   end do
   
-  if (tmp /= 1) then  
-    write (error_message, "(a, 2(1x, i0))") &
-      & "[prime_factorization] Not completely factorized.", n, tmp
+  if (tmp /= 1) then
+    write (error_message, "(a, 1x, i0, 1x, a)") &
+      & "[prime_factorization] ", n, "is not completely factorized."
     error stop trim(error_message)
   end if
 end subroutine prime_factorization
