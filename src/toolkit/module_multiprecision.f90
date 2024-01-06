@@ -53,9 +53,17 @@ pure subroutine assign(long, array)
   integer(int64), intent(in) :: array(:)
   integer(int64) :: n, i
 
-  long%sign = "+"
   if (long%len < size(array)) error stop &
     & "[assign] Not enough memory."
+  if (all(array >= 0_int64)) then
+    long%sign = "+"
+  else if (array(1) < 0_int64 .and. &
+    & all(array(2:) >= 0_int64)) then
+    long%sign = "-"
+  else
+    error stop "[assign] Invalid array."
+  end if
+
   select case (size(array))
   case (0)
     long%start = long%len
