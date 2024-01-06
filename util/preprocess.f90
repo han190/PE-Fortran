@@ -2,6 +2,8 @@ program main
 implicit none
 
 character(len=*), parameter :: src = "./src/", build = "./build/"
+character(len=*), parameter :: warning = &
+  & "Automatically generated file. Do not modify."
 integer, allocatable :: problems(:), datasets(:)
 integer :: i, unit
 
@@ -10,7 +12,8 @@ datasets = read_numbers(build//"required_datasets.txt", "data_")
 
 !> Generate interfaces
 open (newunit=unit, file=src//"interface.inc", action="write")
-write (unit, "(a)") "!> Automatically generated."
+write (unit, "('!>', 1x, a)") warning
+write (unit, "('!>', 1x, a)") repeat('-', len(warning))
 do i = 1, size(problems)
   write (unit, "(a, i4.4, a)") "module subroutine euler", &
     & problems(i), "(problem)"
@@ -21,7 +24,8 @@ close (unit)
 
 !> Generate pointer associations
 open (newunit=unit, file=src//"problemset.inc", action="write")
-write (unit, "(a)") "!> Automatically generated."
+write (unit, "('!>', 1x, a)") warning
+write (unit, "('!>', 1x, a)") repeat('-', len(warning))
 write (unit, "(a, i0)") "problemset%num_problems = ", size(problems)
 write (unit, "(a)") "allocate (problemset%solutions(problemset%num_problems))"
 write (unit, "(a)") "allocate (problemset%problems(problemset%num_problems))"
@@ -38,6 +42,8 @@ do i = 1, size(problems)
     write (unit, "(a, i0, a)") &
       & "problemset%problems(", i, ")%file = ''"
   end if
+  write (unit, "(a, i0, a)") &
+      & "problemset%problems(", i, ")%answer = ''"
 end do
 close (unit)
 

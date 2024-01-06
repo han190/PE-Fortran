@@ -83,7 +83,29 @@ subroutine solve_problems(problemset, num_trails, selected)
 
   output_format = "(a1, '[', i0, '%]', 1x, 'Solving P', i0)"
   num_problems = problemset%num_problems
-  if (selected /= 0) then
+  select case (selected)
+  case (0) !> Solve all available problems
+    num_steps = num_problems*num_trails
+    do i = 1, num_problems
+      solution => problemset%solutions(i)
+      problem => problemset%problems(i)
+      time_span = 0.0
+      do j = 1, num_trails
+        step = (i - 1)*num_trails + j
+        percent = real(step)/num_steps*100.0
+        write (output_unit, output_format, advance="no") &
+          & carriage_return, int(percent), problem%index
+        flush (output_unit)
+        call solve_problem(problem, solution)
+        time_span = time_span + problem%time_span
+      end do
+      problem%time_span = time_span/num_trails
+    end do
+    write (output_unit, "(a1)") carriage_return
+    flush (output_unit)
+    output_format = "(i0, 1x, 'problems solved.')"
+    write (output_unit, output_format) num_problems
+  case (1:) !> Solve a single problems
     do i = 1, num_problems
       if (problemset%problems(i)%index == selected) exit
     end do
@@ -109,28 +131,9 @@ subroutine solve_problems(problemset, num_trails, selected)
     write (output_unit, output_format) adjustl(problem%answer)
     output_format = "('Time span:', 1x, es0.4e3, 1x, '(sec)')"
     write (output_unit, output_format) problem%time_span
-  else
-    num_steps = num_problems*num_trails
-    do i = 1, num_problems
-      solution => problemset%solutions(i)
-      problem => problemset%problems(i)
-      time_span = 0.0
-      do j = 1, num_trails
-        step = (i - 1)*num_trails + j
-        percent = real(step)/num_steps*100.0
-        write (output_unit, output_format, advance="no") &
-          & carriage_return, int(percent), problem%index
-        flush (output_unit)
-        call solve_problem(problem, solution)
-        time_span = time_span + problem%time_span
-      end do
-      problem%time_span = time_span/num_trails
-    end do
-    write (output_unit, "(a1)") carriage_return
-    flush (output_unit)
-    output_format = "(i0, 1x, 'problems solved.')"
-    write (output_unit, output_format) num_problems
-  end if
+  case default
+    error stop "[solve_problems] Invalid selected."
+  end select
   nullify (problem, solution)
 end subroutine solve_problems
 

@@ -1,20 +1,23 @@
 module module_multiprecision
 
 use, intrinsic :: iso_fortran_env, only: int64
-use :: module_utility, only: carry, to_integer, to_array, re_allocate
+use :: module_utility, only: carry, to_integer, to_array
 implicit none
 
-public :: long_type, initialize
+public :: long_type
 public :: assignment(=)
-public :: operator(+), operator(*), operator(**)
+public :: operator(+)
+public :: operator(*)
+public :: operator(**)
 public :: size
 private
 
 !> Long integer type
-type :: long_type
-  integer(int64) :: len = 0, start = 0
+type :: long_type(len)
+  integer(int64), len :: len
+  integer(int64) :: start = 0
   character :: sign = "+"
-  integer(int64), allocatable :: digit(:)
+  integer(int64) :: digit(len)
 end type long_type
 
 !> Assignment
@@ -44,18 +47,9 @@ end interface size
 
 contains
 
-!> Constructor
-pure subroutine initialize(long, len)
-  type(long_type), intent(inout) :: long
-  integer(int64), intent(in) :: len
-
-  call re_allocate(long%digit, len)
-  long%len = len
-end subroutine initialize
-
 !> Assignment
 pure subroutine assign(long, array)
-  type(long_type), intent(inout) :: long
+  type(long_type(len=*)), intent(inout) :: long
   integer(int64), intent(in) :: array(:)
   integer(int64) :: n, i
 
@@ -87,22 +81,35 @@ end subroutine assign
 
 !> Number of digits
 elemental function num_valid_digits(value1) result(ret)
-  type(long_type), intent(in) :: value1
+  type(long_type(len=*)), intent(in) :: value1
   integer(int64) :: ret
 
   if (value1%len == 0) error stop "[num_valid_digits] Invalid number."
   ret = value1%len - value1%start + 1
 end function num_valid_digits
 
+!> Re-allocate long integer
+pure subroutine re_allocate(long, len)
+  type(long_type(len=:)), allocatable, intent(inout) :: long
+  integer(int64), intent(in) :: len
+
+  if (.not. allocated(long)) then
+    allocate (long_type(len=len) :: long)
+  else if (long%len /= len) then
+    deallocate (long)
+    allocate (long_type(len=len) :: long)
+  end if
+end subroutine re_allocate
+
 !> Addition function
 pure function add(value1, value2) result(ret)
-  type(long_type), intent(in) :: value1, value2
-  type(long_type) :: ret
+  type(long_type(len=*)), intent(in) :: value1, value2
+  type(long_type(len=:)), allocatable :: ret
   integer(int64) :: digit(value1%len)
 
   if (.not. (value1%len == value2%len)) error stop &
     & "[add] Invalid digit size."
-  call initialize(ret, value1%len)
+  call re_allocate(ret, value1%len)
   if (value1%sign == value2%sign) then
     digit = value1%digit + value2%digit
     call carry(digit)
@@ -113,13 +120,13 @@ pure function add(value1, value2) result(ret)
 end function add
 
 pure function multiply(value1, value2) result(ret)
-  type(long_type), intent(in) :: value1, value2
-  type(long_type) :: ret
+  type(long_type(len=*)), intent(in) :: value1, value2
+  type(long_type(len=:)), allocatable :: ret
   integer(int64) :: i, digit(value1%len)
 
   if (.not. (value1%len == value2%len)) error stop &
     & "[multiply] Invalid digit size."
-  call initialize(ret, value1%len)
+  call re_allocate(ret, value1%len)
   digit = 0
   do i = value2%start, size(value2%digit)
     digit = digit + cshift( &
@@ -132,10 +139,11 @@ end function multiply
 
 !> Exponential by squaring
 pure recursive function exponential(y, x, n) result(ret)
-  type(long_type), intent(in) :: y, x
+  type(long_type(len=*)), intent(in) :: y, x
   integer(int64), intent(in) :: n
-  type(long_type) :: ret
+  type(long_type(len=:)), allocatable :: ret
 
+  call re_allocate(ret, x%len)
   if (n == 0_int64) then
     ret = y
   else if (mod(n, 2_int64) == 0_int64) then
@@ -146,12 +154,13 @@ pure recursive function exponential(y, x, n) result(ret)
 end function exponential
 
 pure function power(x, n) result(ret)
-  type(long_type), intent(in) :: x
+  type(long_type(len=*)), intent(in) :: x
   integer(int64), intent(in) :: n
-  type(long_type) :: ret, y
+  type(long_type(len=:)), allocatable :: ret, y
 
-  call initialize(y, x%len)
-  y = [integer(int64) :: 1]
+  call re_allocate(y, x%len)
+  call re_allocate(ret, x%len)
+  y = [1_int64]
   ret = exponential(y, x, n)
 end function power
 

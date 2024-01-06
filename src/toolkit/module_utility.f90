@@ -68,12 +68,10 @@ elemental recursive function gcd(a, b) result(ret)
   integer(int64), intent(in) :: a, b
   integer(int64) :: ret
 
-  if (b == 0_int64) then
-    ret = a
+  if (b /= 0_int64) then
+    ret = gcd(b, mod(a, b))
   else
-    associate (r => mod(a, b))
-      ret = gcd(b, r)
-    end associate
+    ret = a
   end if
 end function gcd
 
@@ -146,7 +144,7 @@ pure function to_array(n) result(ret)
 
   tmp = n
   len_ = num_digits(tmp)
-  allocate (ret(len_))
+  call re_allocate(ret, len_)
   do i = len_, 1, -1
     ret(i) = unit_digit(tmp)
     tmp = tmp/10_int64
