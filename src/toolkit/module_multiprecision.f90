@@ -1,7 +1,7 @@
 module module_multiprecision
 
 use, intrinsic :: iso_fortran_env, only: int64
-use :: module_utility, only: carry, to_integer, to_array
+use, non_intrinsic :: module_utility, only: carry, to_integer, to_array
 implicit none
 
 public :: long_type

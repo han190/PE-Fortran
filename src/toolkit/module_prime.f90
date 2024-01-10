@@ -1,7 +1,7 @@
 module module_prime
 
 use, intrinsic :: iso_fortran_env, only: int64, real64
-use :: module_utility, only: sqrt, re_allocate
+use, non_intrinsic :: module_utility, only: sqrt, re_allocate
 implicit none
 
 public :: sift

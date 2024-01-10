@@ -1,6 +1,6 @@
 program project_euler
 
-use :: module_driver
+use, non_intrinsic :: module_driver
 implicit none
 call get_arguments()
 

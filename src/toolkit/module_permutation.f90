@@ -1,7 +1,7 @@
 module module_permutation
 
 use, intrinsic :: iso_fortran_env, only: int64
-use :: module_utility, only: swap
+use, non_intrinsic :: module_utility, only: swap
 implicit none
 
 public :: permutation_type
@@ -148,8 +148,8 @@ end subroutine permute
 !> Permutable
 function permutable(permutation, check_only) result(ret)
   type(permutation_type), intent(inout) :: permutation
-  logical :: ret
   logical, intent(in), optional :: check_only
+  logical :: ret
   integer(int64) :: i
 
   if (permutation%k /= 0) then

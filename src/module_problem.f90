@@ -1,7 +1,7 @@
 module module_problem
 
 use, intrinsic :: iso_fortran_env, only: int64, real64, output_unit
-use :: euler_toolkit
+use, non_intrinsic :: euler_toolkit
 implicit none
 
 public :: problemset_type
