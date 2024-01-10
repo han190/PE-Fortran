@@ -8,7 +8,7 @@
 
 | Dependencies          | Options               |
 |:----------------------|:----------------------|
-| Fortran 2008 compliant Compiler      | [gfortran](https://gcc.gnu.org/wiki/GFortran)/[ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.lki8b0) |
+| Fortran 2008 compliant Compiler      | [gfortran](https://gcc.gnu.org/wiki/GFortran)/[ifx](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.lki8b0) |
 | Build Tool            | [Fortran Package Manager (FPM)](https://github.com/fortran-lang/fpm) |
 
 ### Run with FPM
@@ -47,10 +47,3 @@ end submodule submodule_eulerxxxx
 
 #### Step 2
 Update `*.inc` files by using `bash ./util/update.sh` or `.\util\update.ps1` for Unix-like/Windows system correspondingly. The Fortran script `util/preprocess.f90` will scan `./data/` and `./src/problems` to generate an array of solved problems, and based on that it generates `*.inc` files required by `module_problem`.
-
-## A todo list
-
-Here is what I plan to do in the future. (Not likely to be done recently cuz I am kinda busy...)
-
-- [ ] Write a documentation to clearly explain the algorithms, Fortran features, or anything that is interesting for each question.
-- [ ] Implement an associative array for Project Euler.
