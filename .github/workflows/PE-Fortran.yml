@@ -3,7 +3,7 @@ run-name: Building PE-Fortran by ${{ github.actor }}
 on: [push]
 
 jobs:
-  Build-PE-Fortran:
+  Test-PE-Fortran:
     runs-on : ${{ matrix.os }}
     strategy:
       matrix:
