@@ -11,4 +11,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Test with FPM
         run: fpm run
-        working-directory: ./
+        working-directory: ../../
