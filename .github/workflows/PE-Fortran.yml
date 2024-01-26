@@ -25,5 +25,9 @@ jobs:
         if: contains( matrix.os, 'ubuntu' )
         run: sudo apt install gfortran-${{ matrix.gcc_version }}
 
-      - name: Build PE-Fortran
-        run: fpm build --profile debug
+      - name: Generate include files
+        if: contains( matrix.os, 'ubuntu' )
+        run: bash ./util/update.sh
+
+      - name: Run PE-Fortran
+        run: fpm run --profile debug
