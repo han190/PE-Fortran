@@ -1,9 +1,9 @@
 name: PE-Fortran
-run-name: Testing PE-Fortran by ${{ github.actor }}
+run-name: Building PE-Fortran by ${{ github.actor }}
 on: [push]
 
 jobs:
-  PE-Fortran:
+  Build-PE-Fortran:
     runs-on : ${{ matrix.os }}
     strategy:
       matrix:
