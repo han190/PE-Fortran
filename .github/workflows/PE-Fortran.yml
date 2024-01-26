@@ -3,12 +3,24 @@ run-name: Testing PE-Fortran by ${{ github.actor }}
 on: [push]
 
 jobs:
-  Run-With-FPM:
-    runs-on: ubuntu-latest
+  PE-Fortran:
+    runs-on : ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        gcc_version: [13]
+    env:
+      FC: gfortran-${{ matrix.gcc_version }}
+    
     steps:
-      - uses: fortran-lang/setup-fpm@v5
+      - name: Setup FPM
+        uses: fortran-lang/setup-fpm@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Test with FPM
-        run: fpm run
-        working-directory: ../../
+
+      - name: Install gfortran
+        if: contains( matrix.os, 'ubuntu' )
+        run: sudo apt install gfortran-${{ matrix.gcc_version }}
+
+      - name: Run PE-Fortran
+        run: fpm run --profile debug
