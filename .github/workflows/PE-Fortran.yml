@@ -30,4 +30,4 @@ jobs:
         run: bash ./util/update.sh
 
       - name: Run PE-Fortran
-        run: fpm run --profile debug
+        run: fpm run --profile debug --compiler gfortran-${{ matrix.gcc_version }}
