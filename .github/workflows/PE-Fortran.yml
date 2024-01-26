@@ -13,7 +13,10 @@ jobs:
       FC: gfortran-${{ matrix.gcc_version }}
     
     steps:
-      - name: Setup FPM
+      - name: Use Checkout
+        uses: actions/checkout@v1
+        
+      - name: Use Fortran Package Manager
         uses: fortran-lang/setup-fpm@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
