@@ -1,5 +1,5 @@
-!> Automatically generated file. Do not modify.
-!> --------------------------------------------
+!> Automatically generated file.
+!> -----------------------------
 problemset%num_problems = 68
 allocate (problemset%solutions(problemset%num_problems))
 allocate (problemset%problems(problemset%num_problems))

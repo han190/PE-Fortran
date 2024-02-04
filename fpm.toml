@@ -10,7 +10,6 @@ homepage = "https://github.com/han190/PE-Fortran"
 
 [library]
 source-dir = "src"
-include-dir = "src"
 
 [[test]]
 name = "UnitTests"
@@ -21,3 +20,8 @@ main = "test.f90"
 name = "PE-Fortran"
 source-dir = "src"
 main = "project_euler.f90"
+
+[[executable]]
+name = "preprocess"
+source-dir = "util"
+main = "preprocess.f90"

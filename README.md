@@ -46,4 +46,7 @@ end submodule submodule_eulerxxxx
 ```
 
 #### Step 2
-Update `*.inc` files by using `bash ./util/update.sh` or `.\util\update.ps1` for Unix-like/Windows system correspondingly. The Fortran script `util/preprocess.f90` will scan `./data/` and `./src/problems` to generate an array of solved problems, and based on that it generates `*.inc` files required by `module_problem`.
+Update `*.inc` files by using 
+```bash
+fpm run preprocess
+```
