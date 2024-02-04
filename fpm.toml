@@ -17,11 +17,11 @@ source-dir = "test"
 main = "test.f90"
 
 [[executable]]
-name = "PE-Fortran"
-source-dir = "src"
-main = "project_euler.f90"
-
-[[executable]]
 name = "preprocess"
 source-dir = "util"
 main = "preprocess.f90"
+
+[[executable]]
+name = "PE-Fortran"
+source-dir = "src"
+main = "project_euler.f90"
