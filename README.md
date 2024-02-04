@@ -14,7 +14,7 @@
 ### Run with FPM
 #### Solve a single problem
 ```bash
-fpm run [-- p<problem number> [--trail <number of trails/problem>]]
+fpm run PE-Fortran [-- p<problem number> [--trail <number of trails/problem>]]
 # Example1, solve all problems: fpm run
 # Example2, solve all problems 10 times: fpm run -- --trail 10
 # Example3, solve problem 10: fpm run -- p10
@@ -22,7 +22,7 @@ fpm run [-- p<problem number> [--trail <number of trails/problem>]]
 ```
 #### To avoid Memory Sanitizer from the Intel Fortran compiler(ifx (IFX) 2023.2.0)
 ```bash
-fpm run --compiler ifx --flag "-check all,nouninit"
+fpm run PE-Fortran --compiler ifx --flag "-check all,nouninit"
 ```
 * `fpm run -- --help` for more information.
 
