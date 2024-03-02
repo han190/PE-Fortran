@@ -85,6 +85,7 @@ subroutine solve_problems(problemset, num_trails, selected)
   num_problems = problemset%num_problems
   select case (selected)
   case (0) !> Solve all available problems
+
     num_steps = num_problems*num_trails
     do i = 1, num_problems
       solution => problemset%solutions(i)
@@ -101,11 +102,14 @@ subroutine solve_problems(problemset, num_trails, selected)
       end do
       problem%time_span = time_span/num_trails
     end do
-    write (output_unit, "(a1)") carriage_return
-    flush (output_unit)
-    output_format = "(i0, 1x, 'problems solved.')"
-    write (output_unit, output_format) num_problems
+
+    output_format = "(a, '[', i0, '%]', 1x, i0, 1x, a)"
+    write (output_unit, output_format, advance="no") &
+      & carriage_return, 100, num_problems, &
+      & "problems solved."//new_line("(a)")
+
   case (1:) !> Solve a single problems
+
     do i = 1, num_problems
       if (problemset%problems(i)%index == selected) exit
     end do
@@ -114,6 +118,7 @@ subroutine solve_problems(problemset, num_trails, selected)
     solution => problemset%solutions(i)
     problem => problemset%problems(i)
     time_span = 0.0
+
     do j = 1, num_trails
       percent = real(j)/num_trails*100.0
       write (output_unit, output_format, advance="no") &
@@ -122,15 +127,15 @@ subroutine solve_problems(problemset, num_trails, selected)
       call solve_problem(problem, solution)
       time_span = time_span + problem%time_span
     end do
+
     problem%time_span = time_span/num_trails
     write (output_unit, "(a1)") carriage_return
     flush (output_unit)
-    output_format = "('Problem:', 1x, i0)"
-    write (output_unit, output_format) problem%index
-    output_format = "('Solution:', 1x, a)"
-    write (output_unit, output_format) adjustl(problem%answer)
+    write (output_unit, "('Problem:', 1x, i0)") problem%index
+    write (output_unit, "('Solution:', 1x, a)") adjustl(problem%answer)
     output_format = "('Time span:', 1x, es0.4e2, 1x, '(sec)')"
     write (output_unit, output_format) problem%time_span
+
   case default
     error stop "[solve_problems] Invalid selected."
   end select
