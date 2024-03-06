@@ -1,7 +1,7 @@
 module module_quicksort
 
 use, intrinsic :: iso_fortran_env, only: int64
-use :: module_utility, only: swap
+use, non_intrinsic :: module_utility, only: swap
 implicit none
 
 public :: quicksort

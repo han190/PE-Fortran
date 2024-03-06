@@ -1,0 +1,32 @@
+name: PE-Fortran
+run-name: Building PE-Fortran by ${{ github.actor }}
+on: [push]
+
+jobs:
+  Test-PE-Fortran:
+    runs-on : ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        gcc_version: [13]
+    env:
+      FC: gfortran-${{ matrix.gcc_version }}
+    
+    steps:
+      - name: Use Checkout
+        uses: actions/checkout@v1
+        
+      - name: Use Fortran Package Manager
+        uses: fortran-lang/setup-fpm@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install gfortran
+        if: contains( matrix.os, 'ubuntu' )
+        run: sudo apt install gfortran-${{ matrix.gcc_version }}
+
+      - name: Preprocess
+        run: fpm run Preprocess --profile debug --compiler gfortran-${{ matrix.gcc_version }}
+
+      - name: Run PE-Fortran
+        run: fpm run PE-Fortran --profile debug --compiler gfortran-${{ matrix.gcc_version }}

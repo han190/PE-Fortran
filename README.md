@@ -8,32 +8,24 @@
 
 | Dependencies          | Options               |
 |:----------------------|:----------------------|
-| Fortran 2008 compliant Compiler      | [gfortran](https://gcc.gnu.org/wiki/GFortran)/[ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.lki8b0) |
+| Fortran 2008 compliant Compiler      | [gfortran](https://gcc.gnu.org/wiki/GFortran)/[ifx](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.lki8b0) |
 | Build Tool            | [Fortran Package Manager (FPM)](https://github.com/fortran-lang/fpm) |
 
 ### Run with FPM
 #### Solve a single problem
 ```bash
-fpm run -- p<problem number> [--trail <number of trails>]
+fpm run PE-Fortran [-- p<problem number> [--trail <number of trails/problem>]]
+# Example1, solve all problems: fpm run PE-Fortran
+# Example2, solve all problems 10 times: fpm run PE-Fortran -- -t 10
+# Example3, solve problem 10: fpm run PE-Fortran -- p10
+# Example4, solve problem 10 for 100 times: fpm run PE-Fortran -- p10 -t 100
+# Example5, solve all problems faster: fpm run PE-Fortran --profile release
 ```
-#### Example: Solve Problem 20
+#### To avoid Memory Sanitizer from the Intel Fortran compiler(ifx (IFX) 2023.2.0)
 ```bash
-fpm run -- p20
+fpm run PE-Fortran --compiler ifx --flag "-check all,nouninit"
 ```
-#### Solved all available problems:
-```bash
-fpm run [-- --trail <number of trails>]
-```
-#### Example: Solve all available problems 10 times
-```bash
-fpm run -- --trail 10
-```
-#### Intel Fortran compiler
-To avoid Memory Sanitizer (ifx (IFX) 2023.2.0)
-```bash
-fpm run --compiler ifx --flag "-check all,nouninit"
-```
-* `fpm run -- --help` for more information.
+#### For more information: `fpm run PE-Fortran -- -h`
 
 ## Contribution
 If you would like to contribute:
@@ -49,17 +41,14 @@ module subroutine eulerxxxx(problem)
    integer :: sln !> store your answer
    !> If data file is required:
    !> open (newunit=unit, file=problem%file)
+   !> ... your implementation ...
    write (problem%answer, "(i20)") sln
 end subroutine eulerxxxx
 end submodule submodule_eulerxxxx
 ```
 
 #### Step 2
-Update `*.inc` files by using `bash ./util/update.sh` or `.\util\update.ps1` for Unix-like/Windows system correspondingly. The Fortran script `util/preprocess.f90` will scan `./data/` and `./src/problems` to generate an array of solved problems, and based on that it generates `*.inc` files required by `module_problem`.
-
-## A todo list
-
-Here is what I plan to do in the future. (Not likely to be done recently cuz I am kinda busy...)
-
-- [ ] Write a documentation to clearly explain the algorithms, Fortran features, or anything that is interesting for each question.
-- [ ] Implement an associative array for Project Euler.
+Update `*.inc` files by using 
+```bash
+fpm run Preprocess
+```

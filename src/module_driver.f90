@@ -1,7 +1,7 @@
 module module_driver
 
 use, intrinsic :: iso_fortran_env, only: int64, output_unit
-use :: module_problem
+use, non_intrinsic :: module_problem
 implicit none
 
 public :: get_arguments

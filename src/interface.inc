@@ -1,4 +1,5 @@
-!> Automatically generated.
+!> Automatically generated file.
+!> -----------------------------
 module subroutine euler0001(problem)
   type(problem_type), intent(inout) :: problem
 end subroutine euler0001

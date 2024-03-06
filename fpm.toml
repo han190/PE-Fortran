@@ -10,12 +10,16 @@ homepage = "https://github.com/han190/PE-Fortran"
 
 [library]
 source-dir = "src"
-include-dir = "src"
 
 [[test]]
 name = "UnitTests"
 source-dir = "test"
 main = "test.f90"
+
+[[executable]]
+name = "Preprocess"
+source-dir = "src/preprocess"
+main = "preprocess.f90"
 
 [[executable]]
 name = "PE-Fortran"

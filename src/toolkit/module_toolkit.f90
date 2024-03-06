@@ -1,9 +1,9 @@
 module euler_toolkit
 
-use :: module_utility
-use :: module_prime
-use :: module_permutation
-use :: module_multiprecision
-use :: module_quicksort
+use, non_intrinsic :: module_utility
+use, non_intrinsic :: module_prime
+use, non_intrinsic :: module_permutation
+use, non_intrinsic :: module_multiprecision
+use, non_intrinsic :: module_quicksort
 
 end module euler_toolkit

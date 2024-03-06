@@ -1,7 +1,7 @@
 module module_problem
 
 use, intrinsic :: iso_fortran_env, only: int64, real64, output_unit
-use :: euler_toolkit
+use, non_intrinsic :: euler_toolkit
 implicit none
 
 public :: problemset_type
@@ -83,33 +83,9 @@ subroutine solve_problems(problemset, num_trails, selected)
 
   output_format = "(a1, '[', i0, '%]', 1x, 'Solving P', i0)"
   num_problems = problemset%num_problems
-  if (selected /= 0) then
-    do i = 1, num_problems
-      if (problemset%problems(i)%index == selected) exit
-    end do
-    if (i == num_problems + 1) error stop &
-      & "[solve_problem] Problem not found."
-    solution => problemset%solutions(i)
-    problem => problemset%problems(i)
-    time_span = 0.0
-    do j = 1, num_trails
-      percent = real(j)/num_trails*100.0
-      write (output_unit, output_format, advance="no") &
-        & carriage_return, int(percent), problem%index
-      flush (output_unit)
-      call solve_problem(problem, solution)
-      time_span = time_span + problem%time_span
-    end do
-    problem%time_span = time_span/num_trails
-    write (output_unit, "(a1)") carriage_return
-    flush (output_unit)
-    output_format = "('Problem:', 1x, i0)"
-    write (output_unit, output_format) problem%index
-    output_format = "('Solution:', 1x, a)"
-    write (output_unit, output_format) adjustl(problem%answer)
-    output_format = "('Time span:', 1x, es0.4e3, 1x, '(sec)')"
-    write (output_unit, output_format) problem%time_span
-  else
+  select case (selected)
+  case (0) !> Solve all available problems
+
     num_steps = num_problems*num_trails
     do i = 1, num_problems
       solution => problemset%solutions(i)
@@ -126,25 +102,57 @@ subroutine solve_problems(problemset, num_trails, selected)
       end do
       problem%time_span = time_span/num_trails
     end do
+
+    output_format = "(a, '[', i0, '%]', 1x, i0, 1x, a)"
+    write (output_unit, output_format, advance="no") &
+      & carriage_return, 100, num_problems, &
+      & "problems solved."//new_line("(a)")
+
+  case (1:) !> Solve a single problems
+
+    do i = 1, num_problems
+      if (problemset%problems(i)%index == selected) exit
+    end do
+    if (i == num_problems + 1) error stop &
+      & "[solve_problem] Problem not found."
+    solution => problemset%solutions(i)
+    problem => problemset%problems(i)
+    time_span = 0.0
+
+    do j = 1, num_trails
+      percent = real(j)/num_trails*100.0
+      write (output_unit, output_format, advance="no") &
+        & carriage_return, int(percent), problem%index
+      flush (output_unit)
+      call solve_problem(problem, solution)
+      time_span = time_span + problem%time_span
+    end do
+
+    problem%time_span = time_span/num_trails
     write (output_unit, "(a1)") carriage_return
     flush (output_unit)
-    output_format = "(i0, 1x, 'problems solved.')"
-    write (output_unit, output_format) num_problems
-  end if
+    write (output_unit, "('Problem:', 1x, i0)") problem%index
+    write (output_unit, "('Solution:', 1x, a)") adjustl(problem%answer)
+    output_format = "('Time span:', 1x, es0.4e2, 1x, '(sec)')"
+    write (output_unit, output_format) problem%time_span
+
+  case default
+    error stop "[solve_problems] Invalid selected."
+  end select
   nullify (problem, solution)
 end subroutine solve_problems
 
 !> Relative difficulty
 elemental function relative_difficulty(time_span, time_min, time_max)
   real(real64), intent(in) :: time_span, time_min, time_max
-  character(len=16) :: relative_difficulty
+  character(len=20) :: relative_difficulty
   real(real64) :: score
 
   score = log10((time_min*10 - time_max)/(time_min - time_max) + &
     & (1 - 10)*time_span/(time_min - time_max))/log10(10.0)
   associate (num_bars => nint(score*10))
-    write (relative_difficulty, "('[', a10, ']', i0, '%')") &
-      & repeat('|', num_bars)//repeat(space, 10 - num_bars), nint(score*100)
+    write (relative_difficulty, "(a, 1x, '(', i0, '%', ')')") &
+      & repeat('|', num_bars + 1), nint(score*100)
   end associate
 end function relative_difficulty
 
@@ -205,17 +213,17 @@ subroutine print_answers(problemset, file)
   difficulties = [(relative_difficulty(problems(i)%time_span, &
     & time_min, time_max), i=1, size(problems))]
   open (newunit=unit, file=file, action='write', status='unknown')
-  output_format = "('#', t6, a, t40, a, t65, a)"
+  output_format = "('#', t6, a, t35, a, t63, a)"
   write (unit, output_format) 'Answer', 'Time (sec)', 'Difficulty'
   write (unit, "(a)") repeat('-', 80)
-  output_format = "(i0, t6, a, t40, es0.4e3, 1x, t65, a)"
+  output_format = "(i0, t6, a, t35, es0.4e2, 1x, t63, a)"
   write (unit, output_format) (problems(i)%index, problems(i)%answer, &
-    & problems(i)%time_span, difficulties(i), i=1, size(problems))
+    & problems(i)%time_span, trim(difficulties(i)), i=1, size(problems))
   write (unit, "(a)") repeat('-', 80)
   message = "Number of problems solved"
-  write (unit, "('*', t6, a, t40, i0)") message, num_problems
+  write (unit, "('*', t6, a, t35, i0)") message, num_problems
   message = "Mean time (sec) / problem"
-  output_format = "('*', t6, a, t40, es0.4e3)"
+  output_format = "('*', t6, a, t35, es0.4e2)"
   write (unit, output_format) message, time_tot/num_problems
   close (unit)
   nullify (problems)

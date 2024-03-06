@@ -46,15 +46,12 @@ subroutine test_permutation(test)
   class(test_type), intent(inout) :: test
   type(permutation_type) :: permutation
   integer(int64), allocatable :: indices(:), cycles(:)
-  integer(int64) :: n, k
-
-  n = 10_int64
-  k = 3_int64
-  permutation = new_permutation(n, k)
 
   test%name = "permutation"
   test%succeed = .true.
   test%message = "[test_permutation] Success."
+
+  permutation = new_permutation(10_int64, 3_int64)
   do while (permutable(permutation))
     indices = index(permutation)
     cycles = permutation%cycles
@@ -74,12 +71,12 @@ subroutine test_prime(test)
   integer(int64), allocatable :: primes(:)
   integer(int64) :: i
 
-  check = sift(1000000_int64, "Eratosthenes")
-  primes = pack(check)
-
   test%name = "prime"
   test%succeed = .true.
   test%message = "[test_prime] Success."
+
+  check = sift(1000000_int64, "Eratosthenes")
+  primes = pack(check)
   do i = 1, size(primes)
     if (.not. is_prime(primes(i))) then
       test%succeed = .false.
@@ -92,12 +89,12 @@ end subroutine test_prime
 !> Test multiprecision
 subroutine test_multiprecision(test)
   class(test_type), intent(inout) :: test
-  type(long_type) :: x, y
+  type(long_type(len=:)), allocatable :: x, y
 
   test%name = "multiprecision"
   test%message = ""
-  call initialize(x, 11_int64)
-  call initialize(y, 11_int64)
+  
+  allocate (long_type(len=11) :: x, y)
   x = [integer(int64) :: 4, 6, 3, 5, 1, 0, 7, 9, 8, 2]
   y = [integer(int64) :: 3, 2, 4, 1, 5, 7, 9, 8, 6, 0]
   x = x + y
