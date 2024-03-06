@@ -41,7 +41,7 @@ pure function new_permutation(n, k, start) result(permutation)
   integer(int64), intent(in) :: n
   integer(int64), intent(in), optional :: k, start(:)
   type(permutation_type) :: permutation
-  integer(int64) :: i, rule
+  integer(int64) :: i
 
   permutation%n = n
   if (present(k)) then
@@ -90,7 +90,7 @@ pure subroutine set_permutation(permutation, indices)
   type(permutation_type), intent(inout) :: permutation
   integer(int64), intent(in) :: indices(:)
   integer(int64), allocatable :: pool(:), ordered(:)
-  logical, allocatable :: selected(:)
+  ! logical, allocatable :: selected(:)
   integer(int64) :: i, n
 
   if (permutation%k == 0) then

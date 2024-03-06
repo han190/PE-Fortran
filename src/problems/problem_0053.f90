@@ -5,8 +5,10 @@ contains
 module subroutine euler0053(problem)
   type(problem_type), intent(inout) :: problem
   integer(int64), parameter :: upper = 100, b = 1000000
-  integer(int64) :: n, r, c(0:upper, 0:upper), sln
+  integer(int64), allocatable :: c(:, :)
+  integer(int64) :: n, r, sln
 
+  allocate (c(0:upper, 0:upper))
   sln = 0
   do n = 1, upper
     c(n, 0) = 1

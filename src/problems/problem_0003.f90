@@ -7,7 +7,7 @@ module subroutine euler0003(problem)
   integer(int64), parameter :: n = 600851475143_real64
   logical, allocatable :: check(:)
   integer(int64), allocatable :: primes(:)
-  integer(int64) :: i, num_checks
+  integer(int64) :: i
 
   check = sift(sqrt(n), "Eratosthenes")
   primes = pack(check)

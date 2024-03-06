@@ -89,8 +89,8 @@ subroutine get_arguments()
   character(len=:), allocatable :: answer_sheet, data_directory, output_format
   character(len=:), allocatable :: arguments(:), keywords(:)
   character(len=:), allocatable :: argument, next_argument, messages(:)
-  integer(int64) :: num_problems, num_trails, selected
-  integer :: argument_counts, i, j
+  integer(int64) :: num_trails, selected
+  integer :: argument_counts, i
   type(problemset_type) :: problemset
   logical :: list_solved
 
@@ -103,7 +103,8 @@ subroutine get_arguments()
   end do
 
   !> Default values
-  data_directory = "data"
+  data_directory = default_data_directory
+  allocate (character(len=500) :: answer_sheet)
   answer_sheet = "answer.log"
   num_trails = 2
   selected = 0
@@ -133,11 +134,11 @@ subroutine get_arguments()
     case ("-t", "--trail")
       read (next_argument, *) num_trails
     case ("-d", "--data")
-      read (next_argument, "(a)") data_directory
+      data_directory = next_argument
       output_format = "('Data directory:', 1x, a)"
       write (output_unit, output_format) trim(data_directory)
     case ("-a", "--answer")
-      read (next_argument, "(a)") answer_sheet
+      answer_sheet = next_argument
       output_format = "('Answer sheet:', 1x, a)"
       write (output_unit, output_format) trim(answer_sheet)
     case ("-l", "--list")

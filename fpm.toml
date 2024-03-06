@@ -17,7 +17,7 @@ source-dir = "test"
 main = "test.f90"
 
 [[executable]]
-name = "Preprocess"
+name = "PE-Preprocess"
 source-dir = "src/preprocess"
 main = "preprocess.f90"
 

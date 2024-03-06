@@ -11,7 +11,7 @@ module subroutine euler0007(problem)
   sln = 0
   do while (i <= n)
     sln = sln + 1
-    if (mod(sln, 2) == 2 .and. sln /= 2) then
+    if (mod(sln, 2_int64) == 2 .and. sln /= 2) then
       cycle
     else if (is_prime(sln)) then
       i = i + 1

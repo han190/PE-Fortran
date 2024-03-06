@@ -51,7 +51,7 @@ contains
 pure subroutine assign(long, array)
   type(long_type(len=*)), intent(inout) :: long
   integer(int64), intent(in) :: array(:)
-  integer(int64) :: n, i
+  integer(int64) :: i
 
   if (long%len < size(array)) error stop &
     & "[assign] Not enough memory."

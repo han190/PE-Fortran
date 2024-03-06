@@ -5,10 +5,11 @@ contains
 module subroutine euler0062(problem)
   type(problem_type), intent(inout) :: problem
   integer(int64), parameter :: n = 10000
-  integer(int64) :: i, x, counts(n)
-  character(len=20) :: list(n)
-  integer(int64), allocatable :: array(:)
+  integer(int64) :: i, x
+  character(len=20), allocatable :: list(:)
+  integer(int64), allocatable :: array(:), counts(:)
   
+  allocate (list(n), counts(n))
   list = ""
   counts = 1
   do i = 1, n

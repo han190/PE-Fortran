@@ -3,8 +3,8 @@ module module_file
 use, intrinsic :: iso_c_binding
 implicit none
 
-private
 public :: find_indexed
+private
 
 !> https://degenerateconic.com/fortran-c-interoperability.html
 interface

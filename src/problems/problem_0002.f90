@@ -24,7 +24,7 @@ elemental recursive function fibonacci(n) result(ret)
     ret = 0
   else if (any(n == [1, 2])) then
     ret = 1
-  else if (mod(n, 2) == 0) then
+  else if (mod(n, 2_int64) == 0) then
     k = n/2
     ret = fibonacci(k)*(fibonacci(k + 1)*2 - fibonacci(k))
   else

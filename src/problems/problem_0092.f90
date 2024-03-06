@@ -17,7 +17,7 @@ end subroutine euler0092
 function num_happys(n) result(ret)
   integer(int64), intent(in) :: n
   integer(int64) :: ret
-  integer(int64) :: i, k
+  integer(int64) :: i
   integer(int64), allocatable :: arr(:,:)
 
   !> An array to store computed results

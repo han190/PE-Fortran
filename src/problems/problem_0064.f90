@@ -11,7 +11,7 @@ module subroutine euler0064(problem)
   do i = 1, 10000
     if (i - sqrt(i)**2 > 0) then
       p = continued_fraction_period(i, n)
-      sln = sln + merge(0, 1, mod(p, 2) == 0)
+      sln = sln + merge(0, 1, mod(p, 2_int64) == 0)
     end if
   end do
   write (problem%answer, "(i0)") sln
@@ -21,7 +21,7 @@ pure function continued_fraction_period(n, num_sequence) result(period)
   integer(int64), intent(in) :: n, num_sequence
   integer(int64) :: period
   integer(int64) :: sequence(3, num_sequence), iterator(3)
-  integer(int64) :: i, j, k, a0
+  integer(int64) :: i, j, a0
 
   a0 = sqrt(n)
   iterator = [0_int64, 1_int64, a0]

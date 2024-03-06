@@ -4,7 +4,7 @@ contains
 
 module subroutine euler0013(problem)
   type(problem_type), intent(inout) :: problem
-  integer(int64) :: sln(10)
+  ! integer(int64) :: sln(10)
   integer(int64) :: digs(50, 100), tmp(150), unit
   integer(int64) :: i, n
 

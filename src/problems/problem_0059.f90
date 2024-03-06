@@ -36,7 +36,7 @@ pure subroutine decrypt(encrypted, key, decrypted)
   integer(int64) :: i, k
 
   do i = 1, size(encrypted)
-    k = mod(i, 3)
+    k = mod(i, 3_int64)
     if (k == 0) k = 3
     decrypted(i) = ieor(encrypted(i), key(k))
   end do
@@ -52,7 +52,7 @@ pure function is_english(decrypted) result(ret)
   check_ = ["e", "t", "a", "o", "i", "n", "s", "h"]
   knt = [(count(decrypted == iachar(check_(i))), i=1, size(check_))]
   ret = .false.
-  english_features = sum(knt)/real(size(decrypted))*100. > 45.
+  english_features = real(sum(knt))/real(size(decrypted))*100. > 45.
   if (english_features .and. maxloc(knt, dim=1) == 1) ret = .true.
 end function is_english
 

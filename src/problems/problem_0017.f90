@@ -37,7 +37,7 @@ elemental function count_letters_3(n) result(ret)
   associate (hundred => 7, and => 3)
     d1 = n/100
     ret = count_letters_1(d1) + hundred
-    if (mod(n, 100) /= 0) then
+    if (mod(n, 100_int64) /= 0) then
       d2 = n - (n/100)*100
       ret = ret + and + count_letters_2(d2)
     end if

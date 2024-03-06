@@ -41,7 +41,8 @@ pure function compare(val0, val1) result(ret)
     else if (p0 == p1 .and. b0 == b1) then
       ret = 0
     else
-      ret = merge(1, -1, p0*log10(real(b0)) > p1*log10(real(b1)))
+      ret = merge(1, -1, &
+        & real(p0)*log10(real(b0)) > real(p1)*log10(real(b1)))
     end if
   end associate
 end function compare

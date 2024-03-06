@@ -9,6 +9,7 @@ public :: new_problemset
 public :: solve_problems
 public :: print_answers
 public :: list_problems
+public :: default_data_directory
 private
 
 !> Problem type
@@ -47,6 +48,7 @@ end interface
 !> Commonly used parameters
 character, parameter :: carriage_return = char(13)
 character, parameter :: space = char(32)
+include "directory.inc"
 
 contains
 
@@ -93,7 +95,7 @@ subroutine solve_problems(problemset, num_trails, selected)
       time_span = 0.0
       do j = 1, num_trails
         step = (i - 1)*num_trails + j
-        percent = real(step)/num_steps*100.0
+        percent = real(step)/real(num_steps)*100.0
         write (output_unit, output_format, advance="no") &
           & carriage_return, int(percent), problem%index
         flush (output_unit)
@@ -120,7 +122,7 @@ subroutine solve_problems(problemset, num_trails, selected)
     time_span = 0.0
 
     do j = 1, num_trails
-      percent = real(j)/num_trails*100.0
+      percent = real(j)/real(num_trails)*100.0
       write (output_unit, output_format, advance="no") &
         & carriage_return, int(percent), problem%index
       flush (output_unit)
@@ -192,7 +194,7 @@ end subroutine list_problems
 subroutine print_answers(problemset, file)
   type(problemset_type), target, intent(in) :: problemset
   character(len=*), intent(in) :: file
-  integer(int64) :: unit, i, difficulty, num_problems
+  integer(int64) :: unit, i, num_problems
   character(len=:), allocatable :: difficulties(:)
   real(real64) :: time_min, time_max, time_tot
   character(len=:), allocatable :: message, output_format

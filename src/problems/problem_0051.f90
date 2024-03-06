@@ -5,7 +5,7 @@ contains
 module subroutine euler0051(problem)
   type(problem_type), intent(inout) :: problem
   integer(int64), parameter :: lower = 100000, upper = 999999
-  integer(int64) :: i, j, k, s, num_primes, idx, p_knt, c_knt
+  integer(int64) :: i, j, k, s, idx, p_knt, c_knt
   integer(int64), allocatable :: array(:), primes(:)
   logical, allocatable :: check(:)
 
