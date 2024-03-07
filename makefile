@@ -1,7 +1,7 @@
-FC?=gfortran
+FC=gfortran
 profile?=release
-build_dir=build/$(FC)_$(profile)_makefile
 current_dir=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+build_dir=$(current_dir)/build/$(FC)_$(profile)_makefile
 data_dir=$(current_dir)/data
 src_dir=src
 include_dir=$(build_dir)/include
