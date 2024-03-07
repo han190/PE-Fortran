@@ -1,4 +1,4 @@
-FC=gfortran
+FC?=gfortran
 profile?=release
 current_dir=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 build_dir=$(current_dir)/build/$(FC)_$(profile)_makefile
@@ -20,9 +20,9 @@ ifeq ($(FC), gfortran)
 		FFLAGS+=-O3 -march=native
 	endif
 	
-	compile=$(FC) $(FFLAGS) -I$(include_dir)
-	compile_obj=$(compile) -J$(build_dir)
-	compile_exe=$(compile) -I$(build_dir)
+	compile=$(FC) $(FFLAGS) 
+	compile_obj=$(compile) -J$(build_dir) -I$(include_dir)
+	compile_exe=$(compile) -I$(include_dir) -I$(build_dir)
 endif
 
 # Preprocess objects
