@@ -25,8 +25,11 @@ jobs:
         if: contains( matrix.os, 'ubuntu' )
         run: sudo apt install gfortran-${{ matrix.gcc_version }}
 
-      - name: Preprocess
-        run: fpm run Preprocess --profile debug --compiler gfortran-${{ matrix.gcc_version }}
+      - name: Test PE-Fortran by GNU make
+        run: make && make test
 
-      - name: Run PE-Fortran
+      - name: Test PE-Preprocess by FPM
+        run: fpm run PE-Preprocess --profile debug --compiler gfortran-${{ matrix.gcc_version }}
+
+      - name: Test PE-Fortran by FPM
         run: fpm run PE-Fortran --profile debug --compiler gfortran-${{ matrix.gcc_version }}
