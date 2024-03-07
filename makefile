@@ -1,4 +1,4 @@
-FC=gfortran
+FC?=gfortran
 profile?=release
 build_dir=build/$(FC)_$(profile)_makefile
 current_dir=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
