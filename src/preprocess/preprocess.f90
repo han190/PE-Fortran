@@ -3,8 +3,8 @@ program main
   use, non_intrinsic :: module_preprocessor
   implicit none
 
-  character(len=*), parameter :: src = "src/"
   character(len=:), allocatable :: tmp, tmp2, srcs(:), arguments(:)
+  character(len=:), allocatable :: data_dir, include_dir
   character(len=9) :: name
   integer, allocatable :: problems(:), datasets(:)
   integer :: i, j, unit, argument_counts, indent = 2
@@ -13,24 +13,35 @@ program main
 
   !> Read data directory if specified.
   argument_counts = command_argument_count()
-  if (.not. (argument_counts == 2 .or. argument_counts == 0)) &
-    & error stop "[PROJECT EULER] Invalid argument count."
+  if (.not. any(argument_counts == [0, 2, 4])) &
+    & error stop "[PE-Preprocess] Invalid argument count."
   
-  if (argument_counts == 2) then
+  if (argument_counts >= 2) then
     allocate (character(len=500) :: arguments(argument_counts))
     do i = 1, argument_counts
       call get_command_argument(i, arguments(i))
     end do
 
-    select case (trim(arguments(1)))
-    case ("-d", "--data")
-      open (newunit=unit, file=src//"directory.inc", action="write")
-      decl = declaration_type(name="default_data_directory", &
-        & type="character(len=*)", attrs=["parameter"])
-      write (unit, "(a, 2(1x, a))") declaration_to_src(decl), &
-        & '=', '"'//trim2(arguments(2))//'"'
-      close (unit)
-    end select
+    do i = 1, argument_counts, 2
+      select case (trim2(arguments(i)))
+      case ("-d", "--data")
+        data_dir = trim2(arguments(i + 1))
+      case ("-i", "--include")
+        include_dir = trim2(arguments(i + 1))
+      case default
+        error stop "[PE-Preprocess] Invalid argument."
+      end select
+    end do
+  end if
+
+  if (.not. allocated(include_dir)) include_dir = "src"
+  if (allocated(data_dir)) then
+    open (newunit=unit, file=include_dir//"/"//"directory.inc", action="write")
+    decl = declaration_type(name="default_data_directory", &
+      & type="character(len=*)", attrs=["parameter"])
+    write (unit, "(a, 2(1x, a))") declaration_to_src(decl), &
+      & '=', '"'//trim2(arguments(2))//'"'
+    close (unit)
   end if
 
   !> Scan solved problems and dataset required.
@@ -38,7 +49,7 @@ program main
   datasets = find_indexed("data", "data")
 
   !> Generate interfaces
-  open (newunit=unit, file=src//"interface.inc", action="write")
+  open (newunit=unit, file=include_dir//"/"//"interface.inc", action="write")
   write (unit, "(a)") "!AUTOMATICALLY GENERATTED!"
   decl = declaration_type(name="problem", &
     & type="type(problem_type)", attrs=["intent(inout)"])
@@ -52,7 +63,7 @@ program main
 
   !> Generate procedure pointers and initialize problem types
   allocate (character(len=500) :: tmp, tmp2)
-  open (newunit=unit, file=src//"problemset.inc", action="write")
+  open (newunit=unit, file=include_dir//"/"//"problemset.inc", action="write")
   write (unit, "(a)") "!AUTOMATICALLY GENERATTED!"
   write (unit, "(a, 1x, '=', 1x, i0)") "problemset%num_problems", size(problems)
   tmp = "('allocate (', a, '(', i0, '))')"
