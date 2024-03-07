@@ -1,7 +1,7 @@
-FC?=gfortran
+fortran_compiler?=gfortran
 profile?=release
 current_dir=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
-build_dir=$(current_dir)/build/$(FC)_$(profile)_makefile
+build_dir=$(current_dir)/build/$(fortran_compiler)_$(profile)_makefile
 data_dir=$(current_dir)/data
 src_dir=src
 include_dir=$(build_dir)/include
@@ -10,17 +10,17 @@ prefix=$(local_dir)/bin
 data_prefix=$(local_dir)/share/PE-Fortran-data
 test_args?=
 
-ifeq ($(FC), gfortran)
-	FFLAGS=-std=f2018
+ifeq ($(fortran_compiler), gfortran)
+	compiler_flags=-std=f2018
 	ifeq ($(profile), debug)
-		FFLAGS+=-g -o0 -Wall -Wextra -pedantic -fbounds-check -fimplicit-none \
-			-fPIC -Wno-uninitialized -fcheck=all -fbacktrace -ffree-form \
-			-fcheck=array-temps -Werror=implicit-interface
+		compiler_flags+=-g -o0 -Wall -Wextra -pedantic -fbounds-check \
+			-fimplicit-none -fPIC -Wno-uninitialized -fcheck=all -fbacktrace \
+			-ffree-form -fcheck=array-temps -Werror=implicit-interface
 	else ifeq ($(profile), release)
-		FFLAGS+=-O3 -march=native
+		compiler_flags+=-O3 -march=native
 	endif
 	
-	compile=$(FC) $(FFLAGS) 
+	compile=$(fortran_compiler) $(compiler_flags) 
 	compile_obj=$(compile) -J$(build_dir) -I$(include_dir)
 	compile_exe=$(compile) -I$(include_dir) -I$(build_dir)
 endif
