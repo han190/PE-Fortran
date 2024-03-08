@@ -52,7 +52,7 @@ pure subroutine rank_(hands, s_arr)
 
   ! Royal Flush
   if (all(vals(10:14) == 1) .and. any(suits(:) == 5)) then
-    x = findloc(suits, 5, dim=1)
+    x = findloc(suits, 5_int64, dim=1)
     s_arr(1:2) = [10_int64, x]
     return
   end if
@@ -61,7 +61,7 @@ pure subroutine rank_(hands, s_arr)
   if (any(suits(:) == 5)) then
     do x = 1, 10
       if (all(vals(x:x + 4) == 1)) then
-        y = findloc(suits, 5, dim=1)
+        y = findloc(suits, 5_int64, dim=1)
         s_arr(1:3) = [9_int64, x, y]
         return
       end if
@@ -70,16 +70,16 @@ pure subroutine rank_(hands, s_arr)
 
   ! Four of a kind
   if (any(vals(:) == 4)) then
-    x = findloc(vals, 4, dim=1, back=.true.)
-    y = findloc(vals, 1, dim=1, back=.true.)
+    x = findloc(vals, 4_int64, dim=1, back=.true.)
+    y = findloc(vals, 1_int64, dim=1, back=.true.)
     s_arr(1:3) = [8_int64, x, y]
     return
   end if
 
   ! Full house
   if (any(vals(:) == 3) .and. any(vals(:) == 2)) then
-    x = findloc(vals, 3, dim=1, back=.true.)
-    y = findloc(vals, 2, dim=1, back=.true.)
+    x = findloc(vals, 3_int64, dim=1, back=.true.)
+    y = findloc(vals, 2_int64, dim=1, back=.true.)
     s_arr(1:3) = [7_int64, x, y]
     return
   end if
@@ -101,25 +101,25 @@ pure subroutine rank_(hands, s_arr)
 
   ! Three of a kind
   if (any(vals(:) == 3)) then
-    x = findloc(vals, 3, dim=1, back=.true.)
-    y = findloc(vals, 1, dim=1, back=.true.)
-    z = findloc(vals(2:14), 1, dim=1) + 1
+    x = findloc(vals, 3_int64, dim=1, back=.true.)
+    y = findloc(vals, 1_int64, dim=1, back=.true.)
+    z = findloc(vals(2:14), 1_int64, dim=1) + 1
     s_arr(1:4) = [4_int64, x, y, z]
     return
   end if
 
   ! Two pairs
   if (count(vals(2:14) == 2) == 2) then
-    x = findloc(vals, 2, dim=1, back=.true.)
-    y = findloc(vals(2:14), 2, dim=1) + 1
-    z = findloc(vals, 1, dim=1, back=.true.)
+    x = findloc(vals, 2_int64, dim=1, back=.true.)
+    y = findloc(vals(2:14), 2_int64, dim=1) + 1
+    z = findloc(vals, 1_int64, dim=1, back=.true.)
     s_arr(1:4) = [3_int64, x, y, z]
     return
   end if
 
   ! One pair
   if (any(vals(:) == 2)) then
-    x = findloc(vals, 2, dim=1, back=.true.)
+    x = findloc(vals, 2_int64, dim=1, back=.true.)
     s_arr(1:2) = [2_int64, x]
     call knt_one_by_one(3_int64, vals, s_arr)
     return

@@ -1,8 +1,8 @@
-fortran_compiler?=gfortran
+compiler?=gfortran
 profile?=release
 src_dir:=src
 current_dir=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
-build_dir=$(current_dir)build/$(fortran_compiler)_$(profile)_makefile
+build_dir=$(current_dir)build/$(compiler)_$(profile)_makefile
 data_dir=$(current_dir)data
 include_dir=$(build_dir)/include
 local_dir=${HOME}/.local
@@ -10,17 +10,27 @@ prefix=$(local_dir)/bin
 data_prefix=$(local_dir)/share/PE-Fortran-data
 args?=
 
-ifeq ($(fortran_compiler), gfortran)
-	compiler_flags=-std=f2018
+ifeq ($(compiler), gfortran)
+	compiler_flags=-std=f2018 -march=native
 	ifeq ($(profile), debug)
-		compiler_flags+=-g -o0 -Wall -Wextra -pedantic -fbounds-check \
+		compiler_flags+=-g -O0 -Wall -Wextra -pedantic -fbounds-check \
 			-fimplicit-none -fPIC -Wno-uninitialized -fcheck=all -fbacktrace \
 			-ffree-form -fcheck=array-temps -Werror=implicit-interface
 	else ifeq ($(profile), release)
 		compiler_flags+=-O3 -march=native
 	endif
-	compile=$(fortran_compiler) $(compiler_flags) \
+	compile=$(compiler) $(compiler_flags) \
 		-I$(include_dir) -J$(build_dir)
+else ifeq ($(compiler), ifx)
+	compiler_flags=-stand f18 -mtune=native
+	ifeq ($(profile), debug)
+		compiler_flags+=-O0 -warn all -check all,nouninit -g -traceback -no-simd
+	else ifeq ($(profile), release)
+		compiler_flags+=-O1 -ipo -xHost
+	endif
+	compile=$(compiler) $(compiler_flags) \
+		-I$(include_dir) -module $(build_dir)
+	AR=xiar
 endif
 
 # Preprocess objects
@@ -94,6 +104,9 @@ build:
 
 clean:
 	$(RM) -r $(build_dir)
-	$(RM) $(prefix)/PE-Fortran $(prefix)/preprocess
+	@echo Build files cleaned.
+
+uninstall:
+	$(RM) $(prefix)/PE-Fortran $(prefix)/PE-Preprocess
 	$(RM) -r $(data_prefix)
-	@echo All files cleaned.
+	@echo PE-Fortran uninstalled.

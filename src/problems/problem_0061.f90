@@ -37,7 +37,7 @@ end subroutine euler0061
 pure logical function ouroboric(x)
   integer(int64), intent(in) :: x(:)
 
-  ouroboric = x(1)/100 == mod(x(size(x)), 100_int64)
+  ouroboric = x(1)/100_int64 == mod(x(size(x)), 100_int64)
 end function ouroboric
 
 pure subroutine get_cyclic(x, y)
