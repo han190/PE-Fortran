@@ -2,12 +2,14 @@ submodule(module_problem) submodule_euler0099
 implicit none
 contains
 
-module subroutine euler0099(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0099(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: unit, iostat, current(2), largest(2), k, sln
 
   largest = [1, 1]
-  open (newunit=unit, file=problem%file, &
+  open (newunit=unit, file=file, &
     & iostat=iostat, delim="APOSTROPHE")
   k = 1
   do while (iostat == 0)
@@ -19,7 +21,7 @@ module subroutine euler0099(problem)
     k = k + 1
   end do
   close (unit)
-  write (problem%answer, "(i0)") sln
+  write (answer, "(i0)") sln
 end subroutine euler0099
 
 pure function compare(val0, val1) result(ret)

@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0052
 implicit none
 contains
 
-module subroutine euler0052(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0052(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: i, j
   logical :: array(0:9), array_temp(0:9)
 
@@ -20,7 +22,7 @@ module subroutine euler0052(problem)
     end do inner
     i = i + 1
   end do outer
-  write (problem%answer, "(i20)") i
+  write (answer, "(i20)") i
 end subroutine euler0052
 
 pure subroutine digits_in_use(n, array)

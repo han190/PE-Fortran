@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0018
 implicit none
 contains
 
-module subroutine euler0018(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0018(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: n = 15
   type(jagged_type), allocatable :: jagged(:)
   integer(int64) :: i, j, x, unit
@@ -13,7 +15,7 @@ module subroutine euler0018(problem)
     allocate (jagged(i)%array(i))
   end do
 
-  open (newunit=unit, file=problem%file, status="old", action="read")
+  open (newunit=unit, file=file, status="old", action="read")
   do i = 1, n
     read (unit, *) jagged(i)%array
   end do
@@ -25,7 +27,7 @@ module subroutine euler0018(problem)
       jagged(j)%array(i) = x + jagged(j)%array(i)
     end do
   end do
-  write (problem%answer, "(i20)") jagged(1)%array(1)
+  write (answer, "(i20)") jagged(1)%array(1)
 end subroutine euler0018
 
 end submodule submodule_euler0018

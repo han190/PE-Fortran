@@ -8,10 +8,12 @@ integer(int64), parameter :: unhappy(8) = &
 integer(int64), parameter :: error = -9999999
 contains
 
-module subroutine euler0092(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0092(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
 
-  write (problem%answer, "(i20)") 10_int64**7 - num_happys(7_int64)
+  write (answer, "(i20)") 10_int64**7 - num_happys(7_int64)
 end subroutine euler0092
 
 function num_happys(n) result(ret)

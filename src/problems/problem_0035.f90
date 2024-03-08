@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0035
 implicit none
 contains
 
-module subroutine euler0035(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0035(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: n = 1000000
   logical, allocatable :: check(:), is_circular(:)
   integer(int64), allocatable :: array(:)
@@ -17,7 +19,7 @@ module subroutine euler0035(problem)
     call is_circular_prime(i, check, array)
     if (allocated(array)) is_circular(array) = .true.
   end do
-  write (problem%answer, "(i20)") count(is_circular) + 13
+  write (answer, "(i20)") count(is_circular) + 13
 end subroutine euler0035
 
 pure subroutine is_circular_prime(n, are_primes, array)

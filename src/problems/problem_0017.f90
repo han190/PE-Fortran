@@ -4,11 +4,13 @@ implicit none
 integer(int64), parameter :: error = 9999999
 contains
 
-module subroutine euler0017(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0017(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: i
 
-  write (problem%answer, "(i20)") sum([(count_letters(i), i=1, 1000)])
+  write (answer, "(i20)") sum([(count_letters(i), i=1, 1000)])
 end subroutine euler0017
 
 elemental function count_letters(n) result(ret)

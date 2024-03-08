@@ -2,12 +2,14 @@ submodule(module_problem) submodule_euler0039
 implicit none
 contains
 
-module subroutine euler0039(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0039(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: n = 1000
   integer(int64) :: i
 
-  write (problem%answer, "(i20)") maxloc([(right_triangle(i), i=1, n)], dim=1)
+  write (answer, "(i20)") maxloc([(right_triangle(i), i=1, n)], dim=1)
 end subroutine euler0039
 
 elemental integer(int64) function right_triangle(p)

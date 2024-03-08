@@ -2,12 +2,14 @@ submodule(module_problem) submodule_euler0011
 implicit none
 contains
 
-module subroutine euler0011(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0011(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: array(20, 20), selected(4, 4)
   integer(int64) :: i, j, unit, sln
 
-  open (newunit=unit, file=problem%file, status="old", action="read")
+  open (newunit=unit, file=file, status="old", action="read")
   read (unit, *) array
   close (unit)
 
@@ -18,7 +20,7 @@ module subroutine euler0011(problem)
       if (max_(selected) > sln) sln = max_(selected)
     end do
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0011
 
 pure integer(int64) function max_(matrix)

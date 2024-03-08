@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0022
 implicit none
 contains
 
-module subroutine euler0022(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0022(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   character(len=20), parameter :: default = "N/A"
   integer(int64) :: i, n, unit, istat
   character(len=:), allocatable :: names(:)
@@ -11,13 +13,13 @@ module subroutine euler0022(problem)
   allocate (character(len=20) :: names(6000))
   names = default
 
-  open (newunit=unit, file=problem%file, status="old", action="read")
+  open (newunit=unit, file=file, status="old", action="read")
   read (unit, *, iostat=istat) names
   close (unit)
 
   n = count(names /= default)
   call quicksort_string(names, 1_int64, n)
-  write (problem%answer, "(i20)") sum([(i*score_letters(names(i)), i=1, n)])
+  write (answer, "(i20)") sum([(i*score_letters(names(i)), i=1, n)])
 end subroutine euler0022
 
 elemental integer(int64) function score_letters(str)

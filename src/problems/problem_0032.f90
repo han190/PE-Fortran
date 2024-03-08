@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0032
 implicit none
 contains
 
-module subroutine euler0032(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0032(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: tmp, i, j, k, products(9)
 
   k = 1
@@ -31,7 +33,7 @@ module subroutine euler0032(problem)
     end do
   end do
 
-  write (problem%answer, "(i20)") sum(remove_duplicates(products))
+  write (answer, "(i20)") sum(remove_duplicates(products))
 end subroutine euler0032
 
 pure function remove_duplicates(input) result(ret)

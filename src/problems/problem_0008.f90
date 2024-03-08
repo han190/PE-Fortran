@@ -2,11 +2,13 @@ submodule(module_problem) submodule_euler0008
 implicit none
 contains
 
-module subroutine euler0008(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0008(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: array(1000), i, unit, sln
 
-  open (newunit=unit, file=problem%file, status='old', action='read')
+  open (newunit=unit, file=file, status='old', action='read')
   do i = 1, 20
     read (unit, "(50(i1))") array((i - 1)*50 + 1:i*50)
   end do
@@ -18,7 +20,7 @@ module subroutine euler0008(problem)
       if (prod > sln) sln = prod
     end associate
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0008
 
 end submodule submodule_euler0008

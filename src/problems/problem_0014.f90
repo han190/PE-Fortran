@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0014
 implicit none
 contains
 
-module subroutine euler0014(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0014(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), allocatable :: array(:)
   integer(int64) :: len_, len_max, i, sln
   integer(int64), parameter :: istart = 1
@@ -26,7 +28,7 @@ module subroutine euler0014(problem)
       sln = i
     end if
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0014
 
 elemental integer(int64) function len_collatz(n)

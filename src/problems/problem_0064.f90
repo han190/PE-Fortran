@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0064
 implicit none
 contains
 
-module subroutine euler0064(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0064(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: n = 1000_int64 ! Large enough
   integer(int64) :: i, p, sln
 
@@ -14,7 +16,7 @@ module subroutine euler0064(problem)
       sln = sln + merge(0, 1, mod(p, 2_int64) == 0)
     end if
   end do
-  write (problem%answer, "(i0)") sln
+  write (answer, "(i0)") sln
 end subroutine euler0064
 
 pure function continued_fraction_period(n, num_sequence) result(period)

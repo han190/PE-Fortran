@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0057
 implicit none
 contains
 
-module subroutine euler0057(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0057(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   real(real64), parameter :: delta = log10(1._real64 + sqrt(2._real64))
   real(real64) :: logp, logq
   integer(int64) :: sln, i
@@ -16,7 +18,7 @@ module subroutine euler0057(problem)
     logq = logq + delta
     if (floor(logp) > floor(logq)) sln = sln + 1
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0057
 
 end submodule submodule_euler0057

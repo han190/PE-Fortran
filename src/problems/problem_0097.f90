@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0097
 implicit none
 contains
 
-module subroutine euler0097(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0097(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: i, p, sln
 
   sln = 2
@@ -12,7 +14,7 @@ module subroutine euler0097(problem)
     sln = merge(sln*2, mod(sln*2, p), sln < p)
   end do
   sln = mod(sln*28433 + 1, p)
-  write (problem%answer, "(i0)") sln
+  write (answer, "(i0)") sln
 end subroutine euler0097
 
 end submodule submodule_euler0097

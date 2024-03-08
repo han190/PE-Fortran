@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0056
 implicit none
 contains
 
-module subroutine euler0056(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0056(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   type(long_type(len=:)), allocatable :: a, x
   integer(int64) :: b, s, i
 
@@ -16,7 +18,7 @@ module subroutine euler0056(problem)
       s = max(s, sum(x%digit))
     end do
   end do
-  write (problem%answer, "(i0)") s
+  write (answer, "(i0)") s
 end subroutine euler0056
 
 end submodule submodule_euler0056

@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0049
 implicit none
 contains
 
-module subroutine euler0049(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0049(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: by = 3330
   integer(int64) :: i
   logical, allocatable :: check(:)
@@ -15,7 +17,7 @@ module subroutine euler0049(problem)
       if (sort(a) == sort(b) .and. sort(a) == sort(c)) exit
     end associate
   end do
-  write (problem%answer, "(3(i4))") i - by*2, i - by, i
+  write (answer, "(3(i4))") i - by*2, i - by, i
 end subroutine euler0049
 
 pure integer(int64) function sort(n)

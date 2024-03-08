@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0020
 implicit none
 contains
 
-module subroutine euler0020(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0020(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), allocatable :: long_integer(:)
   integer(int64) :: i
   real(real64) :: tmp
@@ -20,7 +22,7 @@ module subroutine euler0020(problem)
   do i = 1, 100
     call multiply(long_integer, i)
   end do
- write (problem%answer, "(i20)") sum(long_integer)
+ write (answer, "(i20)") sum(long_integer)
 end subroutine euler0020
 
 pure subroutine multiply(long_integer, n)

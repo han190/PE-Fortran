@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0026
 implicit none
 contains
 
-module subroutine euler0026(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0026(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: n = 1000
   logical, allocatable :: check(:)
   integer(int64) :: k, i, sln, tmp
@@ -19,7 +21,7 @@ module subroutine euler0026(problem)
       end if
     end if
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0026
 
 pure function multiplicative_order(n, m) result(ret)

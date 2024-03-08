@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0040
 implicit none
 contains
 
-module subroutine euler0040(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0040(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: digit_array(6), digit(6)
   integer(int64) :: i
 
@@ -19,7 +21,7 @@ module subroutine euler0040(problem)
       digit(i) = x(mod(10**i - digit_array(i), i))
     end associate
   end do
-  write (problem%answer, "(i20)") product(digit)
+  write (answer, "(i20)") product(digit)
 end subroutine euler0040
 
 end submodule submodule_euler0040

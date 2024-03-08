@@ -2,15 +2,17 @@ submodule(module_problem) submodule_euler0034
 implicit none
 contains
 
-module subroutine euler0034(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0034(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: i, sln
 
   sln = 0
   do i = 1, 40585
     if (is_curious(i)) sln = sln + i
   end do
-  write (problem%answer, "(i20)") sln - 3
+  write (answer, "(i20)") sln - 3
 end subroutine euler0034
 
 elemental logical function is_curious(n)

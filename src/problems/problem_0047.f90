@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0047
 implicit none
 contains
 
-module subroutine euler0047(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0047(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: n = 1000000 - 1
   integer(int64) :: i, goal, sln
   integer(int64), allocatable :: n_factor(:)
@@ -19,7 +21,7 @@ module subroutine euler0047(problem)
   do sln = 2, n
     if (all(n_factor(sln:sln + 3) == goal)) exit
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0047
 
 end submodule submodule_euler0047

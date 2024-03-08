@@ -26,7 +26,7 @@ jobs:
         run: sudo apt install gfortran-${{ matrix.gcc_version }}
 
       - name: Build PE-Fortran by GNU make
-        run: make fortran_compiler=gfortran-${{ matrix.gcc_version }} profile=debug
+        run: make profile=debug
 
       - name: Test PE-Fortran by GNU make
-        run: make test fortran_compiler=gfortran-${{ matrix.gcc_version }} profile=debug
+        run: make test profile=debug

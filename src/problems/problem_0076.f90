@@ -3,8 +3,10 @@ submodule(module_problem) submodule_euler0076
 implicit none
 contains
 
-module subroutine euler0076(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0076(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), allocatable :: array(:), tmp(:)
   integer(int64) :: i, j, k, n
 
@@ -16,7 +18,7 @@ module subroutine euler0076(problem)
     tmp = [(partition(i, array), i=j + 1, j + k)]
     array = [array, tmp]
   end do
-  write (problem%answer, "(i0)") partition(100_int64, array) - 1
+  write (answer, "(i0)") partition(100_int64, array) - 1
 end subroutine euler0076
 
 !> Partition of a number, based on existing partition array.

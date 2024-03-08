@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0037
 implicit none
 contains
 
-module subroutine euler0037(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0037(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: n = 1000000_int64
   integer(int64) :: i, knt, sln
   logical, allocatable :: check(:)
@@ -21,7 +23,7 @@ module subroutine euler0037(problem)
     end if
     i = i + 1
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0037
 
 pure logical function is_trunc(n, primes)

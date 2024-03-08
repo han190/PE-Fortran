@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0059
 implicit none
 contains
 
-module subroutine euler0059(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0059(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: n = 26, k = 3
   integer(int64), allocatable :: encrypted(:), decrypted(:)
   integer(int64) :: letters(n), i
@@ -12,7 +14,7 @@ module subroutine euler0059(problem)
 
   allocate (encrypted(2000))
   encrypted = -1
-  open (newunit=unit, file=problem%file, action="read", status="old")
+  open (newunit=unit, file=file, action="read", status="old")
   read (unit, *, iostat=iostat) encrypted
   close (unit)
   encrypted = pack(encrypted, encrypted /= -1)
@@ -27,7 +29,7 @@ module subroutine euler0059(problem)
     end associate
     if (is_english(decrypted)) exit
   end do
-  write (problem%answer, "(i20)") sum(decrypted)
+  write (answer, "(i20)") sum(decrypted)
 end subroutine euler0059
 
 pure subroutine decrypt(encrypted, key, decrypted)

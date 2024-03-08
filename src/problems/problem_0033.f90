@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0033
 implicit none
 contains
 
-module subroutine euler0033(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0033(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: denom, numer, counter, denom_prod, numer_prod
 
   denom = 1
@@ -21,7 +23,7 @@ module subroutine euler0033(problem)
       end do
     end do
   end do
-  write (problem%answer, "(i20)") denom_prod/gcd(numer_prod, denom_prod)
+  write (answer, "(i20)") denom_prod/gcd(numer_prod, denom_prod)
 end subroutine euler0033
 
 end submodule submodule_euler0033

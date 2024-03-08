@@ -3,8 +3,10 @@ implicit none
 real, parameter :: eps = tiny(0.0)
 contains
 
-module subroutine euler0061(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0061(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   type(jagged_type) :: polygonals(3:8)
   type(jagged_type), allocatable :: array(:)
   type(permutation_type) :: permutation
@@ -29,7 +31,7 @@ module subroutine euler0061(problem)
     end if
     if (allocated(array)) deallocate (array)
   end do outer
-  write (problem%answer, "(i20)") sum(array(i)%array)
+  write (answer, "(i20)") sum(array(i)%array)
 end subroutine euler0061
 
 pure logical function ouroboric(x)

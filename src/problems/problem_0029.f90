@@ -3,10 +3,12 @@ implicit none
 integer(int64), parameter :: error = -99999
 contains
 
-module subroutine euler0029(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0029(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
 
-  write (problem%answer, "(i20)") solve()
+  write (answer, "(i20)") solve()
 end subroutine euler0029
 
 integer(int64) function solve()

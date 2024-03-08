@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0051
 implicit none
 contains
 
-module subroutine euler0051(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0051(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: lower = 100000, upper = 999999
   integer(int64) :: i, j, k, s, idx, p_knt, c_knt
   integer(int64), allocatable :: array(:), primes(:)
@@ -44,7 +46,7 @@ module subroutine euler0051(problem)
       end do inner
     end associate
   end do outer
-  write (problem%answer, "(i20)") primes(idx)
+  write (answer, "(i20)") primes(idx)
 end subroutine euler0051
 
 end submodule submodule_euler0051

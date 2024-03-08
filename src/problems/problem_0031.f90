@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0031
 implicit none
 contains
 
-module subroutine euler0031(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0031(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: n = 200
   integer(int64) :: coins(0:7), array(0:7, 0:n), i, j, sln
 
@@ -19,7 +21,7 @@ module subroutine euler0031(problem)
     end do
   end do
   sln = array(7, n)
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0031
 
 end submodule submodule_euler0031

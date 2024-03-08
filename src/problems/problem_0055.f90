@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0055
 implicit none
 contains
 
-module subroutine euler0055(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0055(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: sln, i, j
   type(long_type(len=:)), allocatable :: tmp, reversed
 
@@ -19,7 +21,7 @@ module subroutine euler0055(problem)
     end do
     sln = sln + 1
   end do outer
-  write (problem%answer, "(i0)") sln
+  write (answer, "(i0)") sln
 end subroutine euler0055
 
 !> Check if a number if palindromic

@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0003
 implicit none
 contains
 
-module subroutine euler0003(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0003(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: n = 600851475143_real64
   logical, allocatable :: check(:)
   integer(int64), allocatable :: primes(:)
@@ -14,7 +16,7 @@ module subroutine euler0003(problem)
   do i = size(primes), 1, -1
     if (mod(n, primes(i)) == 0) exit
   end do
-  write (problem%answer, "(i20)") primes(i)
+  write (answer, "(i20)") primes(i)
 end subroutine euler0003
 
 end submodule submodule_euler0003

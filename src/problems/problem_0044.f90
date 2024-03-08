@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0044
 implicit none
 contains
 
-module subroutine euler0044(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0044(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: n = 3000
   integer(int64) :: pentagonals(n)
   integer(int64) :: i, j, sln
@@ -26,7 +28,7 @@ module subroutine euler0044(problem)
       end associate
     end do
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0044
 
 pure logical function is_pentagonal_pair(pj, pk)

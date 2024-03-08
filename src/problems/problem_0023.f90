@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0023
 implicit none
 contains
 
-module subroutine euler0023(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0023(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), allocatable :: abundants(:)
   integer(int64), parameter :: istart = 12, iend = 28123
   integer(int64) :: i, j
@@ -19,7 +21,7 @@ module subroutine euler0023(problem)
         & sum_abundants(abundants(i) + abundants(j)) = .true.
     end do
   end do
-  write (problem%answer, "(i20)") sum([(i, i=1, iend)],.not. sum_abundants)
+  write (answer, "(i20)") sum([(i, i=1, iend)],.not. sum_abundants)
 end subroutine euler0023
 
 elemental logical function is_abundant(n)

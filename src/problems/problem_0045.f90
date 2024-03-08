@@ -2,12 +2,14 @@ submodule(module_problem) submodule_euler0045
 implicit none
 contains
 
-module subroutine euler0045(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0045(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: x, y
 
   call hexagonal_pentagonal(3_int64, x, y)
-  write (problem%answer, "(i20)") y*(2*y - 1)
+  write (answer, "(i20)") y*(2*y - 1)
 end subroutine euler0045
 
 pure recursive subroutine hexagonal_pentagonal(i, x, y)

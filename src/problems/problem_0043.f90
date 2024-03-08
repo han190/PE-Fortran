@@ -3,8 +3,10 @@ implicit none
 integer(int64), parameter :: primes(7) = [17, 13, 11, 7, 5, 3, 2]
 contains
 
-module subroutine euler0043(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0043(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: sln, tmp
   type(permutation_type) :: permutation
 
@@ -14,7 +16,7 @@ module subroutine euler0043(problem)
     tmp = to_integer(index(permutation) - 1)
     if (divisible(tmp)) sln = sln + tmp
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0043
 
 pure logical function divisible(n)

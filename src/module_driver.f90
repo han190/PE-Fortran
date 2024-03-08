@@ -91,7 +91,7 @@ subroutine get_arguments()
   character(len=:), allocatable :: argument, next_argument, messages(:)
   integer(int64) :: num_trails, selected
   integer :: argument_counts, i
-  type(problemset_type) :: problemset
+  type(problem_type), allocatable :: problems(:)
   logical :: list_solved
 
   argument_counts = command_argument_count()
@@ -161,13 +161,13 @@ subroutine get_arguments()
     output_format = "('Number of trails / problem:', 1x, i0)"
     write (output_unit, output_format) num_trails
   end if
-  problemset = new_problemset(trim(data_directory))
+  problems = new_problems(trim(data_directory))
   if (list_solved) then
-    call list_problems(problemset)
+    call list_problems(problems)
     return
   end if
-  call solve_problems(problemset, num_trails, selected)
-  if (selected == 0) call print_answers(problemset, trim(answer_sheet))
+  call solve_problems(problems, num_trails, selected)
+  if (selected == 0) call print_answers(problems, trim(answer_sheet))
 end subroutine get_arguments
 
 end module module_driver

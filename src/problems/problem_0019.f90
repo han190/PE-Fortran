@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0019
 implicit none
 contains
 
-module subroutine euler0019(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0019(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: num_days(12), year, month, day_of_week, sln
 
   num_days = 30 + [1, -2, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1]
@@ -17,7 +19,7 @@ module subroutine euler0019(problem)
       if (mod(day_of_week, 7_int64) == 0) sln = sln + 1
     end do
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0019
 
 elemental logical function is_leap(year)

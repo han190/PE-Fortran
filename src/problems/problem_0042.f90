@@ -2,14 +2,16 @@ submodule(module_problem) submodule_euler0042
 implicit none
 contains
 
-module subroutine euler0042(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0042(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: score_max = 26*50
   logical :: is_triangular(score_max)
   character(len=:), allocatable :: names(:)
   integer(int64) :: unit, iostat, i, sln
 
-  open (newunit=unit, file=problem%file, action="read", status="old")
+  open (newunit=unit, file=file, action="read", status="old")
   allocate (character(len=50) :: names(2000))
   names = "n/a"
   read (unit, *, iostat=iostat) names
@@ -20,7 +22,7 @@ module subroutine euler0042(problem)
   do i = 1, count(names /= "n/a")
     if (is_triangular(score(names(i)))) sln = sln + 1
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0042
 
 pure integer(int64) function score(str)

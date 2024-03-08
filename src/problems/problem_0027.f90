@@ -7,11 +7,13 @@ submodule(module_problem) submodule_euler0027
 implicit none
 contains
 
-module subroutine euler0027(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0027(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: x = 31
 
-  write (problem%answer, "(i20)") -(2*x - 1)*(x**2 - x + 41)
+  write (answer, "(i20)") -(2*x - 1)*(x**2 - x + 41)
 end subroutine euler0027
 
 end submodule submodule_euler0027

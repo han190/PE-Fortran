@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0002
 implicit none
 contains
 
-module subroutine euler0002(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0002(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: n = 4000000
   integer(int64) :: i, sln
 
@@ -13,7 +15,7 @@ module subroutine euler0002(problem)
     sln = sln + fibonacci(i)
     i = i + 3
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0002
 
 elemental recursive function fibonacci(n) result(ret)

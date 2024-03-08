@@ -5,19 +5,21 @@ character(len=1), parameter :: value_arr(14) = [ &
   & 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
 contains
 
-module subroutine euler0054(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0054(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: i, unit, sln
   character(len=2) :: cards(10)
 
-  open (newunit=unit, file=problem%file, action="read", status="old")
+  open (newunit=unit, file=file, action="read", status="old")
   sln = 0
   do i = 1, 1000
     read (unit, *) cards
     if (player_one_win(cards)) sln = sln + 1
   end do
   close (unit)
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0054
 
 pure function player_one_win(string_array) result(ret)

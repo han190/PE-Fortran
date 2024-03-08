@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0048
 implicit none
 contains
 
-module subroutine euler0048(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0048(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: sln(10), i, array(10)
 
   sln = 0
@@ -11,7 +13,7 @@ module subroutine euler0048(problem)
     call self_pow10(i, array)
     call add10(sln, array)
   end do
-  write (problem%answer, "(20(i1))") sln
+  write (answer, "(20(i1))") sln
 end subroutine euler0048
 
 pure subroutine add10(a, b)

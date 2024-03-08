@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0050
 implicit none
 contains
 
-module subroutine euler0050(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0050(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), parameter :: limit = 1000000
   logical, allocatable :: check(:)
   integer(int64), allocatable :: primes(:)
@@ -26,7 +28,7 @@ module subroutine euler0050(problem)
       j = j + 1
     end do inner
   end do outer
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0050
 
 end submodule submodule_euler0050

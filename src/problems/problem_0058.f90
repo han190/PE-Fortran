@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0058
 implicit none
 contains
 
-module subroutine euler0058(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0058(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: i, j, n
 
   j = 0
@@ -20,7 +22,7 @@ module subroutine euler0058(problem)
     end associate
     n = n + 1
   end do
-  write (problem%answer, "(i20)") side_length(n)
+  write (answer, "(i20)") side_length(n)
 end subroutine euler0058
 
 pure function diagonal(n) result(ret)

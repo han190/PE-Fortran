@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0012
 implicit none
 contains
 
-module subroutine euler0012(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0012(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   logical, allocatable :: check(:)
   integer(int64), allocatable :: primes(:)
   integer(int64) :: i, sln
@@ -18,7 +20,7 @@ module subroutine euler0012(problem)
     sln = sln + i
     if (num_divisors(sln, primes) > 500) exit
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0012
 
 end submodule submodule_euler0012

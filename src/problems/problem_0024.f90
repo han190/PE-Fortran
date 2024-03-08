@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0024
 implicit none
 contains
 
-module subroutine euler0024(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0024(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64), allocatable :: tmp(:)
   integer(int64) :: num_permutes(10)
   integer(int64) :: n, i, j, sln
@@ -20,7 +22,7 @@ module subroutine euler0024(problem)
     tmp = pack(tmp, tmp /= j)
     sln = sln + j*10**(i - 1)
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0024
 
 end submodule submodule_euler0024

@@ -2,8 +2,10 @@ submodule(module_problem) submodule_euler0063
 implicit none
 contains
 
-module subroutine euler0063(problem)
-  type(problem_type), intent(inout) :: problem
+module subroutine euler0063(answer, file)
+  character(len=*), intent(out) :: answer
+  character(len=*), intent(in) :: file
+  
   integer(int64) :: i, k, sln
 
   sln = 0
@@ -13,7 +15,7 @@ module subroutine euler0063(problem)
       sln = sln + k
     end associate
   end do
-  write (problem%answer, "(i20)") sln
+  write (answer, "(i20)") sln
 end subroutine euler0063
 
 end submodule submodule_euler0063
