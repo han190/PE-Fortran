@@ -61,6 +61,7 @@ install:
 	cp $(build_dir)/PE-Fortran $(prefix)
 	@echo Executables installed to $(prefix)
 	@echo Data copied to $(data_prefix)
+	@echo PE-Fortran is installed successfully.
 
 $(build_dir)/PE-Fortran: $(pe_obj) $(problems_obj)
 	$(compile) -o $@ $(pe_obj) $(problems_obj) -L$(build_dir) -lpetk

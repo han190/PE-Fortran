@@ -15,7 +15,7 @@ subroutine print_characters(array)
   integer(int64) :: i
 
   do i = 1, size(array)
-    write (output_unit, "(a)") array(i)
+    write (output_unit, "(a)") trim(array(i))
   end do
 end subroutine print_characters
 
@@ -24,10 +24,11 @@ pure subroutine get_version(messages)
   character(len=:), allocatable, intent(inout) :: messages(:)
 
   messages = [character(len=80) :: &
-    & 'Project Name: PE-Fortran', &
+    & 'Project Euler with Fortran', &
     & 'Version: 0.4.0', 'License: MIT', &
     & 'Copyright: Copyright 2019 - 2023, Han Tang', &
-    & 'Homepage: https://github.com/han190/PE-Fortran']
+    & 'Homepage: https://github.com/han190/PE-Fortran', &
+    & '']
 end subroutine get_version
 
 !> Print help
@@ -35,15 +36,22 @@ pure subroutine get_help(messages)
   character(len=:), allocatable, intent(inout) :: messages(:)
 
   messages = [character(len=80) :: &
-    & 'PE Fortran Solution', &
     & 'Arguments:', &
-    & '   P<N>, PROBLEM<N> Solve a single problem.', &
+    & '   p[roblem]<N>     Solve a single problem.', &
     & '   -v, --version    Print version.', &
     & '   -h, --help       Pop up this message.', &
     & '   -t, --trail      Number of trails.', &
     & '   -d, --data       Data directory.', &
     & '   -a, --answer     Answer sheet (output file).', &
-    & '   -l, --list       List solved problems.']
+    & '   -l, --list       List solved problems.', &
+    & '', &
+    & 'Examples:', &
+    & '   1. Solve all problems: PE-Fortran', &
+    & '   2. Solve all problems 10 times: PE-Fortran -t 10', &
+    & '   3. Solve problem 10: PE-Fortran p10', &
+    & '   4. Solve problem 10 100 times: PE-Fortran p10 -t 100', &
+    & '   5. List solved problems: PE-Fortran -l', &
+    & '']
 end subroutine get_help
 
 !> If a string contains only digit
@@ -148,6 +156,8 @@ subroutine get_arguments()
       call print_characters(messages)
       return
     case ("-h", "--help")
+      call get_version(messages)
+      call print_characters(messages)
       call get_help(messages)
       call print_characters(messages)
       return
