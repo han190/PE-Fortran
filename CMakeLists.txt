@@ -77,6 +77,6 @@ add_custom_target(test
   DEPENDS PE-Fortran)
 
 # Install
-install(TARGETS PE-Preprocess PE-Fortran DESTINATION $ENV{HOME}/.local/bin)
+install(TARGETS PE-Fortran DESTINATION $ENV{HOME}/.local/bin)
 file(GLOB data_files ${PROJECT_SOURCE_DIR}/data/*.txt)
 install(FILES ${data_files} DESTINATION ${data_prefix})

@@ -25,8 +25,16 @@ jobs:
         if: contains( matrix.os, 'ubuntu' )
         run: sudo apt install gfortran-${{ matrix.gcc_version }}
 
-      - name: Build PE-Fortran by GNU make
-        run: make profile=debug
+      - name: Install CMake
+        if: contains( matrix.os, 'ubuntu' )
+        run: sudo apt install cmake
 
-      - name: Test PE-Fortran by GNU make
-        run: make test profile=debug
+      - name: Configure and test with CMake
+        if: contains( matrix.os, 'ubuntu' )
+        run: |
+          mkdir -p build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          make clean
+          make
+          make test
