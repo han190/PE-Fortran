@@ -4,7 +4,7 @@ program main
   implicit none
 
   character(len=:), allocatable :: tmp, tmp2, srcs(:), arguments(:)
-  character(len=:), allocatable :: data_dir, include_dir
+  character(len=:), allocatable :: data_dir, include_dir, repository_dir
   character(len=9) :: name
   integer, allocatable :: problems(:), datasets(:)
   integer :: i, j, unit, argument_counts, indent = 2
@@ -13,7 +13,7 @@ program main
 
   !> Read data directory if specified.
   argument_counts = command_argument_count()
-  if (.not. any(argument_counts == [0, 2, 4])) &
+  if (.not. any(argument_counts == [(i*2, i=1, 3)])) &
     & error stop "[PE-Preprocess] Invalid argument count."
   
   if (argument_counts >= 2) then
@@ -28,13 +28,18 @@ program main
         data_dir = trim2(arguments(i + 1))
       case ("-i", "--include")
         include_dir = trim2(arguments(i + 1))
+      case ("-r", "--repository")
+        repository_dir = trim2(arguments(i + 1))
       case default
         error stop "[PE-Preprocess] Invalid argument."
       end select
     end do
   end if
 
-  if (.not. allocated(include_dir)) include_dir = "src"
+  if (.not. allocated(include_dir)) include_dir = "src/include/"
+  if (.not. allocated(repository_dir)) repository_dir = "./"
+  call execute_command_line("mkdir -p "//include_dir)
+
   if (allocated(data_dir)) then
     open (newunit=unit, file=include_dir//"/"//"directory.inc", action="write")
     decl1 = declaration_type(name="default_data_directory", &
@@ -45,8 +50,8 @@ program main
   end if
 
   !> Scan solved problems and dataset required.
-  problems = find_indexed("src/problems", "problem")
-  datasets = find_indexed("data", "data")
+  problems = find_indexed(repository_dir//"/src/problems", "problem")
+  datasets = find_indexed(repository_dir//"/data", "data")
 
   !> Generate interfaces
   open (newunit=unit, file=include_dir//"/"//"interface.inc", action="write")

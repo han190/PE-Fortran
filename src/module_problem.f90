@@ -207,7 +207,7 @@ subroutine print_answers(problems, file)
   output_format = "('*', t6, a, t35, es0.4e2)"
   write (unit, output_format) message, time_tot/num_problems
   close (unit)
-  write (output_unit, "(a)") "File 'answer.log' generated."
+  write (output_unit, "(a)") "File "//file//" generated."
 end subroutine print_answers
 
 end module module_problem

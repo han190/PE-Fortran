@@ -10,6 +10,7 @@ homepage = "https://github.com/han190/PE-Fortran"
 
 [library]
 source-dir = "src"
+include-dir = "src/include"
 
 [[test]]
 name = "UnitTests"

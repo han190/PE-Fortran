@@ -9,7 +9,7 @@
 | Dependencies          | Options               |
 |:----------------------|:----------------------|
 | Fortran 2008 compliant Compiler      | [gfortran](https://gcc.gnu.org/wiki/GFortran)/[ifx](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html#gs.lki8b0) |
-| Build Tool            | [Fortran Package Manager (FPM)](https://github.com/fortran-lang/fpm)/GNU make |
+| Build Tool            | [Fortran Package Manager (FPM)](https://github.com/fortran-lang/fpm)/CMake |
 
 ### Compile and run with FPM
 #### Usage
@@ -30,19 +30,16 @@ fpm run PE-Fortran --compiler ifx --flag "-check all,nouninit"
 ```
 For more information: `fpm run PE-Fortran -- -h`
 
-### Compile and run with make
-With good old GNU make, one should be able to use
-```bash
-make
-make install
+### Compile and run with CMake
+Build the project with CMake
 ```
-and to do a test run 
+mkdir build && cd build
+cmake ..
+make
+```
+and test all problems with
 ```
 make test
-```
-Installation is supported but not necessary. The default prefix is `$HOME/.local/bin`
-```
-make install
 ```
 
 ## Contribution
