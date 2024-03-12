@@ -94,9 +94,10 @@ end function problem_found
 
 !> Get arugment
 subroutine get_arguments()
-  character(len=:), allocatable :: answer_sheet, data_directory, output_format
-  character(len=:), allocatable :: arguments(:), keywords(:)
-  character(len=:), allocatable :: argument, next_argument, messages(:)
+  character(len=:), allocatable :: answer_directory, data_directory
+  character(len=:), allocatable :: keywords(:), messages(:)
+  character(len=:), allocatable :: arguments(:), argument, next_argument
+  character(len=:), allocatable :: output_format
   integer(int64) :: num_trails, selected
   integer :: argument_counts, i
   type(problem_type), allocatable :: problems(:)
@@ -112,8 +113,8 @@ subroutine get_arguments()
 
   !> Default values
   data_directory = default_data_directory
-  allocate (character(len=500) :: answer_sheet)
-  answer_sheet = "answer.log"
+  allocate (character(len=500) :: answer_directory)
+  answer_directory = "."
   num_trails = 2
   selected = 0
   list_solved = .false.
@@ -146,9 +147,9 @@ subroutine get_arguments()
       output_format = "('Data directory:', 1x, a)"
       write (output_unit, output_format) trim(data_directory)
     case ("-a", "--answer")
-      answer_sheet = next_argument
-      output_format = "('Answer sheet:', 1x, a)"
-      write (output_unit, output_format) trim(answer_sheet)
+      answer_directory = next_argument
+      output_format = "('Answer directory:', 1x, a)"
+      write (output_unit, output_format) trim(answer_directory)
     case ("-l", "--list")
       list_solved = .true.
     case ("-v", "--version")
@@ -177,7 +178,8 @@ subroutine get_arguments()
     return
   end if
   call solve_problems(problems, num_trails, selected)
-  if (selected == 0) call print_answers(problems, trim(answer_sheet))
+  if (selected == 0) call print_answers( &
+    & problems, trim(answer_directory)//"/answer.log")
 end subroutine get_arguments
 
 end module module_driver
