@@ -4,21 +4,26 @@ project(PE-Fortran VERSION 0.0.4
   HOMEPAGE_URL https://github.com/han190/PE-Fortran
   LANGUAGES Fortran)
 
+if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE Debug)
+  message(STATUS "Setting CMAKE_BUILD_TYPE to ${CMAKE_BUILD_TYPE}.")
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+    "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Darwin")
   if (CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
-    if (CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 9.0)
+    if (CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 12.0)
       message(FATAL_ERROR gfortran >= ${CMAKE_Fortran_COMPILER_VERSION})
     endif()
     message(STATUS "Using gfortran ${CMAKE_Fortran_COMPILER_VERSION}.")
 
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-      message(STATUS "Compiling in debug mode.")
       set(CMAKE_Fortran_FLAGS "-g -O0 -Wall -Wextra -pedantic -fbounds-check \
         -fimplicit-none -fPIC -Wno-uninitialized -fcheck=all -fbacktrace \
         -ffree-form -fcheck=array-temps -Werror=implicit-interface \
         -std=f2018 -march=native")
     elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
-      message(STATUS "Compiling in release mode.")
       set(CMAKE_Fortran_FLAGS "-O3 -march=native -std=f2018 -march=native")
     endif()
   elseif (CMAKE_Fortran_COMPILER_ID STREQUAL "IntelLLVM")
@@ -28,11 +33,9 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     message(STATUS "Using ifx ${CMAKE_Fortran_COMPILER_VERSION}.")
       
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-      message(STATUS "Compiling in debug mode.")
       set(CMAKE_Fortran_FLAGS "-O0 -warn all -check all,nouninit \
         -g -traceback -no-simd -stand f18 -mtune=native")
     elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
-      message(STATUS "Compiling in release mode.")
       set(CMAKE_Fortran_FLAGS "-O1 -ipo -xHost -stand f18 -mtune=native")
     endif()
   endif()
@@ -71,9 +74,9 @@ target_link_libraries(PE-Fortran petk)
 
 # Add a quick test
 # Apparently I don't need add_test for make test to work...
-# add_test(TestAllProblems PE-Fortran)
+add_test(TestAllProblems PE-Fortran)
 add_custom_target(test 
-  COMMAND PE-Fortran -d ${PROJECT_SOURCE_DIR}/data/ 
+  COMMAND PE-Fortran -d ${PROJECT_SOURCE_DIR}/data/ -a ${PROJECT_BINARY_DIR}
   DEPENDS PE-Fortran)
 
 # Install
